@@ -1,0 +1,219 @@
+Performance Objectives
+
+    Performance Objective
+
+    - jenkins in kubernetes
+    Description
+
+    The old jenkins setup was stagnating in terms of version, manually set flags/settings and reliability. This fragility was demonstrated recently when a restart supposedly triggered a plugin update and rendered the old jenkins unrecoverable; thankfully we had another jenkins setup running.
+
+    The boon of this new setup are plenty:
+    - leverages K8s, where most of out other services are migrating to (and scalable)
+
+    - is fully versioned setup (spec files live in git)
+
+    - is fully reproducible (most settings are specified in a file)
+
+    - is a mostly automated setup (helm + scripts to launch Jenkins and apply secrets)
+
+    - can eventually benefit from upstream community changes
+
+    - abstract enough to extend to other teams in the company
+    Category
+    3- Operational Efficiency and Innovation
+    Due Date
+    12/31/2017
+
+    Status
+        Achieved
+    Completed On
+    (empty)
+
+Employee Evaluation
+
+    Results
+
+    list of accomplishments related to the goal (e.g. what needed to be done in order to achieve the goal)
+
+    - this followed from the attempt to use helm as a templating engine to manage our current kops repo
+    - in the process i learned the basics and best practices of helm chart
+
+    - learn advanced templating options in helm
+
+    - meshing various pieces of Jenkins+k8s+helm+aws to create a reproducible and scalable Jenkins setup
+
+
+    any challenges you encountered
+
+    - lack of a good and open jenkins API
+
+    - not using upstream chart in the workfllow (k8s community is super active)
+
+    - new territory/stigma around trying to do docker-in-docker
+
+
+    how well you think you did on your goal
+
+    - great: in terms of getting things working and having a viable alternative to old jenkins
+
+    - good: in terms of going from test to using in stg. could have benefit from separate repo, test cluster to iterate faster, a more formalized plan/execution to get to actual use
+
+    Performance Objective
+
+    - meet sprints commitments
+    Description
+
+    Completed expected tickets for each sprint.
+    Category
+    6- Role Expectations
+    Due Date
+    12/31/2017
+
+    Status
+        Achieved
+    Completed On
+    (empty)
+
+Employee Evaluation
+
+    Results
+
+    list of accomplishments related to the goal (e.g. what needed to be done in order to achieve the goal)
+
+    - learning new code base while being productive
+
+
+    any challenges you encountered
+
+    - relying on test coverage(partial coverage) and also manual testing(swagger is not super obvious in terms of what request parameters are valid. also user login) to verify if things broke
+
+
+    how well you think you did on your goal
+
+    - great: in terms of completing work
+
+    - ok: in terms of testing for breaking changes
+
+    Performance Objective
+
+    - migrate from poweramp to kubernetes
+    Description
+
+    Completed tickets to move our services into a cloud native environment. This included migrating them to K8s, adding metrics, de-coring old Akka code and improving reliability of the software.
+
+    Additional effort involved researching best practices for deployment, repo setup, network overlay research, kops functionality, and research into k8s primitives.
+    Category
+    3- Operational Efficiency and Innovation
+    Due Date
+    12/31/2017
+
+    Status
+        Achieved
+    Completed On
+    (empty)
+
+Employee Evaluation
+
+    Results
+
+    list of accomplishments related to the goal (e.g. what needed to be done in order to achieve the goal)
+
+    - did research into CNI and offered solutions
+
+    - got involved in the k8s community to leverage learning from others
+
+    - helped build a workflow for managing kops/kube
+
+    - research in to the underlying components of k8s (kube-dns, cni, service mesh, helm)
+
+    - chiseled away at old code to migrate it from Akka
+
+
+    any challenges you encountered
+
+    - i think opening issues and engaging with OSS tech we use would be beneficial to both the technology and us as a company (a good example is Weave. I despise Weave but that could be because of our mis-use) (this view comes out of conversations with Chris Love, kops maintainer)
+
+    - time crunch to get a k8s cluster up and running (could potentially have avoided the CNI issue..probably not)
+
+    - we need to assume that we all work remotely when debugging things or otherwise communicating (the gather in amp lounge to discuss an issue is easy but not scaleable. this is especially important when things involve Ops). This has actually improved in my opinion.
+
+
+    how well you think you did on your goal
+
+    - great: getting things of ground and working and a successful migration
+
+    - good: we have issues with weave and kube-dns but considering those are the only problems and we still have a running cluster.
+
+    Performance Objective
+
+    - rust talk
+    Description
+
+    Learned rust and gave a talk on how to leverage rust language semantics for designing better API's. Also gave this talk at the NYC Rust and London Rust meetup group.
+
+    Helping organize the Rust meetup group.
+
+    Contributed to the https://github.com/rust-lang/rust repo which is the main language.
+
+    These efforts yield two obvious benefits:
+
+    - knowledge acquired and exposure to a popular opensource project translates to better code design and sementics
+
+    - talks and involvement in community help get the iHeart name out there and therefore attract better selection of developers
+
+    Talk:
+
+    https://github.com/toidiu/talk_rust_ownership
+    https://vimeo.com/239155704/28d42fccd3
+
+    password: rusty!
+    Category
+    4- Develop Effective Organizations & People
+    Due Date
+    12/31/2017
+
+    Status
+        Achieved
+    Completed On
+    (empty)
+
+Employee Evaluation
+
+    Results
+
+    ist of accomplishments related to the goal (e.g. what needed to be done in order to achieve the goal)
+
+    - exposed self and company(thru talk) to a way of thinking about API design
+
+    - learn core Rust concepts well enough on my own time to give a talk on it
+
+    - bring back the Rust meetup after a 2 year hiatus
+
+
+    any challenges you encountered
+
+    - Rust is a mind bend coming from Java land
+
+    - ownership is a mind warp
+
+    - public speaking :)
+
+
+    how well you think you did on your goal
+
+    - great: learned something and was able to communicate it
+
+Summary
+Employee Evaluation
+
+    Results
+
+    - for using OSS, (jenkins, k8s, rust) the community was extremely useful
+
+    - we could benefit from a more methodical approach to rolling out changes and migrating (sometimes decisions are made out of immediate necessity)
+
+    - we could benefit more form a more remote-centric workflow especially when enough people work from home.
+
+    - migrating to k8s was no small feat and that was a team effort
+
+    - not having touched product I do feel its a bit alien and difficult for me to debug/understand sometimes. This is something I want to work on next year.
