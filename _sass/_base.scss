@@ -3,13 +3,20 @@
    ========================================================================== */
 @font-face {
     font-family: customFont;
-    /*src: url(fonts/GeomaThin.otf);*/
-    src: url(fonts/Comfortaa-Light.ttf);
-    /*src: url(fonts/PoiretOne-Regular.ttf);*/
+    src: url(fonts/Inconsolata-Regular.ttf);
+}
+@font-face {
+    font-family: customFontBold;
+    src: url(fonts/Inconsolata-Bold.ttf);
 }
 * {
     font-family: customFont;
 }
+strong {
+    font-family: customFont;
+    font-weight: bold;
+}
+
 
 html {
   /* sticky footer fix */
@@ -22,7 +29,7 @@ body {
   padding: 0;
   color: $text-color;
   font-family: $global-font-family;
-  line-height: 1.5;
+  line-height: 2;
 
   &.overflow--hidden {
     /* when primary navigation is visible, the content in the background won't scroll */

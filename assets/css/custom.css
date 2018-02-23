@@ -1,14 +1,14 @@
 /*------------------------GENERAL---------------------*/
 @font-face {
     font-family: customFont;
-    /*src: url(fonts/GeomaThin.otf);*/
-    src: url(fonts/Comfortaa-Light.ttf);
-    /*src: url(fonts/PoiretOne-Regular.ttf);*/
+    src: url(fonts/Inconsolata-Regular.ttf);
 }
 body {
-    font: 14px customFont;
+    font: 16px customFont;
+    /* color: #282D28; */
+    /* background-color: #f7a52a; */
     color: #282D28;
-    background-color: #f7a52a;
+    background-color: #dea584;
     margin: 0;
 }
 .outer {
@@ -97,7 +97,8 @@ footer .link-icon img {
 }
 .description{
   /*color: #fff;*/
-  padding: 8px 20%;
+  line-height: 1.5em;
+  padding: 10px 20%;
 }
 .link-icon img {
     width: 40px;

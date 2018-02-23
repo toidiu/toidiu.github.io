@@ -1,13 +1,13 @@
 /*------------------------NAV---------------------*/
 nav{
-    background: #b77a1e;
+    background: #aa704e;
     padding: 15px 0;
     font-size: 22px;
     text-align: center;
 }
 nav .nav-link{
     text-decoration: none;
-    color: #AFAFAF;
+    color: #afafaf;
     font-size: 18px;
 }
 .nav-link{
