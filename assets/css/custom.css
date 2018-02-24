@@ -27,6 +27,7 @@ body {
     margin: 50px auto;
 }
 a{
+    display: inline-flex;
     text-decoration: none;
     color: #FFF;
 }
@@ -136,9 +137,6 @@ body#projects {
 }
 #projects footer{
 background: #228fc9;
-}
-#projects a{
-    display: inline-flex;
 }
 #projects .item img{
     margin: 0px;
