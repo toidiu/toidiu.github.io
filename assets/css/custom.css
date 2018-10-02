@@ -175,6 +175,13 @@ background: #228fc9;
 #gin .quote {
   padding: 30px 15%;
 }
+#gin .description-wrapper {
+  padding: 10px 0;
+}
+#gin .description {
+  padding: 25px 15%;
+  line-height: 1.2em;
+}
 /*------------------------END CONTACT---------------------*/
 
 
