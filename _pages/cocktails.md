@@ -41,8 +41,8 @@ layout: custom
 
 #### Negroni
 
-  - 1 Part Campari
   - 1 Part Gin
+  - 1 Part Campari
   - 1 Part Sweet vermouth
   - 1 Slice Orange
 
@@ -58,8 +58,8 @@ layout: custom
 
 #### Tom Collins
 
-  - 1 Part Lemon Juice
   - 2 Parts Gin
+  - 1 Part Lemon Juice
   - ⅔ Part Simple Syrup
   - Club Soda
   - 1 Wedge Lemon
@@ -85,12 +85,23 @@ https://www.thelittleepicurean.com/2014/10/gin-and-ginger-cocktail.html
 
 #### Aviation
 
-  - 60 ml London Dry Gin
-  - 15 ml lemon juice
-  - 10 ml Maraschino Luxardo
-  - 5 ml Crème de Violette
+  - 60 ml Gin (1.8 Part)
+  - 15 ml lemon juice (.4 Part)
+  - 10 ml Maraschino Luxardo (.2 Part)
+  - 5 ml Crème de Violette (Bar spoon)
 
     How to mix: Shake the first three ingredients with ice then strain into a chilled cocktail glass. Use a bar spoon to float the Crème de Violette (which will sink) into the glass. Garnish with lemon peel and Luxardo Original Maraschino cherry served on a cocktail pick.
+
+#### Corpse Reviver #2
+
+  - 1 Part Gin
+  - 1 Part lemon juice
+  - 1 Part Cocchi Americano (Lillet Blanc)
+  - 1 Part Cointreau
+  - Dash Absinthe
+
+    How to mix: Rinse a chilled cocktail glass with absinthe and toss excess. Stir and strain the remaining ingredients with aic into the cocktail glass. Garnish with an orange peel.
+
 
                     -o-o-o-o Whiskey o-o-o-o-
 
