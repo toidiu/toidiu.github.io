@@ -182,8 +182,20 @@ background: #228fc9;
   padding: 25px 15%;
   line-height: 1.2em;
 }
-/*------------------------END CONTACT---------------------*/
+/*------------------------END GIN---------------------*/
 
+
+/*------------------------BLOG---------------------*/
+body#blog {
+  background-color: #2a9fde;
+}
+#blog nav{
+  background-color: #1586c3;
+}
+#blog {
+  line-height: 2;
+}
+/*------------------------END BLOG---------------------*/
 
 /*------------------------CONTACT---------------------*/
 #contact nav{
