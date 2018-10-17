@@ -1,5 +1,7 @@
 ---
 title: "The Technical Interview in 2017"
+nav: blog
+id: blog
 categories:
   - interview
 tags:

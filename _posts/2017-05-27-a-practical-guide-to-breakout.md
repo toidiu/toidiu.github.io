@@ -1,5 +1,7 @@
 ---
 title: "A practical guide to breakOut"
+nav: blog
+id: blog
 categories:
   - Code
   - Scala

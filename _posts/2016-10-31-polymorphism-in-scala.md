@@ -1,5 +1,7 @@
 ---
 title: "Polymorphism in Scala"
+nav: blog
+id: blog
 categories:
   - Code
   - Scala

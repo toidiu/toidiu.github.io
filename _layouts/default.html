@@ -12,9 +12,8 @@
     <link rel="stylesheet" href="{{ base_path }}/assets/css/nav-blog.css">
   </head>
 
-  <body id="{{ page.id | default: layout.layout }}" class="layout--{{ page.layout | default: layout.layout }}{% if page.classes or layout.classes %}{{ page.classes | default: layout.classes | join: ' ' | prepend: ' ' }}{% endif %}">
+  <body id="{{ page.nav | default: layout.layout }}" class="layout--{{ page.layout | default: layout.layout }}{% if page.classes or layout.classes %}{{ page.classes | default: layout.classes | join: ' ' | prepend: ' ' }}{% endif %}">
 
-    {% include browser-upgrade.html %}
     {% include masthead.html %}
 
     {{ content }}

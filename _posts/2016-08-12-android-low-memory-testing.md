@@ -1,5 +1,7 @@
 ---
 title: "Android low memory testing"
+nav: blog
+id: blog
 categories:
   - Code
   - Android
