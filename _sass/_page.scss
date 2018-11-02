@@ -297,7 +297,6 @@
 .page__comments-form {
   padding: 1em;
   background: $lighter-gray;
-  transition: $global-transition;
 
   &.disabled {
     input,
