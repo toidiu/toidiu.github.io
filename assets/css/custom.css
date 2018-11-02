@@ -172,6 +172,12 @@ background: #228fc9;
 
 
 /*------------------------GIN---------------------*/
+body#gin {
+  background-color: #f2eeea;
+}
+#gin nav{
+  background-color: #5c5c5c;
+}
 #gin .quote {
   padding: 30px 15%;
 }
