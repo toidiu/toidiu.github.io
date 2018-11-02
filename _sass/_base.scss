@@ -39,11 +39,14 @@ body {
     line-height: 2;
 
     & nav {
-      line-height: 1;
       background: #405d8f;
     }
   }
 }
+nav {
+  line-height: 1;
+}
+
 
 h1, h2, h3, h4, h5, h6 {
   margin: 2em 0 0.5em;

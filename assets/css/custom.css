@@ -44,6 +44,9 @@ a:hover
 body, nav, .outer, footer{
   min-width: 320px;
 }
+nav {
+  line-height: 1;
+}
 .under{
   text-decoration: underline;
 }
