@@ -4,6 +4,8 @@ main:
     url: /
   - title: "projects"
     url: /projects
+  - title: "reads"
+    url: /reads
   - title: "gin"
     url: /gin
   - title: "blog"
