@@ -185,6 +185,7 @@ body#reads {
   padding: 0 20px;
 }
 #reads .title {
+  font-size: 18px;
   max-width: 600px;
 }
 #reads .article {
