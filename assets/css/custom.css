@@ -173,6 +173,48 @@ background: #228fc9;
 }
 /*------------------------END PROJECT---------------------*/
 
+/*------------------------READS---------------------*/
+body#reads {
+  /* background-color: #2a9fde; */
+}
+#reads nav{
+  /* background-color: #1586c3; */
+}
+#reads #main-container {
+  margin: 40px auto 80px auto;
+  padding: 0 20px;
+}
+#reads .title {
+  font-size: 18px;
+  max-width: 600px;
+}
+#reads .article {
+  margin-top: 40px;
+}
+
+
+/* more */
+#reads .hide-more .more {
+  display: inline-block;
+  margin-top: 10px;
+}
+#reads .hide-more .less {
+  display: none;
+}
+#reads .hide-more .more-container {
+  display: none;
+}
+#reads .more {
+  display: none;
+}
+#reads .less {
+  display: inline;
+}
+#reads .more-container {
+  display: block;
+}
+/*------------------------END PROJECT---------------------*/
+
 
 /*------------------------GIN---------------------*/
 body#gin {
@@ -247,5 +289,8 @@ body#blog {
   }
   nav .nav-link{
       font-size: 20px;
+  }
+  #reads .article {
+    padding: 0px 40px;
   }
 }

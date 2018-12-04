@@ -7,9 +7,9 @@ permalink: /reads.html
 layout: custom
 ---
 
-<div>
+<div id="main-container">
 
-  <div>
+  <div class="article">
     <a href="/assets/reads/FLP_imposibility.pdf">
       <p class="title">Impossibility of Distributed Consensus with One Faulty Process</p>
     </a>
@@ -19,7 +19,7 @@ layout: custom
     </div>
   </div>
 
-  <div>
+  <div class="article">
     <a href="/assets/reads/consistent_hashing_and_random_trees_distributed_caching_protocols_for_relieving_hot_spots_on_the_world_wide_web_technical_publication.pdf">
       <p class="title">Consistent Hashing and Random Trees: Distributed Caching Protocols for Relieving Hot Spots on the World Wide Web</p>
     </a>
@@ -29,8 +29,8 @@ layout: custom
       Consistent hashing is a hashing design that allows for distribution with minimal coordination between the machines.
     </div>
 
-    <div class="summary">
-      <!-- <a class="more" href="#">more</a> -->
+    <div class="summary hide-more">
+      <a class="more" href="#">more</a>
       <div class="more-container">
         <p>
           A first solution might be to hash the requests across the different servers.
@@ -74,6 +74,7 @@ layout: custom
           Then as new buckets are added, gradually bisect each section.
         </p>
       </div>
+      <a class="less" href="#">less</a>
     </div>
   </div>
 
