@@ -2,6 +2,8 @@
    jQuery plugin settings and other scripts
    ========================================================================== */
 
+alert("asdf")
+console.log("df")
 $(document).ready(function(){
 
   // Sticky footer
@@ -53,8 +55,6 @@ $(document).ready(function(){
   });
 
   // Follow menu drop down
-alert("asdf")
-console.log("df")
   $(".author__urls-wrapper button").on("click", function() {
     $(".author__urls").fadeToggle("fast", function() {});
     $(".author__urls-wrapper button").toggleClass("open");
@@ -97,5 +97,8 @@ console.log("df")
     closeOnContentClick: true,
     midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
   });
+
+
+  // toggle more
 
 });
