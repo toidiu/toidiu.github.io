@@ -6,7 +6,7 @@ main:
     url: /projects
   - title: "reads"
     url: /reads
-  - title: "gin"
-    url: /gin
+  # - title: "gin"
+  #   url: /gin
   - title: "blog"
     url: /blog
