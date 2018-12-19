@@ -1,5 +1,5 @@
 ---
-title: "Reads"
+title: "Announcing Reads"
 nav: blog
 id: blog
 categories:
