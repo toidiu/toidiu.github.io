@@ -7,9 +7,7 @@ categories:
   - papers
 ---
 
-I am starting a new project called [Reads](/reads) where I will cover various topics of interest to me.
+I am starting an ongoing project called [Reads](/reads).
 
- The task will be to read, highlight and summarize a paper, and possibly accompany it with some code.
-
-The primary goal of this project is to create a reference for myself, as well as gaining a better understanding of the topics.
+ The task will be to read, highlight and summarize a paper, and possibly a coded implementation. The primary goal of this project is to reference my thoughts, and also gain a better understanding of the topic in the process. Possibly other might also find this useful.
 
