@@ -15,9 +15,31 @@ layout: custom
     </a>
 
     <div class="short summary">
-      Summary TBD
+      The consensus problem involves a system of asynchronous processes, some of which may be unreliable/faulty (die or crash). This paper proves that every solution, with even a single faulty process, has the possibility of non-termination. The important takeaway: we can design our systems to make the possibility of a livelock small, but the probability is non-zero.
+    </div>
+
+    <div class="summary hide-more">
+      <a class="more" href="#">more</a>
+      <div class="more-container">
+        <p>Despite being a short paper, the proofs themselves were pretty confusing. This <a href="https://www.the-paper-trail.org/post/2008-08-13-a-brief-tour-of-flp-impossibility/">post</a> was critical for my understanding.</p>
+
+        <p>The proof is comprised of two lemmas. The first lemma showed that there must be some initial configuration where consensus is not yet determined (caused by errors or message delays). Think of this as <strong>bivalent</strong> (having two possible truths) state. The second lemma shows that it is always possible to remain in a <strong>bivalent</strong> state by delaying a message.</p>
+
+        <p>Lets note the assumptions made by the proof: The underlying transport protocol is reliable; messages are delivered correctly and exactly once. There is no synchronized clock, and it is not possible to detect a slow process vs a dead process. Additionally, the proof relaxes the *termination* requirement and requires that only some process eventually decide on a value (weak consensus). Put another way, a message will always be delivered but can be delayed and can be delivered out-of-order.</p>
+
+        <p>For Strong Consensus these 3 properties must hold: *termination*: eventually, every correct process decides some value. *agreement*: all processes that decide do so on the same value. *validity*: the value must have been proposed by some process.</p>
+
+      </div>
+      <!-- <a class="less" href="#">less</a> -->
     </div>
   </div>
+
+
+
+
+
+
+
 
   <div class="article">
     <a href="/assets/reads/consistent_hashing_and_random_trees_distributed_caching_protocols_for_relieving_hot_spots_on_the_world_wide_web_technical_publication.pdf">
@@ -42,7 +64,7 @@ layout: custom
         </p>
 
         <p>
-          Section 4 containted proof and discussion of Consistent Hashing.
+          Section 4 contained proof and discussion of Consistent Hashing.
         </p>
 
         <p>
@@ -68,13 +90,13 @@ layout: custom
           If there are C buckets, then there will be k*C*log(C) entries, which gives a worse tree depth of log(C) and a worse possible calculation of log(C).
           The time for adding and removing a bucket is log^2(C) since we would need to remove k*log(C) points.
           To reduce this time to constant lookup, the authors suggest dividing the range into k*C*log(C) equal length segments and have a separate tree for each one.
-          This allows us to more predictablly have one bucket per segment.
+          This allows us to more predictably have one bucket per segment.
           The problem with segments is that it requires smaller segments as more buckets are added.
           An amortized way recommended by the authors is to choose intervals of size 1/2^x such that 1/2^x < 1/k*C*log(C).
           Then as new buckets are added, gradually bisect each section.
         </p>
       </div>
-      <a class="less" href="#">less</a>
+      <!-- <a class="less" href="#">less</a> -->
     </div>
   </div>
 
