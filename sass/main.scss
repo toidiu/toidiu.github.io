@@ -1,3 +1,22 @@
 body {
-  background: #e9e9e9;
+  background: blue;
+}
+html {
+    line-height: 1.5;
+}
+h1 {
+    margin-bottom: 2rem;
+}
+.container {
+    font-family: "sans-serif";
+    text-align: center;
+    margin-top: 20vh;
+    padding: 2rem;
+    background: #e9e9e9;
+}
+footer {
+    position: fixed;
+    width: 100%;
+    bottom: 1rem;
+    text-align: center;
 }
