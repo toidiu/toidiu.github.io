@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>toidiu</title>
+        <link rel="stylesheet" type="text/css" href="main.css">
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+    </head>
+    <body>
+        {% block nav %}
+          {% for item in config.extra.menu %}
+            <li class="mobile-menu-item">
+              <a href="{{ item.url | replace(from="$BASE_URL", to=config.base_url) }}">
+                {{ item.name }}
+              </a>
+            </li>
+          {% endfor %}
+        {% endblock nav %}
+
+        {% block content %}
+          <div class="content container">
+            index html
+          </div>
+        {% endblock content %}
+      <script src="/livereload.js?port=1024&mindelay=10"></script>
+      <script src="/main.js"></script>
+    </body>
+</html>
+

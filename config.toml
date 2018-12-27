@@ -13,5 +13,18 @@ build_search_index = true
 
 highlight_theme = "base16-ocean-dark"
 
+generate_rss = false
+
+taxonomies = [
+  {name = "tags", rss = true}, # each tag will have its own RSS feed
+]
+
 [extra]
 # Put all your custom variables here
+
+menu = [
+  {url = "$BASE_URL", name = "about"},
+  {url = "$BASE_URL/projects", name = "projects"},
+  {url = "$BASE_URL/reads", name = "reads"},
+  {url = "$BASE_URL/blog", name = "blog"},
+]
