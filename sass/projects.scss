@@ -29,7 +29,7 @@ background: #228fc9;
     height: 50px;
 }
 #projects .item .title{
-    font-size: 20px;
+    font-size: 18px;
     display: block;
 }
 #projects #item-container{
@@ -41,6 +41,17 @@ background: #228fc9;
   margin-top: 60px;
   font-size: 18px;
   font-weight: bold;
-  text-decoration: underline;
+  border-bottom: 1px solid #268cc3;
+  padding-bottom: 6px;
 }
 /*------------------------END PROJECT---------------------*/
+@media screen and (min-width: 400px) {
+  #name{
+  }
+}
+
+@media screen and (min-width: 600px) {
+  #projects #item-container{
+    text-align: left;
+  }
+}

@@ -1,6 +1,6 @@
 +++
 title = "rust-lang"
-date = 2018-10-20
+date = 2018-12-20
 
 [extra]
 image = "rust-logo-blk.svg"
