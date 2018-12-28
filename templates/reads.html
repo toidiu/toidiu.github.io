@@ -1,0 +1,36 @@
+{% extends "index.html" %}
+
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="reads.css">
+{% endblock extra_head %}
+
+{% block content %}
+<div id="main-container">
+
+  {% for page in section.pages %}
+    <div class="article">
+      <a class="slug" href="#{{ page.title | slugify }}">{{ page.title }}</a>
+
+      <a class="paper-links" href="/reads/{{ page.extra.paper }}">[paper]</a>
+
+      {% if page.extra.code %}
+        <a class="paper-links" href="/reads/{{ page.extra.code }}">[code]</a>
+      {% endif %}
+
+      <div class="short summary">
+        <p>{{ page.extra.short }}</p>
+      </div>
+
+      <div class="summary hide-more">
+        <a class="more" href="#">more</a>
+        <div class="more-container">
+          {{ page.content | safe }}
+        </div>
+        <!-- <a class="less" href="#">less</a> -->
+      </div>
+    </div>
+  {% endfor %}
+
+</div>
+{% endblock content %}
+
