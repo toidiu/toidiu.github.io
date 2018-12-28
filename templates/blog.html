@@ -1,9 +1,14 @@
 {% extends "index.html" %}
 
 {% block content %}
+
 <div class="article">
-  {% for article in section.pages %}
-    <h1><a href="{{ article.permalink }}">{{ article.title }}</a></h1>
+  {% for page in section.pages %}
+    <h1><a href="{{ page.permalink }}">{{ page.title }}</a></h1>
+
+    <div class="post__summary">
+      {{ page.content | safe }}
+    </div>
   {% endfor %}
 </div>
 {% endblock content %}

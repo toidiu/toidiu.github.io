@@ -1,22 +1,86 @@
+@import "footer";
+@import "nav";
+
+/*------------------------GENERAL---------------------*/
+@font-face {
+    font-family: customFont;
+    src: url(fonts/Inconsolata-Regular.ttf);
+}
 body {
-  background: #eee;
+    font: 16px customFont;
+    color: #282D28;
+    background-color: #dea584;
+    margin: 0;
 }
-html {
-    line-height: 1.5;
-}
-h1 {
-    margin-bottom: 2rem;
-}
-.container {
-    font-family: "sans-serif";
-    text-align: center;
-    margin-top: 20vh;
-    padding: 2rem;
-    background: #e9e9e9;
-}
-footer {
-    position: fixed;
+.outer {
+    display: table;
+    position: absolute;
+    height: 100%;
     width: 100%;
-    bottom: 1rem;
+}
+.middle {
+    display: table-cell;
+    vertical-align: middle;
     text-align: center;
 }
+.inner {
+    padding: 20px 0;
+    margin: 50px auto;
+}
+a{
+    display: inline-flex;
+    text-decoration: none;
+    color: #FFF;
+}
+a.links{
+    margin-top: 20px;
+    margin: 10px;
+    font-size: 18px;
+    color: #FFF;
+}
+a:hover
+{
+    color: #000 !important;
+}
+body, nav, .outer, footer{
+  min-width: 320px;
+}
+nav {
+  line-height: 1;
+}
+.under{
+  text-decoration: underline;
+}
+.red{
+  color: #E91414;
+}
+.white{
+  color: #ffffff;
+}
+.center-text{
+  text-align: center;
+}
+/*------------------------END GENERAL---------------------*/
+
+/*------------------------RESPONSIVE---------------------*/
+@media screen and (min-width: 400px) {
+  #name{
+  }
+}
+
+@media screen and (min-width: 600px) {
+  #projects #item-container{
+    text-align: left;
+  }
+  .link-icon img {
+      /*width: 50px;*/
+      /*height: 50px;*/
+  }
+  nav .nav-link{
+      font-size: 19px;
+  }
+  #reads .article {
+    padding: 0px 40px;
+  }
+}
+/*------------------------END RESPONSIVE---------------------*/

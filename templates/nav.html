@@ -1,0 +1,14 @@
+{% macro nav_macro(active, type="text") %}
+<nav id="site-nav">
+
+  {% for item in config.extra.menu %}
+  <a class="nav-link
+      {% if active == item.name %}active{% endif %}"
+      href="{{ item.url | replace(from="$BASE_URL", to=config.base_url) }}">
+
+      {{ item.name }}
+    </a>
+  {% endfor %}
+
+</nav>
+{% endmacro nav_macro %}

@@ -1,0 +1,88 @@
+{% extends "index.html" %}
+
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="home.css">
+{% endblock extra_head %}
+
+{% block content %}
+<div class="outer">
+    <div class="middle">
+        <div class="inner">
+
+            <img src="images/bio-photo.jpg" class="author-avatar" alt="Apoorv Kothari">
+
+            <h1 id="name">Apoorv Kothari</h1>
+
+            <div id="title">
+              <div class="title-item">Software Engineer</div>
+              <div class="title-div"> | </div>
+              <div class="title-item">Creator</div>
+              <div class="title-div"> | </div>
+              <div class="title-item">Entrepreneur</div>
+            </div>
+
+            <div id="description-wrapper">
+
+              <div class="description">
+                I am a problem solver and a fast learner with a focus on building resilient and highly scalable solutions.
+                My approach begins with gaining a deep understanding of the product requirements and client needs before
+                designing solutions within a clear timeframe. Testing is at the core of this process.
+              </div>
+
+              <div class="description">
+                My experience has allowed me to work across the application landscape (infra/SRE, BE, mobile, web, embedded); from which I have gained a
+                deeper appreciation of the trade-offs and priorities associated with each layer. This insight I find is critical for quickly and efficiently
+                reaching a decision when designing interfaces across layers.
+              </div>
+
+              <div class="description">
+                I have worked with a multitude of tools and languages, but I prefer to work with strongly typed and statically complied languages.
+                To this end my languages of choice are <span class="red">Rust</span> and <span class="red">Scala</span>.
+
+                My platform of choice is <span class="red">Kubernetes</span>, which I have used to create more reliable and efficient workflows.
+              </div>
+
+              <div class="description">
+                I am an enthusiastic member of the Rust community. Here are a few contributions I have made to
+                <a href="https://github.com/rust-lang/rust/pulls?utf8=%E2%9C%93&q=is%3Apr+author%3Atoidiu+" target=_blank" rel="noopener">rust-lang</a>,
+                as well as some <a href="https://vimeo.com/groups/toidiu" target=_blank" rel="noopener">talks</a> I have given. I also help organize the <a href="https://www.meetup.com/rust-nyc/" target=_blank" rel="noopener">rust-nyc</a> meetup.
+              </div>
+
+              <br><br>
+              <div class="description">
+                <span class="under">Things I grok:</span><br>
+                rust, kubernetes, scala<br>
+                android, java, docker, aws, grpc<br>
+                squash, biking, fencing, travel, cooking
+              </div>
+
+            </div>
+
+            <div id="link-wrapper">
+              <a class="link-icon" href="http://www.speakerdeck.com/toidiu" target=_blank" rel="noopener">
+                  <img src="images/speakerdeck.png"/>
+                  <span class="icon-description">talks</span >
+              </a>
+              <a class="link-icon" href="http://www.github.com/toidiu" target=_blank" rel="noopener">
+                  <img src="images/github.png"/>
+                  <span class="icon-description">github</span >
+              </a>
+              <a class="link-icon" href="mailto:apoorv@toidiu.com">
+                  <img src="images/email.png"/>
+                  <span class="icon-description">e-mail</span >
+              </a>
+              <a class="link-icon" href="{{ get_url(path="resume.pdf") }}">
+                  <img src="images/resume.png"/>
+                  <span class="icon-description">resume</span >
+              </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block footer %}
+  {# cutom footer for home page #}
+{% endblock footer %}
+
