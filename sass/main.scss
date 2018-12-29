@@ -1,64 +1,48 @@
 @import "footer";
 @import "nav";
+@import "colors";
+@import "common";
 
 /*------------------------GENERAL---------------------*/
 @font-face {
     font-family: customFont;
     src: url(fonts/Inconsolata-Regular.ttf);
 }
+
 body {
-    font: 16px customFont;
-    color: #282D28;
-    background-color: #dea584;
-    margin: 0;
+  background-color: $p-color;
 }
-.outer {
-    display: table;
-    position: absolute;
-    height: 100%;
-    width: 100%;
+nav {
+  background-color: $p-color-dark;
 }
-.middle {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
+footer {
+  background: $p-color-light;
 }
-.inner {
-    padding: 20px 0;
-    margin: 50px auto;
+
+body {
+  font: 16px customFont;
+  color: $font-color;
+  margin: 0;
 }
-a{
-    display: inline-flex;
-    text-decoration: none;
-    color: #FFF;
+a {
+  display: inline-flex;
+  text-decoration: none;
+  color: #FFF;
 }
 a.links{
-    margin-top: 20px;
-    margin: 10px;
-    font-size: 18px;
-    color: #FFF;
+  margin-top: 20px;
+  margin: 10px;
+  font-size: 18px;
+  color: #FFF;
 }
-a:hover
-{
-    color: #000 !important;
+a:hover {
+  color: #000 !important;
 }
 body, nav, .outer, footer{
   min-width: 320px;
 }
 nav {
   line-height: 1;
-}
-.under{
-  text-decoration: underline;
-}
-.red{
-  color: #E91414;
-}
-.white{
-  color: #ffffff;
-}
-.center-text{
-  text-align: center;
 }
 /*------------------------END GENERAL---------------------*/
 

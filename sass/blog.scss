@@ -1,0 +1,16 @@
+#blog {
+  .title {
+    font-size: 18px;
+  }
+
+  @media screen and (min-width: 400px) {
+    #name{
+    }
+  }
+  @media screen and (min-width: 600px) {
+    #projects #item-container{
+      text-align: left;
+    }
+  }
+
+}

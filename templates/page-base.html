@@ -14,9 +14,9 @@
         <link rel="stylesheet" type="text/css" href="/main.css">
     </head>
 
-    <body id={{section.extra.id}} >
+    <body id={{ section.extra.id }} >
         {% block nav %}
-          {{ macros::nav_macro(active=section.extra.id) }}
+          {{ macros::nav_macro(active="blog") }}
         {% endblock nav %}
 
         {% block content %}

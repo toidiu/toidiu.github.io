@@ -1,0 +1,34 @@
+@import "colors";
+
+.main-container {
+  margin: 40px auto 80px auto;
+  padding: 0 20px;
+  line-height: 1.5em;
+}
+.under {
+  text-decoration: underline;
+}
+.important {
+  color: $s-color;
+}
+.white{
+  color: #ffffff;
+}
+.center-text{
+  text-align: center;
+}
+.outer {
+  display: table;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+.middle {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.inner {
+  padding: 20px 0;
+  margin: 50px auto;
+}

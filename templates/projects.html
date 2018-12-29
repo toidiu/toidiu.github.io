@@ -1,4 +1,4 @@
-{% extends "index.html" %}
+{% extends "section-base.html" %}
 
 {% block extra_head %}
   <link rel="stylesheet" type="text/css" href="projects.css">
@@ -8,7 +8,7 @@
 <div id="item-container">
 
   {#-- open source contributions --#}
-  <div class="section-divider">Open Source Contributions</div >
+  <div class="section-divider important">Open Source Contributions</div >
   {% for page in section.pages %}
       {% if page.extra.open | false %}
         <div class="item-wrapper">
@@ -24,7 +24,7 @@
   {% endfor %}
 
   {#-- my projects --#}
-  <div class="section-divider">Individual Projects</div >
+  <div class="section-divider important">Individual Projects</div >
   {% for page in section.pages %}
       {% set col = page.extra.colloborated | default(value=false) %}
       {% set open = page.extra.open | default(value=false) %}
@@ -42,7 +42,7 @@
   {% endfor %}
 
   {#-- projects I collaborated on --#}
-  <div class="section-divider">Collaboration</div >
+  <div class="section-divider important">Collaboration</div >
   {% for page in section.pages %}
       {% if page.extra.colloborated | false %}
         <div class="item-wrapper">

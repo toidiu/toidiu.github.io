@@ -1,11 +1,11 @@
-{% extends "index.html" %}
+{% extends "section-base.html" %}
 
 {% block extra_head %}
   <link rel="stylesheet" type="text/css" href="reads.css">
 {% endblock extra_head %}
 
 {% block content %}
-<div id="main-container">
+<div class="main-container">
 
   {% for page in section.pages %}
     <div class="article">

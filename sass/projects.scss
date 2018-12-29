@@ -1,50 +1,44 @@
-/*------------------------PROJECT---------------------*/
-body#projects {
-  background-color: #2a9fde;
-}
-#projects nav{
-  background-color: #1586c3;
-}
-#projects footer{
-background: #228fc9;
-}
-#projects .item img{
-    margin: 0px;
-}
-#projects .item-wrapper{
-    display: inline-table;
-    margin: 15px;
-    margin-top: 5px;
-    max-width: 220px;
-    text-align: left;
-}
-#projects .item{
-    display: inline-block;
-    margin: 15px;
-    margin-bottom: 5px;
-}
-#projects .item img{
-    margin-right: 10px;
-    width: 50px;
-    height: 50px;
-}
-#projects .item .title{
+#projects {
+  .item img{
+      margin: 0px;
+  }
+  .item-wrapper{
+      display: inline-table;
+      margin: 15px;
+      margin-top: 5px;
+      max-width: 220px;
+      text-align: left;
+  }
+  .item{
+      display: inline-block;
+      margin: 15px;
+      margin-bottom: 5px;
+  }
+  .item img{
+      margin-right: 10px;
+      width: 50px;
+      height: 50px;
+  }
+  .item .title{
+      font-size: 18px;
+      display: block;
+  }
+  #item-container{
+    margin: 40px auto 80px auto;
+    padding: 0 10px;
+    text-align: center;
+  }
+  .section-divider{
     font-size: 18px;
-    display: block;
+    font-weight: bold;
+    border-bottom: 1px solid #268cc3;
+    padding-bottom: 6px;
+    margin-top: 60px;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 }
-#projects #item-container{
-  margin: 40px auto 80px auto;
-  padding: 0 10px;
-  text-align: center;
-}
-.section-divider{
-  margin-top: 60px;
-  font-size: 18px;
-  font-weight: bold;
-  border-bottom: 1px solid #268cc3;
-  padding-bottom: 6px;
-}
-/*------------------------END PROJECT---------------------*/
+
 @media screen and (min-width: 400px) {
   #name{
   }

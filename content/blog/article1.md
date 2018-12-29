@@ -4,8 +4,14 @@ date = 2017-09-24
 
 [taxonomies]
 tags = ["rust"]
+
+[extra]
+id = "blog"
 +++
 
-hi
+summ
 <!-- more -->
-bye
+
+cont
+
+asdf
