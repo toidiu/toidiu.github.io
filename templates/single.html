@@ -1,0 +1,18 @@
+{% extends "index.html" %}
+
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="/gin.css">
+{% endblock extra_head %}
+
+{% block content %}
+<div class="main-container">
+  <div class="title">
+    <a href="{{ page.permalink }}">{{ page.title }}</a>
+  </div>
+
+  <div class="content">
+    {{ page.content | safe }}
+  </div>
+</div>
+{% endblock content %}
+

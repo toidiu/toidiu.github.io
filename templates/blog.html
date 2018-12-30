@@ -1,4 +1,4 @@
-{% extends "section-base.html" %}
+{% extends "index.html" %}
 
 {% block extra_head %}
   <link rel="stylesheet" type="text/css" href="blog.css">
@@ -7,12 +7,14 @@
 {% block content %}
 <div class="main-container">
   {% for page in section.pages %}
-    <div class="title">
-      <a href="{{ page.permalink }}">{{ page.title }}</a>
-    </div>
+    <div class="post">
+      <div class="title">
+        <a href="{{ page.permalink }}">{{ page.title }}</a>
+      </div>
 
-    <div class="summary">
-      {{ page.summary | safe }}
+      <div class="summary">
+        {{ page.summary | safe }}
+      </div>
     </div>
   {% endfor %}
 </div>

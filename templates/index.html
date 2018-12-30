@@ -1,29 +1,49 @@
-{% import "nav.html" as macros %}
+{% import "inc_nav.html" as macros %}
 
 <!DOCTYPE html>
 <html>
     <head lang="en">
+
         <title>toidiu</title>
+        <meta name="description"
+          content="Apoorv Kothari is software engineer. He studied Engineering at Cooper Union and is intrested in Rust, Kubernetes, Scala, Android, Java.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Scala, java, Cooper Union, blog, talks, code, rust, kubernetes">
+
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <!-- Enable responsiveness on mobile devices-->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
 
         {% block extra_head %}
         {% endblock extra_head %}
         <link rel="stylesheet" type="text/css" href="/main.css">
     </head>
 
-    <body id={{section.extra.id}} >
+    {% if section | defined %}
+      <body id={{section.extra.id}} >
+    {% elif page | defined %}
+      <body id={{page.extra.id}} >
+    {% else %}
+      <body>
+    {% endif %}
         {% block nav %}
-          {{ macros::nav_macro(active=section.extra.id) }}
+          {% if section | defined %}
+            {{ macros::nav_macro(active=section.extra.id) }}
+          {% elif page | defined %}
+            {{ macros::nav_macro(active=page.extra.id) }}
+          {% else %}
+            {{ macros::nav_macro(active="") }}
+          {% endif %}
         {% endblock nav %}
 
         {% block content %}
         {% endblock content %}
 
         {% block footer %}
-          {% include "footer.html" %}
+          {% include "inc_footer.html" %}
         {% endblock footer %}
 
         {% block js_body %}

@@ -1,5 +1,5 @@
 +++
-title = "article2"
+title = "gin"
 date = 2017-09-24
 
 template = "single.html"
@@ -8,4 +8,4 @@ template = "single.html"
 id = "gin"
 +++
 
-hi
+i like gin

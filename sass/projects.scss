@@ -1,34 +1,30 @@
 #projects {
-  .item img{
-      margin: 0px;
-  }
-  .item-wrapper{
+  .item-wrapper {
       display: inline-table;
       margin: 15px;
       margin-top: 5px;
       max-width: 220px;
       text-align: left;
   }
-  .item{
+  .item {
       display: inline-block;
-      margin: 15px;
+      margin-top: 15px;
       margin-bottom: 5px;
   }
-  .item img{
-      margin-right: 10px;
+  .item img {
       width: 50px;
       height: 50px;
   }
-  .item .title{
+  .item .title {
       font-size: 18px;
       display: block;
   }
-  #item-container{
+  #item-container {
     margin: 40px auto 80px auto;
     padding: 0 10px;
     text-align: center;
   }
-  .section-divider{
+  .section-divider {
     font-size: 18px;
     font-weight: bold;
     border-bottom: 1px solid #268cc3;

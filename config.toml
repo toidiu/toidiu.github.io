@@ -11,7 +11,7 @@ highlight_code = true
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = true
 
-highlight_theme = "base16-ocean-dark"
+highlight_theme = "kronuz"
 
 generate_rss = false
 
