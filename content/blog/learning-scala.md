@@ -7,8 +7,10 @@ tag = ["Scala", "code"]
 id = blog-single
 +++
 
-Learning a new technology/language is difficult, and it can seem daunting when getting started. This is the third time in 3 years that I have set out to learn something new and become proficient, so I wanted to share my experience on how I learned Scala and built SubwayTunes. The code if now available on [github](https://github.com/toidiu/SubwayServer).
+Learning a new technology/language is difficult, and it can seem daunting when getting started. This is the third time in 3 years that I have set out to learn something new and become proficient, so I wanted to share my experience on how I learned Scala and built SubwayTunesu.
 <!-- more -->
+
+The code if now available on [github](https://github.com/toidiu/SubwayServer).
 
 ### Cheatsheet / tl;dr
 Some of the technology behind SubwayTunes includes the Play Framework, ReactiveMongo, Docker, AWS Elastic Beanstalk, AWS S3.
@@ -21,8 +23,6 @@ I have many people who helped me accomplish this task. Here is a list of resourc
 * [Look at other's code](https://github.com/toidiu/react-vs-shared-state-inventory/tree/master/reactive-inventory) - don't worry about all the setup and just `git clone` and use `activator run` to launch.
 * [Coursera class](https://www.coursera.org/course/progfun) taught by the master. Coursera classes are not for me but the course offers great sources and I do recommend it.
 * [NYC Scala Meetup](http://www.meetup.com/ny-scala/)
-
----
 
 ### Why?
 Once a doctor graduates from Medical school, he or she has the responsibility to stay up to date with new developments in the field, by reading publications and attending conferences. Similarly, as software engineers, I believe it is our responsibility to stay current with new technology and best practices. You wouldn't build a Flash app for a website, would you?

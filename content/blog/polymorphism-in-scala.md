@@ -10,10 +10,8 @@ summary = "Scala has 3 types of Polymorphism that we will explore further below.
 id = blog-single
 +++
 
-Scala has 3 types of Polymorphism that we will explore further below.
+Polymorphism is a word that means 'having  different forms'. In terms of OOP, this mean that a class can have many different forms and behave in different manners depending on the context. Scala has 3 types of Polymorphism that we will explore further below.
 <!-- more -->
-
-Polymorphism is a word that means 'having  different forms'. In terms of OOP, this mean that a class can have many different forms and behave in different manners depending on the context.
 
 * Subtype Polymorphism
 * Parametric Polymorphism
@@ -244,8 +242,4 @@ You might have noticed something cool about ad-hoc polymorphism; at no point did
 And to quote Wil, who explains it eloquently:
 
 > With Java interfaces / Scala traits, you can't claim that some type implements such an interface unless you have access to that type's source code and can modify it. With ad-hoc polymorphism, you don't need to be able change the type's source code. Using your post's example, `Taco` and `Silk` can come from some 3rd party library, and due to the implicit pattern you can still define a `Texture` for them.
-
-## Conclusion
-Well now you know the different types of polymorphism in Scala. As always, thanks for reading. If you find any mistakes please feel free to contact me at apoorv[aat]toidiu[dott]com
-
 

@@ -1,22 +1,20 @@
 @import "inc_colors";
 
 #blog {
-  .title {
-    font-size: 18px;
+  a.title {
+    font-size: 20px;
     color: $s-color;
-    a {
-      color: $s-color;
-    }
+    display: block;
+
     &::before {
       content: "# ";
     }
-
   }
   .main-container {
     line-height: 1.75em;
   }
   .post {
-    margin-top: 40px;
+    margin-bottom: 20px;
   }
 
   @media screen and (min-width: 400px) {

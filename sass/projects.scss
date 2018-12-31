@@ -1,14 +1,17 @@
 #projects {
+  div, p {
+    line-height: 1.5em;
+  }
   .item-wrapper {
       display: inline-table;
-      margin: 15px;
-      margin-top: 5px;
+      margin: 0 15px;
       max-width: 220px;
       text-align: left;
+      padding-top: 20px;
+      padding-bottom: 15px;
   }
   .item {
       display: inline-block;
-      margin-top: 15px;
       margin-bottom: 5px;
   }
   .item img {
@@ -29,9 +32,11 @@
     font-weight: bold;
     border-bottom: 1px solid #268cc3;
     padding-bottom: 6px;
-    margin-top: 60px;
     margin-left: 15px;
     margin-right: 15px;
+  }
+  section {
+    margin-bottom: 40px;
   }
 }
 

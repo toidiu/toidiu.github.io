@@ -9,12 +9,12 @@
 
   {% for page in section.pages %}
     <div class="article">
-      <a class="slug" href="#{{ page.title | slugify }}">{{ page.title }}</a>
+      <a class="title" href="#{{ page.title | slugify }}">{{ page.title }}</a>
 
       <a class="paper-links" href="/reads/{{ page.extra.paper }}">[paper]</a>
 
       {% if page.extra.code %}
-        <a class="paper-links" href="/reads/{{ page.extra.code }}">[code]</a>
+        <a class="paper-links" href="{{ page.extra.code }}" target=_blank" rel="noopener">[code]</a>
       {% endif %}
 
       <div class="short summary">
@@ -22,7 +22,7 @@
       </div>
 
       <div class="summary hide-more">
-        <a class="more" href="#">more</a>
+        <a class="more" href="#">expand</a>
         <div class="more-container">
           {{ page.content | safe }}
         </div>

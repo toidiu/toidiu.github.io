@@ -7,10 +7,12 @@ tag = ["Rust", "lambda", "aws"]
 id = blog-single
 +++
 
-Given the announcement of the Lambda runtime, there is now an officially supported story around writing lambda functions in Rust. I wanted to try for myself and see the amount of effort needed to get a lambda function working, while also diving deeper into whats involved. Here is some [code](https://github.com/toidiu/lambda-rust-test) that creates and invokes a lambda function.
+Given the announcement of the Lambda runtime, there is now an officially supported story around writing lambda functions in Rust. I wanted to try for myself and see the amount of effort needed to get a lambda function working, while also diving deeper into whats involved.
 <!-- more -->
 
 This [blog post](https://aws.amazon.com/blogs/opensource/rust-runtime-for-aws-lambda/) describes how to use the lambda runtime to create a lambda function in Rust, so I wont detail the actual process. Instead I will try to expand on what is actually happening behind the scenes and reasons for certain steps.
+
+Here is some [code](https://github.com/toidiu/lambda-rust-test) that creates and invokes a lambda function.
 
 ### Why we need "[[bin]] bootstrap" and "autobins = false"
 Since we are going to include a custom runtime(tokio runtime), we need the executable to be called 'bootstrap'. These settings allow us to dictate these settings.

@@ -8,9 +8,7 @@
 <div class="main-container">
   {% for page in section.pages %}
     <div class="post">
-      <div class="title">
-        <a href="{{ page.permalink }}">{{ page.title }}</a>
-      </div>
+      <a class="title" href="{{ page.permalink }}">{{ page.title }}</a>
 
       <div class="summary">
         {{ page.summary | safe }}

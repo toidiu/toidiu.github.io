@@ -23,7 +23,6 @@
   }
   .description{
     /*color: #fff;*/
-    line-height: 1.5em;
     padding: 10px 15%;
   }
   .link-icon img {
@@ -31,17 +30,14 @@
       height: 40px;
       margin: 5px 20px;
   }
-  #contact-div{
-      margin-top: 50px;
-  }
   .icon-description{
       display: none;
   }
   .link-icon{
       display: inline-block;
   }
-  #link-wrapper{
-    margin-top: 40px;
+  #description-wrapper{
+    margin-bottom: 40px;
   }
   .author-avatar{
     padding: 5px;

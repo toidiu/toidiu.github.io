@@ -1,7 +1,9 @@
 @import "inc_colors";
 
 #reads {
-  a.slug {
+  .title {
+    font-size: 18px;
+    max-width: 600px;
     display: block;
     margin-bottom: 5px;
     color: $s-color;
@@ -11,35 +13,32 @@
       content: "# ";
     }
   }
-}
+  .article {
+    margin-bottom: 40px;
+  }
+  .short {
+    margin-bottom: -10px;
+  }
 
-#reads .title {
-  font-size: 18px;
-  max-width: 600px;
-}
-#reads .article {
-  margin-top: 40px;
-}
-
-/* more */
-#reads .hide-more .more {
-  display: inline-block;
-  margin-top: 10px;
-}
-#reads .hide-more .less {
-  display: none;
-}
-#reads .hide-more .more-container {
-  display: none;
-}
-#reads .more {
-  display: none;
-}
-#reads .less {
-  display: inline;
-}
-#reads .more-container {
-  display: block;
+  /*-- more --*/
+  .hide-more .more {
+    display: inline-block;
+  }
+  .hide-more .less {
+    display: none;
+  }
+  .hide-more .more-container {
+    display: none;
+  }
+  .more {
+    display: none;
+  }
+  .less {
+    display: inline;
+  }
+  .more-container {
+    display: block;
+  }
 }
 
 

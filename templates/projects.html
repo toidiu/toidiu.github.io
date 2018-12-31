@@ -8,54 +8,60 @@
 <div id="item-container">
 
   {#-- open source contributions --#}
-  <div class="section-divider important">Open Source Contributions</div >
-  {% for page in section.pages %}
-      {% if page.extra.open | false %}
-        <div class="item-wrapper">
-          <a class="item" href={{page.extra.link}} target=_blank" rel="noopener">
-            <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="</>"/>
-            <span class="title">{{page.title}}</span>
-          </a>
-          <div>
-            {{ page.content | safe }}
+  <div class="section">
+    <div class="section-divider important">Open Source Contributions</div >
+    {% for page in section.pages %}
+        {% if page.extra.open | false %}
+          <div class="item-wrapper">
+            <a class="item" href={{page.extra.link}} target=_blank" rel="noopener">
+              <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="</>"/>
+              <span class="title">{{page.title}}</span>
+            </a>
+            <div>
+              {{ page.content | safe }}
+            </div>
           </div>
-        </div>
-      {% endif %}
-  {% endfor %}
+        {% endif %}
+    {% endfor %}
+  </div>
 
   {#-- my projects --#}
-  <div class="section-divider important">Individual Projects</div >
-  {% for page in section.pages %}
-      {% set col = page.extra.colloborated | default(value=false) %}
-      {% set open = page.extra.open | default(value=false) %}
-      {% if col == false and open == false %}
-        <div class="item-wrapper">
-          <a class="item" href={{page.extra.link}} target=_blank" rel="noopener">
-            <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="</>"/>
-            <span class="title">{{page.title}}</span>
-          </a>
-          <div>
-            {{ page.content | safe }}
+  <div class="section">
+    <div class="section-divider important">Individual Projects</div >
+    {% for page in section.pages %}
+        {% set col = page.extra.colloborated | default(value=false) %}
+        {% set open = page.extra.open | default(value=false) %}
+        {% if col == false and open == false %}
+          <div class="item-wrapper">
+            <a class="item" href={{page.extra.link}} target=_blank" rel="noopener">
+              <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="</>"/>
+              <span class="title">{{page.title}}</span>
+            </a>
+            <div>
+              {{ page.content | safe }}
+            </div>
           </div>
-        </div>
-      {% endif %}
-  {% endfor %}
+        {% endif %}
+    {% endfor %}
+  </div>
 
   {#-- projects I collaborated on --#}
-  <div class="section-divider important">Collaboration</div >
-  {% for page in section.pages %}
-      {% if page.extra.colloborated | false %}
-        <div class="item-wrapper">
-          <a class="item" href={{page.extra.link}} target=_blank" rel="noopener">
-            <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="</>"/>
-            <span class="title">{{page.title}}</span>
-          </a>
-          <div>
-            {{ page.content | safe }}
+  <div class="section">
+    <div class="section-divider important">Collaboration</div >
+    {% for page in section.pages %}
+        {% if page.extra.colloborated | false %}
+          <div class="item-wrapper">
+            <a class="item" href={{page.extra.link}} target=_blank" rel="noopener">
+              <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="</>"/>
+              <span class="title">{{page.title}}</span>
+            </a>
+            <div>
+              {{ page.content | safe }}
+            </div>
           </div>
-        </div>
-      {% endif %}
-  {% endfor %}
+        {% endif %}
+    {% endfor %}
+  </div>
 
 </div>
 {% endblock content %}

@@ -7,10 +7,12 @@ tag = ["Scala", "code"]
 id = blog-single
 +++
 
-In this post I will be reviewing `scala.collection.breakOut` from an application developer's perspective rather than a functional programming enthusiast. I will discuss why one would want to use it and how to recognize when it is applicable. The full code sample can be found at [github](https://github.com/toidiu/Scala-breakOut).
+In this post I will be reviewing `scala.collection.breakOut` from an application developer's perspective rather than a functional programming enthusiast. I will discuss why one would want to use it and how to recognize when it is applicable.
 <!-- more -->
 
 When I first saw `breakOut`, it seemed like an extremely intimidating concept and a little like black magic. It certainly didn't help that I found explanations of `breakOut` intermingled with the equally intimidating concept of `CanBuildFrom`. This is a shame because, with proper application, `breakOut` can make your code run faster. Let's consider the following code sample:
+
+The full code sample can be found at [github](https://github.com/toidiu/Scala-breakOut).
 
 #### Why we care
 
@@ -46,4 +48,3 @@ So when should we use `breakOut`? An easy way to remember when to use it is if w
 #### Conclusion
 Scala has a robust immutalbe collections library, which has a tendency to make it more GC heavy. However, with some attention to the implementation details, it is possible to remain efficient and functional.
 
-As always, thanks for reading. If you find any mistakes please feel free to contact me at apoorv[aat]toidiu[dott]com

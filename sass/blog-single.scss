@@ -2,9 +2,6 @@
   .main-container {
     line-height: 1.75em;
   }
-  a[name="continue-reading"] {
-    display: none;
-  }
   .title {
     font-size: 22px;
     margin-bottom: 10px;
@@ -16,20 +13,13 @@
   #references {
     margin-top: 50px;
   }
-  h1,h2,h3,h4,h5,h6 {
-    margin-top: 40px;
-    margin-bottom: 10px;
+  a[name="continue-reading"] {
+    display: none;
   }
-  p {
-    margin: 0px;
-    margin-top: 10px;
-  }
-  /*code blocks*/
-  pre {
-    overflow: scroll;
-    padding: 10px;
-  }
+}
 
+
+#blog-single {
   @media screen and (min-width: 400px) {
     .main-container{
       padding: 0 10%;
@@ -40,5 +30,4 @@
       padding: 0 15%;
     }
   }
-
 }
