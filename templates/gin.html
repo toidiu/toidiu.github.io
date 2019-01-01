@@ -16,7 +16,7 @@
 
           {% for page in section.pages %}
             <div class="cocktail-wrapper">
-              <a href="#{{ page.title | slugify }}" class="cocktail-title important">{{ page.title }}</a>
+              <a name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}" class="cocktail-title important">{{ page.title }}</a>
               <div class="content">{{ page.content | safe }}</div>
             </div>
           {% endfor %}

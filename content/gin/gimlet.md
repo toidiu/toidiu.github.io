@@ -1,6 +1,6 @@
 +++
 title = "Gimlet"
-weight = 2
+weight = 50
 +++
 
 -  1 ⅔ Parts Gin
