@@ -1,0 +1,33 @@
+{% extends "index.html" %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block content %}
+<div class="outer">
+  <div class="middle">
+    <div class="inner">
+      <div class="main-container">
+
+          <div id="title">Gin</div>
+          <div id="quote">
+            <i>"Gin is the most perfect of elixir. A fine one might tease the palate with a play of heat, floral and botanicals. Most notably, it welcomes so gracefully other companions, that they tend to result in the most eclectic concoctions."</i>
+          </div>
+
+          {% for page in section.pages %}
+            <div class="cocktail-wrapper">
+              <a href="#{{ page.title | slugify }}" class="cocktail-title important">{{ page.title }}</a>
+              <div class="content">{{ page.content | safe }}</div>
+            </div>
+          {% endfor %}
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block footer %}
+  {# no footer #}
+{% endblock footer %}
+
