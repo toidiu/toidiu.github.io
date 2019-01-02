@@ -8,7 +8,7 @@
 
   {% for page in section.pages %}
     <div class="article">
-      <a class="title" href="#{{ page.title | slugify }}">{{ page.title }}</a>
+      <a class="title" name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">{{ page.title }}</a>
 
       <a class="paper-links" href="/reads/{{ page.extra.paper }}">[paper]</a>
 
