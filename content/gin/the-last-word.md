@@ -1,12 +1,11 @@
 +++
-title = "Martini"
-weight = 1
+title = "The Last Word"
+weight = 5
 +++
 
--  1 ⅔ Parts Gin
--  ⅓ Part Dry Vermouth
--  1 Dash Orange Bitters
--  1 Whole Green Olive
--  1 Twist Lemon
+- 1 Part Gin
+- 1 Part Green Chartreuse
+- 1 Part Maraschino Luxardo
+- 1 Part Lime
 
-**Fill a mixing glass with ice cubes. Add all ingredients. Stir and strain into a chilled cocktail glass. Garnish with a green olive and lemon.**
+Shake/Stir all ingredients with ice then strain into a chilled cocktail glass. Garnish with fresh thin cut lime wheel or dehydrated one, which will float at top.

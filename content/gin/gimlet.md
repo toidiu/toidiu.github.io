@@ -3,10 +3,10 @@ title = "Gimlet"
 weight = 50
 +++
 
--  1 ⅔ Parts Gin
--  ⅓ Part Dry Vermouth
--  1 Dash Orange Bitters
--  1 Whole Green Olive
--  1 Twist Lemon
+- 4 Parts Gin
+- 1 Parts Lime Cordial
 
-**Fill a mixing glass with ice cubes. Add all ingredients. Stir and strain into a chilled cocktail glass. Garnish with a green olive and lemon.**
+Vigorously shake all ingredients with ice then strain into a chilled cocktail glass. Garnish with lime wheel.
+
+Lime cordial is made up of 1 part lime and 1 part simple syrup.
+

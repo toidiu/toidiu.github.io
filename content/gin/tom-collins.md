@@ -1,12 +1,14 @@
 +++
-title = "Martini"
-weight = 1
+title = "Tom Colins"
+weight = 60
 +++
 
--  1 ⅔ Parts Gin
--  ⅓ Part Dry Vermouth
--  1 Dash Orange Bitters
--  1 Whole Green Olive
--  1 Twist Lemon
+- 2 Parts Tom Gin
+- 1 Part Lemon Juice
+- ⅔ Part Simple Syrup
+- Club Soda
+- 1 Wedge Lemon
+- 1 Whole Cherry
 
-**Fill a mixing glass with ice cubes. Add all ingredients. Stir and strain into a chilled cocktail glass. Garnish with a green olive and lemon.**
+Stir lemon juice, gin and simple syrup in a highball glass. Fill with ice cubes. Top up with soda water. Garnish with lemon and a cherry.
+

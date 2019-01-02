@@ -1,12 +1,12 @@
 +++
-title = "Martini"
-weight = 1
+title = "Gin and Tonic"
+weight = 60
 +++
 
--  1 ⅔ Parts Gin
--  ⅓ Part Dry Vermouth
--  1 Dash Orange Bitters
--  1 Whole Green Olive
--  1 Twist Lemon
+- 1 ½ Parts Gin
+- 5 Parts Tonic Water
+- 1 Lime/Lemon wheel
 
-**Fill a mixing glass with ice cubes. Add all ingredients. Stir and strain into a chilled cocktail glass. Garnish with a green olive and lemon.**
+Add ice to a chilled cocktail glass. Pour gin over ice. Tilt the glass at a 45 degree angle and pour tonic slowly. Garnish with wheel.
+
+

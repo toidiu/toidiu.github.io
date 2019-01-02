@@ -1,12 +1,13 @@
 +++
-title = "Martini"
-weight = 1
+title = "Negroni"
+weight = 10
 +++
 
--  1 ⅔ Parts Gin
--  ⅓ Part Dry Vermouth
--  1 Dash Orange Bitters
--  1 Whole Green Olive
--  1 Twist Lemon
+- 1 Part Gin
+- ½ Part Campari
+- ½ Part Aperol
+- 1 Part Sweet vermouth
+- 1 Part Orange juice (optional)
 
-**Fill a mixing glass with ice cubes. Add all ingredients. Stir and strain into a chilled cocktail glass. Garnish with a green olive and lemon.**
+Vigorously shake all ingredients with ice then strain into a chilled cocktail glass. Garnish with a slice of orange.
+

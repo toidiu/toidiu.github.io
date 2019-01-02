@@ -1,12 +1,13 @@
 +++
-title = "Martini"
-weight = 1
+title = "Fine and Dandy"
+weight = 60
 +++
 
--  1 ⅔ Parts Gin
--  ⅓ Part Dry Vermouth
--  1 Dash Orange Bitters
--  1 Whole Green Olive
--  1 Twist Lemon
+- 1⅓ Parts Gin
+- ½ Part Triple Sec (Contreau)
+- ½ Part Lemon Juice
+- 3 Dash Bitters (Angostura)
+- ½ Part Simple Syrup (optional)
 
-**Fill a mixing glass with ice cubes. Add all ingredients. Stir and strain into a chilled cocktail glass. Garnish with a green olive and lemon.**
+Vigorously shake all ingredients with ice then strain into a chilled cocktail glass. Garnish with lemon twist.
+

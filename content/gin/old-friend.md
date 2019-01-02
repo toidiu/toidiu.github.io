@@ -1,12 +1,12 @@
 +++
-title = "Martini"
-weight = 1
+title = "Old Friend"
+weight = 30
 +++
 
--  1 ⅔ Parts Gin
--  ⅓ Part Dry Vermouth
--  1 Dash Orange Bitters
--  1 Whole Green Olive
--  1 Twist Lemon
+- 1 ½ Parts Gin
+- ¾ Parts Fresh Grapefruit juice
+- ½ Campari
+- ¼ St-Germain Elderflower
 
-**Fill a mixing glass with ice cubes. Add all ingredients. Stir and strain into a chilled cocktail glass. Garnish with a green olive and lemon.**
+Vigorously shake all ingredients with ice then strain into a chilled cocktail glass. Garnish with grapefruit twist.
+

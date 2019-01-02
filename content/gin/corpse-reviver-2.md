@@ -1,12 +1,13 @@
 +++
-title = "Martini"
-weight = 1
+title = "Corpse Reviver #2"
+weight = 30
 +++
 
--  1 ⅔ Parts Gin
--  ⅓ Part Dry Vermouth
--  1 Dash Orange Bitters
--  1 Whole Green Olive
--  1 Twist Lemon
+- 1 Part Gin
+- 1 Part Lemon juice
+- 1 Part Cocchi Americano (Lillet Blanc)
+- 1 Part Cointreau
+- Dash Absinthe
 
-**Fill a mixing glass with ice cubes. Add all ingredients. Stir and strain into a chilled cocktail glass. Garnish with a green olive and lemon.**
+Rinse a chilled cocktail glass with absinthe and toss excess. Stir all ingredients with ice then strain into a chilled cocktail glass. Garnish with an lemon twist.
+

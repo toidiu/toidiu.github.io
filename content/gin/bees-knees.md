@@ -1,12 +1,11 @@
 +++
-title = "Martini"
-weight = 1
+title = "Bee's Knees"
+weight = 40
 +++
 
--  1 ⅔ Parts Gin
--  ⅓ Part Dry Vermouth
--  1 Dash Orange Bitters
--  1 Whole Green Olive
--  1 Twist Lemon
+- 2 Parts Gin
+- ¾ Part Lemon Juice
+- ¾ Part Honey
 
-**Fill a mixing glass with ice cubes. Add all ingredients. Stir and strain into a chilled cocktail glass. Garnish with a green olive and lemon.**
+Shake all ingredients with ice then strain into a chilled cocktail glass. Garnish with flower petal or lemon twist.
+
