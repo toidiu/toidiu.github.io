@@ -34,6 +34,11 @@
     padding-bottom: 6px;
     margin-left: 15px;
     margin-right: 15px;
+    display: block;
+
+    &::before {
+      content: "# ";
+    }
   }
   section {
     margin-bottom: 40px;

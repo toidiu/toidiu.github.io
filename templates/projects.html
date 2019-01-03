@@ -8,7 +8,8 @@
 
   {#-- open source contributions --#}
   <div class="section">
-    <div class="section-divider important">Open Source Contributions</div >
+    <a href="#open-source-contributions" name="open-source-contributions"
+      class="section-divider important">Open Source Contributions</a>
     {% for page in section.pages %}
         {% if page.extra.open | false %}
           <div class="item-wrapper">
@@ -26,7 +27,8 @@
 
   {#-- my projects --#}
   <div class="section">
-    <div class="section-divider important">Individual Projects</div >
+    <a href="#individual-projects" name="individual-projects"
+      class="section-divider important">Individual Projects</a>
     {% for page in section.pages %}
         {% set col = page.extra.colloborated | default(value=false) %}
         {% set open = page.extra.open | default(value=false) %}
@@ -46,7 +48,8 @@
 
   {#-- projects I collaborated on --#}
   <div class="section">
-    <div class="section-divider important">Collaboration</div >
+    <a href="#collaboration" name="collaboration"
+      class="section-divider important">Collaboration</a>
     {% for page in section.pages %}
         {% if page.extra.colloborated | false %}
           <div class="item-wrapper">
