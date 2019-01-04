@@ -1,6 +1,8 @@
 +++
 title = "Announcing Reads"
 date = 2018-12-19
+
+[taxonomies]
 tag = ["algorithms", "papers"]
 
 [extra]

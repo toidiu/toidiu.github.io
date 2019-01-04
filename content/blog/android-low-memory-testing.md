@@ -1,6 +1,8 @@
 +++
 title = "Android low memory testing"
 date = 2016-08-12
+
+[taxonomies]
 tag = ["Android", "code"]
 
 [extra]

@@ -1,6 +1,8 @@
 +++
 title = "Learning Scala"
 date = 2016-05-15
+
+[taxonomies]
 tag = ["Scala", "code"]
 
 [extra]

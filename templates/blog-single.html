@@ -6,8 +6,8 @@
 {% block content %}
 <div class="main-container">
   <div id="post-header">
-  <div class="title">{{ page.title }}</div>
-  <div class="date">posted: {{ page.date }}</div>
+  <div class="title important">{{ page.title }}</div>
+  <div class="date">{{ page.date }}</div>
   </div>
 
   <div class="content">
@@ -15,4 +15,8 @@
   </div>
 </div>
 {% endblock content %}
+
+{% block footer %}
+  {# cutom footer for home page #}
+{% endblock footer %}
 
