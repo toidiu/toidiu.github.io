@@ -1,6 +1,6 @@
 +++
 title = "Impossibility of Distributed Consensus with One Faulty Process"
-date = 2017-09-24
+date = 2018-09-24
 
 [extra]
 paper = "FLP_imposibility.pdf"
