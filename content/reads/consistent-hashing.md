@@ -1,6 +1,6 @@
 +++
 title = "Consistent Hashing and Random Trees: Distributed Caching Protocols for Relieving Hot Spots on the World Wide Web"
-date = 2018-09-24
+date = 2018-12-24
 
 [extra]
 paper = "consistent_hashing_and_random_trees_distributed_caching_protocols_for_relieving_hot_spots_on_the_world_wide_web_technical_publication.pdf"
