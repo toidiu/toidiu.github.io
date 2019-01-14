@@ -1,10 +1,9 @@
 +++
 title = "Polymorphism in Scala"
 date = 2016-10-31
+
+[taxonomies]
 tag = ["Scala", "code"]
-
-summary = "Scala has 3 types of Polymorphism that we will explore further below."
-
 
 [extra]
 id = blog-single
