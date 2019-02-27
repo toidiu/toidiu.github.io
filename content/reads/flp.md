@@ -15,3 +15,4 @@ Lets note the assumptions made by the proof: The underlying transport protocol i
 
 For Strong Consensus these 3 properties must hold: **termination**: eventually, every correct process decides some value. **agreement**: all processes that decide do so on the same value. **validity**: the value must have been proposed by some process.
 
+By proving their results under assumptions of weak concensus, the authors are able to extend the result to strong concensus systems.
