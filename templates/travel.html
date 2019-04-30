@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block content %}
+<div class="main-container">
+
+  {% set_global g_year = "" %}
+
+  {% for page in section.pages %}
+
+    {% set year = page.date | date(format="%Y") %}
+      {% if g_year != year %}
+        <div class="section-year important">{{ year }}</div>
+      {% endif %}
+    {% set_global g_year = page.date | date(format="%Y") %}
+
+    <div class="post">
+      <a class="title" href="{{ page.permalink }}">{{ page.title }}</a>
+      <div class="date">
+        <span class="article-year">{{ page.date }}</span>
+        {% for tag in page.taxonomies.tag %}
+          <span class="tags">#{{ tag }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="summary">
+        {{ page.summary | safe }}
+      </div>
+
+      {% if page.taxonomies.tag %}
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>
+{% endblock content %}
+
