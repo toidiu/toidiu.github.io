@@ -6,7 +6,7 @@ date = 2019-05-01
 tag = ["travel", "Italy"]
 
 [extra]
-id = blog-single
+id = travel-single
 +++
 
 rome with Federico

@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block content %}
+<div class="main-container">
+  <div id="post-header">
+  <div class="title important">{{ page.title }}</div>
+  <div class="date">{{ page.date }}</div>
+  </div>
+
+  <div class="content">
+    {{ page.content | safe }}
+  </div>
+</div>
+{% endblock content %}
+
+{% block footer %}
+  {# cutom footer for home page #}
+{% endblock footer %}
+

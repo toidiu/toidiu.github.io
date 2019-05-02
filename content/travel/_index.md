@@ -1,6 +1,6 @@
 +++
 template = "travel.html"
-page_template = "blog-single.html"
+page_template = "travel-single.html"
 
 sort_by = "date"
 
