@@ -14,18 +14,13 @@ rome with Federico
 
 #### Day 1
 - tramezzo
-
 - aqueducts
-
 - mineral water
-
 - CSOA Forte Prenestino
   <div class='pixels-photo'>
   <a href='https://500px.com/photo/304129897/forte-prenestino-by-toidiu' alt='forte prenestino by toidiu' target=_blank" rel="noopener">
     <img src='https://drscdn.500px.org/photo/304129897/m%3D900/v2?user_id=72462251&webp=true&sig=cda518d0c9a51c53a87ceb3aa99b3ce4f7ccd776d099b219d47d023af9288c0d' alt='forte prenestino by toidiu'>
   </a>
-
-
   </div>
 
 #### Day 2
@@ -37,10 +32,15 @@ rome with Federico
   </div>
 
   - amatrciana with guancile
-
 - learned how to brush your teeth
 - Trastevere
 
 #### Day 3
 - albano
   - castelo gandolfo
+- pescheria consli
+  - eat pasta
+- nona
+- vino
+- tomato the secret ingredient
+

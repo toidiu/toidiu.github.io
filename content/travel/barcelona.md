@@ -13,7 +13,7 @@ first stop barcelona
 <!-- more -->
 
 #### Day 1
-- walk to hostel. smelled of flowers and warm air and relaxation.
+- walk to hostel. street smelled of flowers and warm air and relaxation.
 
   <div class='pixels-photo'>
   <a href='https://500px.com/photo/304000887/gracia-by-toidiu' alt='gracia by toidiu' target=_blank" rel="noopener">
