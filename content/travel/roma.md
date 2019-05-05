@@ -44,3 +44,16 @@ rome with Federico
 - vino
 - tomato the secret ingredient
 
+#### Day 4
+- affluent Roma city
+- terrible metro system
+- Municipio II
+  - Villa Borghese
+  - Villa Paganini
+- strawberries and amazing produce
+
+#### Day 5
+- Museo e Galleria Borghese
+- Vatican
+- burrata and salame and tomatoes
+
