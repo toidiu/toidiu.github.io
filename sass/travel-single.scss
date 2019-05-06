@@ -24,6 +24,15 @@
   }
   .pixels-photo img {
     width: 250px;
+    height: auto;
+  }
+  .pixels-photo.is-height img {
+    width: auto;
+    height: 250px;
+  }
+  .pixels-photo.is-large img {
+    width: 450px;
+    height: auto;
   }
 }
 
