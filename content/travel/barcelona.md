@@ -9,7 +9,7 @@ tag = ["travel", "Spain"]
 id = travel-single
 +++
 
-first stop barcelona
+barcelona - population 1.9M
 <!-- more -->
 
 #### Day 1
