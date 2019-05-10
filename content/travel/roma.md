@@ -9,7 +9,7 @@ tag = ["travel", "Italy"]
 id = travel-single
 +++
 
-rome with Federico
+rome with Federico - population 2.9M
 <!-- more -->
 
 #### Day 1
