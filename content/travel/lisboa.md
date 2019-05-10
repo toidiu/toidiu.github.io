@@ -45,6 +45,8 @@ losboa the city of light - population 500K
 - nesperas
 - jadim do torel
 - lost in anjos
+- (saint) Dr Sousa Martins
+- cock and ducks
 - Adega dos Arcos
 - carapaus
 - lots of indian restaurants
