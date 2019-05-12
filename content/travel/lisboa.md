@@ -9,7 +9,7 @@ tag = ["travel", "Portugal"]
 id = travel-single
 +++
 
-losboa the city of light - population 500K
+losboa the city of light - population 550K
 <!-- more -->
 
 #### Day 1

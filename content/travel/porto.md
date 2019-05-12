@@ -9,7 +9,7 @@ tag = ["travel", "Portugal"]
 id = travel-single
 +++
 
-porto the city that was never defeated - population 200K
+porto the city that was never defeated - population 240K
 <!-- more -->
 
 #### Day 1
