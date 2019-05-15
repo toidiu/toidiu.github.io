@@ -23,15 +23,11 @@
     list-style: number;
   }
   .pixels-photo img {
-    width: 250px;
+    width: 40%;
     height: auto;
   }
-  .pixels-photo.is-height img {
-    width: auto;
-    height: 250px;
-  }
   .pixels-photo.is-large img {
-    width: 450px;
+    width: 60%;
     height: auto;
   }
 }
