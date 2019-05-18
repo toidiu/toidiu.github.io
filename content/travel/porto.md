@@ -36,6 +36,7 @@ porto the city that was never defeated - population 240K
 
 #### Day 5
 - walking tour
+  - cozinha doce
 - Porto São Bento
 - Jardins do Palácio de Cristal
   - peacock
@@ -43,4 +44,23 @@ porto the city that was never defeated - population 240K
 - casa guedes
 - germans
 - decimosetimo
+
+#### Day 6
+- Livraria Lello
+- la vie
+- Café Guarany
+- Casa Victoria
+- tram
+- res da rua
+- taskinha
+- Bruckner - Tischtennistage
+- Von Wegen Lisbeth - Wenn du tanzt
+- Kraftklub
+
+#### Day 7
+- tripa cafe
+- Cemiterio Prado do Repouso
+- casa dos presuntos 'Xico'
+- Jardim do Infante Dom Henrique
+- language exchange
 
