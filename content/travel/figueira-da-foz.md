@@ -17,8 +17,10 @@ Figueira da Foz town on the water - population 60K
 
 #### Day 2
 - walk
+  - the wild
+  - fox
 - restaurant
-- soup, fish, pudding
+  - soup, fish, pudding
 
 #### Day 3
 - tennis
