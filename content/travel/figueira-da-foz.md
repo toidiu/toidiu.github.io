@@ -36,7 +36,12 @@ Figueira da Foz town on the water - population 62K
 - acorda
 
 #### Day 3
-- tennis
+- tennis club
+<div class='pixels-photo'>
+<a href='https://500px.com/photo/306512285/tennis-club-by-toidiu' alt='tennis club by toidiu'>
+    <img src='https://drscdn.500px.org/photo/306512285/m%3D900/v2?user_id=72462251&webp=true&sig=b31bd2af744c4ebc7d73ea2b64834b7c1dc4f520c6dfab71bbaa1800cf079f19' alt='tennis club by toidiu'>
+</a>
+</div>
 - churrasqueira carvalhinho
     - chanfana
 <div class='pixels-photo'>
