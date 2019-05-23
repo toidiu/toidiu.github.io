@@ -32,7 +32,7 @@ Coimbra the city of students - population 150K
 #### Day 2
 - tour
 - Cafe Garcia
-<div class='pixels-photo'>
+<div class='pixels-photo is-large'>
 <a href='https://500px.com/photo/306506027/cafe-garcia-by-toidiu' alt='cafe garcia by toidiu on 500px.com'>
     <img src='https://drscdn.500px.org/photo/306506027/m%3D900/v2?user_id=72462251&webp=true&sig=45ed4a1979013200cb0c98488e828adaaa26b0e61eb4bde10af41b68ace79171' alt='cafe garcia by toidiu'>
 </a>
@@ -45,7 +45,7 @@ Coimbra the city of students - population 150K
 
 #### Day 3
 - tuna feminina de medicina
-<div class='pixels-photo'>
+<div class='pixels-photo is-large'>
 <a href='https://500px.com/photo/306506093/tuna-feminina-de-medicina-by-toidiu' alt='tuna feminina de medicina by toidiu'>
     <img src='https://drscdn.500px.org/photo/306506093/m%3D900/v2?user_id=72462251&webp=true&sig=d7cf3e80ec808938dfd1831494933f66469e9617067e4869e18b806295965ce7' alt='tuna feminina de medicina by toidiu'>
 </a>
