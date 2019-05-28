@@ -9,7 +9,7 @@ tag = ["travel", "Portugal"]
 id = travel-single
 +++
 
-Coimbra the city of students - population 150K
+Coimbra the city of students - population 120K
 <!-- more -->
 
 #### Day 1
@@ -56,5 +56,10 @@ Coimbra the city of students - population 150K
 - fado
 
 #### Day 4
+- jardim da Sereia
+- jardim da quinta de S. Jeronimo
+- vegetarian restaurant
+- Spanish professor
+- arroz de polvo
 
 
