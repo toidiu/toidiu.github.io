@@ -105,7 +105,7 @@ porto the city that was never defeated - population 240K
 - Kraftklub
 
 #### Day 7
-- tripa cafe
+- tripa comigo - maria alina
 <div class='pixels-photo'>
 <a href='https://500px.com/photo/305938695/tripa-by-toidiu' alt='tripa by toidiu'>
     <img src='https://drscdn.500px.org/photo/305938695/m%3D900/v2?user_id=72462251&webp=true&sig=9b3daf30649d97879acdddeee839053373a3cf8985430587f431da3b732fd013' alt='tripa by toidiu'>
