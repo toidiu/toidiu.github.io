@@ -1,7 +1,7 @@
 +++
 template = "personal.html"
 
-sort_by = "date"
+sort_by = "weight"
 
 [extra]
 id = "personal"

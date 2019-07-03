@@ -26,7 +26,6 @@ menu = [
   {url = "$BASE_URL", name = "home"},
   {url = "$BASE_URL/projects", name = "projects"},
   {url = "$BASE_URL/reads", name = "reads"},
-  {url = "$BASE_URL/gin", name = "gin"},
-  {url = "$BASE_URL/travel", name = "travel"},
+  {url = "$BASE_URL/personal", name = "personal"},
   {url = "$BASE_URL/blog", name = "blog"},
 ]
