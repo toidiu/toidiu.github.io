@@ -2,6 +2,8 @@ use itertools::Itertools;
 use reqwest::header;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use std::fs::File;
+use std::io::prelude::*;
 
 const CHUNK_SIZE: usize = 10;
 // {
@@ -52,11 +54,31 @@ impl From<B2File> for ActualFileUrl {
 struct MdFile {
     content: String,
 }
-impl From<Vec<ActualFileUrl>> for MdFile {
-    fn from(item: Vec<ActualFileUrl>) -> Self {
-        MdFile {
-            content: "bla".to_string(),
+impl MdFile {
+    fn new(idx: usize, items: Vec<ActualFileUrl>) -> Self {
+        let mut s = String::new();
+
+        s.push_str(&format!(
+            "+++
+title = \"img-{}\"
+date = 2019-05-20
+
+[taxonomies]
+tag = [\"travel\"]
+
+[extra]
+id = travel-single
++++\n\n",
+            idx
+        ));
+
+        for url in items {
+            s.push_str("<div class='pixels-photo is-large'>");
+            s.push_str(&format!("<img src='{}' alt='img'>\n", url.path));
+            s.push_str("</div>");
+            s.push_str("<br/>");
         }
+        MdFile { content: s }
     }
 }
 
@@ -88,6 +110,21 @@ fn main() {
 }
 
 fn generate_html(chunked_urls: Vec<Vec<ActualFileUrl>>) {
-    let mdFiles: Vec<MdFile> = chunked_urls.into_iter().map(|x| x.into()).collect();
-    println!("{:?}", mdFiles);
+    let _md_files: Vec<()> = chunked_urls
+        .into_iter()
+        .enumerate()
+        .map(|x| {
+            let md_file = MdFile::new(x.0, x.1);
+            let file_name = format!("../content/personal/travel/img-{}.md", x.0);
+            let mut file = File::create(file_name).expect("unable to create file");
+            file.write_all(md_file.content.as_bytes())
+                .expect("unable to write file");
+        })
+        .collect();
+    // for f in md_files {
+    //     println!("{}", f.content);
+    //     let mut file = File::create("img-.md").expect("unable to create file");
+    //     file.write_all()
+    //         .expect("unable to write file");
+    // }
 }
