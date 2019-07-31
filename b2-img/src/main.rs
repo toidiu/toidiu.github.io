@@ -1,11 +1,11 @@
 use itertools::Itertools;
 use reqwest::header;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 use std::fs::File;
 use std::io::prelude::*;
 
 const CHUNK_SIZE: usize = 10;
+const B2_MAX_FILE_COUNT: u32 = 1000;
 const FILE_NAME: &str = "europe-2019";
 // {
 //   "files": [
@@ -51,6 +51,13 @@ impl From<B2File> for ActualFileUrl {
         }
     }
 }
+#[allow(non_snake_case)]
+#[derive(Serialize, Deserialize, Debug)]
+struct FileNameData {
+    bucketId: String,
+    maxFileCount: u32,
+}
+
 #[derive(Serialize, Deserialize, Debug)]
 struct MdFile {
     content: String,
@@ -88,22 +95,26 @@ fn main() {
     let token = std::env::var("ACCOUNT_AUTH_TOKEN").expect("no 'ACCOUNT_AUTH_TOKEN' in env");
     let bucket_id = std::env::var("BUCKET_ID").expect("no 'BUCKET_ID' in env");
 
-    let mut map = HashMap::new();
-    map.insert("bucketId", bucket_id);
+    let data = FileNameData {
+        bucketId: bucket_id,
+        maxFileCount: B2_MAX_FILE_COUNT,
+    };
     let client = reqwest::Client::builder().build().unwrap();
     let mut res = client
         .post("https://api002.backblazeb2.com/b2api/v2/b2_list_file_names")
         .header(header::AUTHORIZATION, token)
-        .json(&map)
+        .json(&data)
         .send()
         .unwrap();
     let list: B2FileList = res.json().unwrap();
 
     //---------
+    println!("--as--{}", list.files.len());
     let files: Vec<ActualFileUrl> = list.files.into_iter().map(|x: B2File| x.into()).collect();
     let mut chunked_urls: Vec<Vec<ActualFileUrl>> = Vec::new();
     for chunk in &files.into_iter().chunks(CHUNK_SIZE) {
         let b: Vec<ActualFileUrl> = chunk.into_iter().collect();
+        println!("-----{}", b.len());
         chunked_urls.push(b);
     }
 
@@ -124,10 +135,4 @@ fn generate_html(chunked_urls: Vec<Vec<ActualFileUrl>>) {
                 .expect("unable to write file");
         })
         .collect();
-    // for f in md_files {
-    //     println!("{}", f.content);
-    //     let mut file = File::create("img-.md").expect("unable to create file");
-    //     file.write_all()
-    //         .expect("unable to write file");
-    // }
 }
