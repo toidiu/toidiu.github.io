@@ -1,0 +1,61 @@
++++
+title = "europe-2019-7"
+date = 2019-07-01
+
+[taxonomies]
+tag = ["travel"]
+
+[extra]
+id = photos-single
++++
+
+<div class='pixels-photo is-large'>
+  <img src='https://photos.toidiu.com/file/toidiu-img/IMG_20190608_140650.jpg' alt='img'>
+</div>
+<br/>
+
+<div class='pixels-photo is-large'>
+  <img src='https://photos.toidiu.com/file/toidiu-img/IMG_20190609_140200.jpg' alt='img'>
+</div>
+<br/>
+
+<div class='pixels-photo is-large'>
+  <img src='https://photos.toidiu.com/file/toidiu-img/IMG_20190609_235413.jpg' alt='img'>
+</div>
+<br/>
+
+<div class='pixels-photo is-large'>
+  <img src='https://photos.toidiu.com/file/toidiu-img/IMG_20190615_163150.jpg' alt='img'>
+</div>
+<br/>
+
+<div class='pixels-photo is-large'>
+  <img src='https://photos.toidiu.com/file/toidiu-img/IMG_20190616_114154.jpg' alt='img'>
+</div>
+<br/>
+
+<div class='pixels-photo is-large'>
+  <img src='https://photos.toidiu.com/file/toidiu-img/IMG_20190616_123315.jpg' alt='img'>
+</div>
+<br/>
+
+<div class='pixels-photo is-large'>
+  <img src='https://photos.toidiu.com/file/toidiu-img/IMG_20190616_124051.jpg' alt='img'>
+</div>
+<br/>
+
+<div class='pixels-photo is-large'>
+  <img src='https://photos.toidiu.com/file/toidiu-img/IMG_20190616_125516.jpg' alt='img'>
+</div>
+<br/>
+
+<div class='pixels-photo is-large'>
+  <img src='https://photos.toidiu.com/file/toidiu-img/IMG_20190616_131135.jpg' alt='img'>
+</div>
+<br/>
+
+<div class='pixels-photo is-large'>
+  <img src='https://photos.toidiu.com/file/toidiu-img/IMG_20190616_131846.jpg' alt='img'>
+</div>
+<br/>
+

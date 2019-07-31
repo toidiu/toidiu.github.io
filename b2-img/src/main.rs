@@ -6,6 +6,7 @@ use std::fs::File;
 use std::io::prelude::*;
 
 const CHUNK_SIZE: usize = 10;
+const FILE_NAME: &str = "europe-2019";
 // {
 //   "files": [
 //     {
@@ -44,7 +45,7 @@ impl From<B2File> for ActualFileUrl {
     fn from(item: B2File) -> Self {
         ActualFileUrl {
             path: format!(
-                "https://f002.backblazeb2.com/file/toidiu-img/{}",
+                "https://photos.toidiu.com/file/toidiu-img/{}",
                 item.fileName
             ),
         }
@@ -60,23 +61,23 @@ impl MdFile {
 
         s.push_str(&format!(
             "+++
-title = \"img-{}\"
-date = 2019-05-20
+title = \"{}-{}\"
+date = 2019-07-01
 
 [taxonomies]
 tag = [\"travel\"]
 
 [extra]
-id = travel-single
+id = photos-single
 +++\n\n",
-            idx
+            FILE_NAME, idx
         ));
 
         for url in items {
-            s.push_str("<div class='pixels-photo is-large'>");
-            s.push_str(&format!("<img src='{}' alt='img'>\n", url.path));
-            s.push_str("</div>");
-            s.push_str("<br/>");
+            s.push_str("<div class='pixels-photo is-large'>\n");
+            s.push_str(&format!("  <img src='{}' alt='img'>\n", url.path));
+            s.push_str("</div>\n");
+            s.push_str("<br/>\n\n");
         }
         MdFile { content: s }
     }
@@ -114,8 +115,10 @@ fn generate_html(chunked_urls: Vec<Vec<ActualFileUrl>>) {
         .into_iter()
         .enumerate()
         .map(|x| {
-            let md_file = MdFile::new(x.0, x.1);
-            let file_name = format!("../content/personal/travel/img-{}.md", x.0);
+            let idx = x.0 + 1;
+            let vec_actual_file_url = x.1;
+            let md_file = MdFile::new(idx, vec_actual_file_url);
+            let file_name = format!("../content/photos/{}-{}.md", FILE_NAME, idx);
             let mut file = File::create(file_name).expect("unable to create file");
             file.write_all(md_file.content.as_bytes())
                 .expect("unable to write file");
