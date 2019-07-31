@@ -26,7 +26,7 @@ const FILE_NAME: &str = "europe-2019";
 //     ...
 //   ]
 // }
-// https://f002.backblazeb2.com/file/toidiu-img/IMG_20190429_142313.jpg
+// https://f002.backblazeb2.com/file/europe-2019/IMG_20190429_142313.jpg
 
 #[derive(Serialize, Deserialize, Debug)]
 struct B2FileList {
@@ -45,7 +45,7 @@ impl From<B2File> for ActualFileUrl {
     fn from(item: B2File) -> Self {
         ActualFileUrl {
             path: format!(
-                "https://photos.toidiu.com/file/toidiu-img/{}",
+                "https://photos.toidiu.com/file/europe-2019/{}",
                 item.fileName
             ),
         }
