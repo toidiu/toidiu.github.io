@@ -30,3 +30,4 @@ menu = [
   {url = "$BASE_URL/blog", name = "blog"},
 ]
 
+
