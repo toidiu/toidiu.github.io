@@ -61,7 +61,7 @@ impl MdFile {
 
         s.push_str(&format!(
             "+++
-title = \"{}-{}\"
+title = \"{}-{:01}\"
 date = 2019-07-01
 
 [taxonomies]
@@ -118,7 +118,7 @@ fn generate_html(chunked_urls: Vec<Vec<ActualFileUrl>>) {
             let idx = x.0 + 1;
             let vec_actual_file_url = x.1;
             let md_file = MdFile::new(idx, vec_actual_file_url);
-            let file_name = format!("../content/photos/{}-{}.md", FILE_NAME, idx);
+            let file_name = format!("../content/photos/{}-{:02}.md", FILE_NAME, idx);
             let mut file = File::create(file_name).expect("unable to create file");
             file.write_all(md_file.content.as_bytes())
                 .expect("unable to write file");
