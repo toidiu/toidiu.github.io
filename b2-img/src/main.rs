@@ -61,7 +61,7 @@ impl MdFile {
 
         s.push_str(&format!(
             "+++
-title = \"{}-{:01}\"
+title = \"{}-{:02}\"
 date = 2019-07-01
 
 [taxonomies]
