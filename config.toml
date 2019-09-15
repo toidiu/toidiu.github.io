@@ -25,7 +25,7 @@ generate_rss = false
 menu = [
   {url = "$BASE_URL", name = "home"},
   {url = "$BASE_URL/projects", name = "projects"},
-  {url = "$BASE_URL/photos", name = "photos"},
+  {url = "$BASE_URL/reads", name = "reads"},
   {url = "$BASE_URL/personal", name = "personal"},
   {url = "$BASE_URL/blog", name = "blog"},
 ]

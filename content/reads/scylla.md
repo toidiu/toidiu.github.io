@@ -4,10 +4,8 @@ date = 2019-01-10
 
 [extra]
 paper = "Scylla_Seven_Design_Principles.pdf"
-short = "tbd"
+short = "This paper is structured more like a whitepaper than a research paper and gives really nice insight into engineering a high performant DB. Scylla is a drop-in replacement for Cassandra and promises to provide better performance. It claims to do so by leveraging modern harware features and automation. The paper explores 7 key design decisions that helped guide Scylla's development."
 +++
-
-This paper is structured more like a whitepaper than a research paper and gives really nice insight into engineering a high performant DB. Scylla is a drop-in replacement for Cassandra and promises to provide better performance. It claims to do so by leveraging modern harware features and automation. The paper explores 7 key design decisions that helped guide Scylla's development.
 
 1) Using C++ instead of Java meant avoiding GC latencies in JVM, while gaining precise control over memory and being able to access [advance kernal features](https://lwn.net/Articles/743714/).
 
