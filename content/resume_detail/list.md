@@ -14,12 +14,17 @@ company = "iHeartRadio"
 - skynet - QA code to injest charles data and run tests
 - fastly migration from blacklisting(dont cache this) to whitelisting(cache this)
 - production outage - tracking list of services and restarting them
+- max ok http connections, adding configuration to detect mismatch vs auto set
+- decision under not enough information: pagerduty was going of due to a long rabbit queue. it was very late none of the other parties were responding
+  so i had to make a decision on how to proceed.
+- challenged org: recs team did not have enough resources but was expected to produce results, that were based on hunches.
+  I worked and got the right parties involved to get more resources to the team.
+- customer was charged for subscription but didnt get features. on call issue meant doing right by customer
+  and working with cus-support and communicating technical findings to customer support and client
+
 - starting and leading the rust meetup group
 - commiting to rust lang issue and following thru on it (7 months)
 - taking up postgres-mapper and appending functionality to it (fixing bugs)
-- fixing timing belt on a miata
-
----
 
  - Worked closely with Data Science/Design/iOS to help launch music recommendaRon service and make it more resilient.
      - migrating old recs api to new micro service logic
