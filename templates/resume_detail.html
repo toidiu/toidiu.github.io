@@ -4,14 +4,24 @@
 {% endblock extra_head %}
 
 {% block content %}
+<div class="main-container">
     {% for page in section.pages %}
-      {{ page.content | safe }}
-    {% endfor %}
-{% endblock content %}
+      <div class="cocktail-wrapper">
+        <a name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">{{ page.title }}</a>
+        <!-- {% if page.extra.company %} -->
+        <p>{{ page.extra.company }}</p>
+        <!-- {% endif %} -->
+        {% for lp in page.extra.lp %}
+          <p>#{{ lp }}</p>
+        {% endfor %}
 
-{% block nav %}
-  {# no nav #}
-{% endblock nav %}
+
+        <div class="content">{{ page.content | safe }}</div>
+      </div>
+    {% endfor %}
+
+</div>
+{% endblock content %}
 
 {% block footer %}
   {# no footer #}
