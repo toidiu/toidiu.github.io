@@ -7,4 +7,8 @@ company = "iHeartRadio"
 lp = ["highest standard"]
 +++
 
+### S
+### T
+### A
+### R
 - starting and leading the rust meetup group
