@@ -7,4 +7,9 @@ sort_by = "date"
 id = "resume_detail"
 +++
 
+S: situation
+T: tasks to be done?
+A: actions taken
+R: result achieved
 
+use metrics

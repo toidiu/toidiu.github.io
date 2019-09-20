@@ -12,11 +12,7 @@ lp = ["highest standard"]
 
 - commiting to rust lang issue and following thru on it (7 months)
 
- - Worked closely with Data Science/Design/iOS to help launch music recommendaRon service and make it more resilient.
-     - migrating old recs api to new micro service logic
-     - HA for data published by DS
-     - realizing fastly was caching recs
-       - change from blacklist to whitelist and rolling it out in production
+- migrating old recs api to new micro service logic
 
  - debugging and optimizing Mongo query performance across different services
  - write unit and mongo embed tests across the many services
