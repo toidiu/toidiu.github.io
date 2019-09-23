@@ -1,5 +1,5 @@
 +++
-title = "Skynet"
+title = "Skynet - delivering results for hackday project"
 date = 2018-05-11
 
 [extra]
@@ -7,7 +7,7 @@ company = "iHeartRadio"
 lp = ["frugal", "show results"]
 +++
 
-### S
+#### S
 This was during a hack week project and the goal of our 3 person team was to
 help automate QA-testing done for apps at the company.
 
@@ -21,13 +21,13 @@ weekend work for the QA team.
 
 The team was composed of a non-technical QA member, an iOS dev and myself (backend).
 
-### T
+#### T
 The initial goal was to use a UI testing framework for iOS and therefore automate
 the collection and then verification of the tests. We spent 1.5 days trying
 to get the UI framework to work, however it was unpredictable on different computers
 and eventually just didnt work.
 
-### A
+#### A
 Realizing that we were at risk of not having any product I decided to take a step
 back and see if we could produce something useful.
 
@@ -46,7 +46,7 @@ At some point I devoted majority of my time to training and guiding the QA membe
 understanding and augmenting to the codebase. Transfering owenership to the QA team
 was an important goal for me if the project was to succeed.
 
-### R
+#### R
 We were also tackle time sensitive and manually arduous tests (token refresh every 5min).
 By the end of the week we were able to execute 6 different tests, implement
 2 different testing scenarios (find a value, stateful testing).

@@ -1,14 +1,14 @@
 +++
-title = "migrate jenkins from box to kube"
-date = 2019-08-11
+title = "Over engineering mistake for minimal Android app"
+date = 2017-08-11
 
 [extra]
 company = "touchlab"
-lp = ["highest standard"]
+lp = ["highest standard", "frugality"]
 +++
 
 
-### S
-### T
-### A
-### R
+#### S
+#### T
+#### A
+#### R

@@ -6,17 +6,34 @@
 {% block content %}
 <div class="main-container">
     {% for page in section.pages %}
-      <div class="cocktail-wrapper">
+      <div class="scenario-list">
+        <a href="#{{ page.title | slugify }}">{{ page.title }}</a>
+      </div>
+    {% endfor %}
+
+    <span>----------</span>
+    <span>----------</span>
+    <br>
+
+    {% for page in section.pages %}
+      <div class="scenario">
         <a name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">{{ page.title }}</a>
-        <!-- {% if page.extra.company %} -->
-        <p>{{ page.extra.company }}</p>
-        <!-- {% endif %} -->
-        {% for lp in page.extra.lp %}
-          <p>#{{ lp }}</p>
-        {% endfor %}
+        <div>
+          <span class="company">{{ page.extra.company }}</span>
 
+          <!-- global variable to set divider -->
+          {% set_global g_divider = 0 %}
+          {% for lp in page.extra.lp %}
+            <span class="important lp">
+              {% if g_divider == 1 %}|{% endif %}
+              #{{ lp }}
+            </span>
+            {% set_global g_divider = 1 %}
+          {% endfor %}
 
-        <div class="content">{{ page.content | safe }}</div>
+        </div>
+
+        <div>{{ page.content | safe }}</div>
       </div>
     {% endfor %}
 
