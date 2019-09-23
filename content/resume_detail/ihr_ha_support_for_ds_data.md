@@ -7,14 +7,14 @@ company = "iHeartRadio"
 lp = ["highest standard"]
 +++
 
-### S
+#### S
 Data Science (DS) ran a nightly job to generate music recommendations for users.
 The dataset would live in DynamoDB and the old DS workflow was to rewrite the
 same dynamo table with new dataset each night. This was a high risk operation
 for the my team (APIs). Additionally it caused some outages due to accidental
 schema changes.
 
-### T
+#### T
 I was in charge of creating a HA and resilient workflow.
 The ownership of the data would reside with them.
 We simply wanted assurances that there were some sanity for newly published data.
@@ -28,7 +28,7 @@ Given multiple datasets (a,b,c); DS can 'point' to latest dataset
     rollbacks are as easy as pointing to an older known dataset
 Maintain a log of actions (publish new dataset, test pass/fail, point to new dataset)
 
-### A
+#### A
 Work closely with DS to come up with the system design.
 Added a Jenkins tests which could be triggered by DS
     used to verify that data schema would not be a breaking change
@@ -38,7 +38,7 @@ Poll based mechanism within API code to look at "Version Table" and start using 
     A poll interval of 5 min was used since 'older' data would still produce good enough data.
     Log when a new dataset was detected (help correlate errors with new dataset)
 
-### R
+#### R
 We saw a system that could be used to audit the creation of new datasets.
 Outages due to breaking schema's were eliminated.
 

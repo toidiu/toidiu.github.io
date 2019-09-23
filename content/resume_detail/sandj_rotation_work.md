@@ -1,14 +1,14 @@
 +++
-title = "migrate jenkins from box to kube"
+title = "Incorrect estimate for rotation work"
 date = 2019-08-11
 
 [extra]
-company = "shatterproof"
+company = "S&J"
 lp = ["highest standard"]
 +++
 
 
-### S
-### T
-### A
-### R
+#### S
+#### T
+#### A
+#### R
