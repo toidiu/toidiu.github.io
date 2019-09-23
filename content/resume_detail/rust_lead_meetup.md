@@ -4,8 +4,13 @@ date = 2019-08-11
 
 [extra]
 company = "iHeartRadio"
-lp = ["highest standard"]
+lp = ["ownership"]
 +++
+
+ownership
+  take charge and take on responsibility
+develop the best
+  promote people to get involved and grow replacement
 
 #### S
 #### T

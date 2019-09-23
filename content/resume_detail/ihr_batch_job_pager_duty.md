@@ -7,6 +7,9 @@ company = "iHeartRadio"
 lp = ["bias for action"]
 +++
 
+bias for action
+  took action with limited info, while evaluating risk.
+
 #### S
 #### T
 #### A

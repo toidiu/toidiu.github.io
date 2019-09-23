@@ -4,8 +4,13 @@ date = 2019-08-11
 
 [extra]
 company = "iHeartRadio"
-lp = ["highest standard"]
+lp = ["think big", "invent and simplify"]
 +++
+
+think big
+  improve reliability and reduce work exponentially
+invent and simplify
+  utilize helm chart and then customize for internal tools
 
 
 #### S

@@ -4,13 +4,15 @@ date = 2019-09-11
 
 [extra]
 company = "iHeartRadio"
-lp = ["invent and simplify", "earn trust"]
+lp = ["invent and simplify", "frugality", "earn trust"]
 +++
 
 invent and simplify
   come up with a solution and then simplify
 earn trust
   negotiate a solution with DS to further the relationship
+frugality
+  reuse dynamo, jenkins rather than invent new solution
 
 #### S
 Data Science (DS) ran a nightly job to generate music recommendations for users.

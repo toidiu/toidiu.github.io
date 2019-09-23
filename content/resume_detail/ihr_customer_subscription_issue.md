@@ -1,11 +1,16 @@
 +++
-title = "Google subscription not enabling features (customer issue)"
+title = "Google subscription not enabling features"
 date = 2019-08-11
 
 [extra]
 company = "iHeartRadio"
-lp = ["customer obsession", "highest standard"]
+lp = ["customer obsession", "dive deep"]
 +++
+
+customer obsession
+  subscription is the core of customer experience
+dive deep
+  look at neighbouring code for amazon, google and apple
 
 #### S
 Subscription miroservie was responsible for determining subscription status for users.

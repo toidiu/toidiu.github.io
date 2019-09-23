@@ -4,8 +4,14 @@ date = 2019-08-11
 
 [extra]
 company = "iHeartRadio"
-lp = ["highest standard", "right often"]
+lp = ["disagree and commit", "develop the best"]
 +++
+
+disagree and commit
+  point out the lack of resources
+  end up at a compromise
+develop the best
+  involve and promote the design lead as the project leader
 
 #### S
 The company had experimented with a new team structure "vertical team".

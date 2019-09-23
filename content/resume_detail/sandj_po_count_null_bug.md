@@ -4,7 +4,7 @@ date = 2019-08-11
 
 [extra]
 company = "S&J"
-lp = ["highest standard"]
+lp = []
 +++
 
 

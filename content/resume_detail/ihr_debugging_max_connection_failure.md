@@ -1,11 +1,16 @@
 +++
-title = "Max connections and kube watch"
+title = "Max connections and failing kube watch"
 date = 2019-08-11
 
 [extra]
 company = "iHeartRadio"
-lp = ["highest standard"]
+lp = ["right alot", "bias for action"]
 +++
+
+right alot
+  pin point the differences between stg and prod
+bias for action
+  execute a non invasive solution, which could go out quick while still preventing issues
 
 #### S
 #### T
