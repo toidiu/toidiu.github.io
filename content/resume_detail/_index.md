@@ -12,11 +12,33 @@ T: tasks to be done?
 A: actions taken
 R: result achieved
 
+### Tips
 - write down question
 - use metrics
 - STAR
   - lots of Action and Result
 - answer question directly
+
+### LPs
+- Customer Obsession
+- Ownership
+1
+- Invent and Simplify
+- Are Right, A Lot
+- Hire and Develop the Best
+- Insist on the Highest Standards
+1
+- Think Big
+- Bias for Action
+1
+- Frugality
+- Learn and Be Curious
+- Earn Trust
+1
+- Dive Deep
+- Have Backbone; Disagree and Commit
+- Deliver Results
+
 
 ## Customer Obsession
 Leaders start with the customer and work backwards. They work vigorously to earn and keep customer trust. Although leaders pay attention to competitors, they obsess over customers.

@@ -1,10 +1,10 @@
 +++
-title = "Batch job alerting and little konwledge of system (on-call)"
+title = "Batch job alerting and little knowledge of system (on-call)"
 date = 2019-08-11
 
 [extra]
 company = "iHeartRadio"
-lp = ["highest standard"]
+lp = ["bias for action"]
 +++
 
 #### S

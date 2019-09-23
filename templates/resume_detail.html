@@ -8,6 +8,17 @@
     {% for page in section.pages %}
       <div class="scenario-list">
         <a href="#{{ page.title | slugify }}">{{ page.title }}</a>
+        <div>
+          <!-- global variable to set divider -->
+          {% set_global g_divider = 0 %}
+          {% for lp in page.extra.lp %}
+            <span class="lp">
+              {% if g_divider == 1 %}|{% endif %}
+              #{{ lp }}
+            </span>
+            {% set_global g_divider = 1 %}
+          {% endfor %}
+        </div>
       </div>
     {% endfor %}
 
