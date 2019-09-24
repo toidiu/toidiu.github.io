@@ -1,9 +1,9 @@
 +++
 title = "Skynet - delivering results for hackday project"
-date = 2018-05-11
+date = 2018-06-11
 
 [extra]
-company = "iHeartRadio"
+company = "ihr"
 lp = ["deliver results", "right alot"]
 +++
 

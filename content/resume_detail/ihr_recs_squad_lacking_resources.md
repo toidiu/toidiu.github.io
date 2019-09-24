@@ -1,9 +1,9 @@
 +++
 title = "Vertical squad lacking resources"
-date = 2019-08-11
+date = 2018-08-11
 
 [extra]
-company = "iHeartRadio"
+company = "ihr"
 lp = ["disagree and commit", "develop the best"]
 +++
 

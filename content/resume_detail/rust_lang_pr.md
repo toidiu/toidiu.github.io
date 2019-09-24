@@ -1,6 +1,6 @@
 +++
 title = "PR to rust lang - infer outlives predicates"
-date = 2019-08-11
+date = 2018-05-11
 
 [extra]
 company = "rust"

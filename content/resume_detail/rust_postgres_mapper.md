@@ -1,6 +1,6 @@
 +++
 title = "PostgresMapper - increasing code realibility"
-date = 2019-08-11
+date = 2018-10-11
 
 [extra]
 company = "rust"

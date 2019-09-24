@@ -1,9 +1,9 @@
 +++
 title = "Advise SP on technical contractor"
-date = 2019-04-11
+date = 2019-05-11
 
 [extra]
-company = "Shatterproof"
+company = "shatterproof"
 lp = ["right alot", "disagree and commit"]
 +++
 

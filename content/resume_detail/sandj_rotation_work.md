@@ -1,9 +1,9 @@
 +++
 title = "Android rotation work took much longer than expected"
-date = 2019-08-11
+date = 2018-02-11
 
 [extra]
-company = "S&J"
+company = "s&j"
 lp = ["customer obsession", "highest standard"]
 +++
 

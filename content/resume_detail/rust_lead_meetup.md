@@ -1,6 +1,6 @@
 +++
 title = "Starting and leading the Rust meetup"
-date = 2019-08-11
+date = 2017-10-11
 
 [extra]
 company = "rust"

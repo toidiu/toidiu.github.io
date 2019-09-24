@@ -1,9 +1,9 @@
 +++
 title = "Migrate jenkins from standalone to k8s"
-date = 2019-08-11
+date = 2018-07-11
 
 [extra]
-company = "iHeartRadio"
+company = "ihr"
 lp = ["think big", "invent and simplify"]
 +++
 

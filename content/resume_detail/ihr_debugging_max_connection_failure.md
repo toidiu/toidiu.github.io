@@ -1,9 +1,9 @@
 +++
 title = "Max connections and failing kube watch"
-date = 2019-08-11
+date = 2018-12-11
 
 [extra]
-company = "iHeartRadio"
+company = "ihr"
 lp = ["right alot", "bias for action", "dive deep"]
 +++
 

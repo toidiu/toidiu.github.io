@@ -1,9 +1,9 @@
 +++
 title = "Templating kube config"
-date = 2018-05-11
+date = 2018-06-11
 
 [extra]
-company = "iHeartRadio"
+company = "ihr"
 lp = ["think big", "disagree and commit"]
 +++
 

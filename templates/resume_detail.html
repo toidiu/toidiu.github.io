@@ -5,13 +5,14 @@
 
 {% block content %}
 <div class="main-container">
-  <div><a href="https://github.com/toidiu/toidiu.github.io/blob/live-code/content/resume_detail/_index.md">lps</a></div>
+  <div><a href="https://github.com/toidiu/toidiu.github.io/blob/live-code/content/resume_detail/_index.md" target=_blank" rel="noopener">lps</a></div>
     <span>----------</span>
 
     {% for page in section.pages %}
       <div class="scenario-list">
         <a href="#{{ page.title | slugify }}">{{ page.title }}</a>
         <div>
+          <span class="company">{{ page.extra.company }}</span>
           <!-- global variable to set divider -->
           {% set_global g_divider = 0 %}
           {% for lp in page.extra.lp %}

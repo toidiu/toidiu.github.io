@@ -1,9 +1,9 @@
 +++
 title = "Amazon subscription not enabling features"
-date = 2019-08-11
+date = 2018-08-11
 
 [extra]
-company = "iHeartRadio"
+company = "ihr"
 lp = ["customer obsession", "dive deep"]
 +++
 
