@@ -31,7 +31,7 @@ R: result achieved
 3 Frugality
 2 Learn and Be Curious
 3 Earn Trust
-2 Dive Deep
+3 Dive Deep
 2 Have Backbone; Disagree and Commit
 1 Deliver Results
 

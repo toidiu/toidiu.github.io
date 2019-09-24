@@ -4,7 +4,7 @@ date = 2019-08-11
 
 [extra]
 company = "iHeartRadio"
-lp = ["customer obsession"]
+lp = ["customer obsession", "earn trust"]
 +++
 
 customer obsession
@@ -13,6 +13,12 @@ customer obsession
   track all users affected and issue rebate
 
 #### S
+Heroku user got billed but did not receive the correct premium
+services.
+
 #### T
 #### A
+Worked with customer support to resolve issue.
+
 #### R
+

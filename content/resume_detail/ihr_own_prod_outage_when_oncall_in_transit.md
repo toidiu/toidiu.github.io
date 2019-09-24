@@ -14,6 +14,13 @@ customer obsession
 
 #### S
 Towards the end of the work day a sestamatic outage started to happen. The oncall member was in-transit and not available to handle the issue.
+
 #### T
+Step up and represent the API team in fixing the outage.
+
 #### A
+Restarted services that were showing errors in prometheus. Also tracked each service individually to ensure that there were no lingering bad pods.
+
 #### R
+Outage lasted less than 1 hour.
+

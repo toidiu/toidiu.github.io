@@ -12,7 +12,8 @@ learn and be curious
 
 
 #### S
+The crate was a side project written by someone to provide some simple deserialization capabilites for postgres in rust. It addressed a important need but failed to do any field name checks at compile time.
+
 #### T
 #### A
 #### R
-- starting and leading the rust meetup group

@@ -32,4 +32,3 @@ The secrets were applied via a api call to the jenkins server (decrypt KMS).
 #### R
 We were able to migrate to the latest version of Jenkins.
 
-

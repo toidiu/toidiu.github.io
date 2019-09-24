@@ -14,7 +14,6 @@ deliver results
   deliver a project despite it not being the original all encompassing solution
 
 
-
 #### S
 This was during a hack week project and the goal of our 3 person team was to
 help automate QA-testing done for apps at the company.
