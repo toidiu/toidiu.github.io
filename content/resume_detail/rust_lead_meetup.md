@@ -7,10 +7,18 @@ company = "rust"
 lp = ["ownership", "develop the best"]
 +++
 
-ownership
-  take charge and take on responsibility
-develop the best
-  promote people to get involved and grow replacement
+ownership: take charge and take on responsibility
+
+develop the best: promote people to get involved and grow replacement
+
+#### metrics
+- started as 1 old and 2 new co-organizers
+- old dropped and found 1 additional
+- hosted at 5 different companies
+- found 1 repeat sponsor
+- found and organized approx 36 speakers
+- gathered approx 10 core repeating members
+- gave 2 talks and led 1 learning session
 
 #### S
 Others bailed when it came time to actually put in time and organize the meetup. The tasks were no very rewarding and involved coordinating with companies, and speakers and trying to get sponsors.

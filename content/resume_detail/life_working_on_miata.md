@@ -1,6 +1,6 @@
 +++
-title = "PostgresMapper - increasing code realibility"
-date = 2019-08-11
+title = "Replaced Miata timing belt and other components"
+date = 2013-08-11
 
 [extra]
 company = "life"
@@ -13,9 +13,17 @@ frugality: save money by doing the changes myself and then also in the future
 
 
 #### metrics
-- $200 in tools and $200 in parts
-- 5 days of work
-- changed serpentine belts, timing belt 60k, radiator fluid, water pump
+- car was at 60k miles
+- $200 in tools(reusable) and $200 in parts
+- took 5 days of work
+- changed parts
+  - timing belt
+  - radiator fluid
+  - water pump
+  - serpentine belts
+  - enginer gasket
+  - shifter oil
+- asked for help with 1 portion (turning the crankshaft bolt)
 
 #### S
 My first car was a mazda miata. I got it at 30K miles and at 60K it needed a timing belt changed.

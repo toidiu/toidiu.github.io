@@ -7,12 +7,15 @@ company = "iHeartRadio"
 lp = ["deliver results", "right alot"]
 +++
 
-right alot
-  choosing java and solving part of the process was the correct small step to allow for adoption
+right alot: choosing java and solving part of the process was the correct small step to allow for adoption
 
-deliver results
-  deliver a project despite it not being the original all encompassing solution
+deliver results: deliver a project despite it not being the original all encompassing solution
 
+#### metrics
+- reduced manual testing from 10-30 minutes to seconds
+- removed human error during testing
+- created a extensible framework, initially targeting 2 types of test
+- agnostic testing framework for both android and ios
 
 #### S
 This was during a hack week project and the goal of our 3 person team was to

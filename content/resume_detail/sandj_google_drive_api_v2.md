@@ -7,6 +7,9 @@ company = "S&J"
 lp = ["dive deep"]
 +++
 
+#### metrics
+- implemented x apis
+- 
 
 #### S
 #### T
