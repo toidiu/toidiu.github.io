@@ -3,8 +3,8 @@ title = "Starting and leading the Rust meetup"
 date = 2019-08-11
 
 [extra]
-company = "iHeartRadio"
-lp = ["ownership"]
+company = "rust"
+lp = ["ownership", "develop the best"]
 +++
 
 ownership
