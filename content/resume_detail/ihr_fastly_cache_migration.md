@@ -7,16 +7,11 @@ company = "iHeartRadio"
 lp = ["highest standard", "earn trust"]
 +++
 
-highest standard
-  rather than fix the symptom at hand fix the core issue
-earn trust
-  outages mean lower oncall morale
-  rolling out the changes in % meant gaining the trust of the team
+highest standard: rather than fix the symptom at hand fix the core issue
 
-customer obsession
-  also bad for customers
-reduce risk
-  rolling in % meant detecting issues early
+earn trust: outages mean lower oncall morale. rolling out the changes in % meant gaining the trust of the team
+
+customer obsession: also bad for customers
 
 #### S
 Realized that our recs were being incorrectly cached. The reason for this was

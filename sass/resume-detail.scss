@@ -10,8 +10,13 @@
   }
   .scenario {
     margin-bottom: 40px;
-    li p {
-      line-height: 1em;
+    li {
+      p {
+        line-height: 1em;
+      }
+      ul {
+        margin-bottom: 0;
+      }
     }
   }
   .company {

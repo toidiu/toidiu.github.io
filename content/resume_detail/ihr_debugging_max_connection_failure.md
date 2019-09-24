@@ -7,10 +7,9 @@ company = "iHeartRadio"
 lp = ["right alot", "bias for action", "dive deep"]
 +++
 
-right alot
-  pin point the differences between stg and prod
-bias for action
-  execute a non invasive solution, which could go out quick while still preventing issues
+right alot: pin point the differences between stg and prod
+
+bias for action: execute a non invasive solution, which could go out quick while still preventing issues
 
 #### S
 An API that I wrote and owned would start to 500 errors sporadically. When
