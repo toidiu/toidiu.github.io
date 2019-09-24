@@ -1,14 +1,19 @@
 +++
 title = "Batch job alerting and little knowledge of system (on-call)"
-date = 2019-08-11
+date = 2018-08-11
 
 [extra]
-company = "iHeartRadio"
+company = "ihr"
 lp = ["bias for action"]
 +++
 
-bias for action
-  took action with limited info, while evaluating risk.
+bias for action: took action with limited info, while evaluating risk.
+
+#### metrics
+- 10K messages queued
+- 10pm with no response for rest of team
+- silenced alarms for 2 hr increments
+- after 3 occurance and 2am alarm made decision to terminate job
 
 #### S
 I was on call got a page at approx 10pm. There was a rabbitMq that had backlogged and was alerting.

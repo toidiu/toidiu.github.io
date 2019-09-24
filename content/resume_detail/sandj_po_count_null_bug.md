@@ -1,9 +1,9 @@
 +++
 title = "Cryptic null bug when requesting folder list"
-date = 2019-08-11
+date = 2017-09-11
 
 [extra]
-company = "S&J"
+company = "s&j"
 lp = []
 +++
 

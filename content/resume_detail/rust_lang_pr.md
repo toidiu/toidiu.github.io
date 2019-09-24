@@ -1,12 +1,20 @@
 +++
 title = "PR to rust lang - infer outlives predicates"
-date = 2019-08-11
+date = 2018-05-11
 
 [extra]
 company = "rust"
-lp = ["learn and be curious", "ownership"]
+lp = ["learn and be curious", "ownership", "think big"]
 +++
 
+#### metrics
+- took 7 months. actual work after mentorship took 4 months to release
+- build times were up to 2hrs. incremental builds were 10-30 min
+- added 48 different test scenarios
+- working on the rust codebase was a exponential step forward for me
+  - 1,043,243 lines of code total in the project
+  - touched up to 45 files
+- added 4 additional fixes post PR
 
 #### S
 I wanted to get involved in the OSS community, learn and give back. To force myself to do this I got involved during the impl days and claimed a feature that offered mentorship.

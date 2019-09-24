@@ -1,22 +1,24 @@
 +++
 title = "Fastly blacklist to whitelist migration"
-date = 2019-08-11
+date = 2018-11-11
 
 [extra]
-company = "iHeartRadio"
+company = "ihr"
 lp = ["highest standard", "earn trust"]
 +++
 
-highest standard
-  rather than fix the symptom at hand fix the core issue
-earn trust
-  outages mean lower oncall morale
-  rolling out the changes in % meant gaining the trust of the team
+highest standard: rather than fix the symptom at hand fix the core issue
 
-customer obsession
-  also bad for customers
-reduce risk
-  rolling in % meant detecting issues early
+earn trust: outages mean lower oncall morale. rolling out the changes in % meant gaining the trust of the team
+
+customer obsession: also bad for customers
+
+#### metrics
+- approx 8 blacklist rules
+- added approx 15 whitelist rules
+- rolled out in increments of 10%-20%
+- rolled out over 3 weeks
+- maintained the hitratio of approx 89% over the roolout
 
 #### S
 Realized that our recs were being incorrectly cached. The reason for this was
@@ -30,6 +32,8 @@ whitelist.
 #### A
 Initially this seems like a very risky manuver, expecially when changing this for
 live production traffic. Therefore I took a few precautions to eliminate the risk.
+
+Used randomint() VCL function to distribute the traffic.
 
 I decided the a % based rollout, and then progressed to do it over 3 weeks.
 

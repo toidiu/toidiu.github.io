@@ -1,9 +1,9 @@
 +++
-title = "Heroku subscription not being honored"
-date = 2019-08-11
+title = "_Heroku subscription not being honored_"
+date = 2010-08-11
 
 [extra]
-company = "iHeartRadio"
+company = "ihr"
 lp = ["customer obsession", "earn trust"]
 +++
 

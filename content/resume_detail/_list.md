@@ -3,7 +3,7 @@ title = "_list_"
 date = 2010-08-11
 
 [extra]
-company = "iHeartRadio"
+company = ""
 lp = ["highest standard"]
 +++
 
