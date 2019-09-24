@@ -1,10 +1,10 @@
 +++
-title = "Explore older v2 api and invent solution to track state"
+title = "Google Drive v2(older) API and invent solution to track state"
 date = 2017-08-11
 
 [extra]
 company = "S&J"
-lp = ["dive deep"]
+lp = ["dive deep", "customer obsession"]
 +++
 
 #### metrics
