@@ -21,4 +21,3 @@ Added simple methods that read annotations and provided two methogs `get_sql_tab
 
 #### R
 As a result, the runtime errors due to table migrations went down to zero.
-
