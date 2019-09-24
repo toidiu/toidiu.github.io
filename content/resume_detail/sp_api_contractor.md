@@ -1,11 +1,15 @@
 +++
-title = "Help select a tech firm"
+title = "Advise on technical firm"
 date = 2019-04-11
 
 [extra]
 company = "Shatterproof"
-lp = ["highest standard"]
+lp = ["disagree and commit"]
 +++
+
+disagree and commit
+  present the risks, push back on execution and technical ability
+  support decision and provide help going forward
 
 
 #### S

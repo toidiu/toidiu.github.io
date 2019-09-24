@@ -8,7 +8,6 @@ lp = ["highest standard"]
 +++
 
 - jvm debugging
-- production outage - tracking list of services and restarting them
 
 - commiting to rust lang issue and following thru on it (7 months)
 

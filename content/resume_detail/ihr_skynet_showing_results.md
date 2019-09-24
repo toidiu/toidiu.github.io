@@ -4,8 +4,15 @@ date = 2018-05-11
 
 [extra]
 company = "iHeartRadio"
-lp = ["frugal", "show results"]
+lp = ["deliver results", "right alot"]
 +++
+
+right alot
+  choosing java and solving part of the process was the correct small step to allow for adoption
+
+deliver results
+  deliver a project despite it not being the original all encompassing solution
+
 
 #### S
 This was during a hack week project and the goal of our 3 person team was to
