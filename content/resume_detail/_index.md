@@ -20,20 +20,20 @@ R: result achieved
 - answer question directly
 
 ### LPs
-4 Customer Obsession
-2 Ownership
-2 Invent and Simplify
-2 Are Right, A Lot
-1 Hire and Develop the Best
-5 Insist on the Highest Standards
-2 Think Big
-2 Bias for Action
-3 Frugality
-2 Learn and Be Curious
-3 Earn Trust
-3 Dive Deep
-2 Have Backbone; Disagree and Commit
-1 Deliver Results
+- 4 Customer Obsession
+- 2 Ownership
+- 2 Invent and Simplify
+- 2 Are Right, A Lot
+- 1 Hire and Develop the Best
+- 5 Insist on the Highest Standards
+- 2 Think Big
+- 2 Bias for Action
+- 3 Frugality
+- 2 Learn and Be Curious
+- 3 Earn Trust
+- 3 Dive Deep
+- 2 Have Backbone; Disagree and Commit
+- 1 Deliver Results
 
 
 ## Customer Obsession

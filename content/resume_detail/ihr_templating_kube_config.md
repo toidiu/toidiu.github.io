@@ -4,7 +4,7 @@ date = 2018-05-11
 
 [extra]
 company = "iHeartRadio"
-lp = ["deliver results", "right alot"]
+lp = ["", ""]
 +++
 
 #### metrics
