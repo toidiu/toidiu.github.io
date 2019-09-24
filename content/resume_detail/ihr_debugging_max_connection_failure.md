@@ -11,6 +11,13 @@ right alot: pin point the differences between stg and prod
 
 bias for action: execute a non invasive solution, which could go out quick while still preventing issues
 
+#### metrics
+- errors occured at 1-2 week increment
+- random 500 errors for a particular api only
+- different behavior across stg and prod envs
+- 5 max connections
+- fixed issue for 2 additional micro services
+
 #### S
 An API that I wrote and owned would start to 500 errors sporadically. When
 Additionally, when I inspected the stg vs prod environments the results would

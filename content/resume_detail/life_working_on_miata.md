@@ -12,7 +12,7 @@ learn and be curious: curiosity of how things work. what is a timing belt. what 
 frugality: save money by doing the changes myself and then also in the future
 
 
-#### metrics:
+#### metrics
 - $200 in tools and $200 in parts
 - 5 days of work
 - changed serpentine belts, timing belt 60k, radiator fluid, water pump

@@ -11,7 +11,7 @@ ownership: the api is owned by the team and not only the responsibility of an in
 
 customer obsession: prod outage means users are being affected
 
-#### metrics:
+#### metrics
 - less than 1/2 hr outage
 - restarted 3-4 failing services
 - restarted up to 15 pods across all services that were in a bad state

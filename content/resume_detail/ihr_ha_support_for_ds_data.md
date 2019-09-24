@@ -13,6 +13,13 @@ earn trust: negotiate a solution with DS to further the relationship
 
 frugality: reuse dynamo, jenkins rather than invent new solution
 
+#### metrics
+- nightly job; system designed for time agnostic release
+- kept 7 days of backups
+- provide interface for testing
+- reuse existing infrastructure (dynamo, jenkins, schema models)
+- poll for new dataset every 5 min
+
 #### S
 Data Science (DS) ran a nightly job to generate music recommendations for users.
 The dataset would live in DynamoDB and the old DS workflow was to rewrite the

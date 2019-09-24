@@ -11,7 +11,7 @@ think big: improve reliability and reduce work exponentially
 
 invent and simplify: utilize helm chart and then customize for internal tools
 
-#### metrics:
+#### metrics
 - able to upgrade jenkins from 1x to 2x
 - able to upgrade all plugins with confidence
 - able to address security warning in jenkins

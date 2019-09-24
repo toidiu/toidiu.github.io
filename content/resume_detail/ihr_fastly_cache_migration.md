@@ -13,6 +13,13 @@ earn trust: outages mean lower oncall morale. rolling out the changes in % meant
 
 customer obsession: also bad for customers
 
+#### metrics
+- approx 8 blacklist rules
+- added approx 15 whitelist rules
+- rolled out in increments of 10%-20%
+- rolled out over 3 weeks
+- maintained the hitratio of approx 89% over the roolout
+
 #### S
 Realized that our recs were being incorrectly cached. The reason for this was
 the historic configuration of specifying the blacklisted paths.
@@ -25,6 +32,8 @@ whitelist.
 #### A
 Initially this seems like a very risky manuver, expecially when changing this for
 live production traffic. Therefore I took a few precautions to eliminate the risk.
+
+Used randomint() VCL function to distribute the traffic.
 
 I decided the a % based rollout, and then progressed to do it over 3 weeks.
 
