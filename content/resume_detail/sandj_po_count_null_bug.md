@@ -9,6 +9,12 @@ lp = []
 
 
 #### S
+A cryptic bug surfaced at the 2 month mark. A file property was being used for keeping track of the project numbers.. which were auto incremented.
+
 #### T
+
+
 #### A
+
 #### R
+

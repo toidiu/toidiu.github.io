@@ -12,3 +12,4 @@ lp = ["dive deep"]
 #### T
 #### A
 #### R
+The app itself was a much larger project than I had estimated for. At the delivery date I typically offered a 3 month guarantee. During this time usually 95%-99% of the bugs are found and were valid for a no charge fix.
