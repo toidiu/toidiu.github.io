@@ -3,7 +3,7 @@ title = "Consistent Hashing and Random Trees: Distributed Caching Protocols for 
 date = 2018-12-24
 
 [extra]
-paper = "consistent_hashing_and_random_trees_distributed_caching_protocols_for_relieving_hot_spots_on_the_world_wide_web_technical_publication.pdf"
+paper = "Consistent_Hashing_and_Random_Trees-_Distributed_Caching_Protocols_for_Relieving_Hot_Spots_on_the_World_Wide_Web.pdf"
 short = "In distributed systems there exists a problem of how to spread load across many servers in a scalable manner. Consistent hashing is a hashing design that allows for distribution with minimal coordination between the machines."
 code = "https://github.com/toidiu/consistent-rs"
 +++
