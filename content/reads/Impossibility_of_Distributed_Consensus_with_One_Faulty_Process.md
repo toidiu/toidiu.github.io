@@ -3,7 +3,7 @@ title = "Impossibility of Distributed Consensus with One Faulty Process"
 date = 2018-09-24
 
 [extra]
-paper = "FLP_imposibility.pdf"
+paper = "Impossibility_of_Distributed_Consensus_with_One_Faulty_Process.pdf"
 short = "The consensus problem involves a system of asynchronous processes, some of which may be unreliable/faulty (die or crash). This paper proves that every solution, with even a single faulty process, has the possibility of non-termination. The important takeaway: we can design our systems to make the possibility of a livelock small, but the probability is non-zero."
 +++
 
