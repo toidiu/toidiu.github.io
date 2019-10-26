@@ -3,7 +3,7 @@ title = "In Search of an Understandable Consensus Algorithm (Extended Raft)"
 date = 2019-09-17
 
 [extra]
-paper = "In_Search_of_an_Understandable_Consensus_Algorithm_(Extended Raft)_.pdf"
+paper = "In_Search_of_an_Understandable_Consensus_Algorithm_(Extended_Raft).pdf"
 short = "Raft is a concensus protocol that aims to improve upon Paxos by being more understandable. It claims to be as efficient as Paxos. The paper outlines an implementation in great detail. To quote: 'The greatest difference between Raft and Paxos is Raft’s strong leadership: Raft uses leader election as an essential part of the consensus protocol, and it concentrates as much functionality as possible in the leader.' By basing actions on a 'consistent leader', subsequent actions and state space is simplified"
 +++
 
