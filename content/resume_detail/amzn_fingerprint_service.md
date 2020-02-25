@@ -16,6 +16,11 @@ bias for action: research other team's usecase; simplify and structure codebase 
 - structure code to support various types of fingerprints for various teams
 - deliver a working first version of the API and provide value to the team. added testing for places where java type erasure made it difficult to add fully typed checked code.
 
+- wrote prfaq to convince leadership
+- learn and bootstrap out paperwork
+  - unlocking team to move from substrate to prod
+
+
 #### S
 
 #### T
