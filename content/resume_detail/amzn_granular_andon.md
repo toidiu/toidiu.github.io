@@ -1,6 +1,6 @@
 +++
-title = "Detect stuck migrations"
-date = 2020-02-01
+title = "Granular andon"
+date = 2020-02-30
 
 [extra]
 company = "amzn"
@@ -10,7 +10,8 @@ lp = []
 summary
 
 #### metrics
-- bla
+- auto deploy rules
+- integrate with workflow
 
 #### S
 
