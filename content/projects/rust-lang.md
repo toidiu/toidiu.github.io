@@ -6,5 +6,6 @@ date = 2018-12-20
 image = "rust-logo-blk.svg"
 link = "https://github.com/rust-lang/rust/pulls?utf8=%E2%9C%93&q=is%3Apr+author%3Atoidiu+"
 open = true
+featured = true
 +++
 Rust is a systems language pursuing the trifecta: safety, concurrency, and speed.

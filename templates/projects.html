@@ -6,6 +6,26 @@
 {% block content %}
 <div id="item-container">
 
+  {#-- featured --#}
+  <div class="section">
+    <a href="#featured" name="featured"
+      class="section-divider important">Featured</a>
+    {% for page in section.pages %}
+        {% if page.extra.featured | false %}
+          <div class="item-wrapper">
+            <a class="item" href={{page.extra.link}} target=_blank" rel="noopener">
+              <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="</>"/>
+              <span class="title">{{page.title}}</span>
+            </a>
+            <div>
+              {{ page.content | safe }}
+            </div>
+          </div>
+        {% endif %}
+    {% endfor %}
+  </div>
+
+
   {#-- open source contributions --#}
   <div class="section">
     <a href="#open-source-contributions" name="open-source-contributions"
