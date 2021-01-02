@@ -1,5 +1,5 @@
 +++
-title = "A Universally Unique IDentifier (UUID) URN Namespace (rfc4122)"
+title = "A Universally Unique IDentifier (UUID) URN Namespace (rfc 4122)"
 date = 2019-12-15
 
 [extra]
