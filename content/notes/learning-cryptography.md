@@ -16,9 +16,13 @@ Ramp up on cryptography and crypto tools team
 
 
 ## tasks
-- coursera
-- review major attacks
 - review tls 1.3 rfc
+
+- coursera
+- s2n-quic
+
+- cryptopals
+
 - review quic rfc
 
 ## concepts
