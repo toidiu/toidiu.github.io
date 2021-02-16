@@ -62,9 +62,13 @@ does rertanmission of lost frames count towards the limit?
 - A receiver MUST ignore any MAX_STREAMS frame that does not increase the stream limit
 why in multiple places do we only want to accept an increase and reject a decrease in limits? is there a security concern or is this a simpler model?
 
+5.2.2
+- large enough to initiate a new connection for any supported version... must drop smaller packets
+what defines a large/small packet
 
 ### General questions
 - what is a reset_stream frame? and when should one use it?
-- 
+- how did we decide to set MAX_ACTIVE_CONNECTION_ID_LIMIT to 3?
+  - what exactly is the state that needs to be maintained and what is the "probe more paths". can this simply not be done via more concurrent streams
 
 
