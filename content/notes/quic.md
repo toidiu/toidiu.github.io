@@ -66,9 +66,40 @@ why in multiple places do we only want to accept an increase and reject a decrea
 - large enough to initiate a new connection for any supported version... must drop smaller packets
 what defines a large/small packet
 
+6.2
+- A client MUST discard a Version Negotiation packet that lists the QUIC version selected by the client.
+does this indicate a condition that should not occur (server should simply have accepted it) and therefore an error state?
+
+7.2
+- Initial packet is sent by a client... client populates the Destination Connection ID field with an unpredictable value
+why do we need an unpredictable value here? if the packet protection keys are derived from this.. does this need to be cryptographicly secure?
+
+7.3
+- Initial vs Retry
+why would a server send a Retry packet?
+
+7.4.1
+- server MAY store and recover the previously sent values (cannot lower the values specified previously).
+does that mean we need to store all connection values/states.. or store 1 set by the timestamp? what happens if the client and server disagree on the value?
+
+7.5
+- Implementations MUST support buffering at least 4096 bytes of data received in out-of-order CRYPTO frames
+any insight into why was 4096 chosen as a value? why not half or double that value?
+
+7.5
+- Once the handshake completes, if an endpoint is unable to buffer all data in a CRYPTO frame, it MAY discard that CRYPTO frame and all CRYPTO frames received in the future
+so the handshake does not include a crypto handshake? how can we proceed with the connection if the crypto handshake has not completed.. are we in insecure land?
+
+8.1.2
+- A server can also use a Retry packet to defer the state and processing costs of connection establishment
+how does Retry packet defer the cost? wont we need to do this eentually and since we dont establish a connection this just seems to waste a packet.
+
 ### General questions
 - what is a reset_stream frame? and when should one use it?
 - how did we decide to set MAX_ACTIVE_CONNECTION_ID_LIMIT to 3?
   - what exactly is the state that needs to be maintained and what is the "probe more paths". can this simply not be done via more concurrent streams
-
+- section 6.2.1 did not get highlighted.. bug?
+- whats the strategy for preventing connection id exhaustion? given 64bit length, 1 conn/sec => years = 583,386,176,284
+- do we impl 0-RTT? will we offer it in the future?
+- what exactly is the difference between frame and packet? is a packet a UDP datagram? do they provide overlapping functionality and if so when do you use one over the other (for example NEW_TOKEN vs Retry packet in 8.1.1)?
 
