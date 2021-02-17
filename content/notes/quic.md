@@ -94,6 +94,20 @@ so the handshake does not include a crypto handshake? how can we proceed with th
 - A server can also use a Retry packet to defer the state and processing costs of connection establishment
 how does Retry packet defer the cost? wont we need to do this eentually and since we dont establish a connection this just seems to waste a packet.
 
+8.1.3
+A server SHOULD encode tokens provided with NEW_TOKEN frames and Retry packets differently, and validate the latter more strictly.
+- why  one more strictly over the other? is it because NEW_TOKEN can only be used with 0-RTT and therefore more restricted?
+
+9.3.2
+- If an endpoint skips validation of a peer address as described above, it does not need to limit its sending rate.
+why would peer address validation be skipped, this seems dangerous?
+
+9.6.1
+9.6.2
+- preferred_address transport parameter in the TLS handshake
+- client that migrates to a preferred address..
+so the server can only set the preferred address at the start of a connection (TLS). and only a client initiate a migation? does this mean that a server cannot update the preferred address and send all connections to a single address by mistake?
+
 ### General questions
 - what is a reset_stream frame? and when should one use it?
 - how did we decide to set MAX_ACTIVE_CONNECTION_ID_LIMIT to 3?
@@ -102,4 +116,8 @@ how does Retry packet defer the cost? wont we need to do this eentually and sinc
 - whats the strategy for preventing connection id exhaustion? given 64bit length, 1 conn/sec => years = 583,386,176,284
 - do we impl 0-RTT? will we offer it in the future?
 - what exactly is the difference between frame and packet? is a packet a UDP datagram? do they provide overlapping functionality and if so when do you use one over the other (for example NEW_TOKEN vs Retry packet in 8.1.1)?
+- is a path a different physical network path? does the client konw that a new network path was created and thus initialte a path migration?
+  - i foresee high latency if path migration is initiated too frequently. 'stuckness' can also happen if connection_ids are used up and abandoned too quickly.
+- whats the difference between path and connection migration?
+
 
