@@ -33,7 +33,7 @@ https://github.com/awslabs/s2n-quic/blob/4826027e85fef49ba87d9505494317dbe4e9d47
 
 
 
-### Questions:
+### RFC Questions:
 2.1
 - successive streams of each type are created with numerically incresing stream IDs
 Q: there are 4 types.. does that mean we can have a stream id 5 of type 1 and type 2? or does stream id incude the type bits also?
@@ -206,3 +206,5 @@ Q: - why would one want to use a zero length connection id?
 
 
 
+
+start at 21.4.1
