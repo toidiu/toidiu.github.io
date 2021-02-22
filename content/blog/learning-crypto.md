@@ -1,7 +1,6 @@
 +++
-title = "Learning Cryptography"
-date = 2020-12-26
-
+title = "Learning Crypto"
+date = 2021-02-15
 
 [taxonomies]
 tag = ["crypto"]
@@ -10,11 +9,12 @@ tag = ["crypto"]
 id = blog-single
 +++
 
-Ramp up on cryptography and crypto tools team
+
+14 steps for learning crypto.
+
 <!-- more -->
 
-## ramp up on crypto
-originally provided by SalusaSecondus
+Originally provided by [@SalusaSecondus](https://github.com/SalusaSecondus)
 
 - [Dan Boneh's Cryptography I](https://www.coursera.org/learn/crypto)
 - [Cryptopals Crypto Challenges](https://cryptopals.com)
@@ -32,46 +32,5 @@ originally provided by SalusaSecondus
 - KNOW YOUR LIMITS - Let me re-emphasize that last one. As everyone tells you, doing crypto is hard and dangerous. If you are confident that you're doing things right with no problems, you can't be trusted. You need to treat cryptography with the caution and respect it deserves. I can think of at least one coworker whose cryptography I don't trust because he is over-confident in his own abilities. (And his skills are better than mine. Still, I'm more trusted because I'm more cautious.)
 
 
-## ramp up on crypto-tools team
 
-
-### short term ramp up
-D - quic rfc
-D - meeting invites - standup, com office hr, oncall, sprint, sprint demo
-D - https://www.youtube.com/watch?v=B1SQFjIXJtc&feature=emb_title
-- quic - varint (16)
-- quic - packet decoding (17)
-- endian
-- coursera
-
-### long term ramp up
-- cryptopals
-- read bbr
-- tls rfc
-- get involved in quic community
-- https://github.com/quicwg/base-drafts
-
-### long term projects
-- long term projects
-- unit testing
-- de-macro stuff
-- more usecase testing (send vs receive, short vs large payload, congestion, attacker)
-- read up on kernel bypass
-
-### concepts
-- diffie hellman
-- rsa
-- public vs private key
-
-### major attacks
-- shellshock
-- heartbleed
-- spectre
-- meltdown
-
-### resources
-#### book
-- http://cacr.uwaterloo.ca/hac/
-#### lecture notes
-- http://cseweb.ucsd.edu/~mihir/papers/gb.pdf
 
