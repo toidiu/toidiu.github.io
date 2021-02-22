@@ -1,6 +1,6 @@
 +++
 title = "Granular andon"
-date = 2020-02-30
+date = 2020-02-28
 
 [extra]
 company = "amzn"
