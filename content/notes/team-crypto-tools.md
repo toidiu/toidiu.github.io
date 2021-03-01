@@ -50,6 +50,7 @@ D - https://www.youtube.com/watch?v=B1SQFjIXJtc&feature=emb_title
 - tls rfc
 - get involved in quic community
 - https://github.com/quicwg/base-drafts
+- https://mitls.org/pages/attacks/SMACK
 
 ### long term projects
 - long term projects
