@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/live-code'
+    if: github.ref != 'refs/heads/master'
     steps:
       # Runs a single command using the runners shell
       - name: Run a one-line script
