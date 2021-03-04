@@ -12,6 +12,7 @@ id = blog-single
 
 Understanding QUIC transport protocol
 
+explanations: https://quicwg.org/ops-drafts/
 summary: https://quicwg.org/ops-drafts/draft-ietf-quic-manageability.html#name-using-the-spin-bit-for-pass
 rfc: https://tools.ietf.org/html/draft-ietf-quic-transport-33
 
