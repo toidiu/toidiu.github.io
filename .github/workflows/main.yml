@@ -19,5 +19,5 @@ jobs:
           BUILD_DIR: .
           TOKEN: ${{ secrets.TOKEN }}
           BUILD_ONLY: true
-          PAGES_BRANCH: master
+          PAGES_BRANCH: live-code
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
