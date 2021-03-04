@@ -19,3 +19,4 @@ jobs:
           BUILD_DIR: .
           TOKEN: ${{ secrets.TOKEN }}
           BUILD_ONLY: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
