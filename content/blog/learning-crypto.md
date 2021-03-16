@@ -31,6 +31,7 @@ Originally provided by [@SalusaSecondus](https://github.com/SalusaSecondus)
 - [How To Learn Cryptography as a Programmer](https://soatok.blog/2020/06/10/how-to-learn-cryptography-as-a-programmer)
 - KNOW YOUR LIMITS - Let me re-emphasize that last one. As everyone tells you, doing crypto is hard and dangerous. If you are confident that you're doing things right with no problems, you can't be trusted. You need to treat cryptography with the caution and respect it deserves. I can think of at least one coworker whose cryptography I don't trust because he is over-confident in his own abilities. (And his skills are better than mine. Still, I'm more trusted because I'm more cautious.)
 
+---
 
-
+For more please also visit the excellent guide @SalusaSecondus has put together [Crypto Gotchas!](https://github.com/SalusaSecondus/CryptoGotchas/blob/master/README.md).
 
