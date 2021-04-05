@@ -43,6 +43,7 @@ meetings
 code reviews/tls learning
 
 ## short term read list
+- tls walkthu: https://tls13.ulfheim.net/
 - quic performance: http://cs.brown.edu/~tab/papers/QUIC_WWW21.pdf
 D - intro to crypto: https://web.cs.ship.edu/~cdgira/courses/CSC434/Fall2004/docs/course_docs/IntroToCrypto.pdf
 
