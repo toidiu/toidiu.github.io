@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="Apoorv Kothari is software engineer. He studied Engineering at Cooper Union and is intrested in Rust, Kubernetes, Scala, Android, Java.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Scala, java, Cooper Union, blog, talks, code, rust, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https://toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https://toidiu.com&#x2f;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https://toidiu.com&#x2f;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https://toidiu.com&#x2f;personal">
+
+      personal
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https://toidiu.com&#x2f;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <div class="title important">A practical guide to breakOut</div>
+  <div class="date">2017-05-27</div>
+  </div>
+
+  <div class="content">
+    <p>In this post I will be reviewing <code>scala.collection.breakOut</code> from an application developer's perspective rather than a functional programming enthusiast. I will discuss why one would want to use it and how to recognize when it is applicable.</p>
+<p id="zola-continue-reading"><a name="continue-reading"></a></p>
+<p>When I first saw <code>breakOut</code>, it seemed like an extremely intimidating concept and a little like black magic. It certainly didn't help that I found explanations of <code>breakOut</code> intermingled with the equally intimidating concept of <code>CanBuildFrom</code>. This is a shame because, with proper application, <code>breakOut</code> can make your code run faster. Let's consider the following code sample:</p>
+<p>The full code sample can be found at <a href="https://github.com/toidiu/Scala-breakOut">github</a>.</p>
+<h4 id="why-we-care">Why we care</h4>
+<pre style="background-color:#383838;">
+<span style="font-style:italic;color:#6e9cbe;">val </span><span style="color:#e6e1dc;">list </span><span style="color:#cc7833;">= </span><span style="color:#86c20e;">List</span><span style="color:#e6e1dc;">(</span><span style="color:#c1be91;">&quot;one&quot;</span><span style="color:#e6e1dc;">, </span><span style="color:#c1be91;">&quot;two&quot;</span><span style="color:#e6e1dc;">, </span><span style="color:#c1be91;">&quot;three&quot;</span><span style="color:#e6e1dc;">, </span><span style="color:#c1be91;">&quot;four&quot;</span><span style="color:#e6e1dc;">)
+
+</span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="color:#e6e1dc;">expensiveMap </span><span style="color:#cc7833;">=</span><span style="color:#e6e1dc;"> list      </span><span style="color:#95815e;">//type Map[Int, String] is infered by the compiler
+  </span><span style="color:#e6e1dc;">.map(</span><span style="font-style:italic;color:#fd971f;">n </span><span style="font-style:italic;color:#6e9cbe;">=&gt;</span><span style="color:#e6e1dc;"> n.length -&gt; n)     </span><span style="color:#95815e;">//1
+  </span><span style="color:#e6e1dc;">.toMap                    </span><span style="color:#95815e;">//2
+</span></pre>
+<p>The problem with this code is that it is memory inefficient. We first create an intermediate list at line (1) and then convert it to a Map on line (2). Ideally we could do it all in one step. Well thanks to <code>breakOut</code> we can!</p>
+<pre style="background-color:#383838;">
+<span style="color:#cc7833;">import </span><span style="color:#e6e1dc;">scala.collection.breakOut
+</span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="color:#e6e1dc;">list </span><span style="color:#cc7833;">= </span><span style="color:#86c20e;">List</span><span style="color:#e6e1dc;">(</span><span style="color:#c1be91;">&quot;one&quot;</span><span style="color:#e6e1dc;">, </span><span style="color:#c1be91;">&quot;two&quot;</span><span style="color:#e6e1dc;">, </span><span style="color:#c1be91;">&quot;three&quot;</span><span style="color:#e6e1dc;">, </span><span style="color:#c1be91;">&quot;four&quot;</span><span style="color:#e6e1dc;">)
+
+</span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="color:#e6e1dc;">efficientMap: </span><span style="font-style:italic;color:#6e9cbe;">Map</span><span style="color:#e6e1dc;">[</span><span style="font-style:italic;color:#6e9cbe;">Int</span><span style="color:#e6e1dc;">, </span><span style="font-style:italic;color:#6e9cbe;">String</span><span style="color:#e6e1dc;">] </span><span style="color:#cc7833;">=</span><span style="color:#e6e1dc;"> list   </span><span style="color:#95815e;">//you need to specify the type
+  </span><span style="color:#e6e1dc;">.map(</span><span style="font-style:italic;color:#fd971f;">n </span><span style="font-style:italic;color:#6e9cbe;">=&gt; </span><span style="color:#e6e1dc;">(n.length, n))(breakOut)
+</span></pre>
+<p>This results in the <code>Map</code> we want without the intermediate list. Win!</p>
+<h4 id="when-to-use">When to use</h4>
+<p>So when should we use <code>breakOut</code>? An easy way to remember when to use it is if we have the following list of conditions:</p>
+<ul>
+<li>we have a traversable collection (List, Seq, Vector)</li>
+<li>we want to transform the elements (pairing the string length with the string)</li>
+<li>we want the final output to be a <code>Map</code></li>
+</ul>
+<h4 id="conclusion">Conclusion</h4>
+<p>Scala has a robust immutalbe collections library, which has a tendency to make it more GC heavy. However, with some attention to the implementation details, it is possible to remain efficient and functional.</p>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https:&#x2f;&#x2f;toidiu.com&#x2f;main.js" ></script>
+        
+    </body>
+
+</html>
+

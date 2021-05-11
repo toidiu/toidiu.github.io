@@ -1,0 +1,643 @@
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+    
+        <url>
+            <loc>https://toidiu.com/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/blog/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/blog/a-practical-guide-to-breakout/</loc>
+            
+                <lastmod>2017-05-27</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/blog/android-low-memory-testing/</loc>
+            
+                <lastmod>2016-08-12</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/blog/announcing-reads/</loc>
+            
+                <lastmod>2018-12-19</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/blog/learning-crypto/</loc>
+            
+                <lastmod>2021-02-15</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/blog/learning-scala/</loc>
+            
+                <lastmod>2016-05-15</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/blog/migrating-in-confidence-db-testing-in-rust/</loc>
+            
+                <lastmod>2019-02-19</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/blog/polymorphism-in-scala/</loc>
+            
+                <lastmod>2016-10-31</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/blog/understanding-lambda-in-rust/</loc>
+            
+                <lastmod>2018-12-24</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/blog/vms/</loc>
+            
+                <lastmod>2018-12-21</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/fieldbook/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/notes/coursera-cryptography/</loc>
+            
+                <lastmod>2021-01-12</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/notes/rfc-quic-recovery/</loc>
+            
+                <lastmod>2021-03-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/notes/rfc-quic-tls/</loc>
+            
+                <lastmod>2021-03-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/notes/rfc-quic/</loc>
+            
+                <lastmod>2021-01-12</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/notes/team-crypto-tools/</loc>
+            
+                <lastmod>2020-12-26</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/gin/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/gin/aviation/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/gin/bees-knees/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/gin/blue-moon/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/gin/corpse-reviver-2/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/gin/fine-and-dandy/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/gin/g-and-t/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/gin/gimlet/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/gin/negroni-amer/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/gin/negroni-amour/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/gin/negroni/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/gin/old-friend/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/gin/perfect-martini/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/gin/the-last-word/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/gin/wonderful-wonderful/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/photos/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/photos/europe-2019-01/</loc>
+            
+                <lastmod>2019-07-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/photos/europe-2019-02/</loc>
+            
+                <lastmod>2019-07-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/photos/europe-2019-03/</loc>
+            
+                <lastmod>2019-07-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/photos/europe-2019-04/</loc>
+            
+                <lastmod>2019-07-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/photos/europe-2019-05/</loc>
+            
+                <lastmod>2019-07-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/photos/europe-2019-06/</loc>
+            
+                <lastmod>2019-07-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/photos/europe-2019-07/</loc>
+            
+                <lastmod>2019-07-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/photos/europe-2019-08/</loc>
+            
+                <lastmod>2019-07-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/photos/europe-2019-09/</loc>
+            
+                <lastmod>2019-07-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/photos/europe-2019-10/</loc>
+            
+                <lastmod>2019-07-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/photos/europe-2019-11/</loc>
+            
+                <lastmod>2019-07-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/photos/europe-2019-12/</loc>
+            
+                <lastmod>2019-07-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/personal/photos/europe-2019-13/</loc>
+            
+                <lastmod>2019-07-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/projects/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/projects/1-second-everyday/</loc>
+            
+                <lastmod>2017-10-20</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/projects/consistent-rs/</loc>
+            
+                <lastmod>2018-12-20</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/projects/dkv/</loc>
+            
+                <lastmod>2018-09-24</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/projects/fieldbook/</loc>
+            
+                <lastmod>2016-09-24</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/projects/fin/</loc>
+            
+                <lastmod>2019-05-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/projects/learn-rust/</loc>
+            
+                <lastmod>2018-07-24</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/projects/minibar/</loc>
+            
+                <lastmod>2016-10-20</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/projects/mta-status/</loc>
+            
+                <lastmod>2017-09-24</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/projects/oystour/</loc>
+            
+                <lastmod>2017-09-24</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/projects/persistent-graph/</loc>
+            
+                <lastmod>2017-03-24</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/projects/postgres-mapper/</loc>
+            
+                <lastmod>2018-10-20</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/projects/rust-lang/</loc>
+            
+                <lastmod>2018-12-20</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/projects/swig/</loc>
+            
+                <lastmod>2015-10-20</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/projects/toidiu-fs/</loc>
+            
+                <lastmod>2017-09-24</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/reads/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/reads/a-universally-unique-identifier-uuid-urn-namespace-rfc4122/</loc>
+            
+                <lastmod>2019-12-15</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/reads/building-the-real-time-big-data-database-seven-design-principles-behind-scylla/</loc>
+            
+                <lastmod>2019-01-10</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/reads/consistent-hashing-and-random-trees-distributed-caching-protocols-for-relieving-hot-spots-on-the-world-wide-web/</loc>
+            
+                <lastmod>2018-12-24</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/reads/hmac-keyed-hashing-for-message-authentication-rfc2104/</loc>
+            
+                <lastmod>2021-01-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/reads/impossibility-of-distributed-consensus-with-one-faulty-process/</loc>
+            
+                <lastmod>2018-09-24</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/reads/in-search-of-an-understandable-consensus-algorithm-extended-raft/</loc>
+            
+                <lastmod>2019-09-17</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/reads/quic-a-udp-based-multiplexed-and-secure-transport-rfc/</loc>
+            
+                <lastmod>2021-02-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/reads/quic-performance-rfc/</loc>
+            
+                <lastmod>2021-02-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/amzn-detect-stuck-mig/</loc>
+            
+                <lastmod>2020-02-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/amzn-fingerprint-service/</loc>
+            
+                <lastmod>2019-12-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/amzn-granular-andon/</loc>
+            
+                <lastmod>2020-02-28</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/amzn-iad-lse-remediation/</loc>
+            
+                <lastmod>2020-11-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/amzn-ice-investigation/</loc>
+            
+                <lastmod>2020-08-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/amzn-mentor-auto-pulling-andon/</loc>
+            
+                <lastmod>2020-12-20</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/amzn-pdt-build/</loc>
+            
+                <lastmod>2020-12-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/amzn-simply-metrics/</loc>
+            
+                <lastmod>2020-12-01</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/ihr-batch-job-pager-duty/</loc>
+            
+                <lastmod>2018-08-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/ihr-customer-subscription-issue/</loc>
+            
+                <lastmod>2018-08-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/ihr-debugging-max-connection-failure/</loc>
+            
+                <lastmod>2018-12-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/ihr-fastly-cache-migration/</loc>
+            
+                <lastmod>2018-11-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/ihr-ha-support-for-ds-data/</loc>
+            
+                <lastmod>2019-01-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/ihr-heroku-customer/</loc>
+            
+                <lastmod>2010-08-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/ihr-migrate-jenkins/</loc>
+            
+                <lastmod>2018-07-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/ihr-own-prod-outage-when-oncall-in-transit/</loc>
+            
+                <lastmod>2018-03-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/ihr-recs-squad-lacking-resources/</loc>
+            
+                <lastmod>2018-08-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/ihr-skynet-showing-results/</loc>
+            
+                <lastmod>2018-06-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/ihr-templating-kube-config/</loc>
+            
+                <lastmod>2018-06-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/life-working-on-miata/</loc>
+            
+                <lastmod>2013-08-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/list/</loc>
+            
+                <lastmod>2010-08-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/rust-lang-pr/</loc>
+            
+                <lastmod>2018-05-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/rust-lead-meetup/</loc>
+            
+                <lastmod>2017-10-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/rust-postgres-mapper/</loc>
+            
+                <lastmod>2018-10-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/sandj-rotation-work/</loc>
+            
+                <lastmod>2018-02-11</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://toidiu.com/resume_detail/sp-api-contractor/</loc>
+            
+                <lastmod>2019-05-11</lastmod>
+            
+        </url>
+    
+</urlset>

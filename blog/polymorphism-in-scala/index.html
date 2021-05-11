@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="Apoorv Kothari is software engineer. He studied Engineering at Cooper Union and is intrested in Rust, Kubernetes, Scala, Android, Java.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Scala, java, Cooper Union, blog, talks, code, rust, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https://toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https://toidiu.com&#x2f;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https://toidiu.com&#x2f;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https://toidiu.com&#x2f;personal">
+
+      personal
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https://toidiu.com&#x2f;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <div class="title important">Polymorphism in Scala</div>
+  <div class="date">2016-10-31</div>
+  </div>
+
+  <div class="content">
+    <p>Polymorphism is a word that means 'having  different forms'. In terms of OOP, this mean that a class can have many different forms and behave in different manners depending on the context. Scala has 3 types of Polymorphism that we will explore further below.</p>
+<p id="zola-continue-reading"><a name="continue-reading"></a></p>
+<ul>
+<li>Subtype Polymorphism</li>
+<li>Parametric Polymorphism</li>
+<li>Ad-hoc Polymorphism</li>
+</ul>
+<blockquote>
+<p>As an extra bit of info, the compiler evaluates subtype at Runtime
+while parametric and ad-hoc are evaluated at compile time.</p>
+</blockquote>
+<p>I have found that I learn much better when I have to write about it and explain it to others. This is an exercise for my understanding but hopefully it will also help others. The accompanying code for this post can be found on <a href="https://github.com/toidiu/ScalaPolymorphism">github</a>.</p>
+<h3 id="subtype-polymorphism">Subtype Polymorphism</h3>
+<p>In Java we have subtype polymorphism and this is the one that most people learn about. This is when we define a super/parent class or interface(traits in Scala) and then extend this behavior in a child class. In the example below, we can think of Taco as a <em>sub-type</em> of the type Food.</p>
+<pre style="background-color:#383838;">
+<span style="color:#95815e;">//Define a trait that other child classes can extend. We could also have declared Food as an abstract class.
+</span><span style="font-style:italic;color:#6e9cbe;">trait </span><span style="text-decoration:underline;color:#ffc66d;">Food </span><span style="color:#e6e1dc;">{
+  </span><span style="color:#cc7833;">final </span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="color:#e6e1dc;">isEdible </span><span style="color:#cc7833;">= </span><span style="color:#6e9cbe;">true
+  </span><span style="font-style:italic;color:#6e9cbe;">def </span><span style="color:#ffc66d;">name</span><span style="color:#e6e1dc;">: </span><span style="font-style:italic;color:#6e9cbe;">String
+  def </span><span style="color:#ffc66d;">minToPrep</span><span style="color:#e6e1dc;">: </span><span style="font-style:italic;color:#6e9cbe;">Int
+</span><span style="color:#e6e1dc;">}
+
+</span><span style="font-style:italic;color:#6e9cbe;">class </span><span style="text-decoration:underline;color:#ffc66d;">Taco </span><span style="color:#cc7833;">extends </span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">Food </span><span style="color:#e6e1dc;">{
+  </span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="color:#e6e1dc;">name: </span><span style="font-style:italic;color:#6e9cbe;">String </span><span style="color:#cc7833;">= </span><span style="color:#c1be91;">&quot;taco&quot;
+  </span><span style="font-style:italic;color:#6e9cbe;">def </span><span style="color:#ffc66d;">minToPrep</span><span style="color:#e6e1dc;">: </span><span style="font-style:italic;color:#6e9cbe;">Int </span><span style="color:#cc7833;">= </span><span style="color:#a5c261;">6
+</span><span style="color:#e6e1dc;">}
+
+</span><span style="font-style:italic;color:#6e9cbe;">class </span><span style="text-decoration:underline;color:#ffc66d;">Cereal </span><span style="color:#cc7833;">extends </span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">Food </span><span style="color:#e6e1dc;">{
+  </span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="color:#e6e1dc;">name: </span><span style="font-style:italic;color:#6e9cbe;">String </span><span style="color:#cc7833;">= </span><span style="color:#c1be91;">&quot;cereal&quot;
+  </span><span style="font-style:italic;color:#6e9cbe;">def </span><span style="color:#ffc66d;">minToPrep</span><span style="color:#e6e1dc;">: </span><span style="font-style:italic;color:#6e9cbe;">Int </span><span style="color:#cc7833;">= </span><span style="color:#a5c261;">1
+</span><span style="color:#e6e1dc;">}
+
+</span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="color:#e6e1dc;">t </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">Taco
+val </span><span style="color:#e6e1dc;">c </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">Cereal</span><span style="color:#e6e1dc;">
+
+t.isEdible </span><span style="color:#95815e;">//true</span><span style="color:#e6e1dc;">
+c.isEdible </span><span style="color:#95815e;">//true</span><span style="color:#e6e1dc;">
+t.minToPrep </span><span style="color:#95815e;">//6</span><span style="color:#e6e1dc;">
+c.minToPrep </span><span style="color:#95815e;">//1
+</span></pre>
+<p>As seen from the example above, both <code>Taco</code> and <code>Cereal</code> are child classes that extend the behavior of trait <code>Food</code>.</p>
+<pre style="background-color:#383838;">
+<span style="font-style:italic;color:#6e9cbe;">def </span><span style="color:#ffc66d;">whatsForLunch</span><span style="color:#e6e1dc;">(</span><span style="font-style:italic;color:#fd971f;">f</span><span style="color:#e6e1dc;">: </span><span style="font-style:italic;color:#6e9cbe;">Food</span><span style="color:#e6e1dc;">) {
+  println(f.name)
+}
+
+whatsForLunch(</span><span style="color:#cc7833;">new </span><span style="font-style:italic;color:#6e9cbe;">Taco</span><span style="color:#e6e1dc;">) </span><span style="color:#95815e;">//prints: taco
+</span></pre>
+<p>We can now substitute instances of Taco for a value that requires Food. A way to think about this is that by extending the class Food, Taco essentially guarantees that it will fulfill a contract and define the values isEdible and minToPrep; and therefore makes a perfectly acceptable substitute for Food.</p>
+<p>In this case we define the value for isEdible as true for all foods. However, the name and minToPrep value is customized based on the different types of food.</p>
+<p>As a note, sub-type polymorphism is determined at Runtime. The type of the class is looked up at Runtime and then the appropriate method is called. For more information about this read the Wikipedia article on <a href="https://en.wikipedia.org/wiki/Dynamic_dispatch">Dynamic Dispatch</a>.</p>
+<h3 id="parametric-polymorphism">Parametric Polymorphism</h3>
+<p>In Java the name for parametric polymorphism is 'Generics'. The idea is to create data structures and write code that can be generic or type agnostic. A good example to demonstrate this is List. Below we construct a List for holding Int which <strong>doesn't</strong> use parametric polymorphism.</p>
+<pre style="background-color:#383838;">
+<span style="font-style:italic;color:#6e9cbe;">trait </span><span style="text-decoration:underline;color:#ffc66d;">List
+
+</span><span style="font-style:italic;color:#6e9cbe;">object </span><span style="text-decoration:underline;color:#ffc66d;">Nil </span><span style="color:#cc7833;">extends </span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">List </span><span style="color:#e6e1dc;">{
+  </span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="color:#e6e1dc;">isEmpty </span><span style="color:#cc7833;">= </span><span style="color:#6e9cbe;">true
+</span><span style="color:#e6e1dc;">}
+
+</span><span style="font-style:italic;color:#6e9cbe;">class </span><span style="text-decoration:underline;color:#ffc66d;">Cons</span><span style="color:#e6e1dc;">(</span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="font-style:italic;color:#fd971f;">head</span><span style="color:#e6e1dc;">: </span><span style="font-style:italic;color:#6e9cbe;">Int</span><span style="color:#e6e1dc;">, </span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="font-style:italic;color:#fd971f;">tail</span><span style="color:#e6e1dc;">: </span><span style="font-style:italic;color:#6e9cbe;">List</span><span style="color:#e6e1dc;">) </span><span style="color:#cc7833;">extends </span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">List </span><span style="color:#e6e1dc;">{
+  </span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="color:#e6e1dc;">isEmpty </span><span style="color:#cc7833;">= </span><span style="color:#6e9cbe;">false
+</span><span style="color:#e6e1dc;">}
+
+</span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="color:#e6e1dc;">list </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">Cons</span><span style="color:#e6e1dc;">(</span><span style="color:#a5c261;">2</span><span style="color:#e6e1dc;">, </span><span style="color:#cc7833;">new </span><span style="font-style:italic;color:#6e9cbe;">Cons</span><span style="color:#e6e1dc;">(</span><span style="color:#a5c261;">1</span><span style="color:#e6e1dc;">, </span><span style="color:#86c20e;">Nil</span><span style="color:#e6e1dc;">)) </span><span style="color:#95815e;">//list {2-&gt;1-&gt;Nil}</span><span style="color:#e6e1dc;">
+println(list.head)  </span><span style="color:#95815e;">//prints: 2
+</span></pre>
+<p>The above code is fine if we only want to create a list of Int but we quickly run into problems when we want to create a list of String, Long, Taco!! We now have to re-write the same code and create multiple copies for each data type.</p>
+<blockquote>
+<p>This violates the DRY(Don't Repeat Yourself) principle of good 
+programming. To understand the reason behind DRY, just consider
+what happens if we want to now add a method to append lists 
+together. We would have to add the same code to the implementation 
+for each type of List.</p>
+</blockquote>
+<p>Instead we could re-write List data structure using parametric polymorphism, in a more generic manner(pun intended :P).</p>
+<pre style="background-color:#383838;">
+<span style="font-style:italic;color:#6e9cbe;">trait </span><span style="text-decoration:underline;color:#ffc66d;">List</span><span style="color:#e6e1dc;">[</span><span style="color:#cc7833;">+</span><span style="font-style:italic;color:#6e9cbe;">A</span><span style="color:#e6e1dc;">]
+
+</span><span style="font-style:italic;color:#6e9cbe;">object </span><span style="text-decoration:underline;color:#ffc66d;">Nil </span><span style="color:#cc7833;">extends </span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">List</span><span style="color:#e6e1dc;">[</span><span style="font-style:italic;color:#6e9cbe;">Nothing</span><span style="color:#e6e1dc;">]
+
+</span><span style="font-style:italic;color:#6e9cbe;">class </span><span style="text-decoration:underline;color:#ffc66d;">Cons</span><span style="color:#e6e1dc;">[</span><span style="font-style:italic;color:#6e9cbe;">A</span><span style="color:#e6e1dc;">](</span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="font-style:italic;color:#fd971f;">head</span><span style="color:#e6e1dc;">: </span><span style="font-style:italic;color:#6e9cbe;">A</span><span style="color:#e6e1dc;">, </span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="font-style:italic;color:#fd971f;">tail</span><span style="color:#e6e1dc;">: </span><span style="font-style:italic;color:#6e9cbe;">List</span><span style="color:#e6e1dc;">[</span><span style="font-style:italic;color:#6e9cbe;">A</span><span style="color:#e6e1dc;">]) </span><span style="color:#cc7833;">extends </span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">List</span><span style="color:#e6e1dc;">[</span><span style="font-style:italic;color:#6e9cbe;">A</span><span style="color:#e6e1dc;">]
+
+
+</span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="color:#e6e1dc;">intList </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">Cons</span><span style="color:#e6e1dc;">(</span><span style="color:#a5c261;">2 </span><span style="color:#e6e1dc;">, </span><span style="color:#cc7833;">new </span><span style="font-style:italic;color:#6e9cbe;">Cons</span><span style="color:#e6e1dc;">(</span><span style="color:#a5c261;">1 </span><span style="color:#e6e1dc;">, </span><span style="color:#86c20e;">Nil</span><span style="color:#e6e1dc;">)) </span><span style="color:#95815e;">//list of Int
+</span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="color:#e6e1dc;">foodList: </span><span style="font-style:italic;color:#6e9cbe;">List</span><span style="color:#e6e1dc;">[</span><span style="font-style:italic;color:#6e9cbe;">Food</span><span style="color:#e6e1dc;">] </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">Cons</span><span style="color:#e6e1dc;">(</span><span style="color:#cc7833;">new </span><span style="font-style:italic;color:#6e9cbe;">Taco</span><span style="color:#e6e1dc;">, </span><span style="color:#cc7833;">new </span><span style="font-style:italic;color:#6e9cbe;">Cons</span><span style="color:#e6e1dc;">(</span><span style="color:#cc7833;">new </span><span style="font-style:italic;color:#6e9cbe;">Cereal</span><span style="color:#e6e1dc;">, </span><span style="color:#86c20e;">Nil</span><span style="color:#e6e1dc;">)) </span><span style="color:#95815e;">//list of food
+</span></pre>
+<blockquote>
+<p>The + sign on the definition of the List declares List structure
+as covariant. This means that if we declare a list of Food 
+<code>val list = List[Food]</code> we can add Taco and Cereal to the list.</p>
+</blockquote>
+<p>The advantages are obvious... we can define the List data structure once and utilize it with any type of object!</p>
+<h3 id="ad-hoc-polymorphism">Ad-hoc Polymorphism</h3>
+<p>Let me admit, this one was confusing for me. Therefore I will first explain the concept in plain english to get a general understanding. I will then demonstrate the concept with code and relate it back to the english definition.</p>
+<p>Wikipedia defines <a href="https://en.wikipedia.org/wiki/Ad_hoc_polymorphism">ad-hoc</a> polymorphism as follows:</p>
+<blockquote>
+<p>Ad hoc polymorphism is a kind of polymorphism in which 
+polymorphic <strong>[1]functions can be applied to arguments of</strong> 
+<strong>different types</strong>, because a polymorphic function can 
+<strong>[2]denote a number of distinct and potentially heterogeneous</strong> 
+<strong>implementations</strong> <strong>[3]depending on the type of argument(s)</strong> 
+<strong>to which it is applied</strong>. It is also known as function 
+overloading or operator overloading... This is in <strong>[4]contrast</strong>
+<strong>to parametric polymorphism, in which polymorphic functions</strong> 
+<strong>are written without mention of any specific type</strong>, and can 
+thus apply a single abstract implementation to any number of 
+types in a transparent way.</p>
+</blockquote>
+<ol>
+<li>
+<p>An ad-hoc polymorphic function can take different types of arguments. ex. Int or String.</p>
+</li>
+<li>
+<p>The implementation of the ad-hoc polymorphic function function can vary.</p>
+</li>
+<li>
+<p>Combining points 1 and 2, the implementation of the function will vary depending on the type of the argument passed to the function.</p>
+<p><strong>Thats really it! Another way to think about this is that we are doing function overloading and the function does different things based on the type we pass it.</strong></p>
+</li>
+<li>
+<p>The statement helps us to differentiate ad-hoc from parametric polymorphism. Remember from before, in parametric polymorphism the implementation of the function(List constructor) was the same regardless of the type passed in.</p>
+</li>
+</ol>
+<h4 id="some-code">Some code:</h4>
+<p>We first define a Texture trait and a function that prints the Texture. <strong>Note: <code>printTexture</code> is our ad-hoc polymorphic function.</strong> printTexture takes a type parameter <code>t: T</code> and a texture implementation of that type <code>o: Texture[T]</code>. </p>
+<p><strong>Ahh ha.. from bullet (1), the function takes different types as arguments.</strong></p>
+<blockquote>
+<p>Ignore the <code>implicit</code> keyword for now. I will how this is later used
+to automatically pull in the correct implementation of Texture.</p>
+</blockquote>
+<pre style="background-color:#383838;">
+<span style="font-style:italic;color:#6e9cbe;">trait </span><span style="text-decoration:underline;color:#ffc66d;">Texture</span><span style="color:#e6e1dc;">[</span><span style="font-style:italic;color:#6e9cbe;">T</span><span style="color:#e6e1dc;">] {
+  </span><span style="font-style:italic;color:#6e9cbe;">def </span><span style="color:#ffc66d;">getTexture</span><span style="color:#e6e1dc;">(</span><span style="font-style:italic;color:#fd971f;">t</span><span style="color:#e6e1dc;">: </span><span style="font-style:italic;color:#6e9cbe;">T</span><span style="color:#e6e1dc;">): </span><span style="font-style:italic;color:#6e9cbe;">String
+</span><span style="color:#e6e1dc;">}
+
+</span><span style="font-style:italic;color:#6e9cbe;">def </span><span style="color:#ffc66d;">printTexture</span><span style="color:#e6e1dc;">[</span><span style="font-style:italic;color:#6e9cbe;">T</span><span style="color:#e6e1dc;">](</span><span style="font-style:italic;color:#fd971f;">t</span><span style="color:#e6e1dc;">: </span><span style="font-style:italic;color:#6e9cbe;">T</span><span style="color:#e6e1dc;">)(</span><span style="color:#cc7833;">implicit </span><span style="font-style:italic;color:#fd971f;">o</span><span style="color:#e6e1dc;">: </span><span style="font-style:italic;color:#6e9cbe;">Texture</span><span style="color:#e6e1dc;">[</span><span style="font-style:italic;color:#6e9cbe;">T</span><span style="color:#e6e1dc;">]): </span><span style="font-style:italic;color:#6e9cbe;">Unit </span><span style="color:#cc7833;">= </span><span style="color:#e6e1dc;">{
+  println(o.getTexture(t))
+}
+</span></pre>
+<p>Next we need to define the different implementation depending on the the class type. Note how in the Texture object we define <code>TacoTexture</code> and <code>WetTacoTexture</code> which define the texture for the class Taco that we defined above.</p>
+<p>We also define a new class called <code>Silk</code> which can also have a texture and give it a texture implementation <code>SilkTexture</code>.</p>
+<p><strong>Ahh ha.. from bullet (2), we have varying definitions based on the types.</strong></p>
+<blockquote>
+<p>Again notice but ignore the <code>implicit</code> keyword. We will make the 
+connection later.</p>
+</blockquote>
+<pre style="background-color:#383838;">
+<span style="color:#95815e;">//A new class for which we will define texture
+</span><span style="font-style:italic;color:#6e9cbe;">class </span><span style="text-decoration:underline;color:#ffc66d;">Silk
+
+</span><span style="font-style:italic;color:#6e9cbe;">object </span><span style="text-decoration:underline;color:#ffc66d;">Texture </span><span style="color:#e6e1dc;">{
+  </span><span style="color:#cc7833;">implicit </span><span style="font-style:italic;color:#6e9cbe;">object </span><span style="text-decoration:underline;color:#ffc66d;">TacoTexture </span><span style="color:#cc7833;">extends </span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">Texture</span><span style="color:#e6e1dc;">[</span><span style="font-style:italic;color:#6e9cbe;">Taco</span><span style="color:#e6e1dc;">] {
+    </span><span style="color:#cc7833;">override </span><span style="font-style:italic;color:#6e9cbe;">def </span><span style="color:#ffc66d;">getTexture</span><span style="color:#e6e1dc;">(</span><span style="font-style:italic;color:#fd971f;">t</span><span style="color:#e6e1dc;">: </span><span style="font-style:italic;color:#6e9cbe;">Taco</span><span style="color:#e6e1dc;">) </span><span style="color:#cc7833;">= </span><span style="color:#c1be91;">&quot;crunchy&quot;
+  </span><span style="color:#e6e1dc;">}
+
+  </span><span style="font-style:italic;color:#6e9cbe;">object </span><span style="text-decoration:underline;color:#ffc66d;">WetTacoTexture </span><span style="color:#cc7833;">extends </span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">Texture</span><span style="color:#e6e1dc;">[</span><span style="font-style:italic;color:#6e9cbe;">Taco</span><span style="color:#e6e1dc;">] {
+    </span><span style="color:#cc7833;">override </span><span style="font-style:italic;color:#6e9cbe;">def </span><span style="color:#ffc66d;">getTexture</span><span style="color:#e6e1dc;">(</span><span style="font-style:italic;color:#fd971f;">t</span><span style="color:#e6e1dc;">: </span><span style="font-style:italic;color:#6e9cbe;">Taco</span><span style="color:#e6e1dc;">) </span><span style="color:#cc7833;">= </span><span style="color:#c1be91;">&quot;soggy&quot;
+  </span><span style="color:#e6e1dc;">}
+
+  </span><span style="color:#cc7833;">implicit </span><span style="font-style:italic;color:#6e9cbe;">object </span><span style="text-decoration:underline;color:#ffc66d;">SilkTexture </span><span style="color:#cc7833;">extends </span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">Texture</span><span style="color:#e6e1dc;">[</span><span style="font-style:italic;color:#6e9cbe;">Silk</span><span style="color:#e6e1dc;">] {
+    </span><span style="color:#cc7833;">override </span><span style="font-style:italic;color:#6e9cbe;">def </span><span style="color:#ffc66d;">getTexture</span><span style="color:#e6e1dc;">(</span><span style="font-style:italic;color:#fd971f;">s</span><span style="color:#e6e1dc;">: </span><span style="font-style:italic;color:#6e9cbe;">Silk</span><span style="color:#e6e1dc;">) </span><span style="color:#cc7833;">= </span><span style="color:#c1be91;">&quot;soft&quot;
+  </span><span style="color:#e6e1dc;">}
+}
+</span></pre>
+<p>We can now create instances of Taco and Silk and pass them to our ad-hoc polymorphic function <code>printTexture</code>. The function, depending on the type prints the appropriate texture!</p>
+<p>Now you might be asking how did <code>printTexture</code> get the appropriate implementation for Texture? The answer is <code>implicits</code>; we import the implicits with the statement <code>import Texture._</code> and the Scala compiler takes care of the rest. Note, however that we can always provide the <code>Texture[T]</code> explicitly and get the desired implementation. </p>
+<blockquote>
+<p>I should also mention that we can only have one type of
+implicit definition in the same scope because otherwise the
+Scala compiler get mad. ex. We don't declare WetTacoTexture as
+an implicit.</p>
+</blockquote>
+<p><strong>Ahh ha.. we demonstrate bullet (3), the function implementation varies depending on the type!!</strong></p>
+<pre style="background-color:#383838;">
+<span style="color:#cc7833;">import </span><span style="color:#e6e1dc;">Texture.</span><span style="color:#d0d0ff;">_
+
+</span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="color:#e6e1dc;">taco </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">Taco
+printTexture</span><span style="color:#e6e1dc;">(taco) </span><span style="color:#95815e;">//prints: crunchy
+</span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="color:#e6e1dc;">silk </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">Silk
+printTexture</span><span style="color:#e6e1dc;">(silk) </span><span style="color:#95815e;">//prints: soft
+
+//explicitly declare the Texture[Taco] implementation</span><span style="color:#e6e1dc;">
+printTexture(taco)(</span><span style="color:#86c20e;">WetTacoTexture</span><span style="color:#e6e1dc;">) </span><span style="color:#95815e;">//prints: soggy
+</span></pre><h4 id="different-syntax">Different Syntax:</h4>
+<p>As an extra bit let's look at another way we can write our ad-hoc polymorphism function. The Scala compiler provides syntactical sugar so that we can re-write the function as follows. So don't get confused when you see either representation.</p>
+<pre style="background-color:#383838;">
+<span style="color:#95815e;">//def printTexture[T](t: T)(implicit o: Texture[T]): Unit = {
+//  println(o.getTexture(t))
+//}
+
+
+</span><span style="font-style:italic;color:#6e9cbe;">def </span><span style="color:#ffc66d;">printTexture</span><span style="color:#e6e1dc;">[</span><span style="font-style:italic;color:#6e9cbe;">A</span><span style="color:#cc7833;">: </span><span style="font-style:italic;color:#6e9cbe;">Texture</span><span style="color:#e6e1dc;">](</span><span style="font-style:italic;color:#fd971f;">t</span><span style="color:#e6e1dc;">: </span><span style="font-style:italic;color:#6e9cbe;">A</span><span style="color:#e6e1dc;">): </span><span style="font-style:italic;color:#6e9cbe;">Unit </span><span style="color:#cc7833;">= </span><span style="color:#e6e1dc;">{
+  </span><span style="font-style:italic;color:#6e9cbe;">val </span><span style="color:#e6e1dc;">o </span><span style="color:#cc7833;">=</span><span style="color:#e6e1dc;"> implicitly[</span><span style="font-style:italic;color:#6e9cbe;">Texture</span><span style="color:#e6e1dc;">[</span><span style="font-style:italic;color:#6e9cbe;">A</span><span style="color:#e6e1dc;">]]
+  println(o.getTexture(t))
+}
+</span></pre><h2 id="addendum">Addendum</h2>
+<p>Thanks to <strong>Wil Lee</strong> for clarifying this and highlighting the power of Ad-hoc polymorphism.</p>
+<p>You might have noticed something cool about ad-hoc polymorphism; at no point did we modify the class <code>Food</code> and yet we were able to give it a <code>Texture</code>! Ad-hoc polymorphism allows us to extend the functionality of a piece of code, even if we don't have access to the source (library, legacy code).</p>
+<p>And to quote Wil, who explains it eloquently:</p>
+<blockquote>
+<p>With Java interfaces / Scala traits, you can't claim that some type implements such an interface unless you have access to that type's source code and can modify it. With ad-hoc polymorphism, you don't need to be able change the type's source code. Using your post's example, <code>Taco</code> and <code>Silk</code> can come from some 3rd party library, and due to the implicit pattern you can still define a <code>Texture</code> for them.</p>
+</blockquote>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https:&#x2f;&#x2f;toidiu.com&#x2f;main.js" ></script>
+        
+    </body>
+
+</html>
+

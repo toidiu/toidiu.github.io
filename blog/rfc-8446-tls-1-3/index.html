@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="Apoorv Kothari is software engineer. He studied Engineering at Cooper Union and is intrested in Rust, Kubernetes, Scala, Android, Java.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Scala, java, Cooper Union, blog, talks, code, rust, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https://toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https://toidiu.com&#x2f;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https://toidiu.com&#x2f;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https://toidiu.com&#x2f;personal">
+
+      personal
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https://toidiu.com&#x2f;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <div class="title important">TLS 1.3</div>
+  <div class="date">2021-01-09</div>
+  </div>
+
+  <div class="content">
+    <p>Understanding TLS 1.3</p>
+<p>The primary goal of TLS is to provide a secure channel given a reliable, in-order data stream.</p>
+<p id="zola-continue-reading"><a name="continue-reading"></a></p>
+<p>Find the annotated rfc at: <a href="https://toidiu.com/blog/rfc-8446-tls-1-3/...">paper</a></p>
+<h2 id="1-intro">1 Intro</h2>
+<p>The secure channel provides:</p>
+<ul>
+<li>Authentication (server side is always and client side is optionally authenticate)</li>
+<li>Confidentiality (data after establishment is only visible to the endpoints)</li>
+<li>Integrity (data after establishment cannoy be modified without detection).</li>
+</ul>
+<p>TLS consists of 2 primary components:</p>
+<ul>
+<li>handshake protocol: auths the peers, negotiates crypto modes and establishes shared keys. It is designed to resist tampering.</li>
+<li>record protocol: uses keys established in handshake to protect the traffic between the peers. Divides the traffic into series of records.</li>
+</ul>
+<p>TLS is application protocol independent and higher-level protocols can layer on top of TLS.</p>
+<h3 id="1-2-differences-from-tls-1-2">1.2 Differences from TLS 1.2</h3>
+<ul>
+<li>Static RSA and DHE have been removed. All public-key based exchanges now provide forward secrecy.</li>
+</ul>
+<h2 id="2-protocol-overview">2 Protocol overview</h2>
+<p>TLS support 3 basic key exchange modes:</p>
+<ul>
+<li>(EC)DHE (Diffie-Helman over either finite fields or elliptic curves)</li>
+<li>PSK-only</li>
+<li>PSK with (EC)DHE</li>
+</ul>
+<p>The handshake can be thought of having 3 phases:</p>
+<ul>
+<li>Key exchange: establish shared key and select crypto params. Everything after this phase is encrypted.</li>
+<li>Server parameters: establish other handshake params (applicaiton layer support, if the client is authenticated, etc)</li>
+<li>Authentiction: authenticate the server (optionally client) and key confirmation and handshake integrity.</li>
+</ul>
+<p>last page 12</p>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https:&#x2f;&#x2f;toidiu.com&#x2f;main.js" ></script>
+        
+    </body>
+
+</html>
+
