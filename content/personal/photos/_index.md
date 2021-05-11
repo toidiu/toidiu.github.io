@@ -5,7 +5,7 @@ sort_by = "date"
 weight = 5
 
 [extra]
-id = "photos"
+id = photos
 +++
 
 some content
