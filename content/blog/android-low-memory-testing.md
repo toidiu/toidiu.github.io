@@ -6,7 +6,7 @@ date = 2016-08-12
 tag = ["Android", "code"]
 
 [extra]
-id = blog-single
+id = "blog-single"
 +++
 
 There are a few things that separate mobile development from other types of development. Yes, actually your code does have to be smaller (in the previous version of the Android compiler, there was a limit on the number of methods that your application could have)... but really you are dealing with two main struggles; `loss of network connectivity`, and `low memory`. We will focus on the low memory issue and how you can go about testing this ephemeral state.

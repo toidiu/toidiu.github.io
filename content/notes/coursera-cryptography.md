@@ -7,7 +7,7 @@ date = 2021-01-12
 tag = ["crypto"]
 
 [extra]
-id = blog-single
+id = "blog-single"
 +++
 
 Coursera course https://www.coursera.org/learn/crypto/lecture/lboqg/course-overview

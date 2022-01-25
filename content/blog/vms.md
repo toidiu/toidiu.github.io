@@ -6,7 +6,7 @@ date = 2018-12-21
 tag = ["vm", "hypervisor"]
 
 [extra]
-id = blog-single
+id = "blog-single"
 +++
 
 There are two types of VM: system VM and process/language VM. A language VM is also called a runtime. One abstracts out the OS while the other abstracts out a language runtime. A system VM might be good for isolation, security, portability, etc. A language VM is good for portability of a language (think JVM). For the purpose of this article we will consider system VMs.

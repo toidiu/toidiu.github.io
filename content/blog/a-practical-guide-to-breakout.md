@@ -6,7 +6,7 @@ date = 2017-05-27
 tag = ["Scala", "code"]
 
 [extra]
-id = blog-single
+id = "blog-single"
 +++
 
 In this post I will be reviewing `scala.collection.breakOut` from an application developer's perspective rather than a functional programming enthusiast. I will discuss why one would want to use it and how to recognize when it is applicable.

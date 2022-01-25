@@ -7,7 +7,7 @@ date = 2020-12-26
 tag = ["crypto"]
 
 [extra]
-id = blog-single
+id = "blog-single"
 +++
 
 Ramp up on cryptography and crypto tools team

@@ -6,7 +6,7 @@ date = 2016-10-31
 tag = ["Scala", "code"]
 
 [extra]
-id = blog-single
+id = "blog-single"
 +++
 
 Polymorphism is a word that means 'having  different forms'. In terms of OOP, this mean that a class can have many different forms and behave in different manners depending on the context. Scala has 3 types of Polymorphism that we will explore further below.
@@ -91,10 +91,10 @@ println(list.head)  //prints: 2
 
 The above code is fine if we only want to create a list of Int but we quickly run into problems when we want to create a list of String, Long, Taco!! We now have to re-write the same code and create multiple copies for each data type.
 
-  > This violates the DRY(Don't Repeat Yourself) principle of good 
+  > This violates the DRY(Don't Repeat Yourself) principle of good
   > programming. To understand the reason behind DRY, just consider
-  > what happens if we want to now add a method to append lists 
-  > together. We would have to add the same code to the implementation 
+  > what happens if we want to now add a method to append lists
+  > together. We would have to add the same code to the implementation
   > for each type of List.
 
 Instead we could re-write List data structure using parametric polymorphism, in a more generic manner(pun intended :P).
@@ -112,7 +112,7 @@ val foodList: List[Food] = new Cons(new Taco, new Cons(new Cereal, Nil)) //list 
 ```
 
   > The + sign on the definition of the List declares List structure
-  > as covariant. This means that if we declare a list of Food 
+  > as covariant. This means that if we declare a list of Food
   > `val list = List[Food]` we can add Taco and Cereal to the list.
 
 The advantages are obvious... we can define the List data structure once and utilize it with any type of object!
@@ -124,16 +124,16 @@ Let me admit, this one was confusing for me. Therefore I will first explain the 
 
 Wikipedia defines [ad-hoc](https://en.wikipedia.org/wiki/Ad_hoc_polymorphism) polymorphism as follows:
 
-  > Ad hoc polymorphism is a kind of polymorphism in which 
-  > polymorphic **[1]functions can be applied to arguments of** 
-  > **different types**, because a polymorphic function can 
-  > **[2]denote a number of distinct and potentially heterogeneous** 
-  > **implementations** **[3]depending on the type of argument(s)** 
-  > **to which it is applied**. It is also known as function 
+  > Ad hoc polymorphism is a kind of polymorphism in which
+  > polymorphic **[1]functions can be applied to arguments of**
+  > **different types**, because a polymorphic function can
+  > **[2]denote a number of distinct and potentially heterogeneous**
+  > **implementations** **[3]depending on the type of argument(s)**
+  > **to which it is applied**. It is also known as function
   > overloading or operator overloading... This is in **[4]contrast**
-  > **to parametric polymorphism, in which polymorphic functions** 
-  > **are written without mention of any specific type**, and can 
-  > thus apply a single abstract implementation to any number of 
+  > **to parametric polymorphism, in which polymorphic functions**
+  > **are written without mention of any specific type**, and can
+  > thus apply a single abstract implementation to any number of
   > types in a transparent way.
 
 1. An ad-hoc polymorphic function can take different types of arguments. ex. Int or String.
@@ -149,7 +149,7 @@ Wikipedia defines [ad-hoc](https://en.wikipedia.org/wiki/Ad_hoc_polymorphism) po
 
 #### Some code:
 
-We first define a Texture trait and a function that prints the Texture. **Note: `printTexture` is our ad-hoc polymorphic function.** printTexture takes a type parameter `t: T` and a texture implementation of that type `o: Texture[T]`. 
+We first define a Texture trait and a function that prints the Texture. **Note: `printTexture` is our ad-hoc polymorphic function.** printTexture takes a type parameter `t: T` and a texture implementation of that type `o: Texture[T]`.
 
 **Ahh ha.. from bullet (1), the function takes different types as arguments.**
 
@@ -172,7 +172,7 @@ We also define a new class called `Silk` which can also have a texture and give 
 
 **Ahh ha.. from bullet (2), we have varying definitions based on the types.**
 
-  > Again notice but ignore the `implicit` keyword. We will make the 
+  > Again notice but ignore the `implicit` keyword. We will make the
   > connection later.
 
 ```scala
@@ -196,7 +196,7 @@ object Texture {
 
 We can now create instances of Taco and Silk and pass them to our ad-hoc polymorphic function `printTexture`. The function, depending on the type prints the appropriate texture!
 
-Now you might be asking how did `printTexture` get the appropriate implementation for Texture? The answer is `implicits`; we import the implicits with the statement `import Texture._` and the Scala compiler takes care of the rest. Note, however that we can always provide the `Texture[T]` explicitly and get the desired implementation. 
+Now you might be asking how did `printTexture` get the appropriate implementation for Texture? The answer is `implicits`; we import the implicits with the statement `import Texture._` and the Scala compiler takes care of the rest. Note, however that we can always provide the `Texture[T]` explicitly and get the desired implementation.
 
   > I should also mention that we can only have one type of
   > implicit definition in the same scope because otherwise the
