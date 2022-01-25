@@ -6,7 +6,7 @@ date = 2021-02-15
 tag = ["crypto"]
 
 [extra]
-id = blog-single
+id = "blog-single"
 +++
 
 

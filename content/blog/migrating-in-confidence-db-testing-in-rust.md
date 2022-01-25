@@ -6,7 +6,7 @@ date = 2019-02-19
 tag = ["Rust", "postgres", "testing"]
 
 [extra]
-id = blog-single
+id = "blog-single"
 +++
 
 Writing integration tests for databases is often a cryptic art. The challenge stems from the fact that a database is stateful and instead we would like our tests to be reproducible. In this post I will share my experience writing database tests in Rust, some limitations of my current setup and thoughts on future improvements.

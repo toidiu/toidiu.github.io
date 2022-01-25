@@ -6,7 +6,7 @@ date = 2018-12-24
 tag = ["Rust", "lambda", "aws"]
 
 [extra]
-id = blog-single
+id = "blog-single"
 +++
 
 Given the announcement of the Lambda runtime, there is now an officially supported story around writing lambda functions in Rust. I wanted to try for myself and see the amount of effort needed to get a lambda function working, while also diving deeper into whats involved.

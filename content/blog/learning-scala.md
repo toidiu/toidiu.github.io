@@ -6,13 +6,13 @@ date = 2016-05-15
 tag = ["Scala", "code"]
 
 [extra]
-id = blog-single
+id = "blog-single"
 +++
 
-Learning a new technology/language is difficult, and it can seem daunting when getting started. This is the third time in 3 years that I have set out to learn something new and become proficient, so I wanted to share my experience on how I learned Scala and built SubwayTunesu.
+Learning a new technology/language is difficult, and it can seem daunting when getting started. This is the third time in 3 years that I have set out to learn something new and become proficient, so I wanted to share my experience on how I learned Scala and built SubwayTunes.
 <!-- more -->
 
-The code if now available on [github](https://github.com/toidiu/SubwayServer).
+The code if now available on [github](https://github.com/toidiu/SubwayTunes).
 
 ### Cheatsheet / tl;dr
 Some of the technology behind SubwayTunes includes the Play Framework, ReactiveMongo, Docker, AWS Elastic Beanstalk, AWS S3.
