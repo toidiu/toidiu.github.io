@@ -22,17 +22,17 @@
         <link rel="stylesheet" type="text/css" href="/main.css">
     </head>
 
-    {% if section | defined %}
+    {% if section is defined %}
       <body id={{section.extra.id}} >
-    {% elif page | defined %}
+    {% elif page is defined %}
       <body id={{page.extra.id}} >
     {% else %}
       <body>
     {% endif %}
         {% block nav %}
-          {% if section | defined %}
+          {% if section is defined %}
             {{ macros::nav_macro(active=section.extra.id) }}
-          {% elif page | defined %}
+          {% elif page is defined %}
             {{ macros::nav_macro(active=page.extra.id) }}
           {% else %}
             {{ macros::nav_macro(active="") }}

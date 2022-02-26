@@ -1,5 +1,9 @@
 # The URL the site will be built for
 base_url = "127.0.0.1"
+# base_url = "https://toidiu.com"
+
+
+hard_link_static = true
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
