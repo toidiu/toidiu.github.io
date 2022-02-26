@@ -11,7 +11,7 @@
     <a href="#featured" name="featured"
       class="section-divider important">Featured</a>
     {% for page in section.pages %}
-        {% if page.extra.featured | false %}
+        {% if page.extra.featured %}
           <div class="item-wrapper">
             <a class="item" href={{page.extra.link}} target=_blank" rel="noopener">
               <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="</>"/>
@@ -31,7 +31,7 @@
     <a href="#open-source-contributions" name="open-source-contributions"
       class="section-divider important">Open Source Contributions</a>
     {% for page in section.pages %}
-        {% if page.extra.open | false %}
+        {% if page.extra.open %}
           <div class="item-wrapper">
             <a class="item" href={{page.extra.link}} target=_blank" rel="noopener">
               <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="</>"/>
@@ -71,7 +71,7 @@
     <a href="#collaboration" name="collaboration"
       class="section-divider important">Collaboration</a>
     {% for page in section.pages %}
-        {% if page.extra.colloborated | false %}
+        {% if page.extra.colloborated %}
           <div class="item-wrapper">
             <a class="item" href={{page.extra.link}} target=_blank" rel="noopener">
               <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="</>"/>
