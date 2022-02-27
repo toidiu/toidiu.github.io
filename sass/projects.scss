@@ -5,7 +5,7 @@
   .item-wrapper {
       display: inline-table;
       margin: 0 15px;
-      max-width: 220px;
+      max-width: 300px;
       text-align: left;
       padding-top: 20px;
       padding-bottom: 15px;
@@ -15,11 +15,11 @@
       margin-bottom: 5px;
   }
   .item img {
-      width: 50px;
-      height: 50px;
+      // width: 50px;
+      height: 45px;
   }
   .item .title {
-      font-size: 18px;
+      font-size: 20px;
       display: block;
   }
   #item-container {
@@ -28,7 +28,7 @@
     text-align: center;
   }
   .section-divider {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     border-bottom: 1px solid #268cc3;
     padding-bottom: 6px;
