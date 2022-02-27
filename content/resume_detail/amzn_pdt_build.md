@@ -3,7 +3,7 @@ title = "PDT build"
 date = 2020-12-01
 
 [extra]
-company = "amzn"
+company = "amzn_lm"
 lp = []
 +++
 

@@ -3,7 +3,7 @@ title = "Simplify metrics"
 date = 2020-12-01
 
 [extra]
-company = "amzn"
+company = "amzn_lm"
 lp = ["invent and simplify", "dive deep"]
 +++
 

@@ -3,7 +3,7 @@ title = "Mentor auto pulling andon"
 date = 2020-12-20
 
 [extra]
-company = "amzn"
+company = "amzn_lm"
 lp = []
 +++
 

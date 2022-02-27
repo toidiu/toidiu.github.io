@@ -16,6 +16,9 @@
 @import "resume-detail";
 
 /*------------------------END GENERAL---------------------*/
+body {
+  font-size: 22px;
+}
 
 /*------------------------RESPONSIVE---------------------*/
 @media screen and (min-width: 400px) {
@@ -29,7 +32,7 @@
       /*height: 50px;*/
   }
   nav .nav-link{
-      font-size: 19px;
+      font-size: 24px;
   }
 }
 /*------------------------END RESPONSIVE---------------------*/
