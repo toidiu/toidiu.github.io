@@ -16,9 +16,9 @@ HTB are good for enforcing rate limits on flow aggregates, but scales poorly wit
 
 Policers: a token bucket mechanism to assign resources to a flow, with zero buffering and packet dropping as a side effect.
 
-HTB: a complex buffer/token bucket/tree structure to support advanced traffic management. Backpressure is needed to avoid unbounded queue growth. Can group flos into individual or aggregate groups and thus apply complex logic to traffic shaping.
+HTB: a complex buffer/token bucket/tree structure to support advanced traffic management. Backpressure is needed to avoid unbounded queue growth. Can group flows into individual or aggregate groups and thus apply complex logic to traffic shaping.
 
-FQ/pacing: FQ tracks per-flow sate in an array of Red-Black trees indexed on flow hash IDs. Pacing is based on packet length and current pacing rate. Future packets are kept in a separate RB tree index.
+FQ/pacing: FQ tracks per-flow sate in an array of Red-Black trees indexed on flow hash IDs. A deficit round robin scheduler is used for outgoing packets from active flows. A garbage collector deletes inactive flows. Pacing is based on packet length and current pacing rate. Future packets are kept in a separate RB tree index. This all sounds very CPU intensive.
 
 **cost of shaping**
 ...
