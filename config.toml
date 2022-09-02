@@ -15,9 +15,9 @@ highlight_theme = "kronuz"
 
 generate_rss = false
 
-# taxonomies = [
-#   {name = "tags", rss = true}, # each tag will have its own RSS feed
-# ]
+taxonomies = [
+  {name = "tag", rss = false}, # each tag will have its own RSS feed
+]
 
 [extra]
 # Put all your custom variables here
