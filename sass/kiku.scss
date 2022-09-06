@@ -1,0 +1,48 @@
+#kiku {
+  .main-container {
+    line-height: 1.75em;
+  }
+  .title {
+    font-size: 22px;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  .date {
+    font-weight: bold;
+  }
+  #post-header {
+    margin-bottom: 25px;
+  }
+  #references {
+    margin-top: 50px;
+  }
+  a[name="continue-reading"] {
+    display: none;
+  }
+  li, ol {
+    list-style: number;
+  }
+  .pixels-photo img {
+    width: 40%;
+    height: auto;
+    image-orientation: from-image;
+  }
+  .pixels-photo.is-large img {
+    width: 60%;
+    height: auto;
+  }
+}
+
+#kiku {
+  @media screen and (min-width: 400px) {
+    .main-container{
+      padding: 0 10%;
+    }
+  }
+  @media screen and (min-width: 600px) {
+    .main-container{
+      padding: 0 15%;
+    }
+  }
+}
+
