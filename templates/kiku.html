@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block content %}
+<div class="main-container">
+
+  {% set_global g_year = "" %}
+
+  {% for page in section.pages %}
+
+    {% set year = page.date | date(format="%Y") %}
+      {% if g_year != year %}
+        <div class="section-year important">{{ year }}</div>
+      {% endif %}
+    {% set_global g_year = page.date | date(format="%Y") %}
+
+    <span class="title">{{ page.title }}</span>
+    <div class="content">
+      {{ page.content | safe }}
+    </div>
+  {% endfor %}
+</div>
+{% endblock content %}
+
+{% block footer %}
+  {# no footer #}
+{% endblock footer %}
+

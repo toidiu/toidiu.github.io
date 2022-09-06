@@ -1,11 +1,10 @@
 +++
-template = "photos.html"
-page_template = "photos-single.html"
+template = "kiku.html"
 sort_by = "date"
 weight = 5
 
 [extra]
-id = "photos"
+id = "kiku"
 +++
 
 some content
