@@ -23,12 +23,12 @@
     list-style: number;
   }
   .pixels-photo img {
-    width: 40%;
+    width: 30%;
     height: auto;
     image-orientation: from-image;
   }
   .pixels-photo.is-large img {
-    width: 60%;
+    width: 50%;
     height: auto;
   }
 }
@@ -45,4 +45,3 @@
     }
   }
 }
-
