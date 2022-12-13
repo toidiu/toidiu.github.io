@@ -10,15 +10,21 @@
 
   {% for page in section.pages %}
 
-    {% set year = page.date | date(format="%Y") %}
-      {% if g_year != year %}
-        <div class="section-year important">{{ year }}</div>
-      {% endif %}
-    {% set_global g_year = page.date | date(format="%Y") %}
+    <div class="post">
+      <span class="title">{{ page.title }}</span>
+      <div class="date">
+        <span class="article-year">{{ page.date }}</span>
+        {% for tag in page.taxonomies.tag %}
+          <span class="tags">#{{ tag }}</span>
+        {% endfor %}
+      </div>
 
-    <span class="title">{{ page.title }}</span>
-    <div class="content">
-      {{ page.content | safe }}
+      <div class="content">
+          {{ page.content | safe }}
+      </div>
+
+      {% if page.taxonomies.tag %}
+      {% endif %}
     </div>
   {% endfor %}
 </div>
@@ -27,4 +33,3 @@
 {% block footer %}
   {# no footer #}
 {% endblock footer %}
-
