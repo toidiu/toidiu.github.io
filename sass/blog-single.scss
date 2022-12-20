@@ -20,7 +20,10 @@
     display: none;
   }
   li, ol {
-    list-style: number;
+    list-style: disc;
+    li, ol {
+      list-style: lower-alpha;
+    }
   }
 }
 
