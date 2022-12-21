@@ -26,6 +26,7 @@ id = "blog-single"
 - ½ cup kaffir lime leaf
 - 1 cup fresh thai sweet basil
 - 2 tablespoons shrimp paste
+- 1 oz turmeric, sliced (optional: preserves color)
 
 ### Basil Oil (optional)
 
@@ -63,4 +64,6 @@ id = "blog-single"
    - Enjoy!
 
 ---
-original: https://tasty.co/recipe/thai-green-curry-with-chicken-by-chef-fern
+I found the original recipe:
+- youtube: https://www.youtube.com/watch?v=qzlQnqVw39c
+- recipe: https://tasty.co/recipe/thai-green-curry-with-chicken-by-chef-fern
