@@ -64,6 +64,6 @@ id = "blog-single"
    - Enjoy!
 
 ---
-I found the original recipe:
+Original recipe:
 - youtube: https://www.youtube.com/watch?v=qzlQnqVw39c
 - recipe: https://tasty.co/recipe/thai-green-curry-with-chicken-by-chef-fern
