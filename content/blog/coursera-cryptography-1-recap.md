@@ -18,12 +18,9 @@ In this post I'll be recaping the [coursera course](https://www.coursera.org/lea
 ### intro
 **vid 1:**
 - handshake protocol: secret key establishment
-  public-key crypto
+  - public-key crypto
 - record protocol: secure the communication
-  ensure confidentiality and integrity
-
-- symetric encryption
-E and D algotrithms, secret key k, m message and c ciphertext
+  - ensure confidentiality and integrity
 
 **vid 2:**
 - digital signatures: hash the content plus the signature
@@ -39,7 +36,7 @@ zero knowledge:
 rigorous science:
 - specify a threat model (how the attacker will attack and what his goals are)
 - propose a construction (construction of the crypto)
-- prove that breaking connstruction under threat model will solve an underlying hard problem (its hard to break encrpytion)
+- prove that breaking connstruction under threat model will solve an underlying hard problem (prove that its hard to break encrpytion)
 
 **vid 3:**
 history of cryptography..
