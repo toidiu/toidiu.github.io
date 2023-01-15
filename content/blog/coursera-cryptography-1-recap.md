@@ -16,57 +16,25 @@ In this post I'll be recaping the [coursera course](https://www.coursera.org/lea
 ## Week1: Stream ciphers
 
 ### intro
-**vid 1:**
-- handshake protocol: secret key establishment
-  - public-key crypto
-- record protocol: secure the communication
-  - ensure confidentiality and integrity
 
-**vid 2:**
-- digital signatures: hash the content plus the signature
-- anonymous communication: mix net
-- digital cash: if money is spent once it remains anonymous, however if its spent twice the identity is revealed
-- secure multi-party communication: they communicate amongst each other in an encrpyted way so that at the end only the result is known
-  `theorem`: anything you can do with a trusted authoriy, can also be done without!!
-  - election: (voter 1) -> (voter 2)
-  - private auction: reveal only the winner and the second highest bid
-zero knowledge:
-  (Alice) N = p * q     -> Alice can prove that she knows factors of N, with sharing p or q ->       only knows N (Bob)
-
-rigorous science:
+cryptography is a rigorous science:
 - specify a threat model (how the attacker will attack and what his goals are)
 - propose a construction (construction of the crypto)
 - prove that breaking connstruction under threat model will solve an underlying hard problem (prove that its hard to break encrpytion)
 
-**vid 3:**
-history of cryptography..
-
 ### discrete prob
 **vid 1:**
-discrete probability
+- probability distribution: a func that defines a probability over the domains space. the sum of all the prob is equal to 1
+- uniform distribution: all elements in domain space is equal
+- point distribution: a point gets a prob of 1 and all others get a probability of 0
+- event: given an event A, the probailty of A is the sum of all occurance of the set A
+- union bound: what the probability that either A or B occurs. P(A) U P(B) <= P(A) + P(B)
+- uniform random variable: a variable x from the set U that has uniform probability
 
-probability:
-probability distribution: a func that defines a probability over the domains space. the sum of all the prob is equal to 1
-uniform distribution: all elements in domain space is equal
-point distribution: a point gets a prob of 1 and all others get a probability of 0
-
-event:
-given an event A, the probailty of A is the sum of all occurance of the set A
-
-union bound:
-what the probability that either A or B occurs
-P(A) U P(B) <= P(A) + P(B)
-
-uniform random variable:
-a variable x from the set U that has uniform probability
-
-random algorithms:
+- random algorithms:
 F(m, r) where r is a uniform random variable
 the output of a random algorithm is random and changes based on r
 so given a message m, the output of the function will be different because of the uniform random variable
-
-**vid 2:**
-descrete probility
 
 independence: event A and event B are independent if P[A and B] = P[A] * P[B]
   - A happening doesnt tell you anything about B
@@ -79,14 +47,15 @@ x y  xor
 1 0  1
 1 1  0
 
-Theorem: Y a rand. var. over {0,1}^n and X an indep. unifor. var. on {0,1}^n
+Theorem: Y a random variable over {0,1}^n
+         X an independent uniform variable on {0,1}^n
          Z := Y xor X is a uniform variable
 
 XOR has the property: that we can make a rand variable uniform prob by XORing with a uniform independent variable.
 
 
 birthday paradox: probability that a collision will be found
-          given r1..rn in U. indep. identically distributed vars.
+          given r1..rn in U. independent identically distributed variables
           when you take n samples prob that two are equal is 1/2
           n = 1.2 |U|^1/2 then P[ri = rj] >= 1/2
 
@@ -98,7 +67,7 @@ symmetric cipher is defined over a triple (K, M, C) (keys, message, ciphertext)
 D(K, E(E, m)) = m  => decryption needs to be inverse of encryption
 E is often a randomized algo (generate random bits) but D is deterministic
 
-One time pad OTP: first secure cipher
+**OTP** One time pad OTP: first secure cipher
 M = C = K = {0,1}^n
 C := E(K,m) = K xor m (ciphertext is xor of key and message)
 the key needs to be as long as the message so its not very practical
@@ -121,6 +90,9 @@ given CT it is not possible to tell PT because the probility for all possible PT
 perfect secrecy is an ideal goal, becuase is says that |K| >= |M|, length of the keys must be equal or more than messages
 again for OTP the keys and message are the same length, each message has one key
 
+### PRG
+
+### Semantic Security
 
 ## Week 2: Block Ciphers
 
