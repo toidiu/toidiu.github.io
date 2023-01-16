@@ -74,25 +74,55 @@ the key needs to be as long as the message so its not very practical
 
 why is OTP secure?
 Information Theory - Claude Shannon
-CT should reveal no 'info' about PT (ciphertext and plaintext)
+ciphertext should reveal no 'info' about plaintext (ciphertext and plaintext)
 
 a cipher (E,D) over (K,M,C) has **perfect secrecy** if
 given m0 and m1 in M and c in C
 P[ E(k,m0) = c ] = P[ E(k,m1) = c ]
   prob of the two ciphertext being equal
-  given CT cant tell if msg is m0 or m1 or
-  given CT i cant tell what the original msg was
-  an advisary learns nothing about PT from CT
-  **NO CT attack is possible**
+  given ciphertext cant tell if msg is m0 or m1 or
+  given ciphertext i cant tell what the original msg was
+  an advisary learns nothing about plaintext from ciphertext
+  **NO ciphertext attack is possible**
 
-given CT it is not possible to tell PT because the probility for all possible PT is the same (xor makes this easy to see)
+given ciphertext it is not possible to tell plaintext because the probility for all possible plaintext is the same (xor makes this easy to see)
 
 perfect secrecy is an ideal goal, becuase is says that |K| >= |M|, length of the keys must be equal or more than messages
 again for OTP the keys and message are the same length, each message has one key
 
 ### PRG
 
+We define a statistical test for the generator G of the random distribution.
+
+We then define an advantage as how likely the generator will output 1 compared to truly random generator.
+Adv (PRG) : [A, G] : Pr[ A(G(k)) = 1 ] - Pr[ A(r) ]
+
+**Unpredictable**
+An unpredictable PRG is a secure PRG.
+If the 'next-bit' predictor cannot distinguish G from random then no statistical test can.
+
+**Computationally indistinguishable**: notation to compare two distributions
+| Pr[ A(P1((x))) = 1 ] - Pr[ A(P2((x))) = 1 ] | < negligible
+
+
 ### Semantic Security
+
+The attacker should learn no information about the plaintext.
+
+**Semantic Security for one time key:**
+
+    Experiment 1(Exp1) and Experiment 2(Exp2)
+    b= 0,1
+
+```
+[Challenger]    <- m0 or m1     [Adversary]
+                E(k, mb) ->        v
+                                guess m0 or m1
+```
+
+    W(b) = event that Exp(b) = 1
+    Advantage(SS) = | Pr[ W(0) ] - Pr[ W(1) ] |
+
 
 ## Week 2: Block Ciphers
 
