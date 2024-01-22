@@ -33,6 +33,7 @@ id = "blog-single"
 - 1/2 cup cashew
 - 1/2 cup golden or regular raisins
 - 1 cup frozen green peas
+- 2 tsp msg
 
 ### Preparation
 Steamed white rice, sliced Chinese chives or scallions, and pickled daikon or eggplant for serving
