@@ -54,5 +54,4 @@ Steamed white rice, sliced Chinese chives or scallions, and pickled daikon or eg
 - Season  to taste with salt, pepper, and more honey if desired.
 
 ---
-Original recipe:
-- recipe: https://www.youtube.com/watch?v=QhsrBz9Cceg
+Original recipe: https://www.youtube.com/watch?v=QhsrBz9Cceg
