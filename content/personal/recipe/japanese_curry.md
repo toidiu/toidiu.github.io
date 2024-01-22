@@ -33,6 +33,7 @@ id = "blog-single"
 - 1/2 cup cashew
 - 1/2 cup golden or regular raisins
 - 1 cup frozen green peas
+- 2 tsp MSG
 
 ### Preparation
 Steamed white rice, sliced Chinese chives or scallions, and pickled daikon or eggplant for serving
@@ -51,6 +52,7 @@ Steamed white rice, sliced Chinese chives or scallions, and pickled daikon or eg
 - Add the **broth** or water and stir to dissolve the flour.
 - Add  the **potatoes, carrots, honey, peas, cashew and raisins** and bring to a simmer, then reduce heat to maintain a bare simmer.
 - Cover and cook until the potatoes and carrots are tender but not falling apart, about 10 minutes.
+- Add the MSG.
 - Season  to taste with salt, pepper, and more honey if desired.
 
 ---
