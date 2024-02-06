@@ -1,5 +1,5 @@
 +++
-title = "max hang"
+title = "fingerboard protocol"
 date = 2024-02-01
 
 [taxonomies]
@@ -11,17 +11,19 @@ id = "blog-single"
 
 ### re-test day
 - take 2 days off
-- hang for 12 sec
+- hang for 13 sec
 - take 5 min
 - add weight until you cant hang for 13 sec
 - if you succeed for 5 times, you can hang more.. so rest 2 days and start over
 
 ### theory behind protocols
-- hit plateau after 6 sessions
-
+- hit plateau after 6 sessions so use repeaters to break it up
 - max hang sessions (6 sessions)
 - then switch it up to include repeaters (6 sessions)
   - 5 set repeaters, 3 set repeaters, some max hangs
+- choose 3 grip types: half crimp, open, pinch
+- you train roughly 20° in either direction
+  - 90° half crimp becomes, 70 to 110. 110 is like a sloper, 70 is basically a full crimp
 
 ### the max hang protocol
 - half crimp grip, perform 4 sets of 10 second hangs separated by a 2 - 3 minute rest.
