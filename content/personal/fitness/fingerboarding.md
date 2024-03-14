@@ -3,7 +3,7 @@ title = "fingerboard protocol"
 date = 2024-02-01
 
 [taxonomies]
-tag = ["fingerboarding"]
+tag = ["climbing", "fingerboarding"]
 
 [extra]
 id = "blog-single"
