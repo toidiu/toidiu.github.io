@@ -4,4 +4,5 @@ sort_by = "date"
 
 [extra]
 id = "projects"
+name = "projects"
 +++

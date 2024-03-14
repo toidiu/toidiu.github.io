@@ -5,7 +5,7 @@ page_template = "blog-single.html"
 sort_by = "date"
 
 [extra]
-id = "recipe"
+id = "blog"
 name = "recipe"
 +++
 
