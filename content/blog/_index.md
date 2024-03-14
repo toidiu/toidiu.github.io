@@ -6,6 +6,7 @@ sort_by = "date"
 
 [extra]
 id = "blog"
+name = "blog"
 +++
 
 some content

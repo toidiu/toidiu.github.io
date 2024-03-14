@@ -31,7 +31,7 @@
     {% endif %}
         {% block nav %}
           {% if section is defined %}
-            {{ macros::nav_macro(active=section.extra.id) }}
+            {{ macros::nav_macro(active=section.extra.name) }}
           {% elif page is defined %}
             {{ macros::nav_macro(active=page.extra.id) }}
           {% else %}

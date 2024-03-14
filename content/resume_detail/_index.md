@@ -5,6 +5,7 @@ sort_by = "date"
 
 [extra]
 id = "resume_detail"
+name = "resume_detail"
 +++
 
 S: situation
