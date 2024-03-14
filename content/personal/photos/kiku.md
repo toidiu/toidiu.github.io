@@ -6,12 +6,10 @@ date = 2022-07-01
 tag = ["kiku"]
 
 [extra]
-id = "kiku"
+id = "photos-single"
 +++
 
 <div class='pixels-photo is-large'>
   <img class="image" src="/images/kiku.jpg" alt="</>"/>
 </div>
 <br/>
-
-
