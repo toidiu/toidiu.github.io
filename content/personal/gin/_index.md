@@ -5,5 +5,6 @@ weight = 10
 
 [extra]
 id = "gin"
+name = "gin"
 +++
 

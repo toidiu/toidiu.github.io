@@ -6,6 +6,7 @@ weight = 5
 
 [extra]
 id = "photos"
+name = "photos"
 +++
 
 some content

@@ -6,6 +6,7 @@ sort_by = "date"
 
 [extra]
 id = "recipe"
+name = "recipe"
 +++
 
 some content
