@@ -1,6 +1,6 @@
 +++
 title = "fingerboard protocol"
-date = 2024-02-01
+date = 2024-03-01
 
 [taxonomies]
 tag = ["climbing", "fingerboarding"]
