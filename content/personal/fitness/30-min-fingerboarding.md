@@ -1,5 +1,5 @@
 +++
-title = "fingerboard protocol"
+title = "30-min fingerboard routine \w warmup"
 date = 2024-03-01
 
 [taxonomies]
