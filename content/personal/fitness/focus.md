@@ -10,7 +10,7 @@ id = "blog-single"
 +++
 
 ### Theory
-- whoy you cant focus: brain is a muscle and you need to train it to focus. you cant lift 300 pounds if you dont train to do that
+- why you cant focus: brain is a muscle and you need to train it to focus. you cant lift 300 pounds if you dont train to do that
 - modern world is full of distractions and you dont get chances to focus
 
 ### How to improve focus
