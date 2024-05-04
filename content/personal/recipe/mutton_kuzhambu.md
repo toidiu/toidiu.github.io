@@ -17,3 +17,5 @@ tbd
 
 ---
 [Recipe img](/images/mutton_kuzhambu.jpeg)
+[Online recipe](https://www.yummytummyaarthi.com/mutton-kulambu-mutton-gravy-lamb-cooked/)
+[Online recipe 2](https://www.kannammacooks.com/kongunadu-mutton-kuzhambu-recipe/)
