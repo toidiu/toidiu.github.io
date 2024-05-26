@@ -9,7 +9,7 @@ tag = ["focus"]
 id = "blog-single"
 +++
 
-Writing is thinking. It takes clarity of though to write well about something. However, I claim that you don't actually need the final perfect draft to be successful.
+Writing is thinking. It takes clarity of though to write well about something. However, I claim that you don't actually need a perfect draft for it to be useful.
 
 <!-- more -->
 At the start of a project there are many different paths. As you start a project you might have to go about exploring each fork. This can be expensive. If you are lucky or experienced you might end up on the correct path the first time around but likely you will need to at least think about each fork as you come upon it.
