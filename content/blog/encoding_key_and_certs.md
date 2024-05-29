@@ -1,15 +1,15 @@
 +++
-title = "Making plans"
-date = 2024-05-25
+title = "Encoding keys and certs"
+date = 2024-05-30
 
 [taxonomies]
-tag = ["focus"]
+tag = ["crypto"]
 
 [extra]
 id = "blog-single"
 +++
 
-The difference between ASN.1, pkcs1, pkcs8, pem, der.
+How do the following relate: ASN.1, pkcs1, pkcs8, pem, der.
 
 <!-- more -->
 
