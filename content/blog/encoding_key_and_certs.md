@@ -34,8 +34,17 @@ Finally, the raw bytes of the asn1_obj is the `der` representation, while the ba
 
 pem = `cat key.der | base64`
 
-resources:
-- http://luca.ntop.org/Teaching/Appunti/asn1.html
-- https://letsencrypt.org/docs/a-warm-welcome-to-asn1-and-der/
-- https://lapo.it/asn1js/
+### Warm Welcome to ASN.1 and DER
+> There are some other languages that do the same things as ASN.1. For instance, Protocol Buffers offer both a language for defining types and a serialization format for encoding objects of the types you’ve defined.
 
+#### String
+PrintableString is a restricted subset of ASCII, allowing alphanumerics, spaces, and a specific handful of punctuation: ' () + , - . / : = ?. Notably it doesn’t include * or @.
+
+### Resources:
+- https://letsencrypt.org/docs/a-warm-welcome-to-asn1-and-der/
+- http://luca.ntop.org/Teaching/Appunti/asn1.html
+- https://lapo.it/asn1js/
+- [Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile](https://datatracker.ietf.org/doc/html/rfc5280)
+- [ASN.1 lang](https://www.itu.int/rec/T-REC-X.680)
+- [ASN.1 serialization format](https://www.itu.int/rec/T-REC-X.690)
+- [oid](http://oid-info.com/get/1.3.6.1.4.1.11129)
