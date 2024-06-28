@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="Apoorv Kothari is software engineer. He studied Engineering at Cooper Union and is intrested in Rust, Kubernetes, Scala, Android, Java.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Scala, java, Cooper Union, blog, talks, code, rust, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;personal">
+
+      personal
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <div class="title important">Cryptography 1</div>
+  <div class="date">2023-01-11</div>
+  </div>
+
+  <div class="content">
+    <p>In this post I'll be recaping the <a href="https://www.coursera.org/learn/crypto">coursera course</a> on Crpytography 1.</p>
+<span id="continue-reading"></span><h2 id="week1-stream-ciphers">Week1: Stream ciphers</h2>
+<h3 id="intro">intro</h3>
+<p>cryptography is a rigorous science:</p>
+<ul>
+<li>specify a threat model (how the attacker will attack and what his goals are)</li>
+<li>propose a construction (construction of the crypto)</li>
+<li>prove that breaking connstruction under threat model will solve an underlying hard problem (prove that its hard to break encrpytion)</li>
+</ul>
+<h3 id="discrete-prob">discrete prob</h3>
+<p><strong>vid 1:</strong></p>
+<ul>
+<li>
+<p>probability distribution: a func that defines a probability over the domains space. the sum of all the prob is equal to 1</p>
+</li>
+<li>
+<p>uniform distribution: all elements in domain space is equal</p>
+</li>
+<li>
+<p>point distribution: a point gets a prob of 1 and all others get a probability of 0</p>
+</li>
+<li>
+<p>event: given an event A, the probailty of A is the sum of all occurance of the set A</p>
+</li>
+<li>
+<p>union bound: what the probability that either A or B occurs. P(A) U P(B) &lt;= P(A) + P(B)</p>
+</li>
+<li>
+<p>uniform random variable: a variable x from the set U that has uniform probability</p>
+</li>
+<li>
+<p>random algorithms:
+F(m, r) where r is a uniform random variable
+the output of a random algorithm is random and changes based on r
+so given a message m, the output of the function will be different because of the uniform random variable</p>
+</li>
+</ul>
+<p>independence: event A and event B are independent if P[A and B] = P[A] * P[B]</p>
+<ul>
+<li>A happening doesnt tell you anything about B</li>
+<li>same can be said about random variables P[rA and rB] = P[rA] * P[rB]</li>
+</ul>
+<p>'XOR': either or but not both
+x y  xor
+0 0  0
+0 1  1
+1 0  1
+1 1  0</p>
+<p>Theorem: Y a random variable over {0,1}^n
+X an independent uniform variable on {0,1}^n
+Z := Y xor X is a uniform variable</p>
+<p>XOR has the property: that we can make a rand variable uniform prob by XORing with a uniform independent variable.</p>
+<p>birthday paradox: probability that a collision will be found
+given r1..rn in U. independent identically distributed variables
+when you take n samples prob that two are equal is 1/2
+n = 1.2 |U|^1/2 then P[ri = rj] &gt;= 1/2</p>
+<h3 id="stream-cipher-1">stream cipher 1</h3>
+<p><strong>vid 1:</strong>
+symmetric cipher is defined over a triple (K, M, C) (keys, message, ciphertext)
+a pair of efficient algorithms (E, D) encryption and decryption</p>
+<p>D(K, E(E, m)) = m  =&gt; decryption needs to be inverse of encryption
+E is often a randomized algo (generate random bits) but D is deterministic</p>
+<p><strong>OTP</strong> One time pad OTP: first secure cipher
+M = C = K = {0,1}^n
+C := E(K,m) = K xor m (ciphertext is xor of key and message)
+the key needs to be as long as the message so its not very practical</p>
+<p>why is OTP secure?
+Information Theory - Claude Shannon
+ciphertext should reveal no 'info' about plaintext (ciphertext and plaintext)</p>
+<p>a cipher (E,D) over (K,M,C) has <strong>perfect secrecy</strong> if
+given m0 and m1 in M and c in C
+P[ E(k,m0) = c ] = P[ E(k,m1) = c ]
+prob of the two ciphertext being equal
+given ciphertext cant tell if msg is m0 or m1 or
+given ciphertext i cant tell what the original msg was
+an advisary learns nothing about plaintext from ciphertext
+<strong>NO ciphertext attack is possible</strong></p>
+<p>given ciphertext it is not possible to tell plaintext because the probility for all possible plaintext is the same (xor makes this easy to see)</p>
+<p>perfect secrecy is an ideal goal, becuase is says that |K| &gt;= |M|, length of the keys must be equal or more than messages
+again for OTP the keys and message are the same length, each message has one key</p>
+<h3 id="prg">PRG</h3>
+<p>We define a statistical test for the generator G of the random distribution.</p>
+<p>We then define an advantage as how likely the generator will output 1 compared to truly random generator.
+Adv (PRG) : [A, G] : Pr[ A(G(k)) = 1 ] - Pr[ A(r) ]</p>
+<p><strong>Unpredictable</strong>
+An unpredictable PRG is a secure PRG.
+If the 'next-bit' predictor cannot distinguish G from random then no statistical test can.</p>
+<p><strong>Computationally indistinguishable</strong>: notation to compare two distributions
+| Pr[ A(P1((x))) = 1 ] - Pr[ A(P2((x))) = 1 ] | &lt; negligible</p>
+<h3 id="semantic-security">Semantic Security</h3>
+<p>The attacker should learn no information about the plaintext.</p>
+<p><strong>Semantic Security for one time key:</strong></p>
+<pre><code>Experiment 1(Exp1) and Experiment 2(Exp2)
+b= 0,1
+</code></pre>
+<pre><code>[Challenger]    &lt;- m0 or m1     [Adversary]
+                E(k, mb) -&gt;        v
+                                guess m0 or m1
+</code></pre>
+<pre><code>W(b) = event that Exp(b) = 1
+Advantage(SS) = | Pr[ W(0) ] - Pr[ W(1) ] |
+</code></pre>
+<h2 id="week-2-block-ciphers">Week 2: Block Ciphers</h2>
+<h2 id="week-3-message-integrity">Week 3: Message Integrity</h2>
+<h2 id="week-4-authenticated-encryption">Week 4: Authenticated Encryption</h2>
+<h2 id="week-5-key-exchange">Week 5: Key Exchange</h2>
+<h2 id="week-6-public-key-encryption">Week 6: Public-Key Encryption</h2>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+
