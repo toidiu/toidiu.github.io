@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"
+        data-xwiki-reference="xwiki:Force_Multiplying_Activities.WebHome"
+    data-xwiki-document="Force_Multiplying_Activities.WebHome"
+    data-xwiki-wiki="xwiki"
+    data-xwiki-space="Force_Multiplying_Activities"
+    data-xwiki-page="WebHome"
+    data-xwiki-version="111.1"
+    data-xwiki-rest-url="/rest/wikis/xwiki/spaces/Force_Multiplying_Activities/pages/WebHome"
+    data-xwiki-form-token="ua7cxzYzeYOAK7HbQDi2Yw"
+>
+  <head>
+                    <meta name="referrer" content="origin" />
+                    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                <meta name="robots" content="noindex">
+                          
+ 
+
+
+<script>
+    (function(n,i,v,r,s,c,x,z){x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};window[n]=function(c,p){x.q.push({c:c,p:p});};z=document.createElement("script");z.async=true;z.src=s;document.head.insertBefore(z,document.head.getElementsByTagName("script")[0]);})(
+        "cwr",
+        "bec3793c-963d-4d45-bb17-e6b093bbc755",
+        "1.0.0",
+        "us-west-2",
+        "https://internal-cdn.amazon.com/w.amazon.com/bin/skin/resources/js/vendor/cwr/cwr.js?token=107450937486",
+        {
+            sessionSampleRate: "0.5",
+            guestRoleArn: "arn:aws:iam::960518412575:role/wiki-prod_RUMGuestRole",
+            identityPoolId: "us-west-2:42de59f5-2d1c-4937-b99a-bb2f818c3db4",
+            endpoint: "https://dataplane.rum.us-west-2.amazonaws.com",
+            telemetries: [
+                "performance",
+                "http", //consider raising eventLimit from default of 10
+                ["errors",{
+                    ignore: (errorEvent) => {
+                        if(errorEvent == null){
+                            return false;
+                        }
+                        if(errorEvent instanceof ErrorEvent){
+                            //if the error is the result of an error event
+                            if (errorEvent.filename.includes("injectedScript")){
+                                //ignore errors from grease monkey scripts
+                                return true;
+                            }
+                        }
+                        return false
+                    }
+                }]
+            ],
+            customEvents: true,
+            allowCookies: true,
+            enableXRay: true
+        }
+    );
+</script>
+                                                        <title>Force Multiplying Activities (Force_Multiplying_Activities.WebHome) - XWiki</title>
+                                    <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <link rel="shortcut icon" href="/skins/amazon/images/favicon.ico" />
+        <link rel="icon" href="/skins/amazon/images/favicon.ico" />
+        <link rel="icon" href="/skins/amazon/images/favicon.ico" />
+        <link rel="apple-touch-icon" href="/skins/amazon/images/favicon.ico" />
+    <link rel="search" type="application/opensearchdescription+xml" href="/bin/view/Main/Search/OpenSearch/" title="Amazon Wiki (en)">
+                                <link rel="canonical" href="/bin/view/Force_Multiplying_Activities/" />
+                <meta name="gwt:property" content="locale=en" />
+                    <meta name="revisit-after" content="7 days" />
+<meta name="description" content="Force Multiplying Activities" />
+<meta name="keywords" content="wiki" />
+<meta name="rating" content="General" />
+<meta name="author" content="wendzich" />
+<link rel="alternate" type="application/rss+xml" title="Wiki Feed RSS" href="/bin/view/Main/WebRss?xpage=rdf" />
+<link rel="alternate" type="application/rss+xml" title="Blog RSS Feed" href="/bin/view/Blog/GlobalBlogRss?xpage=plain" />
+                
+    <link href="https://internal-cdn.amazon.com/w.amazon.com/webjars/wiki%3Axwiki/drawer/2.4.0/css/drawer.min.css" rel="stylesheet" type="text/css" />
+                
+                                                                                                
+<link href="/bin/skin/skins/flamingo/style.css?skin=XWiki.DefaultSkin&#38;colorTheme=xwiki%3AFlamingoThemes.Charcoal" rel="stylesheet" type="text/css" media="all" />
+<link href="/bin/skin/skins/flamingo/print.css?skin=XWiki.DefaultSkin&#38;colorTheme=xwiki%3AFlamingoThemes.Charcoal" rel="stylesheet" type="text/css" media="print" />
+        <!--[if IE]>
+  <link href="/bin/skin/skins/flamingo/ie-all.css?skin=XWiki.DefaultSkin&#38;colorTheme=xwiki%3AFlamingoThemes.Charcoal" rel="stylesheet" type="text/css" />
+<![endif]-->
+    
+      <link rel='stylesheet' type='text/css' href=''/><link rel='stylesheet' type='text/css' href=''/><link rel='stylesheet' type='text/css' href=''/><link rel='stylesheet' type='text/css' href=''/><link rel='stylesheet' type='text/css' href='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/resources/bundle/bundled_wiki.8b20c94a.css?defer=false'/><link rel='stylesheet' type='text/css' href='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/skins/amazon/css/advancedsearch.css?token=107450937486'/>
+      <link rel="stylesheet" type="text/css" href="/bin/ssx/AnnotationCode/Style?language=en&amp;docVersion=3.1&token=107450937486" /><link rel="stylesheet" type="text/css" href="/bin/ssx/AnnotationCode/Settings?language=en&amp;docVersion=3.1&token=107450937486" /><link rel="stylesheet" type="text/css" href="https://internal-cdn.amazon.com/w.amazon.com/bin/ssx/XWiki/SectionEditPatch/WebHome?language=en&amp;docVersion=4.1&token=107450937486" />
+
+    <script type="text/javascript" src="https://internal-cdn.amazon.com/w.amazon.com/webjars/wiki%3Axwiki/requirejs/2.2.0/require.min.js?r=1"></script>
+
+    
+
+
+
+  
+
+
+
+
+  
+
+<script type="text/javascript">
+  var portalData = {
+    portalURL: "https://monitorportal.amazon.com"
+  };
+  /*
+  * This is to prevent AEA from overriding AJAX calls to /sso/login which
+  * has caused an increased load on the system.  We are disabling this
+  * until we can fix root cause TBD.
+  */
+  (function(window) {
+      window.Amazon = window.Amazon || {};
+      window.Amazon.IDP = window.Amazon.IDP || {};
+      window.Amazon.IDP.config = window.Amazon.IDP.config || {};
+
+      window.Amazon.IDP.config.defaultOff = true;
+  })(window);
+
+</script>
+
+    
+
+
+
+
+
+
+
+
+                                        
+
+
+    
+      <script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/resources/bundle/755.fe213f7f.js?defer=false'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/resources/js/prototype/prototype.js?token=107450937486&amp;defer=false'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/resources/js/scriptaculous/effects.js?token=107450937486' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/resources/js/xwiki/xwiki-min.js?token=107450937486&amp;defer=false&amp;language=en'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/skins/amazon/skins/amazon/js/xwiki-overrides.js?token=107450937486&amp;defer=false'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/skins/amazon/skins/amazon/js/suggest-overrides.js?token=107450937486&amp;defer=false'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/skins/amazon//skins/amazon/js/welcome-banner.js?token=107450937486' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/skins/amazon/skins/amazon/js/tampermonkey-banner.js?token=107450937486' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/skins/amazon/skins/amazon/js/replication.js?token=107450937486' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/resources/js/MathJax/MathJax.js?token=107450937486' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/skins/amazon/skins/amazon/js/external-link-warning.js?token=107450937486' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/skins/amazon/skins/amazon/js/inclusive-tech.js?token=107450937486' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/skins/amazon/skins/amazon/js/mathjax-config.js?token=107450937486' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/skins/amazon/skins/amazon/js/mediawiki/mediawiki.js?token=107450937486' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/skins/amazon/skins/amazon/js/monitorportal.js?token=107450937486' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/skins/flamingo/flamingo.min.js?token=107450937486&amp;language=en' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/resources/uicomponents/search/searchSuggest.js?token=107450937486&amp;h=-536019375' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/skins/amazon/skins/amazon/uicomponents/search/search-suggest-overrides.js?token=107450937486&amp;defer=true' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/resources/js/xwiki/compatibility.js?token=107450937486&amp;defer=true' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/resources/js/xwiki/markerScript.js?token=107450937486&amp;defer=true' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/resources/bundle/bundled_wiki.5d31fa31.js?defer=false'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/skins/amazon/js/advancedsearch.js?token=107450937486' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/skin/skins/amazon/js/languageselection.js?token=107450937486&amp;defer=true' defer='defer'></script>
+
+      <script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/jsx/CKEditor/BlankPageJS?language=en&amp;docVersion=1.7&token=107450937486' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/jsx/AnnotationCode/Settings?language=en&amp;docVersion=3.1&token=107450937486' defer='defer'></script>
+<script type='text/javascript' src='https://internal-cdn.amazon.com/w.amazon.com/bin/jsx/AnnotationCode/Script?language=en&amp;docVersion=7.1&token=107450937486' defer='defer'></script>
+
+
+
+
+
+
+<!--[if lt IE 9]>
+    <script src="https://internal-cdn.amazon.com/w.amazon.com/webjars/wiki%3Axwiki/html5shiv/3.7.2/html5shiv.min.js?r=1"></script>
+    <script type="text/javascript" src="https://internal-cdn.amazon.com/w.amazon.com/webjars/wiki%3Axwiki/respond/1.4.2/dest/respond.min.js?r=1" defer="defer"></script>
+<![endif]-->
+<script type="text/javascript">
+// <![CDATA[
+require.config({
+  paths: {
+    'jquery': 'https://internal-cdn.amazon.com/w.amazon.com/webjars/wiki%3Axwiki/jquery/2.2.2/jquery.min.js?r=1',
+    'jquery-ui': 'https://internal-cdn.amazon.com/w.amazon.com/webjars/wiki%3Axwiki/jquery-ui/1.11.4/jquery-ui.min.js?r=1',
+    'bootstrap': 'https://internal-cdn.amazon.com/w.amazon.com/webjars/wiki%3Axwiki/bootstrap/3.3.7-1/js/bootstrap.min.js?r=1',
+    'xwiki-meta': '/bin/skin/resources/js/xwiki/meta',
+    'xwiki-events-bridge': "/bin/skin/resources/js/xwiki/eventsBridge",
+    'iscroll': 'https://internal-cdn.amazon.com/w.amazon.com/webjars/wiki%3Axwiki/iscroll/5.1.3/build/iscroll-lite.js?r=1',
+    'drawer': 'https://internal-cdn.amazon.com/w.amazon.com/webjars/wiki%3Axwiki/drawer/2.4.0/js/jquery.drawer.min.js?r=1',
+    'page-path-helper': "/resources/js/xwiki/pagePathHelper",
+    'mark': "/resources/js/MarkJS/jquery.mark.min",
+    'contentsecurity': "/bin/skin/resources/js/xwiki/contentsecurity",
+
+  },
+  shim: {
+    'bootstrap' : ['jquery'],
+    'drawer': ['jquery', 'iscroll']
+  },
+    map: {
+    '*': {
+      'jquery': 'jQueryNoConflict'
+    },
+    'jQueryNoConflict': {
+      'jquery': 'jquery'
+    },
+  }
+});
+define('jQueryNoConflict', ['jquery'], function ($) {
+    return $.noConflict();
+});
+if (Prototype.BrowserFeatures.ElementExtensions) {
+  require(['jquery', 'bootstrap'], function ($) {
+    // Fix incompatibilities between BootStrap and Prototype
+    var disablePrototypeJS = function (method, pluginsToDisable) {
+      var handler = function (event) {
+        event.target[method] = undefined;
+        setTimeout(function () {
+            delete event.target[method];
+        }, 0);
+      };
+      pluginsToDisable.each(function (plugin) { 
+          $(window).on(method + '.bs.' + plugin, handler); 
+      });
+    },
+    pluginsToDisable = ['collapse', 'dropdown', 'modal', 'tooltip', 'tab', 'popover'];
+    disablePrototypeJS('show', pluginsToDisable);
+    disablePrototypeJS('hide', pluginsToDisable);
+  });
+}
+require(['jquery', 'drawer'], function($) {
+  $(document).ready(function() {
+    $('body').drawer();
+  });
+});
+XWiki.webapppath = "/";
+XWiki.alias = "XWiki.apoorvko";
+XWiki.servletpath = "bin/";
+XWiki.contextPath = "";
+XWiki.mainWiki = "xwiki";
+// Deprecated: replaced by meta data in the HTML element
+XWiki.currentWiki = "xwiki";
+XWiki.currentSpace = "Force_Multiplying_Activities";
+XWiki.currentPage = "WebHome";
+XWiki.editor = "";
+XWiki.viewer = "";
+XWiki.contextaction = "download";
+XWiki.skin = 'XWiki.DefaultSkin';
+XWiki.docisnew = false;
+XWiki.docsyntax = "xwiki/2.1";
+XWiki.docvariant = "";
+XWiki.blacklistedSpaces = [ "Import","Panels","Scheduler","Stats","XAppClasses","XAppSheets","XAppTemplates","XWiki","WatchCode","WatchSheets","XApp","WatchAdmin","Watch","ColorThemes","AnnotationCode" ];
+XWiki.hasEdit = true;
+XWiki.hasProgramming = true;
+XWiki.hasBackupPackImportRights = false;
+XWiki.hasRenderer = true;
+XWiki.docInDefaultSyntax = true;
+window.docviewurl = "/bin/view/Force_Multiplying_Activities/";
+window.docediturl = "/bin/edit/Force_Multiplying_Activities/WebHome";
+window.docsaveurl = "/bin/save/Force_Multiplying_Activities/WebHome";
+window.docgeturl = "/bin/get/Force_Multiplying_Activities/WebHome";
+// ]]>
+</script>
+
+                    <script src="https://is-it-down.amazon.com/wiki/components/360/stripe.js" type="text/javascript" defer></script>
+  </head>
+  <body id="body" class="mediawiki skin-flamingo wiki-xwiki space-Force_Multiplying_Activities downloadbody hidelefthideright  panel-left-width-Small panel-right-width-Medium drawer drawer-right drawer-close">
+<div id="xwikimaincontainer" data-private="false">
+<div id="xwikimaincontainerinner">
+
+  <div id="menuview">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+      <nav class="navbar navbar-default actionmenu" role="navigation">
+    <div class="container-fluid">
+            <div class="navbar-header">
+                          
+
+
+<div id="companylogo">
+                                                                            <a href="/bin/view/Main" title="Home" rel="home" class="navbar-brand">
+    <img src="/bin/skin/skins/amazon/logo.png" alt="Wiki Logo"/>
+  </a>
+</div>
+
+        
+                  <form id="nav-search" class="navbar-form" role="search" action="      /bin/view/Main/Search
+  ">
+    <div class="input-group">
+              <input id="headerglobalsearchinput" style="padding-left: 60px; width: 545px !important;" type="text" name="text" placeholder="Search" class="form-control" value="" />
+        <input id="searchPath" type="hidden" name="searchPath" value=""/>
+        <label id="advanced-search-button" data-toggle="modal" data-target="#viewAdvancedSearchModal" >
+          <span id="advanced-search-icon" class="fa fa-search-plus" aria-label="advancedsearch" role="button" tabindex="0"
+                data-toggle="tooltip" title="Advanced search" data-placement="bottom" data-container="body"></span>
+        </label>
+        <div id="advanced-search-line"></div>
+        <div id="search-tree-icon-outer-div">
+            <i class="fa fa-sitemap search-tree-icon-inactive" id="search-tree-icon" aria-label="searchtreeicon" role="button"
+               tabindex="0" data-toggle="tooltip" title="Search within path" data-placement="bottom" data-container="body"></i>
+        </div>
+            <input id="noRedirect" name="r" type="hidden" value="1">
+      <input id="searchType" name="f_type" type="hidden" value="DOCUMENT">
+      <label class="hiddenAccessibilityLabel" for="headerglobalsearchinput">Search</label>
+      <div class="input-group-btn">
+        <button type="submit" class="btn btn-primary">
+          <span class="glyphicon glyphicon-search"></span>
+          <span class="sr-only">Search</span>
+        </button>
+      </div>
+    </div>
+  </form>
+
+                             <a id="nav-create-page" role="button" href="/bin/create/Force_Multiplying_Activities" class="btn btn-primary">Create a Page</a>
+         
+                  
+
+
+          
+        
+<div class="modal fade text-left" id="viewAdvancedSearchModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="viewAdvancedSearchModal">
+    <div class="modal-dialog modal-lg" id="advancedSearch_modal_dialog">
+        <div class="modal-content modal-text">
+            <div class="modal-header modal-header-padding" id="advancedSearch_modal_header">
+                <button type="button" id="advanced_search_close" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h2 class="modal-title advancedsearch-header">Advanced search</h2>
+            </div>
+
+            <div class="modal-body" id="advancedSearch_modal_key_combo">
+
+                <input type="hidden" id="keyword_invalid_error" value="Please remove 'AND', 'NOT', 'OR', '*'">
+                <input type="hidden" id="disallow_operator_error" value="Please remove operators 'AND', 'NOT', 'OR'">
+                <input type="hidden" id="alias_invalid_space_error" value="Please remove space(s)">
+                <input type="hidden" id="alias_invalid_char_error" value="Please only use [a-zA-Z0-9.-]">
+                <input type="hidden" id="wildcard_invalid_format_error" value="Please use 2 or more characters before an asterisk (*)">
+                <input type="hidden" id="wildcard_no_star_error" value="Please include an asterisk (*)">
+                <input type="hidden" id="keyword_terms" value="Add a keyword">
+                <input type="hidden" id="wildcard_terms" value="Accepted formats: ab*, ab*cd, or ab*cd*.">
+                <input type="hidden" id="alias_terms" value="Add a user alias.">
+                <input type="hidden" id="tags_terms" value="Multiple tags must be separated by a comma.">
+
+                <p class="advancedsearch-text">Apply multiple search parameters to a query. Learn more about
+                    <a href=https://w.amazon.com/bin/view/AmazonWiki/Help/AdvancedSearch/ role="link"> advanced search</a>.
+                </p>
+                <button type="button" class="btn btn-link" id="advancedSearchClearAllBtn">Clear selections</button>
+                <div class="advancedsearch-tree" id="advancedsearch-tree-div">
+                    <br>
+                    <input type="checkbox" id="search-tree-toggle" name="search-tree-toggle" tabindex="0"/>
+                    Search within:
+                    <i class="fa fa-info-circle search-tree-info" id="search-tree-info"></i>
+                    <div id="search-tree-info-content-outer" style="display: none">
+                        <em id="search-tree-info-content">
+                            Limit your search to the displayed path
+                        </em>
+                    </div>
+                    <div id="search-tree-url-path-outer">
+                        <em id="search-tree-url-path"></em>
+                    </div>
+                    <br>
+                </div>
+                <h4 class="advancedsearch-subheader">Keywords</h4>
+                <form class="form-inline xwiki-search-clearable-form">
+                    <div class="advancedsearch-subtitle" id="key_combo_title">Keyword combination</div>
+                    <p class="advancedsearch-text">Limit or exclude terms in a query.
+                        <span class="advancedsearch-example"> Example: keywords (A AND B) NOT C.</span>
+                    </p>
+
+                    <div class="form-group" id="form-group-combo-key-word-0">
+                        <input type="text" class="form-control form-control-keywords-combo" id="combo_keyword_0"
+                               placeholder="Keyword"
+                               aria-describedby="Add a keyword" name="combo_keyword_0_input">
+                        <span class="help-block" id="form-group-combo-key-word-0-help-block" aria-live="assertive">Add a keyword
+                        </span>
+                    </div>
+
+                    <div class="form-group" id="form-group-combo-op-0">
+                        <select class="form-control form-control-keywords-combo-operator" id="combo_op_0">
+                            <option value="OR">OR</option>
+                            <option value="AND">AND</option>
+                            <option value="NOT">NOT</option>
+                        </select>
+                        <span class="help-block" >OR,AND or NOT</span>
+                    </div>
+
+                    <br>
+
+                    <div class="form-group" id="form-group-combo-key-word-1">
+                        <input type="text" class="form-control form-control-keywords-combo" id="combo_keyword_1"
+                               placeholder="Keyword"
+                               aria-describedby="Add a keyword" name="combo_keyword_1_input">
+                        <span class="help-block" id="form-group-combo-key-word-1-help-block" aria-live="assertive">Add a keyword</span>
+                    </div>
+
+                    <div class="form-group" id="form-group-combo-op-1">
+                        <select class="form-control form-control-keywords-combo-operator" id="combo_op_1">
+                            <option value="OR">OR</option>
+                            <option value="AND">AND</option>
+                            <option value="NOT">NOT</option>
+                        </select>
+                        <span class="help-block">OR,AND or NOT</span>
+                    </div>
+
+                    <br>
+
+                    <div class="form-group" id="form-group-combo-key-word-2">
+                        <input type="text" class="form-control form-control-keywords-combo" id="combo_keyword_2"
+                               placeholder="Keyword"
+                               aria-describedby="Add a keyword" name="combo_keyword_2_input">
+                        <span class="help-block" id="form-group-combo-key-word-2-help-block" aria-live="assertive">Add a keyword</span>
+                    </div>
+                </form>
+
+                <form class="form-inline xwiki-search-clearable-form">
+                    <div class="advancedsearch-subtitle" id="wildcard_title">Wildcard</div>
+
+                    <p class="advancedsearch-text">Search for variations of text. Use two or more characters followed by an asterisk (*).<br>
+                        <span class="advancedsearch-example">Example: Cloud* could match CloudFormation.</span>
+                    </p>
+
+                    <div class="form-group" id="form-group-wildcard">
+                        <input type="text" class="form-control form-control-wildcard" id="wildcard_keyword"
+                               placeholder="Text*" name="wildcard_keyword_input">
+                        <span class="help-block" id="form-group-wildcard-help-block" aria-live="assertive">Accepted formats: ab*, ab*cd, or ab*cd*.</span>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-body" id="advancedSearch_modal_fields">
+                <h4 class="advancedsearch-subheader">Fields</h4>
+                <form class="form-inline xwiki-search-clearable-form">
+                    <div class="advancedsearch-subtitle" id="alias_title">User alias</div>
+                    <p class="advancedsearch-text">Search by creator and last modified by.</p>
+
+                    <div class="form-group" id="form-group-creator-alias">
+                        <input type="text" class="form-control" id="creator_keyword" placeholder="User alias"
+                               name="creator_keyword_input">
+                        <span class="help-block" id="form-group-creator-alias-help-block" aria-live="assertive">Add a user alias.</span>
+                    </div>
+                    <br>
+
+                    <div class="advancedsearch-subtitle" id="tags_title">Tags</div>
+                    <p class="advancedsearch-text">Search by tags found on a Wiki page.</p>
+                    <div class="form-group" id="form-group-tag">
+                        <input type="text" class="form-control" id="tag_keyword" placeholder="Wiki tag(s)"
+                               name="tag_keyword_input">
+                        <span id="form-group-tag-help-block" class="help-block" aria-live="assertive">Multiple tags must be separated by a comma.</span>
+                    </div>
+                    <br>
+                </form>
+            </div>
+
+            <div class="modal-footer modal-footer-padding" style="text-align: center;">
+                <button id="formSubmitBtn" type="button" class="btn btn-primary">Apply</button>
+                <button id="closeAdvancedSearchModal" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+        <form style="display: none" action="/bin/view/Main/Search" method="POST" id="submit-form">
+        <input type="hidden" id="searchTextInput" name="text" value=""/>
+        <input type="hidden" id="advancedSearchFlag" name="isadvancedsearch" value=""/>
+    </form>
+</div>
+              </div>
+            <div id="xwikimainmenu">
+    
+          <ul class="nav navbar-nav">
+      <li class="divider" role="separator"></li>
+              </ul>
+    
+          <div id="nav-links" class="nav navbar-nav navbar-right">
+    <ul class="nav navbar-nav">
+                   <li class="navbar-usercontributions">
+<a href="/bin/view/XWiki/UserContributions" class="icon-navbar">
+<div style="font-size:14px;">Contributions</div>
+</a>
+</li>
+                 
+
+<li class="navbar-languageselection">
+<input type="hidden" id="current-user" name="currentUser" value="apoorvko">
+<input type="hidden" id="save-in-progress" name="saveInProgress" value="Saving new language preference...">
+<input type="hidden" id="save-success" name="saveSuccess" value="Language changed...refreshing.">
+<input type="hidden" id="save-error" name="saveError" value="There was an error saving your language preference. Please <a href='https://w.amazon.com/bin/view/XWiki/SIMForm'>cut us a ticket</a>.">
+<a class="icon-navbar dropdown-toggle" data-toggle="dropdown" role="button" arias-haspopup="true" aria-expanded="false" aria-label="Language Dropdown" href="javascript:void(0)">
+<div style="font-size:14px;"> <div class="glyphicon glyphicon-globe"> </div> EN </div>
+</a>
+<ul class="dropdown-menu">
+<li class="localeOption" data-locale-id="de_DE" > <a href="javascript:void(0)" role="button"> DE - Deutsch</a></li> 
+<li class="localeOption" data-locale-id="en_US" > <a href="javascript:void(0)" role="button"> EN - English</a></li> 
+<li class="localeOption" data-locale-id="es_ES" > <a href="javascript:void(0)" role="button"> ES - Español</a></li> 
+<li class="localeOption" data-locale-id="fr_CA" > <a href="javascript:void(0)" role="button"> FR - Français (CA)</a></li> 
+<li class="localeOption" data-locale-id="hi_IN" > <a href="javascript:void(0)" role="button"> HI - हिन्दी</a></li> 
+<li class="localeOption" data-locale-id="it_IT" > <a href="javascript:void(0)" role="button"> IT - Italiano</a></li> 
+<li class="localeOption" data-locale-id="ja_JP" > <a href="javascript:void(0)" role="button"> JA - 日本語</a></li> 
+<li class="localeOption" data-locale-id="pl_PL" > <a href="javascript:void(0)" role="button"> PL - Polski</a></li> 
+<li class="localeOption" data-locale-id="pt_PT" > <a href="javascript:void(0)" role="button"> PT - Português</a></li> 
+<li class="localeOption" data-locale-id="zh_CN" > <a href="javascript:void(0)" role="button"> ZH - 汉语</a></li> 
+
+</ul>
+</li>
+                 <li class="navbar-helpbutton">
+<a href="/bin/view/AmazonWiki/Wiki/Help" class="icon-navbar">
+<div style="font-size:14px;">Wiki Help</div>
+</a>
+</li>
+                                     <li class="navbar-avatar">
+<a href="/bin/view/Users/apoorvko" class="icon-navbar">
+<div class="avatarSquareMask">
+<span class="sr-only">User Profile</span>                                      <img src='https://internal-cdn.amazon.com/badgephotos.amazon.com/?uid=apoorvko' alt='apoorvko' title='apoorvko'/></div>
+</a>
+</li>
+                 
+                    </ul>
+  </div>
+    
+          </div>    </div>   </nav>
+  
+  
+
+
+
+
+
+<div class="drawer-main drawer-default" id="tmDrawer">
+  <nav class="drawer-nav">
+  
+                <div class="drawer-brand clearfix">
+      <a href="/bin/view/XWiki/apoorvko" class="avatarLink">
+                                          <img src='https://internal-cdn.amazon.com/badgephotos.amazon.com/?uid=apoorvko' alt='apoorvko' title='apoorvko'/>      </a>
+      <div class="brand-links">
+        <a href="/bin/view/XWiki/apoorvko" class="brand-user" id="tmUser">apoorvko</a>
+                                            </div>
+    </div>
+
+                <ul class="drawer-menu">
+                                                
+                                          
+
+
+
+
+
+  <li class="drawer-menu-item">
+    <a href="/bin/view/WikiManager/" >
+      <div class="drawer-menu-item-icon">
+        <span class="glyphicon glyphicon-list"></span>
+      </div>
+      <div class="drawer-menu-item-text">Wiki Index</div>
+    </a>
+  </li>
+                                      <li class="drawer-menuseparator"></li>
+            
+                            
+
+
+
+
+
+  <li class="drawer-menu-item">
+    <a href="/bin/view/Main/AllDocs" id="tmWikiDocumentIndex">
+      <div class="drawer-menu-item-icon">
+        <span class="glyphicon glyphicon-book"></span>
+      </div>
+      <div class="drawer-menu-item-text">Page Index</div>
+    </a>
+  </li>
+                                  
+
+
+
+
+
+  <li class="drawer-menu-item">
+    <a href="/bin/view/Main/UserDirectory" id="tmMainUserIndex">
+      <div class="drawer-menu-item-icon">
+        <span class="glyphicon glyphicon-user"></span>
+      </div>
+      <div class="drawer-menu-item-text">User Index</div>
+    </a>
+  </li>
+                                <li class="drawer-menuseparator"></li>
+            
+                </ul>
+  </nav>
+</div>
+
+
+
+    
+
+
+
+  </div>
+ <div id="headerglobal">
+  <div id="globallinks">
+  </div>   <div class="clearfloats"></div>
+      
+  </div> 
+    <div id="sitewide-announcement-banner"><div class="hidden-print" id="8443-port-access-banner" style="display: none; background-color: #EF9292;border-bottom:1 px solid #FF7428; color: black; font-size:13px; padding: 4px 10px; text-align: center; cursor: pointer; margin-left: -20px; margin-right: -20px"><span class="heading" style="">
+<p style="font-size:30px"><b>WARNING!</b></p> You are currently visiting the Wiki using port number 8443. <b>Direct access to port :8443 WILL BE DISABLED in Q1 2022.</b><br/><br/>Remove the port <span class="keyboard-phrase">:8443</span> so that the URL is <span class="keyboard-phrase">https://w.amazon.com/...</span> instead of <span class="keyboard-phrase">https://w.amazon.com<span style="color:red">:8443</span>/...</span>. <br/><br/>
+</div><div class="hidden-print" id="6443-port-access-banner" style="display: none; background-color: #EF9292;border-bottom:1 px solid #FF7428; color: black; font-size:13px; padding: 4px 10px; text-align: center; cursor: pointer; margin-left: -20px; margin-right: -20px"><span class="heading" style="">
+<p style="font-size:30px"><b>WARNING!</b></p> You are currently visiting the Wiki using port number 6443. <b>This can cause unintended behavior and is not advised.</b><br/><br/>Remove the port <span class="keyboard-phrase">:6443</span> so that the URL is <span class="keyboard-phrase">https://w.amazon.com/...</span> instead of <span class="keyboard-phrase">https://w.amazon.com<span style="color:red">:6443</span>/...</span>. <br/><br/>
+</div><script defer>
+if (window.location.port == 8443) {
+$$('#8443-port-access-banner')[0].show();
+} else if (window.location.port == 6443) {
+$$('#6443-port-access-banner')[0].show();
+}
+</script><div class="wikimodel-emptyline"></div><div class="wikimodel-emptyline"></div><div class="wikimodel-emptyline"></div></div>
+
+
+<div class="contenthidelefthideright" id="contentcontainer">
+<div id="contentcontainerinner">
+<div class="leftsidecolumns">
+  <div id="contentcolumn"> 
+<div class="main layoutsubsection">
+<div id="mainContentArea">
+          <div class="centered panel panel-default xwikimessage">
+     <div class="panel-heading">
+      <h3 class="panel-title">Error</h3>
+     </div>
+     <div class="panel-body">
+      <p class="xwikimessage">The attachment is being accessed from outside the wiki platform. Attachments can be viewed only if accessed from the wiki platform itself and not from outside the platform.</p>
+          </div>
+    </div>
+  <div class="clearfloats"></div>
+</div></div>    </div>
+  </div>
+<div class="clearfloats"></div>
+  </div></div><div id="footerglobal">
+  <!-- First line of footer  -->
+  <div id="xwikilicence">
+    <!-- Get Help -->
+    <div>
+      <span style="float:left;padding-left:15px;">
+                              <b>Page concerns? </b>Contact <a href='https://phonetool.amazon.com/users/wendzich' target='_blank'>wendzich (user)</a>
+                        </span>
+    </div>
+
+    <br>
+    <div>
+      <span style="float:left;padding-left:15px;clear:both;">
+        <b>Wiki product assistance? </b>Visit <a href="/bin/view/AmazonWiki/Wiki/Help">Wiki Help</a>
+      </span>
+      <span style="float:right;padding-right:15px;">w.amazon.com is run by the Wiki Team</span>
+    </div>
+  </div>
+</div>
+
+</div></div>                                
+
+
+    
+
+        <script src="https://internal-cdn.amazon.com/w.amazon.com/bin/skin/resources/js/vendor/insights/analytics_3.3.js?token=107450937486" defer></script>
+    <script src="https://w.amazon.com/wpf_extensions/insights/runner_3.3.js?user_id=apoorvko&checksum=019c5255341cfac0b2f96e7dadaddf3df4ae8294cfe3611f320801fcd2ac0c5b&contentUpdateDate=Fri May 17 04:47:29 UTC 2024&ownerName=wendzich&typeOwner=InferredOwner" defer></script>
+            <script src=https://internal-cdn.amazon.com/w.amazon.com/bin/skin/skins/amazon/js/clicked-links.js?token=107450937486" defer></script>
+    
+        </body>
+    </html>
