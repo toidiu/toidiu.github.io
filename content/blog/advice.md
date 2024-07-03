@@ -30,6 +30,10 @@ A collection of advice, quotes and rules from an ex-amazon principal sde.
   - A number
   - A date
   - "I don't know, and I'll find out by <date>"
+- Answer. Explain. Educate (in that order)
+  - When talking, listen for opportunites to A,E,E.
+  - When writing, create opportunites to A,E,E. The writing will come across clearer.
+  - When listening. Listen to what is not being said. You need to have an expectation for what should be said (ei. if A is missing then it was not said and you should dig deeper).
 
 ## Quotes
 
