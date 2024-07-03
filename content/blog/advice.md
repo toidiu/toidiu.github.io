@@ -13,6 +13,8 @@ A collection of advice, quotes and rules from an ex-amazon principal sde.
 
 <!-- more -->
 
+ https://jvns.ca/blog/brag-documents/
+
 ## Rules
 
 - Don't surprise your manager.
