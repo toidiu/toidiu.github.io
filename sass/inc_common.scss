@@ -4,10 +4,14 @@
   font-family: customFont;
   src: url(fonts/Inconsolata-Regular.ttf);
 }
+@font-face {
+  font-family: customFontBold;
+  src: url(fonts/Inconsolata-Bold.ttf);
+}
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: 10px;
   padding-top: 30px;
-  font-weight: bold;
+  font-family: customFontBold;
 }
 h1, h2 {
   font-size: 34px;
@@ -24,6 +28,9 @@ pre { /*code blocks*/
   border: 1px solid #aaa;
   padding: 5px 10px;
   margin-bottom: 15px;
+  margin-left: 25px;
+  background-color: #aabcbd;
+  font-style: italic;
 }
 div, p {
   line-height: 1.75em;
@@ -65,7 +72,7 @@ nav {
   line-height: 1;
 }
 strong {
-  font-weight: bold;
+  font-family: customFontBold;
 }
 i {
   font-style: italic;
