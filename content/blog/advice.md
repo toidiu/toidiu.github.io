@@ -3,7 +3,7 @@ title = "Advice"
 date = 2024-07-01
 
 [taxonomies]
-tag = ["career"]
+tag = ["focus"]
 
 [extra]
 id = "blog-single"
@@ -13,6 +13,14 @@ A collection of advice, quotes and rules from an ex-amazon principal sde.
 
 <!-- more -->
 
+## Table of Contents
+- Promotions
+- Rules
+- Quotes
+- Advice
+- Force multiplying Activities
+
+## Promotions
  https://jvns.ca/blog/brag-documents/
 
 ## Rules
@@ -69,9 +77,9 @@ A collection of advice, quotes and rules from an ex-amazon principal sde.
 - There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.
     -- Leon
 
-- There are only two hard problems in distributed systems: 
-  - Exactly-once delivery 
-  - Guaranteed order of messages 
+- There are only two hard problems in distributed systems:
+  - Exactly-once delivery
+  - Guaranteed order of messages
   - Exactly-once delivery
     -- Mathias
 
@@ -120,7 +128,7 @@ A collection of advice, quotes and rules from an ex-amazon principal sde.
 - The only good thing about [certificate] pinning is that it makes revocation seem like a good idea.
     -- Trevor
 
-- When someone says “assume that a public key cryptosystem exists,” this is roughly equivalent to saying “assume that you could clone dinosaurs, and that you could fill a park with these dinosaurs, and that you could get a ticket to this ‘Jurassic Park,’ and that you could stroll throughout this park without getting eaten, clawed, or otherwise quantum entangled with a macroscopic dinosaur particle.” 
+- When someone says “assume that a public key cryptosystem exists,” this is roughly equivalent to saying “assume that you could clone dinosaurs, and that you could fill a park with these dinosaurs, and that you could get a ticket to this ‘Jurassic Park,’ and that you could stroll throughout this park without getting eaten, clawed, or otherwise quantum entangled with a macroscopic dinosaur particle.”
     -- James Mickens, "This World of Ours"
 
 - It's a program, not a project.
@@ -169,224 +177,198 @@ A collection of advice, quotes and rules from an ex-amazon principal sde.
 - [Why Things Go Right](https://web.archive.org/web/20181001110144/http://www.safetydifferently.com/why-do-things-go-right/)
 - [Controlling Your Environment Makes You Happy](https://www.joelonsoftware.com/2000/04/10/controlling-your-environment-makes-you-happy/)
 - [What makes a good intern project?](https://w.amazon.com/index.php/Gbaer/FAQ/InternProjects)
-- Automation is Good Intentions: automation still need feedback loops.
-- Force-Multiplying Activities: "Force-multiplying" is manager-speak for making everyone around you better at their job. But how do you do that? This link has a bunch of great examples. It's written from the standpoint of a UX designer, but you can easily adapt it to your domain.
+- Automation is Good Intentions: automation is not the end. We still needs feedback loops to make sure the automation is applying the correct set of rules.
 - Zonal Architecture for Regional Services: Aside from being good advice for service redundancy, this is also a good primer on what we mean by "regional," "zonal" and "cellular" around here.
 
-### Force multiplying Activities
+## Force multiplying Activities
 
-1. Share best practices
-	
+"Force-multiplying" is manager-speak for making everyone around you better at their job. But how
+do you do that? The following is written from the standpoint of a UX designer, but you can easily
+adapt it to your domain.
 
-Share best practices in one-off settings (Slack, Email, meetings, etc.)
+### Share best practices
+- Share best practices in one-off settings (Slack, Email, meetings, etc.)
+  - Make your thought process visible
+  - Highlight others' great examples
+  - Take on a mentee or an apprentice
+  - Become a mentor or start office hours
 
-    Make your thought process visible
-    Highlight others' great examples
-    Take on a mentee or an apprentice
-    Become a mentor or start office hours
+Pro tip: Don’t just share a best practice or a link to an interesting article, describe the
+thought process behind it and why it’s relevant to your audience. This makes advice more
+useful—nobody will be solving the exact same problem as you in the future, but the approach
+can be similar.
 
-Pro tip: Don’t just share a best practice or a link to an interesting article, describe the thought process behind it and why it’s relevant to your audience. This makes advice more useful—nobody will be solving the exact same problem as you in the future, but the approach can be similar.
+- Create internal documentation
+  - AWS Ops Wins (case studies that reduce latency, cost and errors to AWS and our customers)
+  - Document writing for designers
+  - Project milestones and resources
+  - Internal docsite: Design system documentation
+  - Internal Q&A platform: Answer a question publicly, i.e. on Sage, or on Answers
 
-Create internal documentation:
+In all these examples: When you document a best practice, others are able to learn from you
+without the need for a face-to-face interaction
 
-    Wiki: AWS Ops Wins (case studies that reduce latency, cost and errors to AWS and our customers)
-    Wiki: Document writing for designers
-    Wiki: Project milestones and resources
-    Internal docsite: Design system documentation
-    Internal Q&A platform: Answer a question publicly, i.e. on Sage, or on Answers
+- Write a blog or newsletter:
+  - Write It Right
+  - Luu's Tran’s Blog
+  - Adam Elman’s Blog
+  - Making Great Decisions Blog
 
-In all these examples: When you document a best practice, others are able to learn from you without the need for a face-to-face interaction
+- Host in-person training (mentor at scale):
+  - Required new employee training (i.e. Peculiar UX)
+  - Regular 1-to-1, 1-to-many coaching (i.e. Office Hours, CXBR consultations, presentations)
+  - Seasonal training sessions
 
-Write a blog or newsletter:
+- Record videos:
+  - For all Amazonians: Working Backwards
+  - For UX: Design tutorials
+  - For UX, PM, and Devs: Kumo Clips
 
-    Write It Right
-    Luu's Tran’s Blog
-    Adam Elman’s Blog
-    Making Great Decisions Blog
+### Create templates
 
-Host in-person training (mentor at scale):
-
-    Required new employee training (i.e. Peculiar UX)
-    Regular 1-to-1, 1-to-many coaching (i.e. Office Hours, CXBR consultations, presentations)
-    Seasonal training sessions
-
-Record videos:
-
-    For all Amazonians: Working Backwards
-    For UX: Design tutorials
-    For UX, PM, and Devs: Kumo Clips
-
-2. Create templates
-
- 
-	
-
-Doc templates:
-
-    Amazon-wide document templates
-    Org-wide templates for project kick-offs, research reports, and other common project milestones
+- Doc templates:
+  - Amazon-wide document templates
+  - Org-wide templates for project kick-offs, research reports, and other common project milestones
 
 Pro tip: Create a template whenever there’s an activity that happens over and over again and is done by different people. Combine sharing best practices (#1 above) with creating templates to make your guidance easier to copy and more actionable
 
-Design templates:
+- Design templates:
+  - Compositions of design system components
+  - Presentation templates
+  - Research methods (i.e. a great participant screener template for usertesting.com would ensure more inclusive recruiting for others' research projects)
 
-    Compositions of design system components
-    Presentation templates
-    Research methods (i.e. a great participant screener template for usertesting.com would ensure more inclusive recruiting for others' research projects)
+- Ideation / workshop templates:
+  - Quip templates for remote workshops
+  - Quip templates for self-service ideation sessions
 
-Ideation / workshop templates:
-
-    Quip templates for remote workshops
-    Quip templates for self-service ideation sessions
-
-Code templates:
-
-    Design files + design system component code
+- Code templates:
+  - Design files + design system component code
 
 Code templates make it easy to reuse patterns. Patterns may reduce unnecessary overrides of the design system.
 
-Decision-tree templates:
+- Decision-tree templates:
+  - AWS Well-Architected
 
-    AWS Well-Architected
-
-3. Build tools
-	
-
-Examples of tools built by Amazonians:
-
-    PR/FAQ Writing Tool
-    UX Writer Tool
-    Amazon Accessibility Evaluator
-    Non-inclusive Term Converter
-    Policy Engine (discover problems that need attention)
-    Kumo Automation Service (a framework that allows people to build tools to automate away support issues)
+### Build tools
+- Examples of tools built by Amazonians:
+  - PR/FAQ Writing Tool
+  - UX Writer Tool
+  - Amazon Accessibility Evaluator
+  - Non-inclusive Term Converter
+  - Policy Engine (discover problems that need attention)
+  - Kumo Automation Service (a framework that allows people to build tools to automate away support issues)
 
 Pro tip: Great tools apply best practices automatically to someone’s document, code, or designs.
-4. Introduce a new mental model
-	
 
-Mental model examples:
-
-    Company-wide: Leadership Principles
-    Org: RACI framework (Responsible, Accountable, Consulted, Informed), used to make decision-making more efficient
-    Org/Team:
-        Shape the culture via a vision/mission statement
-        Tenets – especially aspirational tenets, which will allow you to push your team's bar higher
-        List of key truths or decisions made to establish a common ground during discussions
-            Returns Progress Tracker
-    Product: Product framework (a product framework may expand the scope of work and ground future conversations):
+### Introduce a new mental model
+- Mental model examples:
+  - Company-wide: Leadership Principles
+  - Org: RACI framework (Responsible, Accountable, Consulted, Informed), used to make decision-making more efficient
+  - Org/Team:
+    - Shape the culture via a vision/mission statement
+    - Tenets – especially aspirational tenets, which will allow you to push your team's bar higher
+    - List of key truths or decisions made to establish a common ground during discussions
+      - Returns Progress Tracker
+  - Product: Product framework (a product framework may expand the scope of work and ground future conversations):
         "Zones" framework on Product Detail Pages (video – 12:18+)
 
 Pro tip: Great mental models are principles and frameworks that set a new, higher standard for the team’s work quality. With all these examples, it takes documenting and then proposing the new mental model to your peers or leaders to get buy-in.
-5. Propose new goals and metrics
-	
 
-Goals can be introduced at different levels:
-
-    Org: “A CXBR review is required for all new products”
-    Org: “Each employee must attend Customer Connection training twice a year”
-    Org: “Resolve # shopper frustrations”
-    Product: New product metrics, evaluated regularly in MBRs (product goal can bring ongoing focus to an area that may not be getting enough attention)
-    Design team: “100% of design projects will identify the customer value they will deliver and then measure whether it was delivered"
+### Propose new goals and metrics
+- Goals can be introduced at different levels:
+  - Org: “A CXBR review is required for all new products”
+  - Org: “Each employee must attend Customer Connection training twice a year”
+  - Org: “Resolve # shopper frustrations”
+  - Product: New product metrics, evaluated regularly in MBRs (product goal can bring ongoing focus to an area that may not be getting enough attention)
+  - Design team: “100% of design projects will identify the customer value they will deliver and then measure whether it was delivered"
 
 Pro tip: Goals are a great way to influence: they add a target and ongoing accountability to meeting a certain outcome.
-6. Create or modify a mechanism
-	
+### Create or modify a mechanism
 
-Mechanisms created by Amazonians:
+- Mechanisms created by Amazonians:
+  - Andon Cord, Andon Cord for Everyone
+  - Shopper Frustration Program
+  - Customer Service Contact Review
+  - Role Guidelines
+  - Resource: How to create a mechanism
+  - Resource: Mechanisms eLearning
 
-    Andon Cord, Andon Cord for Everyone
-    Shopper Frustration Program
-    Customer Service Contact Review
-    Role Guidelines
-    Resource: How to create a mechanism
-    Resource: Mechanisms eLearning
+Pro tip: Mechanisms provide solutions to recurring problems and don’t require you to be in the room to affect positive outcomes. But you don’t always have to create new mechanisms, start by first thinking about whether you can adjust an existing one.
 
-Pro tip: Mechanisms provide solutions to recurring problems and don’t require you to be in the room to affect positive outcomes. But you don’t always have to create new mechanisms, start by first thinking about whether you can adjust an existing one. 
-
-Modify a mechanism:
-
-    Add a new required field to a Quarterly Planning Doc Template
-    Add new required FAQs to your org's Press Release template
-    Add a new step to Embark for new employees
-    Add required steps in design reviews
-    CC a UX designer on all front-end code reviews to improve Design Quality Assurance
+- Modify a mechanism:
+  - Add a new required field to a Quarterly Planning Doc Template
+  - Add new required FAQs to your org's Press Release template
+  - Add a new step to Embark for new employees
+  - Add required steps in design reviews
+  - CC a UX designer on all front-end code reviews to improve Design Quality Assurance
 
 Pro tip: Modifying a mechanism always starts with (a) identifying what are the existing mechanisms (b) changing it get better outcomes in the future. The “Modify” tactic also applies to existing tools, templates, goals, and metrics.
-7. Propose organizational changes
-	
 
-Ways to affect organizational structure and resourcing:
+### Propose organizational changes
+- Ways to affect organizational structure and resourcing:
+  - Author a narrative, PRs, or OP1 paragraph, which will require new resources
+  - Partner with others to create a company-wide group
+      - Software Builder Experience Org (created to focus on improving the experience for software builders across Amazon)
+      - Amazon Affinity Groups
+  - Author a cross-org narrative that solves shared problems (i.e. via multi-org working groups)
+  - Take on direct reports
 
-    Author a narrative, PRs, or OP1 paragraph, which will require new resources
-    Partner with others to create a company-wide group
-        Software Builder Experience Org (created to focus on improving the experience for software builders across Amazon)
-        Amazon Affinity Groups
-    Author a cross-org narrative that solves shared problems (i.e. via multi-org working groups)
-    Take on direct reports
+### Participate in strategic sessions
+- Strategic session examples:
+  - Cross-org: Become a CXBR or a Hiring BR
+  - Org: Lead brainstorming / Think Big strategic sessions (i.e. get invited OR lead them, make it more inclusive and more customer obsessed)
+  - Org: Provide feedback on PRs, project kick-offs (feedback on PRs influences all downstream steps)
+  - Org/team: Organize generative research to uncover new opportunities for the business
 
-8. Participate in strategic sessions
-	
+### Create durable deliverables
 
-Strategic session examples:
+Most "project" deliverables only advance the current project from one stage to the next.
+"Durable" deliverables on the other hand—are useful during multiple stages of your current project
+as well as during future projects.
 
-    Cross-org: Become a CXBR or a Hiring BR
-    Org: Lead brainstorming / Think Big strategic sessions (i.e. get invited OR lead them, make it more inclusive and more customer obsessed)
-    Org: Provide feedback on PRs, project kick-offs (feedback on PRs influences all downstream steps)
-    Org/team: Organize generative research to uncover new opportunities for the business
+**3 Steps To Apply a Force-Multiplying Activity**
+  - Aim for atleast for 10% of deliverables to be durable.
+  - Take initiative to define durable deliverables per project (atleast 2)
+  - Make sure that these are easy to find and not lost within a project.
 
-New-badge.png
-9. Create durable deliverables
+- Examples:
+  - Architecture diagrams
+    - Amazon Shopping Product Detail Page "Zones"
+    - AWS Trusted Advisor Technical architecture
+  - Coding standards
+    - Guidance for Region Building and Special partitions in AWS Kumo
+    - DynamoDB Operational Best Practices
+  - Project/Program/Team tenets
+    - Tenet examples
+  - Design principles
+    - AWS Trusted Advisor UX design - unification principles
+  - Personas and their Jobs-To-Be-Done (JTBDs)
+    - AWS Personas
+  - Journey maps
+    - AWS Support Troubleshooting Journey Map
+  - Timeless customer needs
+    - AWS Support timeless customer needs
+  - Ideal business outcomes
+    - Measurable goals tracked in a "2x2" business health update
+  - Ideal customer feelings/Emotional Design outcomes
+    - Tutorial: How to apply Emotional Design to your product
+  - North Star Designs (mockups or Press Release descriptions)
+    - Your Orders UX mobile design architecture video
+  - Design system and brand guidelines
+    - Amazon Shopping's Rio design system
 
-_
+**Measuring Impact**
 
-Watch a 5-min video summary:
+To ensure your force multiplying activity is working, you should have a way to audit its
+effectiveness on a consistent basis. Data will help you adjust along the way and it will allow
+you to show the impact of your work. Here are several ways impact can be measured:
+- Awareness – this includes: views, clicks, attendees, subscribers, anecdotes (note: these provide
+  a signal on adoption but may not be strong enough to demonstrate impact, see #2)
+- Before-and-after comparisons – anecdotal examples of improvements (i.e. via anecdotal or survey
+  feedback), A/B tests, Connections, Tech Survey results
+- Organizational changes – resource reallocations, new investments, changes to mechanisms,
+  executive buy-in of new initiatives
 
-thumbnail.jpg
-	
-
-Most project deliverables only advance the current project from one stage to the next. “Durable deliverables"—on the other hand—are useful during multiple stages of your current project as well as during future projects.
-
-Examples:
-
-    Architecture diagrams
-        Amazon Shopping Product Detail Page "Zones"
-        AWS Trusted Advisor Technical architecture
-    Coding standards
-        Guidance for Region Building and Special partitions in AWS Kumo 
-        DynamoDB Operational Best Practices
-    Project/Program/Team tenets
-        Tenet examples
-    Design principles
-        AWS Trusted Advisor UX design - unification principles
-    Personas and their Jobs-To-Be-Done (JTBDs)
-        AWS Personas
-    Journey maps
-        AWS Support Troubleshooting Journey Map
-    Timeless customer needs
-        AWS Support timeless customer needs
-    Ideal business outcomes
-        Measurable goals tracked in a "2x2" business health update
-    Ideal customer feelings/Emotional Design outcomes
-        Tutorial: How to apply Emotional Design to your product
-    North Star Designs (mockups or Press Release descriptions)
-        Your Orders UX mobile design architecture video
-    Design system and brand guidelines
-        Amazon Shopping's Rio design system
-
-### 3 Steps To Apply a Force-Multiplying Activity
-
-force_multiplying_process.png
-
-_
-Measuring Impact
-
-To ensure your force multiplying activity is working, you should have a way to audit its effectiveness on a consistent basis. Data will help you adjust along the way and it will allow you to show the impact of your work. Here are several ways impact can be measured:
-
-    Awareness – this includes: views, clicks, attendees, subscribers, anecdotes (note: these provide a signal on adoption but may not be strong enough to demonstrate impact, see #2)
-    Before-and-after comparisons – anecdotal examples of improvements (i.e. via anecdotal or survey feedback), A/B tests, Connections, Tech Survey results
-    Organizational changes – resource reallocations, new investments, changes to mechanisms, executive buy-in of new initiatives
-
-_
-
-Pro tip: Since being an effective force multiplier requires adoption, collaboration, and usually buy-in from your peers and leaders, regular Earn Trust-building activities are key to maximizing your impact!
+Pro tip: Since being an effective force multiplier requires adoption, collaboration, and usually
+buy-in from your peers and leaders, regular Earn Trust-building activities are key to maximizing
+your impact!
