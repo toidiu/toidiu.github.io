@@ -9,34 +9,42 @@ tag = ["indian"]
 id = "blog-single"
 +++
 
+**Chole Masala**
+- 4 channa masala
+- 2 anardana powder
+- 2 garam masala
+- 2 amchoor powder
+- 3 corriendar powder
+
+
 ### Ingredients
 - 2 cups chickpeas raw, to be soaked overnight
 - 2 bay leaves
 - 5-6 green cardamom pods
 - 1 inch cinnamon stick
 - 4-5 black peppercorn
-- 2 black tea bags for dark color of chole
 - 1 teaspoon salt adjust to taste
 - 5 cups water
+- (optional) 2 black tea bags for dark color of chole
 
-**For the chole masala**
-  - 1 – 1 & 1/2 tablespoons oil use any oil of choice
-  - 2 whole cloves
-  - 3/4 cup grated onions or very finely chopped
-  - 2 teaspoons ginger garlic paste
-  - 2 & 1/2 cups pureed tomatoes from 4 medium tomatoes
-  - 3 teaspoons chole masala homemade (recipe above) or store-bought
-  - 1/2 teaspoon red chili powder or to taste
-  - 1/2 teaspoon paprika powder
-  - 3/4 teaspoon cumin powder
-  - 1/2 salt adjust to taste
+**gravy**
+- 1-1.5 tablespoons oil
+- 2 whole cloves
+- 3/4 cup finely chopped onions
+- 2 teaspoons ginger garlic paste
+- 2.5 cups pureed tomatoes from 3 medium tomatoes
+- 3 teaspoons chole masala homemade (recipe above) or store-bought
+- 1/2 teaspoon red chili powder or to taste
+- 1/2 teaspoon paprika powder
+- 3/4 teaspoon cumin powder
+- 1/2 salt adjust to taste
 
-**To garnish**
-  - 1 tablespoon ghee
-  - 1 inch ginger cut into julienne
-  - 1/4 teaspoon garam masala
-  - 1/2 tablespoon crushed kasuri methi also known as dried fenugreek leaves
-  - 2 tablespoons cilantro chopped
+**garnish**
+- 1 tablespoon ghee
+- 1 inch ginger cut into julienne
+- 1/4 teaspoon garam masala
+- 1/2 tablespoon crushed kasuri methi also known as dried fenugreek leaves
+- 2 tablespoons cilantro chopped
 
 ### Preparation
 **Cooking chickpeas**
@@ -55,7 +63,7 @@ id = "blog-single"
 - Once the pressure comes off, remove tea bags and bay leaves.
 - Set aside (DO NOT THROW AWAY THE WATER)
 
-**Masala**
+**gravy**
 - Heat oil in a pot on medium heat.
 - Add 2 whole cloves and grated onions to the pot.
 - Cook the onions raw smell goes away and they are light golden brown in color (~7 to 8 minutes).
