@@ -1,6 +1,6 @@
 +++
 title = "Paratha"
-date = 2024-07-21
+date = 2024-07-22
 
 [taxonomies]
 tag = ["indian"]
@@ -13,7 +13,7 @@ id = "blog-single"
 - Atta (wheat flour) (2 cups)
 - water (1 cup)
 - salt (3 tbsp)
-- ajwain seeds
+- [ajwain seeds](https://en.wikipedia.org/wiki/Ajwain)
 
 **Preperation**
 - Add salt to atta and mix
@@ -22,6 +22,10 @@ id = "blog-single"
 
 ### Stuffed
 - A bit of ghee
+- dash of corriendar powder
+- dash of red chilli powder
+- dash of [Amchoor powder](https://en.wikipedia.org/wiki/Amchoor)
+- Channa masala
 - (optional) Boiled potatoes
 - (optional) Onions
 - (optional) Grated paneer
