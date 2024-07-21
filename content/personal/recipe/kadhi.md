@@ -31,6 +31,7 @@ Can be prepared ahead of time.
 - 1 cup besan (chichpea flour)
 - 3-4 cups water, should be watery to start
 - salt
+- lime (important)
 - optional (spinach, onion, other vegs)
 
 **Preperation**
@@ -40,3 +41,4 @@ Can be prepared ahead of time.
 - Once at boil...
 - Add salt.
 - Cook for 30-45 min until raw flavor is gone.
+- Add lime juice (important).
