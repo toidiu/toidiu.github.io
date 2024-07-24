@@ -8,4 +8,7 @@ link = "https://github.com/aws/s2n-tls"
 featured = true
 open = true
 +++
-s2n-tls is a C99 implementation of the TLS/SSL protocols that is designed to be simple, small, fast, and with security as a priority.
+s2n-tls is AWS's C99 implementation of the TLS/SSL protocols.
+
+Designed to be secure, simple and fast. Powers a large portion of network traffic
+within AWS datacenters.

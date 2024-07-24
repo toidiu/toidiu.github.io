@@ -8,4 +8,8 @@ link = "https://github.com/aws/s2n-tls"
 featured = true
 open = true
 +++
-s2n-quic is a Rust implementation of the [IETF QUIC protocol](https://quicwg.org/)
+s2n-quic is AWS's production ready a Rust implementation of the IETF [QUIC](https://quicwg.org/) protocol.
+
+QUIC is a modern protocol that was designed and tested for over a decade at Google scale. Approximately, it
+replaces TLS and TCP in the networking stack.
+Notably, HTTP/3 runs on QUIC.
