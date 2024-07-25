@@ -1,13 +1,13 @@
 +++
 template = "blog.html"
 page_template = "blog-single.html"
-weight = 1
+weight = 10
 
-sort_by = "date"
+sort_by = "title"
 
 [extra]
 id = "blog"
-name = "recipe"
+name = "random"
 +++
 
 some content

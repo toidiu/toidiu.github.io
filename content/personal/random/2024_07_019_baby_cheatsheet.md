@@ -1,5 +1,5 @@
 +++
-title = "Baby notes"
+title = "Baby cheatsheet"
 date = 2024-07-19
 
 [taxonomies]
@@ -9,7 +9,7 @@ tag = ["baby"]
 id = "blog-single"
 +++
 
-A collection of notes when raising a baby.
+Baby raising cheatsheet.
 
 <!-- more -->
 
