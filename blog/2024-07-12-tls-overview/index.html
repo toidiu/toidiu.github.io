@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="Apoorv Kothari is software engineer. He studied Engineering at Cooper Union and is intrested in Rust, Kubernetes, Scala, Android, Java.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Scala, java, Cooper Union, blog, talks, code, rust, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;personal">
+
+      personal
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <div class="title important">TLS overview</div>
+  <div class="date">2024-07-12</div>
+  </div>
+
+  <div class="content">
+    <p>An brief overview of a TLS in simple language.</p>
+<span id="continue-reading"></span><h2 id="the-tls-protocol-provides-3-properties">The TLS protocol provides 3 properties</h2>
+<ul>
+<li>Authentication: is the peer who they say they are. the client authenticates the server. server can optionally authenticate the client.</li>
+<li>Confidentiality: messages sent to the peer are secret and only visible to the peer.</li>
+<li>Integrity: messages sent to peer are tamper proof. If a message is modified then this tamper can be detected.</li>
+</ul>
+<h2 id="how-are-these-properties-enforced">How are these properties enforced</h2>
+<ul>
+<li>Authentication: during the handshake, the server sends a certificate which ties its private key to the public key on the certificate. The certificate is in turn signed by a root CA's certificate, which both the peers need to trust to establich &quot;a chain of trust&quot;. The root cert might sign a intermediate cert, which in turn will sign the peer's cert. The &quot;root cert&quot; -&gt; &quot;intermediate cert&quot; -&gt; &quot;peer cert&quot;, is the chain and the trust is established by cryptographically verifying the signatures on the cert. The <a href="https://datatracker.ietf.org/doc/html/rfc5280">RFC</a> defines x.509 and PKI, which are the components which define certificate infrastructure.</li>
+<li>Confidentiality: during the handshake, the client and server perform a key exchange (kex). There are many kex algorithms (RSA, DHE, EDHE). ECDHE (elliptic curve diffie-hellman ephemeral) is prefered because it is forward-secret. Note the word epehemeral in the title. The responsibility of kex is to allow for each peer to contribute some public key material and together come up with a secret key for the TLS connection. &quot;client public key material&quot; + &quot;server public key material&quot; =&gt; &quot;connection secret key&quot;. The connection secret key is a strong cryptographic secret, which when used to encrpty messages provides confidentiality.</li>
+<li>Integrity: along with using the &quot;connection secret key&quot; for encryption, we also generate a MAC (message authentication code) for the ciphertext we generate. This tag can be though of as a &quot;signature&quot; on the ciphertext, and guarantees that only a peer which possesses the connection secret key could have generated the encryption/tag. Previously the encryption and authentication were separate steps and algorithms, but today it is good practice to use cipher schemes that offer Authenticated Encryption (authenticaion and encryption).</li>
+</ul>
+<h2 id="a-full-tls-handshake">A full TLS handshake</h2>
+<p>tbd</p>
+<h2 id="a-psk-tls-handshake">A PSK TLS handshake</h2>
+<p>tbd</p>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+
