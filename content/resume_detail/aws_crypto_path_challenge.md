@@ -1,9 +1,9 @@
 +++
-title = "s2n-quic handshake status"
-date = 2021-09-01
+title = "s2n-quic path challenge"
+date = 2021-08-01
 
 [extra]
-company = "amzn_crypto"
+company = "aws_crypto"
 lp = []
 +++
 

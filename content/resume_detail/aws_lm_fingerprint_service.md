@@ -3,7 +3,7 @@ title = "Fingerprint service"
 date = 2019-12-01
 
 [extra]
-company = "amzn_lm"
+company = "aws_lm"
 lp = ["invent and simplify", "bias for action"]
 +++
 

@@ -5,6 +5,19 @@
 
 {% block content %}
 <div class="main-container">
+    <!-- BRAG document -->
+    {% for sub in section.subsections %}
+      {% set sub_section = get_section(path=sub) %}
+      <div class="post">
+        <a class="title" href={{ sub_section.permalink }}># {{ sub_section.extra.name }}</a>
+        <div class="summary">
+          What are Brag documents: <a class="" href=https://jvns.ca/blog/brag-documents>link</a>
+        </div>
+      </div>
+
+    {% endfor %}
+
+    <span>----------</span>
   <div><a href="https://github.com/toidiu/toidiu.github.io/blob/live-code/content/resume_detail/_index.md" target=_blank" rel="noopener">lps</a></div>
     <span>----------</span>
 

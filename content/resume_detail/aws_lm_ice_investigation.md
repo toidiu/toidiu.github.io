@@ -3,7 +3,7 @@ title = "ICE investication"
 date = 2020-08-01
 
 [extra]
-company = "amzn_lm"
+company = "aws_lm"
 lp = []
 +++
 

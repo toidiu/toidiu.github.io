@@ -3,7 +3,7 @@ title = "s2n-quic ack freq analysis"
 date = 2022-05-01
 
 [extra]
-company = "amzn_crypto"
+company = "aws_crypto"
 lp = []
 +++
 
