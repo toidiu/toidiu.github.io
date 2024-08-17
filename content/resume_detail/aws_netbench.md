@@ -8,7 +8,7 @@ lp = []
 +++
 
 summary
-https://github.com/toidiu/netbench_orchestrator
+https://github.com/aws/s2n-netbench/tree/main/netbench-orchestrator
 
 #### metrics
 - bla
