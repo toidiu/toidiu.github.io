@@ -3,7 +3,7 @@ title = "s2n-quic client implementation"
 date = 2021-06-01
 
 [extra]
-company = "amzn_crypto"
+company = "aws_crypto"
 lp = []
 +++
 

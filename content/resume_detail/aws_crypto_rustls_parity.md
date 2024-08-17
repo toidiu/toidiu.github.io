@@ -1,9 +1,9 @@
 +++
-title = "Detect stuck migrations"
-date = 2020-02-01
+title = "s2n-quic rustls testing and parity"
+date = 2022-01-01
 
 [extra]
-company = "amzn_lm"
+company = "aws_crypto"
 lp = []
 +++
 

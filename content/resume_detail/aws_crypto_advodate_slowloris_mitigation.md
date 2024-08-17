@@ -3,7 +3,7 @@ title = "s2n-quic advocate better slowloris mitigation"
 date = 2021-11-01
 
 [extra]
-company = "amzn_crypto"
+company = "aws_crypto"
 lp = []
 +++
 

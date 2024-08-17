@@ -3,7 +3,7 @@ title = "Customer impact remediation"
 date = 2020-11-01
 
 [extra]
-company = "amzn_lm"
+company = "aws_lm"
 lp = ["bias for action"]
 +++
 

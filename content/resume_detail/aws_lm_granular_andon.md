@@ -3,7 +3,7 @@ title = "Granular andon"
 date = 2020-02-28
 
 [extra]
-company = "amzn_lm"
+company = "aws_lm"
 lp = []
 +++
 
