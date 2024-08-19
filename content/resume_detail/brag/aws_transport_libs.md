@@ -22,9 +22,6 @@ original core maintainers of s2n-quic who helped build and launch the library. I
 designed and implemented core features in the library, coordinated 3rd party pentests, helped with
 customer integrations, etc.
 
-I presented a talk about s2n-quic and the QUIC protocol at CryptoCon, an internal AWS cryptography
-conference.
-
 <!-- ### project -->
 
 <!-- - What your contributions were (did you come up with the design? Which components did you build? Was -->
@@ -39,18 +36,87 @@ conference.
 <!-- Remember: don’t forget to explain what the results of you work actually were! It’s often important -->
 <!-- to go back a few months later and fill in what actually happened after you launched the project. -->
 
-### updating rustls to use aws-lc by default
+### Onboarded CloudFront to s2n-quic for HTTP/3 support
+- cc algorithm
+  - custom amplification factor
+  - gain value
+  - loss threshold values
+  - initial cwnd value
+- mtu probing
+- pacing
+- gso
+- ecn
+- testing
+  - performance via flamegraph
+  - netbench
+
+- zero cost event framework
+- custom data structures
+  - ack range: interval set
+  - packet number map: ring buffer which stores consequetive values and allows for ranged delete
+
+### support min, initial, max MTU
+Some mobile networks will fragment and reassemble packets despite the DNF (do no fragment) flag.
+While this is a good thing for availability, it skews MTU probing measurements and results in
+dereased throughput due to packet loss.
+
+s2n-quic probes for the max mtu values on each network path and uses that to that when sending
+packets. Since mobile networks are essentially claiming larger MTU values than the path actually
+supports, s2n-quic continues to send larger MTU values. Additionally, fragmenting/reassembing is an
+expensive operation (io/cpu/time), which requies the fragmented packets to be buffered and then
+reassemble.
+
+The result is that s2n-quic sends larger and larger packets, which take longer and longer for the
+mobile network to process. This results in packet loss and an overall decrease in throughput.
+
+### Implement Optimistic ACK Attack mitigations
+https://github.com/aws/s2n-quic/issues/1962
+
+### ACK frequency optimizations
+link: https://github.com/aws/s2n-quic/issues/1276
+
+### presented a talk at CryptoCon
+I presented a talk about s2n-quic and the QUIC protocol at CryptoCon, an internal AWS cryptography
+conference. The talk was recored and shared in the internal Amazon video repository.
+
+The goal of the talk was to illuminate what makes QUIC a novel protocol over the previous
+iterations: TLS1.3, TLS1.2, etc. Imo the biggest shift in QUIC was moving critical protocol
+components from the kernel-space to user-space (CC, recovery, pacing). This shift allowed for
+quicker iterations but comes at the higher cost and complexity of the user-space implementation.
+
+### Updating rustls to use aws-lc by default
+rustls doesnt have a stable API and is pre-1.x. Additionally, it frequently publishes breaking
+changes (although the introduction of https://github.com/rustls/pki-types might mean a more stable
+API).
+
+- s2n-quic is 1.x
+- s2n-quic took a dep on rustls.
+- s2n-quic re-exported some rustls types.
+- rustls broke API in new versions.
+- Upgrading rustls would mean breaking API for s2n-quic.
+
 ### openssl3 integation
 ### netbench orchestrator
 ### ktls
 ### created internal customer list
-### s2n-quic ack freq analysis
+
 ### s2n-quic async client hello
 ### s2n-quic rustls testing and parity
 ### s2n-quic advocate better slowloris mitigation
 ### s2n-quic handshake status
 ### s2n-quic path challenge
 ### s2n-quic client implementation
+AWS is primarily a datacenter company so the initial implementation of s2n-quic only supported the
+server usecase. I added client support to the library.
+
+Previously integration tests were based on a third-party QUIC library(quinn) which made
+introspection and configuration more difficult. Adding client support meant owning the entire QUIC
+stack for both the client and server. This eventually enabled more sophisticated integration and
+fuzz testing.
+
+The task involved reading the QUIC RFC for all requirements and implementing the features to support
+to the library.
+
 ### s2n-quic connection migration
 ### s2n-quic event framework
 
