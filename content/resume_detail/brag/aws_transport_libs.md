@@ -22,21 +22,26 @@ original core maintainers of s2n-quic who helped build and launch the library. I
 designed and implemented core features in the library, coordinated 3rd party pentests, helped with
 customer integrations, etc.
 
-<!-- ### project -->
-
-<!-- - What your contributions were (did you come up with the design? Which components did you build? Was -->
-<!--   there some useful insight like “wait, we can cut scope and do what we want by doing way less work” -->
-<!--   that you came up with?) -->
-
-<!-- - The impact of the project – who was it for? Are there numbers you can attach to it? (saved X -->
-<!--   dollars? shipped new feature that has helped sell Y big deals? Improved performance by X%? Used by -->
-<!--   X internal users every day?). Did it support some important non-numeric company goal (required to -->
-<!--   pass an audit? helped retain an important user?) -->
-
-<!-- Remember: don’t forget to explain what the results of you work actually were! It’s often important -->
-<!-- to go back a few months later and fill in what actually happened after you launched the project. -->
+**Contents:**
+- Onboarded CloudFront to s2n-quic for HTTP/3 support
+- Support min, initial, max MTU
+- Implement Optimistic ACK Attack mitigations
+- ACK frequency optimizations
+- Presented a talk at CryptoCon
+- Updating rustls to use aws-lc by default
+- openssl3 integation
+- netbench orchestrator
+- ktls
+- created internal customer list
+- s2n-quic async client hello
+- s2n-quic rustls testing and parity
+- s2n-quic advocate better slowloris mitigation
+- s2n-quic handshake status
+- s2n-quic path challenge
+- s2n-quic client implementation
 
 ### Onboarded CloudFront to s2n-quic for HTTP/3 support
+s2n-quic was more performant due to the following reasons.
 - cc algorithm
   - custom amplification factor
   - gain value
@@ -49,13 +54,12 @@ customer integrations, etc.
 - testing
   - performance via flamegraph
   - netbench
-
 - zero cost event framework
 - custom data structures
   - ack range: interval set
   - packet number map: ring buffer which stores consequetive values and allows for ranged delete
 
-### support min, initial, max MTU
+### Support min, initial, max MTU
 Some mobile networks will fragment and reassemble packets despite the DNF (do no fragment) flag.
 While this is a good thing for availability, it skews MTU probing measurements and results in
 dereased throughput due to packet loss.
@@ -70,12 +74,72 @@ The result is that s2n-quic sends larger and larger packets, which take longer a
 mobile network to process. This results in packet loss and an overall decrease in throughput.
 
 ### Implement Optimistic ACK Attack mitigations
-https://github.com/aws/s2n-quic/issues/1962
+Tracking issue: https://github.com/aws/s2n-quic/issues/1962
+Feature PR: https://github.com/aws/s2n-quic/pull/1986
+
+This was tricky since the RFC didn't really mention the exact implementation.
+How often should we skip packets and how many packets?
+
+We choose to skip 1 packet in the range [cwnd/2, cwnd*2]. Since we are trying
+to control cwnd explosion, basing the skip value on cwnd made sense.
+
+> Only skip a packet number after verifying the peer did not send the previous one.
+Many of the implementations were doing this check naively. They would skip
+packets at a regular interval. However, other impls were only tracking a single
+skipped packet and not waiting to verify if the peer did not ack the previous
+skipped packet.
+
+Example:
+```
+So lets say an impl skips every 5th packet. It would skip 5, 10, 15. But the impl should only skip
+[1,2,3,4]; skip 5
+< ack [1,2,3,4]
+
+// the skip packet is cleared so the peer can send an ack for 5
+[1,2,3,4,6,7,8,9,11]; skip 10
+< ack [5,6,7]
+```
+
+Actual calculation:
+```
+// bound the random value based on congestion window
+let pkt_per_cwnd = path.congestion_window() / path.mtu();
+let lower = pkt_per_cwnd / 2;
+let upper = pkt_per_cwnd.saturating_mul(2);
+let cardinality = upper - lower + 1;
+let mut rand = u32::rand() & cardinality;
+
+// skip counter
+skip = (lower + MIN_SKIP_COUNTER_VALUE).saturating_add(rand);
+*skip_counter = Some(Counter::new(skip));
+```
 
 ### ACK frequency optimizations
 link: https://github.com/aws/s2n-quic/issues/1276
 
-### presented a talk at CryptoCon
+Initial experiments with single batch did not show much improvements. Theory
+was that having to aggregate acks and then process it separately was just as
+expensive (cost savings of 2-3% simply didn't materialize) as simply processing
+the acks individually.
+
+**Delaying ack meant:**
+- delayed signals to CC and loss recovery
+- delayed processing of ECN signals (mitigated by processing immediately)
+- mtu discovery (mitigated)
+- handshake and anti-amplificaiton (mitigated)
+
+**Proposed solutions:**
+- single payload batch would aggregate acks from multiple packets (10) and
+  process them once (gso by default batches 10 packets). projected cost savings
+  of 2-3% based on flamegraph.
+- multi payload batch would store the acks and process them at some delay. this
+  would be equivalent to implementing the RFC, except it can be implemented
+  locally without having to negotiate with the peer. (batch acks from multiple
+  payloads which need a separate data structure)
+- ack freq rfc (the full rfc, which requires the peer to negotiate and be
+  compliant)
+
+### Presented a talk at CryptoCon
 I presented a talk about s2n-quic and the QUIC protocol at CryptoCon, an internal AWS cryptography
 conference. The talk was recored and shared in the internal Amazon video repository.
 
@@ -205,4 +269,3 @@ This can also include other non-career-related things you’re proud of, if that
 
     If you were trying to convince a friend to come join your company/team, what would you tell them about your work?
     Did anybody tell you that you did something well recently?
-
