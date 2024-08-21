@@ -45,14 +45,16 @@ s2n-quic was more performant due to the following reasons.
     for ranged delete
 
 ### s2n-quic/s2n-tls Async cert loading
+**TODO expand on this work.**
+https://github.com/aws/s2n-quic/issues/1137
 Currently s2n-quic does the certificate lookup/loading operations synchronously.
 Non ideal for application which handle multiple connections concurrently. The
 work allowed for certificate lookup/loading operations to be performed
 asynchronously and enable non-blocking behavior.
 
-**TODO expand on this work.**
-https://github.com/aws/s2n-quic/issues/1137
-This work involved exposing the cert loading
+- s2n-tls work
+- s2n-tls bindings work
+- s2n-quic work
 
 ### s2n-quic ACK frequency optimizations
 link: https://github.com/aws/s2n-quic/issues/1276
@@ -79,14 +81,38 @@ the acks individually.
 - ack freq rfc (the full rfc, which requires the peer to negotiate and be
   compliant)
 
-### s2n-quic Event framework https://github.com/aws/s2n-quic/issues/439
+### s2n-quic Event framework
+https://github.com/aws/s2n-quic/issues/439
+
+The event framework is a zero-cost abstraction which allows customers to enable
+logging for s2n-quic.
+
+The default implementation of each event is a noop, which means it is compiled
+away. Users can override the default behavior if they care to consume a
+particular event.
+
+Originally implemented using syntax macros, the final implementation was a
+standalone Rust token parse (via syn crate) and outputed a generated.rs file.
+The parser was responsible for correctly constructing events, their default
+impl, testing impl and builder pattern for each event.
 
 ### s2n-quic Connection Migration
 https://github.com/aws/s2n-quic/pulls?q=is%3Apr+connection+migration+is%3Aclosed+author%3Atoidiu
+Connection migration is one of the selling features of QUIC. It addresses the
+modern network usage pattern where clients running on phones switch from one cell
+tower to another. Reestablishing a new connection requires a new handshake to
+establish new keys. Additionally, any in-progress transfers might have to start
+over.
 
-### s2n-quic client implementation https://github.com/aws/s2n-quic/issues/1009
-AWS is primarily a datacenter company so the initial implementation of s2n-quic
-only supported the server usecase. I added client support to the library.
+QUIC facilitates Connection Migration by introducing an explicit ConnectionId,
+rather than using ip/port to identify a connection. This allows a server to tie
+a client connection which is changing ip/ports back to the same connection
+context and avoid a new handshake.
+
+### s2n-quic client implementation
+https://github.com/aws/s2n-quic/issues/1009 AWS is primarily a datacenter
+company so the initial implementation of s2n-quic only supported the server
+usecase. I added client support to the library.
 
 Previously integration tests were based on a third-party QUIC library(quinn)
 which made introspection and configuration more difficult. Adding client support
@@ -139,10 +165,24 @@ skip = (lower + MIN_SKIP_COUNTER_VALUE).saturating_add(rand);
 ```
 
 ### s2n-tls Pedantic Valgrind checks
+```
+// a comma separated list of one or more of: definite indirect possible reachable.
+--errors-for-leak-kinds=<set> [default: definite,possible]
+--errors-for-leak-kinds=all
+```
+
+Leaks of kind "Still reachable" were not caught by Vangrind because by default
+Valgrind enables "definite and possible". While this might be a safe assumption
+for applications it is not for libraries that need to cleanup possibly stateful
+resources. Solution was to run `--errors-for-leak-kinds=all` in tests.
 
 ### s2n-tls Openssl 3.0 support
+**TODO expand on this work.** low
 
 ### s2n-netbench orchestrator
+**TODO expand on this work.** low
+
+## Not mentioned in resume
 
 ### s2n-quic Support min, initial, max MTU Some mobile networks will fragment
 and reassemble packets despite the DNF (do no fragment) flag. While this is a
@@ -181,7 +221,8 @@ mean a more stable API).
 - rustls broke API in new versions.
 - Upgrading rustls would mean breaking API for s2n-quic.
 
-### created internal customer list ### s2n-quic rustls testing and parity
+### created internal customer list
+### s2n-quic rustls testing and parity
 ### s2n-quic advocate better slowloris mitigation
 ### s2n-quic handshake status
 ### s2n-quic path challenge
