@@ -52,9 +52,15 @@ Non ideal for application which handle multiple connections concurrently. The
 work allowed for certificate lookup/loading operations to be performed
 asynchronously and enable non-blocking behavior.
 
-- s2n-tls work
-- s2n-tls bindings work
-- s2n-quic work
+- s2n-quic: pass the connection waker down to the tls libraries so that they
+  could wake on progress
+- s2n-tls: The work involved converting the callback is only invoked once to a
+  poll the callback model in s2n-tls. s2n-tls by default did not allow for poll
+  callbacks. It only called the callback once (expecting the callback to
+  finish), which means that the task would block. the rust poll model allows for
+  the future to make progress. The callback can also now store any internal
+  state that is needed to poll the future.
+  - s2n-tls bindings: glue.
 
 ### s2n-quic ACK frequency optimizations
 link: https://github.com/aws/s2n-quic/issues/1276
