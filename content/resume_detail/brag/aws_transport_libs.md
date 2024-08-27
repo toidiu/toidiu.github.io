@@ -25,6 +25,10 @@ the library, coordinated 3rd party pentests, helped with customer integrations,
 etc.
 
 ### s2n-quic Onboarded CloudFront to s2n-quic for HTTP/3 support
+> Time to First Byte (TTFB) improved by 23.5% overall, but especially on Android with a 37.1%
+improvement. Additionally, customer engagement metrics from Snap showed improvement to story view
+times, ad impressions, and a reduction in viewer cancellation counts.
+
 s2n-quic was more performant due to the following reasons.
 - cc algorithm
   - custom amplification factor
