@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="Apoorv Kothari is software engineer. He studied Engineering at Cooper Union and is intrested in Rust, Kubernetes, Scala, Android, Java.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Scala, java, Cooper Union, blog, talks, code, rust, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;personal">
+
+      personal
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <div class="title important">Android low memory testing</div>
+  <div class="date">2016-08-12</div>
+  </div>
+
+  <div class="content">
+    <p>There are a few things that separate mobile development from other types of development. Yes, actually your code does have to be smaller (in the previous version of the Android compiler, there was a limit on the number of methods that your application could have)... but really you are dealing with two main struggles; <code>loss of network connectivity</code>, and <code>low memory</code>. We will focus on the low memory issue and how you can go about testing this ephemeral state.</p>
+<span id="continue-reading"></span><h3 id="out-of-sight-out-of-mind">Out of sight, out of mind</h3>
+<p>It is often easy to ignore a problem that is unlikely to occur. Of course as the consumer market steadily moves towards more powerful phones, low memory issue should be a thing of the past. However, if each app developer thinks along these lines then we make no progress. Additionally, low memory issues can happen quite often: start a camera intent, or the user navigates to another app and then comes back.</p>
+<h3 id="living-on-the-edge-destroy-everything">Living on the edge: destroy everything</h3>
+<p>Enable the setting: <code>Settings -&gt; Developer options -&gt; Don't keep activities</code>. By checking this option Android will simulate low memory behavior, and destroy each activity as the user navigates away from it. This is what the OS does to reclaim memory and can result in invalid state within or loss of state.</p>
+<h3 id="the-good-news">The Good news</h3>
+<p>Android actually gives you a lot (such as views), when you return to an activity that was destroyed. However if you are setting field variables then its upon you to restore those. Use the method <code>onSaveInstanceState()</code> to save any variables and <code>onRestoreInstanceState()</code> to restore the variables back.</p>
+<p>Happy developing :)</p>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+
