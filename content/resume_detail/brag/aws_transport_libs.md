@@ -24,129 +24,35 @@ launch the library. In this capacity I designed and implemented core features in
 the library, coordinated 3rd party pentests, helped with customer integrations,
 etc.
 
-### s2n-quic Onboarded CloudFront to s2n-quic for HTTP/3 support
-> Time to First Byte (TTFB) improved by 23.5% overall, but especially on Android with a 37.1%
-improvement. Additionally, customer engagement metrics from Snap showed improvement to story view
-times, ad impressions, and a reduction in viewer cancellation counts.
-
-s2n-quic was more performant due to the following reasons.
-- cc algorithm
-  - custom amplification factor
-  - gain value
-  - loss threshold values
-  - initial cwnd value
-- mtu probing
-- packet pacing
-- gso
-- ecn
-- testing
-  - performance via flamegraph
-  - netbench
-- zero cost event framework
-- custom data structures
-  - ack range: interval set
-  - packet number map: ring buffer which stores consequetive values and allows
-    for ranged delete
-
-### s2n-quic/s2n-tls Async cert loading
-**TODO expand on this work.**
-https://github.com/aws/s2n-quic/issues/1137
-Currently s2n-quic does the certificate lookup/loading operations synchronously.
-Non ideal for application which handle multiple connections concurrently. The
-work allowed for certificate lookup/loading operations to be performed
-asynchronously and enable non-blocking behavior.
-
-- s2n-quic: pass the connection waker down to the tls libraries so that they
-  could wake on progress
-- s2n-tls: The work involved converting the callback is only invoked once to a
-  poll the callback model in s2n-tls. s2n-tls by default did not allow for poll
-  callbacks. It only called the callback once (expecting the callback to
-  finish), which means that the task would block. the rust poll model allows for
-  the future to make progress. The callback can also now store any internal
-  state that is needed to poll the future.
-  - s2n-tls bindings: glue.
-
-### s2n-quic ACK frequency optimizations
-link: https://github.com/aws/s2n-quic/issues/1276
-
-Initial experiments with single batch did not show much improvements. Theory
-was that having to aggregate acks and then process it separately was just as
-expensive (cost savings of 2-3% simply didn't materialize) as simply processing
-the acks individually.
-
-**Delaying ack meant:**
-- delayed signals to CC and loss recovery
-- delayed processing of ECN signals (mitigated by processing immediately)
-- mtu discovery (mitigated)
-- handshake and anti-amplificaiton (mitigated)
-
-**Proposed solutions:**
-- single payload batch would aggregate acks from multiple packets (10) and
-  process them once (gso by default batches 10 packets). projected cost savings
-  of 2-3% based on flamegraph.
-- multi payload batch would store the acks and process them at some delay. this
-  would be equivalent to implementing the RFC, except it can be implemented
-  locally without having to negotiate with the peer. (batch acks from multiple
-  payloads which need a separate data structure)
-- ack freq rfc (the full rfc, which requires the peer to negotiate and be
-  compliant)
-
-### s2n-quic Event framework
-https://github.com/aws/s2n-quic/issues/439
-
-The event framework is a zero-cost abstraction which allows customers to enable
-logging for s2n-quic.
-
-The default implementation of each event is a noop, which means it is compiled
-away. Users can override the default behavior if they care to consume a
-particular event.
-
-Originally implemented using syntax macros, the final implementation was a
-standalone Rust token parse (via syn crate) and outputed a generated.rs file.
-The parser was responsible for correctly constructing events, their default
-impl, testing impl and builder pattern for each event.
-
-### s2n-quic Connection Migration
-https://github.com/aws/s2n-quic/pulls?q=is%3Apr+connection+migration+is%3Aclosed+author%3Atoidiu
-Connection migration is one of the selling features of QUIC. It addresses the
-modern network usage pattern where clients running on phones switch from one cell
-tower to another. Reestablishing a new connection requires a new handshake to
-establish new keys. Additionally, any in-progress transfers might have to start
-over.
-
-QUIC facilitates Connection Migration by introducing an explicit ConnectionId,
-rather than using ip/port to identify a connection. This allows a server to tie
-a client connection which is changing ip/ports back to the same connection
-context and avoid a new handshake.
-
-### s2n-quic client implementation
-https://github.com/aws/s2n-quic/issues/1009 AWS is primarily a datacenter
-company so the initial implementation of s2n-quic only supported the server
-usecase. I added client support to the library.
-
-Previously integration tests were based on a third-party QUIC library(quinn)
-which made introspection and configuration more difficult. Adding client support
-meant owning the entire QUIC stack for both the client and server. This
-eventually enabled more sophisticated integration and fuzz testing.
-
-The task involved reading the QUIC RFC for all requirements and implementing the
-features to support to the library.
-
 ### s2n-quic Implement Optimistic ACK Attack mitigations
 Tracking issue: https://github.com/aws/s2n-quic/issues/1962
 Feature PR: https://github.com/aws/s2n-quic/pull/1986
 
-This was tricky since the RFC didn't really mention the exact implementation.
-How often should we skip packets and how many packets?
+This was tricky since the RFC is very sparse in its guidance. How often should
+we skip packets? How many packets to skip? How do we track/clear skipped
+packets?
 
-We choose to skip 1 packet in the range [cwnd/2, cwnd*2]. Since we are trying
-to control cwnd explosion, basing the skip value on cwnd made sense.
+> An endpoint that acknowledges packets it has not received might cause a
+> congestion controller to permit sending at rates beyond what the network
+> supports. An endpoint MAY skip packet numbers when sending packets to detect
+> this behavior. An endpoint can then immediately close the connection with a
+> connection error of type PROTOCOL_VIOLATION
+
+We choose to skip 1 packet in the range [cwnd/2, cwnd*2]. Since we are trying to
+control cwnd explosion, basing the skip value on cwnd scaled with the cwnd state
+over the lifetime of the connection.
+
+Other implementations were choosing this value statically.
 
 > Only skip a packet number after verifying the peer did not send the previous one.
 Many of the implementations were doing this check naively. They would skip
-packets at a regular interval. However, other impls were only tracking a single
-skipped packet and not waiting to verify if the peer did not ack the previous
-skipped packet.
+packets at a regular interval, clearing the previous skipped pn. Only tracking a
+single skipped packet and clearing the skipped pn, before verifying the peer did
+not ack the previous skipped packet means that they were not necessarily doing
+the mitigation (depending on which packed was skipped).
+
+The above method allowed us to only skip a single pn (small mem footprint),
+while also effectively mitigating the attack.
 
 Example:
 ```
@@ -174,7 +80,138 @@ skip = (lower + MIN_SKIP_COUNTER_VALUE).saturating_add(rand);
 *skip_counter = Some(Counter::new(skip));
 ```
 
+### s2n-quic Onboarded CloudFront to s2n-quic for HTTP/3 support
+> Time to First Byte (TTFB) improved by 23.5% overall, but especially on Android with a 37.1%
+improvement. Additionally, customer engagement metrics from Snap showed improvement to story view
+times, ad impressions, and a reduction in viewer cancellation counts.
+
+s2n-quic was more performant due to the following reasons.
+- cc algorithm (one of the main driver of the TTFB)
+  - custom amplification factor
+  - gain value
+  - loss threshold values
+  - initial cwnd value
+- mtu probing
+- packet pacing
+- gso
+- ecn
+- testing
+  - performance via flamegraph
+  - netbench
+- zero cost event framework
+- custom data structures
+  - ack range: interval set
+  - packet number map: ring buffer which stores consequetive values and allows
+    for ranged delete
+
+### s2n-quic/s2n-tls Async cert loading
+https://github.com/aws/s2n-quic/issues/1137
+Currently s2n-quic does the certificate lookup/loading operations synchronously.
+Non ideal for application which handle multiple connections concurrently. The
+work allowed for certificate lookup/loading operations to be performed
+asynchronously and enable non-blocking behavior.
+
+- s2n-quic: pass the connection waker down to the tls libraries so that they
+  could wake on progress
+- s2n-tls: The work involved converting the callback is only invoked once to a
+  poll the callback model in s2n-tls. s2n-tls by default did not allow for poll
+  callbacks. s2n-tls previously only called the callback once, which not the
+  Rust model and has quite a few drawbacks. Polling only once means the
+  application/s2n-quic has to schedule (separate thread possibly) the completion
+  of the callback. It also needs to manage the state associated with the
+  callback separately. The Rust polling model allows for all state associated
+  with the future to live within the object bing polled. Additionally, the
+  future can make progress as part of the already exising runtime that s2n-quic
+  starts with.
+- s2n-tls bindings: gluing the new callback polling behavior in an extensible
+  way for other callbacks.
+
+### s2n-quic ACK frequency optimizations
+link: https://github.com/aws/s2n-quic/issues/1276
+
+Initial experiments with single batch did not show much improvements. Theory
+was that having to aggregate acks and then process it separately was just as
+expensive (cost savings of 2-3% simply didn't materialize) as simply processing
+the acks individually.
+
+**Delaying ack meant:**
+- delayed signals to CC and loss recovery
+- delayed processing of ECN signals (mitigated by processing immediately)
+- mtu discovery (mitigated by not delaying mtu probes)
+- handshake and anti-amplificaiton (mitigated by delaying after the handshake)
+
+**Proposed solutions: 3 possible solutions**
+- single payload batch would aggregate acks from multiple packets (10) and
+  process them once (gso by default batches 10 packets). projected cost savings
+  of 2-3% based on flamegraph.
+  - Projected Pros:
+    - relative CPU savings of ~20%
+    - bytes/instruction (150k → 125k)
+    - syscalls savings (20k → 6k)
+    - This solution does not affect LR and CC!!
+- multi payload batch would store the acks and process them at some delay. this
+  would be equivalent to implementing the RFC, except it can be implemented
+  locally without having to negotiate with the peer. (batch acks from multiple
+  payloads would require additional storage and tracking)
+  - Projected Pros:
+    - more sophisticated delay strategy based on time/packets
+    - doesn't require negotiating extension with peer
+    - a stepping stone towards full RFC compliance
+  - Cons:
+    - Affects CC and LR
+    - requires tuning and experimental data to fine-tune
+- ack freq rfc (the full rfc, which requires the peer to negotiate)
+  - Projected Pros:
+    - can influence peer ack delay
+  - Cons:
+    - Affects CC and LR
+    - requires tuning and experimental data to fine-tune
+    - requires peer to negotiate
+
+### s2n-quic Connection Migration
+https://github.com/aws/s2n-quic/pulls?q=is%3Apr+connection+migration+is%3Aclosed+author%3Atoidiu
+Connection migration is one of the selling features of QUIC. It addresses the
+modern network usage pattern where clients running on phones switch from one cell
+tower to another. Reestablishing a new connection requires a new handshake to
+establish new keys. Additionally, any in-progress transfers might have to start
+over.
+
+QUIC facilitates Connection Migration by introducing an explicit ConnectionId,
+rather than using ip/port to identify a connection. This allows a server to tie
+a client connection which is changing ip/ports back to the same connection
+context and avoid a new handshake.
+
+### s2n-quic client implementation
+https://github.com/aws/s2n-quic/issues/1009
+
+AWS is primarily a datacenter company so the initial implementation of s2n-quic
+only supported the server usecase. I added client support to the library.
+
+Previously integration tests were based on a third-party QUIC library(quinn)
+which made introspection and configuration more difficult. Adding client support
+meant owning the entire QUIC stack for both the client and server. This
+eventually enabled more sophisticated integration and fuzz testing.
+
+The task involved reading the QUIC RFC for all requirements and implementing the
+features to support to the library.
+
+### s2n-quic Event framework
+https://github.com/aws/s2n-quic/issues/439
+
+The event framework is a zero-cost abstraction which allows customers to enable
+logging for s2n-quic. This kind of falls out of the sans I/O methodology.
+
+The original verion of this was done with syntax macros, which I worked on
+extensively. The final implementation was a standalone Rust token parse (via syn
+crate) and outputed a generated.rs file. The parser was responsible for
+correctly constructing events, their default impl, testing impl and builder
+pattern for each event.
+
 ### s2n-tls Pedantic Valgrind checks
+https://github.com/aws/s2n-tls/issues/3758
+
+Inspired by s2n_cleanup not properly cleaning up.
+
 ```
 // a comma separated list of one or more of: definite indirect possible reachable.
 --errors-for-leak-kinds=<set> [default: definite,possible]
@@ -188,6 +225,7 @@ resources. Solution was to run `--errors-for-leak-kinds=all` in tests.
 
 ### s2n-tls Openssl 3.0 support
 **TODO expand on this work.** low
+https://github.com/aws/s2n-tls/issues/3442
 
 ### s2n-netbench orchestrator
 **TODO expand on this work.** low
