@@ -25,15 +25,17 @@ p {
 pre { /*code blocks*/
   width: 99%;
   overflow: auto;
-  border: 1px solid #aaa;
   padding: 5px 10px;
   margin-bottom: 15px;
   margin-left: 25px;
-  background-color: #aabcbd;
+  background-color: #a2b6ce;
   font-style: italic;
 }
+code { /*code blocks*/
+  color: #7e0808;
+}
 div, p {
-  line-height: 1.75em;
+  line-height: 1.5em;
 }
 ul {
   margin-bottom: 20px;
