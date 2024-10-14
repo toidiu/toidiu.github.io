@@ -13,9 +13,7 @@ What is ownership, borrowing, and lifetimes.
 
 <!-- more -->
 
-**Ownership:**
-
-prevents double free, accessing memory after free and ensuring memory safety
+**Ownership:** prevents double free, accessing memory after free and ensuring memory safety
 
 **Borrowing:** prevents aliasing and data races. ensure single writer and multiple
   writes.
