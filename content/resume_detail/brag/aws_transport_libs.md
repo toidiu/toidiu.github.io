@@ -14,7 +14,7 @@ used to power AWS data centers.  These included s2n-quic and s2n-tls, which are
 implementations of the QUIC and TLS protocols respectively.
 
 As part of maintenance, my responsibilities included adding new library
-features, accessing and mitigating security vurneabilities, onboarding new
+features, accessing and mitigating security vulnerability, on-boarding new
 customer integrations, helping debug existing customer integrations, helping
 onboard new team members, updating public and internal documentation.
 
@@ -121,7 +121,7 @@ asynchronously and enable non-blocking behavior.
   of the callback. It also needs to manage the state associated with the
   callback separately. The Rust polling model allows for all state associated
   with the future to live within the object bing polled. Additionally, the
-  future can make progress as part of the already exising runtime that s2n-quic
+  future can make progress as part of the already existing runtime that s2n-quic
   starts with.
 - s2n-tls bindings: gluing the new callback polling behavior in an extensible
   way for other callbacks.
@@ -282,26 +282,29 @@ mean a more stable API).
 
 ### Goals for this year:
 
-    List your major goals here! Sharing your goals with your manager & coworkers is really nice
-    because it helps them see how they can support you in accomplishing those goals!
+List your major goals here! Sharing your goals with your manager & coworkers is
+really nice because it helps them see how they can support you in accomplishing
+those goals!
 
 ### Goals for next year
 
-    If it’s getting towards the end of the year, maybe start writing down what you think your goals
-    for next year might be.
+If it’s getting towards the end of the year, maybe start writing down what you
+think your goals for next year might be.
 
 ### Projects
 
 For each one, go through:
 
-    What your contributions were (did you come up with the design? Which
-    components did you build? Was there some useful insight like “wait, we can
-    cut scope and do what we want by doing way less work” that you came up
-    with?) The impact of the project – who was it for? Are there numbers you can
-    attach to it? (saved X dollars? shipped new feature that has helped sell Y
-    big deals? Improved performance by X%? Used by X internal users every day?).
-    Did it support some important non-numeric company goal (required to pass an
-    audit? helped retain an important user?)
+- What your contributions were (did you come up with the design? Which
+  components did you build?
+- Was there some useful insight like “wait, we can cut scope and do what we want
+  by doing way less work” that you came up with?)
+- The impact of the project – who was it for?
+- Are there numbers you can attach to it? (saved X dollars? shipped new feature
+  that has helped sell Y big deals?
+- Improved performance by X%? Used by X internal users every day?).
+- Did it support some important non-numeric company goal (required to pass an
+  audit? helped retain an important user?)
 
 Remember: don’t forget to explain what the results of you work actually were!
 It’s often important to go back a few months later and fill in what actually
@@ -358,11 +361,11 @@ It’s really easy to lose track of what skills you’re learning, and usually w
 I reflect on this I realize I learned a lot more than I thought and also notice
 things that I’m not learning that I wish I was. Outside of work
 
-It’s also often useful to track accomplishments outside of work, like:
+- It’s also often useful to track accomplishments outside of work, like:
 
     blog posts talks/panels open source work Industry recognition
 
-I think this can be a nice way to highlight how you’re thinking about your
+- I think this can be a nice way to highlight how you’re thinking about your
 career outside of strictly what you’re doing at work.
 
 This can also include other non-career-related things you’re proud of, if that
