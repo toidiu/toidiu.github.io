@@ -5,6 +5,9 @@
 
 {% block content %}
 <div class="main-container">
+
+
+    <h3>Brag</h3>
     <!-- BRAG document -->
     {% for sub in section.subsections %}
       {% set sub_section = get_section(path=sub) %}
@@ -17,9 +20,20 @@
 
     {% endfor %}
 
-    <span>----------</span>
-  <div><a href="https://github.com/toidiu/toidiu.github.io/blob/live-code/content/resume_detail/_index.md" target=_blank" rel="noopener">lps</a></div>
-    <span>----------</span>
+    <h3>Behavioral</h3>
+
+    <div><a
+            href="https://github.com/toidiu/toidiu.github.io/blob/live-code/content/resume_detail/_index.md"
+            target=_blank" rel="noopener">Amazon Leadership Principles</a></div>
+
+    <div>STAR</div>
+    <li>Situation: Describe the situation or task you faced</li>
+    <li>Task: Explain what you were required to achieve</li>
+    <li>Action: Describe the actions you took to complete the task</li>
+    <li>Result: Explain the outcome of your actions and what you learned from
+        the experience </li>
+
+    <h4>Table of content</h4>
 
     {% for page in section.pages %}
       <div class="scenario-list">
