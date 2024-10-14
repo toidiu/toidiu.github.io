@@ -248,9 +248,9 @@ The result is that s2n-quic sends larger and larger packets, which take longer
 and longer for the mobile network to process. This results in packet loss and an
 overall decrease in throughput.
 
-### s2n-quic Presented a talk at CryptoCon I presented a talk about s2n-quic and
-the QUIC protocol at CryptoCon, an internal AWS cryptography conference. The
-talk was recored and shared in the internal Amazon video repository.
+### s2n-quic Presented a talk at CryptoCon
+I presented a talk about s2n-quic and the QUIC protocol at CryptoCon, an internal AWS cryptography
+conference. The talk was recored and shared in the internal Amazon video repository.
 
 The goal of the talk was to illuminate what makes QUIC a novel protocol over the
 previous iterations: TLS1.3, TLS1.2, etc. Imo the biggest shift in QUIC was
@@ -258,10 +258,10 @@ moving critical protocol components from the kernel-space to user-space (CC,
 recovery, pacing). This shift allowed for quicker iterations but comes at the
 higher cost and complexity of the user-space implementation.
 
-### s2n-quic Updating rustls to use aws-lc by default rustls doesnt have a
-stable API and is pre-1.x. Additionally, it frequently publishes breaking
-changes (although the introduction of https://github.com/rustls/pki-types might
-mean a more stable API).
+### s2n-quic Updating rustls to use aws-lc by default
+rustls doesnt have a stable API and is pre-1.x. Additionally, it frequently publishes breaking
+changes (although the introduction of https://github.com/rustls/pki-types might mean a more stable
+API).
 
 - s2n-quic is 1.x
 - s2n-quic took a dep on rustls.
@@ -270,9 +270,18 @@ mean a more stable API).
 - Upgrading rustls would mean breaking API for s2n-quic.
 
 ### created internal customer list
+
 ### s2n-quic rustls testing and parity
+
 ### s2n-quic advocate better slowloris mitigation
+
 ### s2n-quic handshake status
+https://github.com/aws/s2n-quic/pull/960
+
+Identified missing loose requirement with the handshake status. Took initiative to figure out the
+correct requirement for client vs server. Added data typed enum to capture the complex handshake
+transition. Added fuzz testing alongside the fix which increased confidence in the solution.
+
 ### s2n-quic path challenge
 
 ---
