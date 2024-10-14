@@ -6,24 +6,21 @@
 {% block content %}
 <div class="main-container">
 
+    What are Brag documents: <a class="" href=https://jvns.ca/blog/brag-documents>link</a>
 
-    <h3>Brag</h3>
-    <!-- BRAG document -->
     {% for sub in section.subsections %}
       {% set sub_section = get_section(path=sub) %}
       <div class="post">
-        <a class="title" href={{ sub_section.permalink }}># {{ sub_section.extra.name }}</a>
+        <a class="title" href={{ sub_section.permalink }}>{{ sub_section.extra.name }}</a>
         <div class="summary">
-          What are Brag documents: <a class="" href=https://jvns.ca/blog/brag-documents>link</a>
         </div>
       </div>
 
     {% endfor %}
 
     <h3>Behavioral</h3>
-
     <div><a
-            href="https://github.com/toidiu/toidiu.github.io/blob/live-code/content/resume_detail/_index.md"
+            href="https://github.com/toidiu/toidiu.github.io/blob/live-code/content/brag/_index.md"
             target=_blank" rel="noopener">Amazon Leadership Principles</a></div>
 
     <div>STAR</div>
