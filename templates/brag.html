@@ -6,8 +6,7 @@
 {% block content %}
 <div class="main-container">
 
-    What are Brag documents: <a class="" href=https://jvns.ca/blog/brag-documents>link</a>
-
+    <h3>Sub sections</h3>
     {% for sub in section.subsections %}
       {% set sub_section = get_section(path=sub) %}
       <div class="post">
@@ -18,10 +17,7 @@
 
     {% endfor %}
 
-    <h3>Behavioral</h3>
-    <div><a
-            href="https://github.com/toidiu/toidiu.github.io/blob/live-code/content/brag/_index.md"
-            target=_blank" rel="noopener">Amazon Leadership Principles</a></div>
+    <h3><a class="" href=https://jvns.ca/blog/brag-documents>What are Brag documents</a></h3>
 
     <div>STAR</div>
     <li>Situation: Describe the situation or task you faced</li>
@@ -29,6 +25,12 @@
     <li>Action: Describe the actions you took to complete the task</li>
     <li>Result: Explain the outcome of your actions and what you learned from
         the experience </li>
+
+
+    <div><a
+            href="https://github.com/toidiu/toidiu.github.io/blob/live-code/content/brag/_index.md"
+            target=_blank" rel="noopener">Amazon Leadership Principles</a></div>
+
 
     <h4>Table of content</h4>
 
