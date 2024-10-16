@@ -1,5 +1,5 @@
 +++
-title = "Behavioral questions"
+title = "Questions"
 date = 2024-04-01
 
 [taxonomies]
@@ -8,6 +8,64 @@ tag = ["brag"]
 [extra]
 id = "blog-single"
 +++
+
+## Project retrospective: 1hr
+TODO:
+- pick two projects and be able to dive into project details
+
+### ACK frequency
+- tracking issue: https://github.com/aws/s2n-quic/issues/1276
+- cpu increase: https://github.com/aws/s2n-quic/pull/1298
+- revert pr with some analysis shows : https://github.com/aws/s2n-quic/pull/1368
+
+#### RFC:
+- Acks uses:
+  - progress: acknowledge packet received
+  - loss recovery: detect a packet was not received and retransmit
+  - cc: regular acks help establish good RTT estimates and drive CC
+  - ECN: congestion signal by the network
+```
+ACK Frame {
+  Type (i) = 0x02..0x03,
+  Largest Acknowledged (i),
+  ACK Delay (i),
+  ACK Range Count (i),
+  First ACK Range (i),
+  ACK Range (..) ...,
+  [ECN Counts (..)],
+}
+```
+- motivation: expensive cpu to send/recv. asymmetric links like satellite. ack
+  rate can affect link efficiency.
+- negotiating the extension: min_ack_delay. the minimum amount of time, in
+  microseconds, that the endpoint sending this value is willing to delay an
+  acknowledgment
+- ACK_FREQUENCY frame:
+  - Ack-Eliciting Threshold: max ack eliciting **packets** received before sending an ack
+  - Requested Max Ack Delay:  max **time** to wait before sending an ack
+  - Reordering Threshold: max number of **reordered packet** before sending an ack
+- IMMEDIATE_ACK frame: asks peer to send an immediate ack
+- Expedite ECN: ecn marked packets should not be delayed
+- other concerns:
+  - congestion control:
+  - application limited:
+  - burst mitigation: if sending is dependent on recieving acks. use pacing
+  - loss detection is hard: RFC doesnt provide a good solution
+  - connecion migration: send IMMEDIATE_ACK to expedite path validation. ack
+    frequency is NOT reset!! on new path.. but should be update to the new path
+
+### optimistic ack mitigation
+- pr https://github.com/aws/s2n-quic/pull/1986
+- rfc link https://www.rfc-editor.org/rfc/rfc9000#section-21.4
+
+### netbench
+
+## Technical: 1hr
+
+## Orange cloud: Behavioral: 30 min
+TODO:
+- pick 5 projects and STAR them.
+- read https://www.hellointerview.com/learn/behavioral/overview/introduction
 
 **TOP**
 - Tell me about a time you worked well within a team.
@@ -19,15 +77,20 @@ id = "blog-single"
 - Tell me about a time you dealt with conflict on a team. How did you solve it?
   - prioritize features for the orchestrator. we met with the stake holder and figured out which
     features they actually wanted to help prioritize the project
+  -
+    - How do you respond when you disagree with a coworker?
+        - disagrements usually stem form mis-matched assumptions or lack of
+          communication. so i like to start with having a conversation and
+          trying to understand why there is a disagreemet. usually when this
+          happens we both end up learning something.
 - Tell me about a time you failed at work.
   - ack frequency project. the cpu usage went up after implementing the solution
 - Can you give me an example of how you set goals for yourself?
   - daily task list. mark what got done and what did not
 - **Tell me about a time you showed leadership.**
   - took initiative to fix handshake status. added fuzz testing verify the solution.
-  - automate release version
-- How do you respond when you disagree with a coworker?
-
+  - automate release versioning
+  - customer contact list
 - Tell me about your biggest weakness.
 
 **MID**
@@ -47,3 +110,10 @@ id = "blog-single"
 **Other**
 - Why do you want to work here?
 - Walk me through your resume and relevant experience.
+
+## System Design: 1hr
+TODO:
+- read https://www.hellointerview.com/learn/system-design/in-a-hurry/introduction
+- design 2 systems as practice
+
+

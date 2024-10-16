@@ -24,7 +24,7 @@ launch the library. In this capacity I designed and implemented core features in
 the library, coordinated 3rd party pentests, helped with customer integrations,
 etc.
 
-### s2n-quic Implement Optimistic ACK Attack mitigations
+### s2n-quic: Implement Optimistic ACK Attack mitigations
 Tracking issue: https://github.com/aws/s2n-quic/issues/1962
 Feature PR: https://github.com/aws/s2n-quic/pull/1986
 
@@ -80,7 +80,7 @@ skip = (lower + MIN_SKIP_COUNTER_VALUE).saturating_add(rand);
 *skip_counter = Some(Counter::new(skip));
 ```
 
-### s2n-quic Onboarded CloudFront to s2n-quic for HTTP/3 support
+### s2n-quic: Onboarded CloudFront to s2n-quic for HTTP/3 support
 > Time to First Byte (TTFB) improved by 23.5% overall, but especially on Android with a 37.1%
 improvement. Additionally, customer engagement metrics from Snap showed improvement to story view
 times, ad impressions, and a reduction in viewer cancellation counts.
@@ -104,7 +104,7 @@ s2n-quic was more performant due to the following reasons.
   - packet number map: ring buffer which stores consequetive values and allows
     for ranged delete
 
-### s2n-quic/s2n-tls Async cert loading
+### s2n-quic/s2n-tls: Async cert loading
 https://github.com/aws/s2n-quic/issues/1137
 Currently s2n-quic does the certificate lookup/loading operations synchronously.
 Non ideal for application which handle multiple connections concurrently. The
@@ -126,7 +126,7 @@ asynchronously and enable non-blocking behavior.
 - s2n-tls bindings: gluing the new callback polling behavior in an extensible
   way for other callbacks.
 
-### s2n-quic ACK frequency optimizations
+### s2n-quic: ACK frequency optimizations
 link: https://github.com/aws/s2n-quic/issues/1276
 
 Initial experiments with single batch did not show much improvements. Theory
@@ -168,7 +168,7 @@ the acks individually.
     - requires tuning and experimental data to fine-tune
     - requires peer to negotiate
 
-### s2n-quic Connection Migration
+### s2n-quic: Connection Migration
 https://github.com/aws/s2n-quic/pulls?q=is%3Apr+connection+migration+is%3Aclosed+author%3Atoidiu
 Connection migration is one of the selling features of QUIC. It addresses the
 modern network usage pattern where clients running on phones switch from one cell
@@ -181,7 +181,7 @@ rather than using ip/port to identify a connection. This allows a server to tie
 a client connection which is changing ip/ports back to the same connection
 context and avoid a new handshake.
 
-### s2n-quic client implementation
+### s2n-quic: client implementation
 https://github.com/aws/s2n-quic/issues/1009
 
 AWS is primarily a datacenter company so the initial implementation of s2n-quic
@@ -195,7 +195,7 @@ eventually enabled more sophisticated integration and fuzz testing.
 The task involved reading the QUIC RFC for all requirements and implementing the
 features to support to the library.
 
-### s2n-quic Event framework
+### s2n-quic: Event framework
 https://github.com/aws/s2n-quic/issues/439
 
 The event framework is a zero-cost abstraction which allows customers to enable
@@ -207,7 +207,7 @@ crate) and outputed a generated.rs file. The parser was responsible for
 correctly constructing events, their default impl, testing impl and builder
 pattern for each event.
 
-### s2n-tls Pedantic Valgrind checks
+### s2n-tls: Pedantic Valgrind checks
 https://github.com/aws/s2n-tls/issues/3758
 
 Inspired by s2n_cleanup not properly cleaning up.
@@ -223,19 +223,19 @@ Valgrind enables "definite and possible". While this might be a safe assumption
 for applications it is not for libraries that need to cleanup possibly stateful
 resources. Solution was to run `--errors-for-leak-kinds=all` in tests.
 
-### s2n-tls Openssl 3.0 support
+### s2n-tls: Openssl 3.0 support
 **TODO expand on this work.** low
 https://github.com/aws/s2n-tls/issues/3442
 
-### s2n-netbench orchestrator
+### s2n-netbench: orchestrator
 **TODO expand on this work.** low
 
 ## Not mentioned in resume
 
-### s2n-quic Support min, initial, max MTU Some mobile networks will fragment
-and reassemble packets despite the DNF (do no fragment) flag. While this is a
-good thing for availability, it skews MTU probing measurements and results in
-dereased throughput due to packet loss.
+### s2n-quic: Support min, initial, max MTU per connection
+Some mobile networks will fragment and reassemble packets despite the DNF (do no
+fragment) flag. While this is a good thing for availability, it skews MTU
+probing measurements and results in dereased throughput due to packet loss.
 
 s2n-quic probes for the max mtu values on each network path and uses that to
 that when sending packets. Since mobile networks are essentially claiming larger
@@ -258,10 +258,10 @@ moving critical protocol components from the kernel-space to user-space (CC,
 recovery, pacing). This shift allowed for quicker iterations but comes at the
 higher cost and complexity of the user-space implementation.
 
-### s2n-quic Updating rustls to use aws-lc by default
-rustls doesnt have a stable API and is pre-1.x. Additionally, it frequently publishes breaking
-changes (although the introduction of https://github.com/rustls/pki-types might mean a more stable
-API).
+### s2n-quic:  Add fips support which lead to issues when updating rustls to use aws-lc by default
+rustls doesnt have a stable API and is pre-1.x. Additionally, it frequently
+publishes breaking changes (although the introduction of
+https://github.com/rustls/pki-types might mean a more stable API).
 
 - s2n-quic is 1.x
 - s2n-quic took a dep on rustls.
@@ -271,11 +271,11 @@ API).
 
 ### created internal customer list
 
-### s2n-quic rustls testing and parity
+### s2n-quic:  rustls testing and parity
 
-### s2n-quic advocate better slowloris mitigation
+### s2n-quic:  advocate better slowloris mitigation
 
-### s2n-quic handshake status
+### s2n-quic:  handshake status
 https://github.com/aws/s2n-quic/pull/960
 
 Identified missing loose requirement with the handshake status. Took initiative to figure out the
