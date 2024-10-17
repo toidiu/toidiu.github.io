@@ -68,6 +68,7 @@ TODO:
 - read https://www.hellointerview.com/learn/behavioral/overview/introduction
 
 **TOP**
+- A design choice that encured technical debt but you think it was a good choice.
 - Tell me about a time you worked well within a team.
   - Helped co-worker in cloudfront integrate with async cert loading feature.
   - helped deliver quic over 2 years. specifically worked in a team of three to review prs, make design
@@ -88,6 +89,7 @@ TODO:
 - Can you give me an example of how you set goals for yourself?
   - daily task list. mark what got done and what did not
 - **Tell me about a time you showed leadership.**
+  - spoke up about technical decisions that I spoke out on
   - took initiative to fix handshake status. added fuzz testing verify the solution.
   - automate release versioning
   - customer contact list
