@@ -24,7 +24,7 @@ launch the library. In this capacity I designed and implemented core features in
 the library, coordinated 3rd party pentests, helped with customer integrations,
 etc.
 
-### s2n-quic Implement Optimistic ACK Attack mitigations
+### s2n-quic: Implement Optimistic ACK Attack mitigations
 Tracking issue: https://github.com/aws/s2n-quic/issues/1962
 Feature PR: https://github.com/aws/s2n-quic/pull/1986
 
@@ -80,7 +80,7 @@ skip = (lower + MIN_SKIP_COUNTER_VALUE).saturating_add(rand);
 *skip_counter = Some(Counter::new(skip));
 ```
 
-### s2n-quic Onboarded CloudFront to s2n-quic for HTTP/3 support
+### s2n-quic: Onboarded CloudFront to s2n-quic for HTTP/3 support
 > Time to First Byte (TTFB) improved by 23.5% overall, but especially on Android with a 37.1%
 improvement. Additionally, customer engagement metrics from Snap showed improvement to story view
 times, ad impressions, and a reduction in viewer cancellation counts.
@@ -104,7 +104,7 @@ s2n-quic was more performant due to the following reasons.
   - packet number map: ring buffer which stores consequetive values and allows
     for ranged delete
 
-### s2n-quic/s2n-tls Async cert loading
+### s2n-quic/s2n-tls: Async cert loading
 https://github.com/aws/s2n-quic/issues/1137
 Currently s2n-quic does the certificate lookup/loading operations synchronously.
 Non ideal for application which handle multiple connections concurrently. The
@@ -126,7 +126,7 @@ asynchronously and enable non-blocking behavior.
 - s2n-tls bindings: gluing the new callback polling behavior in an extensible
   way for other callbacks.
 
-### s2n-quic ACK frequency optimizations
+### s2n-quic: ACK frequency optimizations
 link: https://github.com/aws/s2n-quic/issues/1276
 
 Initial experiments with single batch did not show much improvements. Theory
@@ -168,7 +168,7 @@ the acks individually.
     - requires tuning and experimental data to fine-tune
     - requires peer to negotiate
 
-### s2n-quic Connection Migration
+### s2n-quic: Connection Migration
 https://github.com/aws/s2n-quic/pulls?q=is%3Apr+connection+migration+is%3Aclosed+author%3Atoidiu
 Connection migration is one of the selling features of QUIC. It addresses the
 modern network usage pattern where clients running on phones switch from one cell
@@ -181,7 +181,7 @@ rather than using ip/port to identify a connection. This allows a server to tie
 a client connection which is changing ip/ports back to the same connection
 context and avoid a new handshake.
 
-### s2n-quic client implementation
+### s2n-quic: client implementation
 https://github.com/aws/s2n-quic/issues/1009
 
 AWS is primarily a datacenter company so the initial implementation of s2n-quic
@@ -195,7 +195,7 @@ eventually enabled more sophisticated integration and fuzz testing.
 The task involved reading the QUIC RFC for all requirements and implementing the
 features to support to the library.
 
-### s2n-quic Event framework
+### s2n-quic: Event framework
 https://github.com/aws/s2n-quic/issues/439
 
 The event framework is a zero-cost abstraction which allows customers to enable
@@ -207,7 +207,7 @@ crate) and outputed a generated.rs file. The parser was responsible for
 correctly constructing events, their default impl, testing impl and builder
 pattern for each event.
 
-### s2n-tls Pedantic Valgrind checks
+### s2n-tls: Pedantic Valgrind checks
 https://github.com/aws/s2n-tls/issues/3758
 
 Inspired by s2n_cleanup not properly cleaning up.
@@ -223,19 +223,19 @@ Valgrind enables "definite and possible". While this might be a safe assumption
 for applications it is not for libraries that need to cleanup possibly stateful
 resources. Solution was to run `--errors-for-leak-kinds=all` in tests.
 
-### s2n-tls Openssl 3.0 support
+### s2n-tls: Openssl 3.0 support
 **TODO expand on this work.** low
 https://github.com/aws/s2n-tls/issues/3442
 
-### s2n-netbench orchestrator
+### s2n-netbench: orchestrator
 **TODO expand on this work.** low
 
 ## Not mentioned in resume
 
-### s2n-quic Support min, initial, max MTU Some mobile networks will fragment
-and reassemble packets despite the DNF (do no fragment) flag. While this is a
-good thing for availability, it skews MTU probing measurements and results in
-dereased throughput due to packet loss.
+### s2n-quic: Support min, initial, max MTU per connection
+Some mobile networks will fragment and reassemble packets despite the DNF (do no
+fragment) flag. While this is a good thing for availability, it skews MTU
+probing measurements and results in dereased throughput due to packet loss.
 
 s2n-quic probes for the max mtu values on each network path and uses that to
 that when sending packets. Since mobile networks are essentially claiming larger
@@ -258,10 +258,10 @@ moving critical protocol components from the kernel-space to user-space (CC,
 recovery, pacing). This shift allowed for quicker iterations but comes at the
 higher cost and complexity of the user-space implementation.
 
-### s2n-quic Updating rustls to use aws-lc by default
-rustls doesnt have a stable API and is pre-1.x. Additionally, it frequently publishes breaking
-changes (although the introduction of https://github.com/rustls/pki-types might mean a more stable
-API).
+### s2n-quic:  Add fips support which lead to issues when updating rustls to use aws-lc by default
+rustls doesnt have a stable API and is pre-1.x. Additionally, it frequently
+publishes breaking changes (although the introduction of
+https://github.com/rustls/pki-types might mean a more stable API).
 
 - s2n-quic is 1.x
 - s2n-quic took a dep on rustls.
@@ -271,11 +271,11 @@ API).
 
 ### created internal customer list
 
-### s2n-quic rustls testing and parity
+### s2n-quic:  rustls testing and parity
 
-### s2n-quic advocate better slowloris mitigation
+### s2n-quic:  advocate better slowloris mitigation
 
-### s2n-quic handshake status
+### s2n-quic:  handshake status
 https://github.com/aws/s2n-quic/pull/960
 
 Identified missing loose requirement with the handshake status. Took initiative to figure out the
@@ -284,107 +284,3 @@ transition. Added fuzz testing alongside the fix which increased confidence in t
 
 ### s2n-quic path challenge
 
----
-
-
-## TEMPLATE
-
-### Goals for this year:
-
-List your major goals here! Sharing your goals with your manager & coworkers is
-really nice because it helps them see how they can support you in accomplishing
-those goals!
-
-### Goals for next year
-
-If it’s getting towards the end of the year, maybe start writing down what you
-think your goals for next year might be.
-
-### Projects
-
-For each one, go through:
-
-- What your contributions were (did you come up with the design? Which
-  components did you build?
-- Was there some useful insight like “wait, we can cut scope and do what we want
-  by doing way less work” that you came up with?)
-- The impact of the project – who was it for?
-- Are there numbers you can attach to it? (saved X dollars? shipped new feature
-  that has helped sell Y big deals?
-- Improved performance by X%? Used by X internal users every day?).
-- Did it support some important non-numeric company goal (required to pass an
-  audit? helped retain an important user?)
-
-Remember: don’t forget to explain what the results of you work actually were!
-It’s often important to go back a few months later and fill in what actually
-happened after you launched the project.
-
-### Collaboration & mentorship
-
-Examples of things in this category:
-
-    Helping others in an area you’re an expert in (like “other engineers
-    regularly ask me for one-off help solving weird bugs in their CSS” or
-    “quoting from the C standard at just the right moment”) Mentoring interns /
-    helping new team members get started Writing really clear emails/meeting
-    notes Foundational code that other people built on top of Improving
-    monitoring / dashboards / on call Any code review that you spent a
-    particularly long time on / that you think was especially important
-    Important questions you answered (“helped Risha from OTHER_TEAM with a lot
-    of questions related to Y”) Mentoring someone on a project (“gave Ben advice
-    from time to time on leading his first big project”) Giving an internal talk
-    or workshop
-
-### Design & documentation
-
-List design docs & documentation that you worked on
-
-    Design docs: I usually just say “wrote design for X” or “reviewed design for
-    X” Documentation: maybe briefly explain the goal behind this documentation
-    (for example “we were getting a lot of questions about X, so I documented it
-    and now we can answer the questions more quickly”)
-
-### Company building
-
-This is a category we have at work – it basically means “things you did to help
-the company overall, not just your project / team”. Some things that go in here:
-
-    Going above & beyond with interviewing or recruiting (doing campus
-    recruiting, etc) Improving important processes, like the interview process
-    or writing better onboarding materials
-
-### What you learned
-
-My friend Julian suggested this section and I think it’s a great idea – try
-listing important things you learned or skills you’ve acquired recently! Some
-examples of skills you might be learning or improving:
-
-    how to do performance analysis & make code run faster internals of an
-    important piece of software (like the JVM or Postgres or Linux) how to use a
-    library (like React) how to use an important tool (like the command line or
-    Firefox dev tools) about a specific area of programming (like localization
-    or timezones) an area like product management / UX design how to write a
-    clear design doc a new programming language
-
-It’s really easy to lose track of what skills you’re learning, and usually when
-I reflect on this I realize I learned a lot more than I thought and also notice
-things that I’m not learning that I wish I was. Outside of work
-
-- It’s also often useful to track accomplishments outside of work, like:
-
-    blog posts talks/panels open source work Industry recognition
-
-- I think this can be a nice way to highlight how you’re thinking about your
-career outside of strictly what you’re doing at work.
-
-This can also include other non-career-related things you’re proud of, if that
-feels good to you! Some people like to keep a combined personal + work brag
-document.
-
-### General prompts
-
-### If you’re feeling stuck for things to mention, try:
-
-    If you were trying to convince a friend to come join your company/team, what
-    would you tell them about your work? Did anybody tell you that you did
-    something well recently?

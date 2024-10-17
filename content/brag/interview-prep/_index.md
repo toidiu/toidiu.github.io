@@ -7,7 +7,7 @@ sort_by = "date"
 
 [extra]
 id = "blog"
-name = "Team specific brag document"
+name = "Interview Prep"
 +++
 
 test

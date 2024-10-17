@@ -7,7 +7,7 @@ sort_by = "date"
 
 [extra]
 id = "blog"
-name = "Behavioral"
+name = "Brag"
 +++
 
 test
