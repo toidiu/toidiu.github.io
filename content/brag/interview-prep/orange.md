@@ -90,9 +90,10 @@ TODO:
   - daily task list. mark what got done and what did not
 - **Tell me about a time you showed leadership.**
   - spoke up about technical decisions that I spoke out on
-  - took initiative to fix handshake status. added fuzz testing verify the solution.
-  - automate release versioning
-  - customer contact list
+  - representing someone external to yourself
+    - took initiative to fix handshake status. added fuzz testing verify the solution.
+    - automate release versioning
+    - customer contact list
 - Tell me about your biggest weakness.
 
 **MID**
