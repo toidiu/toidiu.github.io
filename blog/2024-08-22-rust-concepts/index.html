@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="Apoorv Kothari is software engineer. He studied Engineering at Cooper Union and is intrested in Rust, Kubernetes, Scala, Android, Java.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Scala, java, Cooper Union, blog, talks, code, rust, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;personal">
+
+      personal
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <div class="title important">Rust concepts</div>
+  <div class="date">2024-08-22</div>
+  </div>
+
+  <div class="content">
+    <p>What is ownership, borrowing, and lifetimes.</p>
+<span id="continue-reading"></span>
+<p><strong>Ownership:</strong> prevents double free, accessing memory after free and ensuring memory safety</p>
+<p><strong>Borrowing:</strong> prevents aliasing and data races. ensure single writer and multiple
+writes.</p>
+<p><strong>Lifetimes:</strong> prevents invalid or dangling references. ensures that references
+remain valid and dont outlive the data they point to.</p>
+<p><strong>Deref:</strong></p>
+<p><strong>Drop:</strong></p>
+<p><strong>Arc:</strong></p>
+<p><strong>Mutex:</strong></p>
+<p><strong>Send:</strong></p>
+<p><strong>Sync:</strong></p>
+<p><strong>PhantomData:</strong></p>
+<p><strong>Pin:</strong></p>
+<p>Definition of “pinning&quot;</p>
+<ul>
+<li>Not be moved out of its memory location</li>
+<li>More generally, remain valid at that same memory location</li>
+</ul>
+<p>“Pinning” allows us to put a value which exists at some location in memory into
+a state where safe code cannot move that value to a different location in memory
+or otherwise invalidate it at its current location</p>
+<p><strong>Unpin</strong>
+The vast majority of Rust types have no address-sensitive states. These types
+implement the Unpin auto-trait, which cancels the restrictive effects of Pin
+when the pointee type T is Unpin.</p>
+<p>When T: Unpin, Pin&lt;Box<T>&gt; functions identically to a non-pinning Box<T>;
+similarly, Pin&lt;&amp;mut T&gt; would impose no additional restrictions above a regular
+&amp;mut T.</p>
+<p><strong>Future:</strong></p>
+<p><strong>Task:</strong></p>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+
