@@ -28,6 +28,8 @@ Cons of delay:
   - ack packets with ECN markings immediately
 - loss recovery: detect a packet was not received and retransmit
 - cc: regular acks help establish good RTT estimates and drive CC
+- BBR: requires a high precision signal to work so it was unclear how delaying
+  acks would affect this
 
 RFC features:
 - negotiating the extension: min_ack_delay. the minimum amount of time, that the
@@ -67,3 +69,12 @@ Options:
 #### R
 - Flamegraph result 24.33% -> 25.81% https://github.com/aws/s2n-quic/pull/1298
 - Batching different amount of packets (2, 10, 40, 80): https://user-images.githubusercontent.com/4350690/174196918-6af428e4-9ab7-4458-b3b9-e27ed89c3318.png
+
+**lessons learned:**
+- we had to be cautious about delaying acks because we were operating on public
+  internet
+- I wonder if an environment like DC would be better for delaying acks
+- acks are a signal within the noise of loss,delay,congestion,etc
+- within a DC there is less noise so it makes sense that we can have less signal
+  and get away with it
+
