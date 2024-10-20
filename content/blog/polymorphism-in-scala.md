@@ -27,7 +27,7 @@ I have found that I learn much better when I have to write about it and explain 
 In Java we have subtype polymorphism and this is the one that most people learn about. This is when we define a super/parent class or interface(traits in Scala) and then extend this behavior in a child class. In the example below, we can think of Taco as a _sub-type_ of the type Food.
 
 ```scala
-//Define a trait that other child classes can extend. We could also have declared Food as an abstract class.
+// Define a trait that other child classes can extend. We could also have declared Food as an abstract class.
 trait Food {
   final val isEdible = true
   def name: String

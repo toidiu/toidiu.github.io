@@ -19,29 +19,49 @@ h1, h2 {
 h3, h4, h5, h6 {
   font-size: 26px;
 }
-// p {
-//   padding-bottom: 1em;
-// }
-pre { /*code blocks*/
-  width: 99%;
-  overflow: auto;
-  padding: 5px 10px;
-  margin-bottom: 15px;
-  margin-left: 25px;
-  background-color: #a2b6ce;
-  font-style: italic;
+code { /*inline code blocks*/
+  background-color: #f0f1f3;
+  border-radius: 6px;
+  padding: .2em .4em;
+  margin-bottom: 1em;
 }
-code { /*code blocks*/
-  color: #7e0808;
+blockquote {
+  color: #2f2f2f;
+  border-radius: 6px;
+  background-color: #e8e8e8ad;
+  margin-left: 40px;
+  color: #2f2f2f;
+  padding-left: .5em;
+  padding-right: .5em;
 }
 div, p {
   line-height: 1.5em;
+  margin-bottom: 1em;
 }
 ul {
-  margin-left: 30px;
+  ul {
+    margin-left: 30px;
+  }
 }
-li, ol {
-  list-style: inside;
+ol {
+  ol {
+    margin-left: 30px;
+  }
+}
+ul {
+  li {
+      list-style: disc;
+  }
+  // - top
+  //   - this
+  ul {
+    li {
+      list-style: circle;
+    }
+  }
+}
+ol {
+  list-style: decimal;
 }
 body {
   background-color: $p-color;
