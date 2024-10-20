@@ -1,4 +1,11 @@
 #home {
+  ol, ul {
+     margin-left: 0em;
+  }
+  ul li{
+    // list-style-position: inside;
+    list-style: none;
+  }
   nav{
     position: absolute;
     width: 100%;
