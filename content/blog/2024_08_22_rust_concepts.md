@@ -9,7 +9,7 @@ tag = ["rust"]
 id = "blog-single"
 +++
 
-What is ownership, borrowing, and lifetimes.
+Rust concepts explained simply.
 
 <!-- more -->
 
