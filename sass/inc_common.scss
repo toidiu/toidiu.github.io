@@ -8,16 +8,22 @@
   font-family: customFontBold;
   src: url(fonts/Inconsolata-Bold.ttf);
 }
-h1, h2, h3, h4, h5, h6 {
-  margin-bottom: 10px;
-  padding-top: 30px;
+h1, h2 {
+  margin-bottom: .25em;
+  padding-top: .75em;
+  font-family: customFontBold;
+}
+h3, h4, h5, h6 {
+  margin-bottom: .25em;
+  padding-top: .5em;
   font-family: customFontBold;
 }
 h1, h2 {
-  font-size: 34px;
+  font-size:
+  1.5em;
 }
 h3, h4, h5, h6 {
-  font-size: 26px;
+  font-size: 1.25em
 }
 code { /*inline code blocks*/
   background-color: #f0f1f3;
