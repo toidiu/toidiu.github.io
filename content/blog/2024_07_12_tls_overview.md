@@ -152,7 +152,9 @@ Record protocol:
 ```
 
 ## <a name="handshake-types">##</a> Handshake Types
-The main
+A connection might perform a full handshake (perform a ECDHE key exchange). Or
+it might have done so previously and already posesses a PSK (Pre-Shared Key),
+which is can use for sending encrypted data.
 
 ### <a name="full-handshake">###</a> A full TLS handshake
 
