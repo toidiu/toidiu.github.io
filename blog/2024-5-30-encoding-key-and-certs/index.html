@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="Apoorv Kothari is software engineer. He studied Engineering at Cooper Union and is intrested in Rust, Kubernetes, Scala, Android, Java.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Scala, java, Cooper Union, blog, talks, code, rust, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js"></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <div class="title important">Encoding keys and certs</div>
+  <div class="date">2024-05-30</div>
+  </div>
+
+  <div class="content">
+    <p>Exploring the confusing concepts of ASN.1, pkcs1, pkcs8, pem, and der and how they
+relate to cryptography.</p>
+<span id="continue-reading"></span>
+<p>Let us start with some example pseudo code:</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">&#x2F;&#x2F; 1. generate cryptrographic key (ex. ecdhe)
+let key = ecdhe_handshake();
+
+&#x2F;&#x2F; 2. generate a BIG_NUM
+let big_num_key: BIG_NUM = BN_set_word(key);
+
+&#x2F;&#x2F; 3.
+&#x2F;&#x2F; asn1_obj = ASN.1: ()
+&#x2F;&#x2F;   - pkcs1: defines the RSA format
+&#x2F;&#x2F;   - pkcs8: defines the key format (RSA, EC, ..)
+let asn1_obj = Pkcs8::new(private_key);
+
+&#x2F;&#x2F; 4: The der encoded ans1 object is simply the raw bytes
+let der = asn1_obj.to_bytes();
+
+&#x2F;&#x2F; 5: The pem encoded asn1 object is the base64 encoding of the raw bytes
+&#x2F;&#x2F;
+&#x2F;&#x2F; pem = cat key.der | base64
+let pem = der.to_base64();
+</code></pre>
+<p>In the snippet above we are attempting to encode a private key.</p>
+<ol>
+<li><code>key</code>: secret key generate perhaps from a key exchange</li>
+<li><code>big_num_key</code>: generate a bignum from the secret key</li>
+<li>create a <code>pkcs8</code> encoded ASN.1 object: <code>asn1_obj</code></li>
+</ol>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/ASN.1">ASN.1</a>: a language for defining data structure.
+In cryptography, we care about a few encodings:
+<ul>
+<li><code>pkcs1</code>: format for encoding and decoding RSA private and public keys</li>
+<li><code>pkcs8</code>: format for encoding cryptographic private keys, often containing pairs of private
+and public keys. Can encode multiple key types (RSA, ECDSA, etc) and should be preferred
+over pkcs1.</li>
+<li><code>X.509</code>: format for encoding digital certificates</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li>Represent the asn1_obj as either der or pem:
+<ol>
+<li><code>der</code>: the raw bytes of the ans1 object</li>
+<li><code>pem</code>: base64 representation of the der ans1 object</li>
+</ol>
+</li>
+</ol>
+<h3 id="what-is-asn-1">What is ASN.1?</h3>
+<p>First, take a look at the ASN.1 object representation of the certificate of <a href="https://lapo.it/asn1js/#MIIDoTCCA0egAwIBAgIQXQaw3dOjYeUOAEXcx7NKfzAKBggqhkjOPQQDAjA7MQswCQYDVQQGEwJVUzEeMBwGA1UEChMVR29vZ2xlIFRydXN0IFNlcnZpY2VzMQwwCgYDVQQDEwNXRTEwHhcNMjQwOTIzMTUwMDI4WhcNMjQxMjIyMTUwMDI3WjAVMRMwEQYDVQQDEwp0b2lkaXUuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEk5N_4mwUFBbfq_DwqGxTtZDXQ-G_F9y9e5NYaXWS2HQsh6UwPMLrQRwlQ77OsWBW_z-HKtRwsY9QgrMVISYVlqOCAlEwggJNMA4GA1UdDwEB_wQEAwIHgDATBgNVHSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBSfYjReoEA85TK6jSVwxd2HjyfElzAfBgNVHSMEGDAWgBSQd5I1Z8T_qMyp5nvZgHl7zJP5ODBeBggrBgEFBQcBAQRSMFAwJwYIKwYBBQUHMAGGG2h0dHA6Ly9vLnBraS5nb29nL3Mvd2UxL1hRWTAlBggrBgEFBQcwAoYZaHR0cDovL2kucGtpLmdvb2cvd2UxLmNydDAjBgNVHREEHDAaggp0b2lkaXUuY29tggwqLnRvaWRpdS5jb20wEwYDVR0gBAwwCjAIBgZngQwBAgEwNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2MucGtpLmdvb2cvd2UxL1BDVWVRVmlRbFljLmNybDCCAQQGCisGAQQB1nkCBAIEgfUEgfIA8AB2AHb_iD8KtvuVUcJhzPWHujS0pM27KdxoQgqf5mdMWjp0AAABkh-c4_QAAAQDAEcwRQIhAJwMeBGNP9ofyl-PQ0AuL4qSkz9clmmZ175jDZYcNPSFAiBtZVemYmFbhFOch99Kq1EvAX4i_CroxuMRCJowzxitUgB2AEiw42vapkc0D-VqAvqdMOscUgHLVt0sgdm7v6s52IRzAAABkh-c5B4AAAQDAEcwRQIhAIh7iC-IxstglYu3qnIplFopHD6ixr3aAHyv5sZWTKEeAiAY_zjE9cj-pVehys2Sx0MZMnRVmmecrhNu0bDaA2P3HDAKBggqhkjOPQQDAgNIADBFAiEAvXutcWdEDhwh0yA6wxuYjWK-Z_ESF-apfTM8UZ340psCIAy2V8z3q5dPnyJ-hLfwQDh4yX5mD8yyTmwCirr12FwK">this site</a></p>
+<p>For a detailed dive into ASN.1, I can highly recommend reading the post
+<a href="https://letsencrypt.org/docs/a-warm-welcome-to-asn1-and-der">Warm Welcome to ASN.1 and DER</a>. In summary,
+ASN.1 is a language (<a href="https://en.wikipedia.org/wiki/Interface_description_language">IDL</a>)
+for:</p>
+<ol>
+<li>defining data structures (ie. define structure of a certificate)</li>
+<li>serialization and deserialization of those data structures</li>
+</ol>
+<blockquote>
+<p>The advantage of writing ASN.1 definitions instead of Go or C definitions is that they are
+language-independent.</p>
+</blockquote>
+<p>While it is possible to represent a data structure within the language itself, the ASN.1 representation
+is language agnostic and can be used across multiple languages. Kinda similar to how Java is write once
+run anywhere.</p>
+<pre><code>&#x2F;&#x2F; C representation
+struct point {
+  int x, y;
+  char label[10];
+};
+
+&#x2F;&#x2F; Go representation
+type point struct {
+  x, y int
+  label string
+}
+
+&#x2F;&#x2F; ASN.1 representation is language agnostic
+Point ::= SEQUENCE {
+  x INTEGER,
+  y INTEGER,
+  label UTF8String
+}
+</code></pre>
+<blockquote>
+<p>There are some other languages that do the same things as ASN.1. For instance, Protocol Buffers
+offer both a language for defining types and a serialization format for encoding objects of the
+types you’ve defined... ASN.1 (1984) had the significant advantage of already existing when
+certificates (1988) and HTTPS (1994) were invented.</p>
+</blockquote>
+<p>ASN.1, while not perfect (a ASN.1 parser is complicated to implement), has become the
+standard in cryptography.</p>
+<h3 id="resources">Resources:</h3>
+<ul>
+<li>https://letsencrypt.org/docs/a-warm-welcome-to-asn1-and-der/</li>
+<li>http://luca.ntop.org/Teaching/Appunti/asn1.html</li>
+<li>https://lapo.it/asn1js/</li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc5280">Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</a></li>
+<li><a href="https://www.itu.int/rec/T-REC-X.680">ASN.1 lang</a></li>
+<li><a href="https://www.itu.int/rec/T-REC-X.690">ASN.1 serialization format</a></li>
+<li><a href="http://oid-info.com/get/1.3.6.1.4.1.11129">oid</a></li>
+</ul>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+
