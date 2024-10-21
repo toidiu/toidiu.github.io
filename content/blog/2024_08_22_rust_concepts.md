@@ -43,7 +43,6 @@ let cell = Cell::new(3);
 assert_eq!(cell.get(), 3); // duplicate inner value
 assert_eq!(cell.take(), 3); // take and replace with default value
 assert_eq!(cell.get(), 0); // assert default value
-
 ```
 
 - [RefCell](https://doc.rust-lang.org/std/cell/struct.RefCell.html): runtime "dynamic borrowing" to avoid copy/move and give exclusive mutable access
@@ -52,7 +51,6 @@ assert_eq!(cell.get(), 0); // assert default value
 // RefCell::swap()
 // RefCell::borrow()
 // RefCell::borrow_mut()
-
 
 use std::cell::RefCell;
 
