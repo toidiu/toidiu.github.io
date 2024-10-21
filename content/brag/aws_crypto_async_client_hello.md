@@ -9,9 +9,6 @@ lp = []
 
 https://github.com/aws/s2n-quic/issues/1137
 
-
-#### metrics
-
 #### S
 Currently s2n-quic does the certificate lookup/loading operations synchronously.
 

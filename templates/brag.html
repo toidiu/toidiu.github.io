@@ -34,23 +34,25 @@
 
     <h4>Table of content</h4>
 
+    <div id="item-container">
     {% for page in section.pages %}
-      <div class="scenario-list">
-        <a href="#{{ page.title | slugify }}">{{ page.title }}</a>
-        <div>
-          <span class="company">{{ page.extra.company }}</span>
-          <!-- global variable to set divider -->
-          {% set_global g_divider = 0 %}
-          {% for lp in page.extra.lp %}
-            <span class="lp">
-              {% if g_divider == 1 %}|{% endif %}
-              #{{ lp }}
-            </span>
-            {% set_global g_divider = 1 %}
-          {% endfor %}
-        </div>
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#{{ page.title | slugify }}">{{ page.title }}</a>
+              <div class="company">{{ page.extra.company }}</div>
+              <!-- global variable to set divider -->
+              {% set_global g_divider = 2 %}
+              {% for lp in page.extra.lp %}
+                <span class="lp">
+                  {% if g_divider == 1 %}|{% endif %}
+                  #{{ lp }}
+                </span>
+                {% set_global g_divider = 1 %}
+              {% endfor %}
+          </div>
       </div>
     {% endfor %}
+    </div>
 
     <span>----------</span>
     <span>----------</span>

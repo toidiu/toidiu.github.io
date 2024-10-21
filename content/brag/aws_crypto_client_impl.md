@@ -7,16 +7,4 @@ company = "aws_crypto"
 lp = []
 +++
 
-summary
-
-#### metrics
-- bla
-
-#### S
-
-#### T
-
-#### A
-
-#### R
 

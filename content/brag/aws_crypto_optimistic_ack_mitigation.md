@@ -9,9 +9,6 @@ lp = []
 
 https://github.com/aws/s2n-quic/pull/1986
 
-
-#### metrics
-
 #### S
 - add mitigation for optimistic acks
 - the risk would be to inflate cc and create unfair network conditions
@@ -25,12 +22,10 @@ https://github.com/aws/s2n-quic/pull/1986
 - there were 2 and they were using a static approach
   - track skipping 1 pn. overwrite value when a new pn needs to be skipped
   - skip a random pn in some static range
-
 - it was hard to assess if this approach was effective
   - does overriting skip pn affect mitigation?
   - does a static range work for all networks?
     - a cc window would be very different in a DS vs public internet
-
 - instead of storing 1 skip pn we could store many
 - this would allow us to skip more frequenly
   - but require us to store these pn

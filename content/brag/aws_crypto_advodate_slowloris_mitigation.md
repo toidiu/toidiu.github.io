@@ -7,11 +7,6 @@ company = "aws_crypto"
 lp = []
 +++
 
-summary
-
-#### metrics
-- bla
-
 #### S
 The previous implementation involved closing the connection by default if the bytes transferred
 dropped below some user specified amount.

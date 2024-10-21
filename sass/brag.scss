@@ -1,12 +1,12 @@
-#resume_detail {
+#brag {
   h4 {
     // font-weight: bold;
-    font-size: 16px;
+    // font-size: 16px;
     padding-top: 0;
     margin-bottom: 0;
   }
   .scenario-list {
-    font-size: 14px;
+    font-size: 18px;
   }
   .scenario {
     margin-bottom: 40px;
@@ -21,12 +21,27 @@
   }
   .company {
     font-family: customFontBold;
-    margin-right: 20px;
+    margin-bottom: 0em;
     font-size: 14px;
   }
   .lp {
     font-size: 14px;
   }
-
+  // BORROWED FROM PROJECT
+  .item-wrapper {
+      margin: 0 .5em 1em .5em;
+      line-height: 0px;
+      display: inline-table;
+      text-align: left;
+      max-width: 10em;
+  }
+  .item {
+      display: inline-block;
+      margin-bottom: 5px;
+  }
+  #item-container {
+    margin: 1em auto 2em auto;
+    padding: 0 .5em;
+  }
 }
 

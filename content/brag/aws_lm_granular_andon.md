@@ -7,8 +7,6 @@ company = "aws_lm"
 lp = []
 +++
 
-summary
-
 #### metrics
 - auto deploy rules
 - integrate with workflow
