@@ -90,21 +90,15 @@ assert!(!Rc::ptr_eq(&rc, &rc_other));
 - [Mutex](https://doc.rust-lang.org/std/sync/struct.Mutex.html)
 - [Arc](https://doc.rust-lang.org/std/sync/struct.Arc.html)
 
-
-
-## <a name="traits">#</a> Traits
-### Deref:
-### Drop:
-### Send:
-### Sync:
-### PhantomData:
-
-
 ## <a name="async">#</a> Async
 
-### Future:
+### Send:
+todo
+### Sync:
+todo
 
-### Task:
+### Future/Task:
+Check out the dedicated post on Futures: https://toidiu.com/blog/rust-future-ecosystem/
 
 ### Pin:
 Definition of “pinning"
@@ -123,3 +117,12 @@ when the pointee type T is Unpin.
 When T: Unpin, Pin<Box<T>> functions identically to a non-pinning Box<T>;
 similarly, Pin<&mut T> would impose no additional restrictions above a regular
 &mut T.
+
+## <a name="traits">#</a> Traits
+### Deref:
+todo
+### Drop:
+todo
+### PhantomData:
+todo
+
