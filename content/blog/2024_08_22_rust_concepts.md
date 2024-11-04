@@ -95,7 +95,28 @@ assert!(!Rc::ptr_eq(&rc, &rc_other));
 ### Send:
 todo
 ### Sync:
-todo
+https://doc.rust-lang.org/nomicon/send-and-sync.html
+https://doc.rust-lang.org/std/marker/trait.Send.html
+https://doc.rust-lang.org/std/marker/trait.Sync.html
+
+Types which are safe to share references between threads.
+
+Auto Impl
+`impl Sync for Arc`
+`impl<T: ?Sized + Send> Sync for Mutex<T>`
+
+> The precise definition is: a type T is Sync if and only if &T is Send. In
+other words, if there is no possibility of undefined behavior (including data
+races) when passing &T references between threads.
+
+
+> A shorter overview of how Sync and Send relate to referencing:
+>
+> - &T is Send if and only if T is Sync
+> - &mut T is Send if and only if T is Send
+> - &T and &mut T are Sync if and only if T is Sync
+
+
 
 ### Future/Task:
 Check out the dedicated post on Futures: https://toidiu.com/blog/rust-future-ecosystem/
