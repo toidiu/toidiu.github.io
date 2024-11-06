@@ -1,5 +1,5 @@
 +++
-title = "s2n-quic default TLS 1.3 support"
+title = "s2n-tls default TLS 1.3 support"
 date = 2022-05-01
 
 [extra]

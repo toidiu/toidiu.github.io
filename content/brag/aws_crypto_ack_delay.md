@@ -1,5 +1,5 @@
 +++
-title = "s2n-quic ack freq analysis"
+title = "s2n-quic ack delay"
 date = 2022-05-01
 
 [extra]
@@ -16,6 +16,8 @@ lp = []
 #### metrics
 
 #### S
+- Explore the ACK delay RFC and see if s2n-quic could benefit from implementing it.
+
 Pros of delay:
 - send/recv acks is CPU expensive
   - on the send heavy server it takes 24.33%

@@ -14,7 +14,8 @@ https://github.com/aws/s2n-quic/pull/1986
 - The rfc was clear how to do this (skip packets), but also vague because it didnt mention how many packets to skip and how often.
 
 #### T
-- Come up with a strategy for skipping packet.
+- Come up with a strategy for skipping packet and mitigating the attack.
+- Implement the mitigation in s2n-quic.
 
 #### A
 - Audited other QUIC implementations and conducted analysis to answer two key questions:
@@ -41,6 +42,6 @@ https://github.com/aws/s2n-quic/pull/1986
   - `rand = pkt_per_cwnd/2..pkt_per_cwnd*2`
 
 #### R
-- Implemented the mitigation.
+- Successfully implemented the mitigation.
 - Only had to store 1 skip pn.
 - By evolving the skip range based on cwnd, s2n-quic would scale to all networks.
