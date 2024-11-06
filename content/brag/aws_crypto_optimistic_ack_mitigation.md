@@ -10,36 +10,37 @@ lp = []
 https://github.com/aws/s2n-quic/pull/1986
 
 #### S
-- add mitigation for optimistic acks
-- the risk would be to inflate cc and create unfair network conditions
+- Add mitigation for optimistic acks
+- The rfc was clear how to do this (skip packets), but also vague because it didnt mention how many packets to skip and how often.
 
 #### T
-- the rfc was clear how to do this (skip packets)
-- but also vague because it didnt mention how many packets to skip and how often
+- Come up with a strategy for skipping packet.
 
 #### A
-- took a look at other implementations
-- there were 2 and they were using a static approach
-  - track skipping 1 pn. overwrite value when a new pn needs to be skipped
-  - skip a random pn in some static range
-- it was hard to assess if this approach was effective
-  - does overriting skip pn affect mitigation?
-  - does a static range work for all networks?
-    - a cc window would be very different in a DS vs public internet
-- instead of storing 1 skip pn we could store many
-- this would allow us to skip more frequenly
-  - but require us to store these pn
-  - how many pn should we store? how fast should we send?
+- Audited other QUIC implementations and conducted analysis to answer two key questions:
+  - How many packets to skip?
+  - How often should packets be skipped?
+- There were 2 other implementations that were using a "static" (skipping did not evolve with cwnd)
+  approach. Their strategy was to:
+  - Track skipping 1 pn. Overwrite value when a new pn needs to be skipped.
+  - Skip a random pn in some static range.
+- The "static" approach was network dependent (DC vs public wifi):
+  - Does overriting skip pn nullify the mitigation?
+  - Is a static skip range effective for all networks?
+    - A cwnd is very different in a DS vs public internet
+- Considered the option of skipping multiple packets:
+  - Pro: This would allow us to skip more frequenly
+  - Con: Require storing multiple skip pn. How many pn should we store?
+- Analyzed the purpose of the mitigation to come up with an optimal solution.
+  - The goal of the mitigation was to prevent cwnd bloat.
+  - Which could be done if packets were acked prior to the peer receiving them.
+  - By basing skip range on the number of packets that could be received with an cwnd.
+- Solution: evolve skip packet range based on cwnd and only store 1 skip pn.
+- Calculate range based on packets we expect to send in a single period.
+  - `pkt_per_cwnd = cwnd / mtu`
+  - `rand = pkt_per_cwnd/2..pkt_per_cwnd*2`
 
 #### R
-- i analyzed the purpose of the mitigation
-  - prevent cc window bloat
-  - this could be done if packets were acked prior to peer receiving them
-- we expect an ack every RTT time (RTT being the **period**)
-  - this is the **period** for sending packet and reciving an ack
-- since the # of packets we send within a **period** can change, we should skip
-  packets based on the period
-- how many packets do we expect to send in a **period**?
-  - cwnd / mtu = packets per cwnd
-  - rand = cwnd/2..cwnd*2
-
+- Implemented the mitigation.
+- Only had to store 1 skip pn.
+- By evolving the skip range based on cwnd, s2n-quic would scale to all networks.
