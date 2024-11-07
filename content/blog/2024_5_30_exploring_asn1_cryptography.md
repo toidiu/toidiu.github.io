@@ -1,5 +1,5 @@
 +++
-title = "Encoding keys and certs"
+title = "Expploring ANS.1 and Cryptography"
 date = 2024-05-30
 
 [taxonomies]
@@ -9,8 +9,7 @@ tag = ["crypto"]
 id = "blog-single"
 +++
 
-Exploring the confusing concepts of ASN.1, pkcs1, pkcs8, pem, and der and how they
-relate to cryptography.
+What are ASN.1, pkcs1, pkcs8, pem, and der? How and why are they used in cryptography.
 
 <!-- more -->
 
@@ -58,8 +57,9 @@ First, take a look at the ASN.1 object representation of the certificate of [thi
 
 For a detailed dive into ASN.1, I can highly recommend reading the post
 [Warm Welcome to ASN.1 and DER](https://letsencrypt.org/docs/a-warm-welcome-to-asn1-and-der). In summary,
-ASN.1 is a language ([IDL](https://en.wikipedia.org/wiki/Interface_description_language))
-for:
+ASN.1 is an interface definition language
+([IDL](https://en.wikipedia.org/wiki/Interface_description_language)) (it defines an interface to a
+system). An IDL needs to be able to do 2 things:
 1. defining data structures (ie. define structure of a certificate)
 1. serialization and deserialization of those data structures
 
@@ -67,9 +67,11 @@ for:
 > The advantage of writing ASN.1 definitions instead of Go or C definitions is that they are
 > language-independent.
 
-While it is possible to represent a data structure within the language itself, the ASN.1 representation
-is language agnostic and can be used across multiple languages. Kinda similar to how Java is write once
-run anywhere.
+While it is possible to represent a data structure in the language your application is written in
+(eg. Rust), the ASN.1 representation is language agnostic and can be used across multiple languages
+(ASN.1 parser implementations are available for multiple languages).  I like to use the analogy of
+Java, which allows you to "write code once, run anywhere". ANS.1 allows your to "define object and
+serialize in one application, deserialize and reconstruct in any other application".
 
 ```
 // C representation
