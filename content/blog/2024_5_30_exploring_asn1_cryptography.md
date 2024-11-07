@@ -1,5 +1,5 @@
 +++
-title = "Expploring ANS.1 and Cryptography"
+title = "Exploring ANS.1 and Cryptography"
 date = 2024-05-30
 
 [taxonomies]
@@ -39,7 +39,8 @@ let pem = der.to_base64();
 
 In the snippet above we are attempting to encode a private key.
 1. `key`: secret key generate perhaps from a key exchange
-2. `big_num_key`: generate a bignum from the secret key
+2. `big_num_key`: generate a [bignum](https://docs.openssl.org/1.0.2/man3/bn/#synopsis) from the
+   secret key
 3.  create a `pkcs8` encoded ASN.1 object: `asn1_obj`
   - [ASN.1](https://en.wikipedia.org/wiki/ASN.1): a language for defining data structure.
     In cryptography, we care about a few encodings:
