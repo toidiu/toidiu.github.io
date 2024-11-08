@@ -1,5 +1,5 @@
 +++
-title = "VM"
+title = "Virtual Machine"
 date = 2018-12-21
 
 [taxonomies]
@@ -9,7 +9,13 @@ tag = ["vm", "hypervisor"]
 id = "blog-single"
 +++
 
-There are two types of VM: system VM and process/language VM. A language VM is also called a runtime. One abstracts out the OS while the other abstracts out a language runtime. A system VM might be good for isolation, security, portability, etc. A language VM is good for portability of a language (think JVM). For the purpose of this article we will consider system VMs.
+There are two types of VM: system VM and process/language VM. A language VM is
+also called a runtime (most languages usually just call it a runtime. The JVM,
+Java Virtual Machine, does a lot more than other language runtimes). One
+abstracts out the OS while the other abstracts out a language runtime. A system
+VM might be good for isolation, security, portability, etc. A language VM is
+good for portability of a language (think JVM). For the purpose of this article
+we will consider system VMs.
 <!-- more -->
 
 Note: these are some thoughts I compiled awhile ago and only now getting to posting them. I am trying to get in the habit of pushing out content more consistently rather than waiting for it to be perfect.. so please let me know if there are errors or if I have failed to give proper credit.
