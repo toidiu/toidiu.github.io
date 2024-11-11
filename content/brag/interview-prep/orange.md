@@ -70,7 +70,7 @@ TODO:
 **TOP**
 - A design choice that encured technical debt but you think it was a good choice.
 - Tell me about a time you worked well within a team.
-  - Helped co-worker in cloudfront integrate with async cert loading feature.
+  - Helped co-worker in CLOUDFRONT integrate with async cert loading feature.
   - helped deliver quic over 2 years. specifically worked in a team of three to review prs, make design
     decisions etc.
   - connection migration pentest
@@ -119,4 +119,17 @@ TODO:
 - read https://www.hellointerview.com/learn/system-design/in-a-hurry/introduction
 - design 2 systems as practice
 
+## Executive call
+
+- It seems to me that CLOUDFLARE is in a crowded market space (cdn/securing the internet (fastly),
+  paas (aws), data security (crowdstrike)). What do you believe is your single biggest technical or
+  non-technical advantage that will make you successful over your competitors?
+- What is the top kpi/metric you personally pay attention to, to make sure CLOUDFLARE is maintaining
+  its momentum?
+- What is the most imporant thing CLOUDFLARE does to build high-functioning and talented teams?
+- In one of you blog posts you mentioned: "we believe our continued success should be primarily
+  driven by new innovation, not by milking old features for revenue."
+  https://blog.cloudflare.com/adjusting-pricing-introducing-annual-plans-and-accelerating-innovation/
+- As you continute to release new features and tools how do you ensure a seamless user experience
+  and avoid overloading your users? (AWS has over 200 services).
 
