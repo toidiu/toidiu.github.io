@@ -120,6 +120,11 @@ TODO:
 - design 2 systems as practice
 
 ## Executive call
+> https://blog.cloudflare.com/cloudflare-2024-annual-founders-letter/
+>
+> One of the most common questions we’re asked is how we plan to preserve Cloudflare's culture? Our
+answer is always the same: the goal isn't how to preserve our culture, it's always how to improve
+it.
 
 - It seems to me that CLOUDFLARE is in a crowded market space (cdn/securing the internet (fastly),
   paas (aws), data security (crowdstrike)). What do you believe is your single biggest technical or
@@ -127,9 +132,10 @@ TODO:
 - What is the top kpi/metric you personally pay attention to, to make sure CLOUDFLARE is maintaining
   its momentum?
 - What is the most imporant thing CLOUDFLARE does to build high-functioning and talented teams?
-- In one of you blog posts you mentioned: "we believe our continued success should be primarily
-  driven by new innovation, not by milking old features for revenue."
-  https://blog.cloudflare.com/adjusting-pricing-introducing-annual-plans-and-accelerating-innovation/
-- As you continute to release new features and tools how do you ensure a seamless user experience
-  and avoid overloading your users? (AWS has over 200 services).
+- AWS's customers dislike that there are over 200 services.
+    - In one of you blog posts [1] you mentioned:
+    - "we believe our continued success should be primarily driven by new innovation, not by milking
+      old features for revenue."
+    - How will you preserve a seamless user experience as you continue to launch new features?
 
+[1] https://blog.cloudflare.com/adjusting-pricing-introducing-annual-plans-and-accelerating-innovation/
