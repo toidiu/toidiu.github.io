@@ -116,6 +116,7 @@ TODO:
 
 ## System Design: 1hr
 TODO:
+- Watch this video to understand how to structure the solution: https://www.youtube.com/watch?v=fhdPyoO6aXI
 - read https://www.hellointerview.com/learn/system-design/in-a-hurry/introduction
 - design 2 systems as practice
 
