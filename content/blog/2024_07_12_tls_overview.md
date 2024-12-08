@@ -30,18 +30,25 @@ provide 3 security properties:
 - Integrity: messages sent to peers are tamper proof. A tampered message can be detected.
 
 But how exactly does TLS enforce these properties?
-- Authentication:
-  - During the handshake, the server sends a certificate which ties its private
-    key to the public key on the certificate.
-  - The certificate is in turn signed by a root CA's certificate, which both
-    peers need to trust to establish "a chain of trust".
-  - The root cert might sign a intermediate cert, which in turn will sign the
-    peer's cert.
-  - The `root-cert => intermediate-cert => peer-cert`, is the chain and the
-    trust is established by cryptographically verifying the signatures on the
-    cert.
-  - The [RFC](https://datatracker.ietf.org/doc/html/rfc5280) defines x.509 and
-    PKI, which are the components that define certificate infrastructure.
+
+**Authentication** is achieved via trusting the peers certificates. The server sends its
+certificate during the handshake.
+
+Certificate trust is complicated and typically involves parsing a certificate chain
+(root-cert => intermediate-cert => peer-cert). Trust is established if the server trusts
+one of the certificates in the chain. [RFC
+5280](https://datatracker.ietf.org/doc/html/rfc5280) defines the modern day certificate
+infrastructure known as x.509 PKI (Public Key Infrastructure). Modern web browsers come
+installed with well-established root certificates (Cloudflare root, Mozilla root, etc)
+which helps facilitate the internet.
+
+The certificate contains the server's public key pair
+and can be used to verify [signatures](https://en.wikipedia.org/wiki/Digital_signature)
+created by the server. Signatures are used by the TLS handshake to ensure that we are
+speaking with the "real" peer (toidiu.com) and not an attacker. This works
+since only the real toidiu.com will have the private key associated with the public key on
+the certificate.
+
 - Confidentiality:
   - During the handshake, the client and server perform a key exchange (kex).
   - There are many kex algorithms (RSA, DHE, EDHE).

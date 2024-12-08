@@ -1,5 +1,5 @@
 +++
-title = "Exploring ANS.1 and Cryptography"
+title = "The role of ANS.1 in Cryptography"
 date = 2024-05-30
 
 [taxonomies]
@@ -9,7 +9,9 @@ tag = ["crypto"]
 id = "blog-single"
 +++
 
-What are ASN.1, pkcs1, pkcs8, pem, and der? How and why are they used in cryptography.
+ASN.1, pkcs1, pkcs8, pem, der, Pika Pika Chuuuu! Ever feel like cryptography is just a
+bunch of random acronyms that some just made up? I felt the same way and decided to change
+that by figuring out how these things actually get used in real world cryptography.
 
 <!-- more -->
 
@@ -31,13 +33,17 @@ let asn1_obj = Pkcs8::new(private_key);
 // 4: The der encoded ans1 object is simply the raw bytes
 let der = asn1_obj.to_bytes();
 
-// 5: The pem encoded asn1 object is the base64 encoding of the raw bytes
+// 5: The pem encoded asn1 object is the base64 encoding
+// of the raw bytes
 //
 // pem = cat key.der | base64
 let pem = der.to_base64();
 ```
 
-In the snippet above we are attempting to encode a private key.
+In the snippet above we are attempting to encode a private key and encode it as `der` or
+`pem` file. We can do something similar with other interesting objects as well such as
+public key, certificates, etc.
+
 1. `key`: secret key generate perhaps from a key exchange
 2. `big_num_key`: generate a [bignum](https://docs.openssl.org/1.0.2/man3/bn/#synopsis) from the
    secret key
@@ -49,9 +55,8 @@ In the snippet above we are attempting to encode a private key.
         and public keys. Can encode multiple key types (RSA, ECDSA, etc) and should be preferred
         over pkcs1.
       - `X.509`: format for encoding digital certificates
-4. Represent the asn1_obj as either der or pem:
-    1. `der`: the raw bytes of the ans1 object
-    1. `pem`: base64 representation of the der ans1 object
+4. `der` is just the raw bytes of the ans1 object
+5. `pem` is the base64 representation of the der bytes
 
 ### What is ASN.1?
 First, take a look at the ASN.1 object representation of the certificate of [this site](https://lapo.it/asn1js/#MIIDoTCCA0egAwIBAgIQXQaw3dOjYeUOAEXcx7NKfzAKBggqhkjOPQQDAjA7MQswCQYDVQQGEwJVUzEeMBwGA1UEChMVR29vZ2xlIFRydXN0IFNlcnZpY2VzMQwwCgYDVQQDEwNXRTEwHhcNMjQwOTIzMTUwMDI4WhcNMjQxMjIyMTUwMDI3WjAVMRMwEQYDVQQDEwp0b2lkaXUuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEk5N_4mwUFBbfq_DwqGxTtZDXQ-G_F9y9e5NYaXWS2HQsh6UwPMLrQRwlQ77OsWBW_z-HKtRwsY9QgrMVISYVlqOCAlEwggJNMA4GA1UdDwEB_wQEAwIHgDATBgNVHSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBSfYjReoEA85TK6jSVwxd2HjyfElzAfBgNVHSMEGDAWgBSQd5I1Z8T_qMyp5nvZgHl7zJP5ODBeBggrBgEFBQcBAQRSMFAwJwYIKwYBBQUHMAGGG2h0dHA6Ly9vLnBraS5nb29nL3Mvd2UxL1hRWTAlBggrBgEFBQcwAoYZaHR0cDovL2kucGtpLmdvb2cvd2UxLmNydDAjBgNVHREEHDAaggp0b2lkaXUuY29tggwqLnRvaWRpdS5jb20wEwYDVR0gBAwwCjAIBgZngQwBAgEwNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2MucGtpLmdvb2cvd2UxL1BDVWVRVmlRbFljLmNybDCCAQQGCisGAQQB1nkCBAIEgfUEgfIA8AB2AHb_iD8KtvuVUcJhzPWHujS0pM27KdxoQgqf5mdMWjp0AAABkh-c4_QAAAQDAEcwRQIhAJwMeBGNP9ofyl-PQ0AuL4qSkz9clmmZ175jDZYcNPSFAiBtZVemYmFbhFOch99Kq1EvAX4i_CroxuMRCJowzxitUgB2AEiw42vapkc0D-VqAvqdMOscUgHLVt0sgdm7v6s52IRzAAABkh-c5B4AAAQDAEcwRQIhAIh7iC-IxstglYu3qnIplFopHD6ixr3aAHyv5sZWTKEeAiAY_zjE9cj-pVehys2Sx0MZMnRVmmecrhNu0bDaA2P3HDAKBggqhkjOPQQDAgNIADBFAiEAvXutcWdEDhwh0yA6wxuYjWK-Z_ESF-apfTM8UZ340psCIAy2V8z3q5dPnyJ-hLfwQDh4yX5mD8yyTmwCirr12FwK)
