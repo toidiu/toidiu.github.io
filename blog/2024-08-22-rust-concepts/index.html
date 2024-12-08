@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="Apoorv Kothari is software engineer. He studied Engineering at Cooper Union and is intrested in Rust, Kubernetes, Scala, Android, Java.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Scala, java, Cooper Union, blog, talks, code, rust, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js"></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <div class="title important">Rust concepts</div>
+  <div class="date">2024-08-22</div>
+  </div>
+
+  <div class="content">
+    <p>Rust concepts explained simply.</p>
+<span id="continue-reading"></span><h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-concepts/#borrow">Borrow Checker</a></li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-concepts/#mutability">Shared mutability/ownership</a></li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-concepts/#traits">Traits</a></li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-concepts/#async">Asyn</a></li>
+</ul>
+<h2 id="borrow-checker"><a name="borrow">Borrow Checker</a></h2>
+<h3 id="ownership">Ownership:</h3>
+<p>prevents double free, accessing memory after free and ensuring memory safety</p>
+<h3 id="borrowing">Borrowing:</h3>
+<p>prevents aliasing and data races. ensure single writer and multiple writes.</p>
+<h3 id="lifetimes">Lifetimes:</h3>
+<p>prevents invalid or dangling references. ensures that references remain valid
+and dont outlive the data they point to.</p>
+<h2 id="shared-mutability-ownership"><a name="mutability">Shared mutability/ownership</a></h2>
+<p>cell (shared mutability) vs rc (shared ownership) vs sync (synchronization)</p>
+<h3 id="cell-shared-mutability">cell: shared mutability</h3>
+<ul>
+<li><a href="https://doc.rust-lang.org/std/cell/struct.Cell.html">Cell</a>: interior mutability by copying/moving the interior value</li>
+</ul>
+<pre><code>&#x2F;&#x2F; assert_eq!(min_path(&amp;[&amp;[1, 2], &amp;[3, 4]]), 3);
+let cell = Cell::new(3);
+assert_eq!(cell.get(), 3); &#x2F;&#x2F; duplicate inner value
+assert_eq!(cell.take(), 3); &#x2F;&#x2F; take and replace with default value
+assert_eq!(cell.get(), 0); &#x2F;&#x2F; assert default value
+</code></pre>
+<ul>
+<li><a href="https://doc.rust-lang.org/std/cell/struct.RefCell.html">RefCell</a>: runtime &quot;dynamic borrowing&quot; to avoid copy/move and give exclusive mutable access</li>
+</ul>
+<pre><code>&#x2F;&#x2F; RefCell::replace()
+&#x2F;&#x2F; RefCell::swap()
+&#x2F;&#x2F; RefCell::borrow()
+&#x2F;&#x2F; RefCell::borrow_mut()
+
+use std::cell::RefCell;
+
+#[derive(Debug)]
+struct NoCopyu32(u32);
+
+let ref_cell = RefCell::new(NoCopyu32(3));
+let num: &amp;NoCopyu32 = &amp;ref_cell.borrow();
+assert_eq!(num.0, 3);
+
+let num_mut: &amp;mut NoCopyu32 = &amp;mut ref_cell.borrow_mut();
+num_mut.0 = 4;
+assert_eq!(num.0, 4);
+</code></pre>
+<h3 id="rc-shared-ownership">rc: shared ownership</h3>
+<ul>
+<li><a href="https://doc.rust-lang.org/std/rc/struct.Rc.html">Rc</a></li>
+</ul>
+<pre><code>use std::rc::Rc;
+
+#[derive(Debug)]
+struct NoCopyu32(u32);
+
+let rc = Rc::new(NoCopyu32(3));
+let clone = rc.clone();
+
+assert!(Rc::ptr_eq(&amp;rc, &amp;clone));
+assert!(rc.0 == clone.0);
+assert!(Rc::strong_count(&amp;rc) == 2);
+
+let rc_other = Rc::new(NoCopyu32(3));
+assert!(rc.0 == rc_other.0);
+assert!(!Rc::ptr_eq(&amp;rc, &amp;rc_other));
+</code></pre>
+<h3 id="sync">sync</h3>
+<ul>
+<li><a href="https://doc.rust-lang.org/std/sync/struct.Mutex.html">Mutex</a></li>
+<li><a href="https://doc.rust-lang.org/std/sync/struct.Arc.html">Arc</a></li>
+</ul>
+<h2 id="async"><a name="async">Async</a></h2>
+<h3 id="send">Send:</h3>
+<p>todo</p>
+<h3 id="sync-1">Sync:</h3>
+<p>https://doc.rust-lang.org/nomicon/send-and-sync.html
+https://doc.rust-lang.org/std/marker/trait.Send.html
+https://doc.rust-lang.org/std/marker/trait.Sync.html</p>
+<p>Types which are safe to share references between threads.</p>
+<p>Auto Impl
+<code>impl Sync for Arc</code>
+<code>impl&lt;T: ?Sized + Send&gt; Sync for Mutex&lt;T&gt;</code></p>
+<blockquote>
+<p>The precise definition is: a type T is Sync if and only if &amp;T is Send. In
+other words, if there is no possibility of undefined behavior (including data
+races) when passing &amp;T references between threads.</p>
+</blockquote>
+<blockquote>
+<p>A shorter overview of how Sync and Send relate to referencing:</p>
+<ul>
+<li>&amp;T is Send if and only if T is Sync</li>
+<li>&amp;mut T is Send if and only if T is Send</li>
+<li>&amp;T and &amp;mut T are Sync if and only if T is Sync</li>
+</ul>
+</blockquote>
+<h3 id="future-task">Future/Task:</h3>
+<p>Check out the dedicated post on Futures: https://toidiu.com/blog/rust-future-ecosystem/</p>
+<h3 id="pin">Pin:</h3>
+<p>Definition of “pinning&quot;</p>
+<ul>
+<li>Not be moved out of its memory location</li>
+<li>More generally, remain valid at that same memory location</li>
+</ul>
+<p>“Pinning” allows us to put a value which exists at some location in memory into
+a state where safe code cannot move that value to a different location in memory
+or otherwise invalidate it at its current location</p>
+<h3 id="unpin">Unpin</h3>
+<p>The vast majority of Rust types have no address-sensitive states. These types
+implement the Unpin auto-trait, which cancels the restrictive effects of Pin
+when the pointee type T is Unpin.</p>
+<p>When T: Unpin, Pin&lt;Box<T>&gt; functions identically to a non-pinning Box<T>;
+similarly, Pin&lt;&amp;mut T&gt; would impose no additional restrictions above a regular
+&amp;mut T.</p>
+<h2 id="traits"><a name="traits">Traits</a></h2>
+<h3 id="deref">Deref:</h3>
+<p>todo</p>
+<h3 id="drop">Drop:</h3>
+<p>todo</p>
+<h3 id="phantomdata">PhantomData:</h3>
+<p>todo</p>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+

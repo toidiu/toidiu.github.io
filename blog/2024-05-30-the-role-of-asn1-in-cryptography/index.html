@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="Apoorv Kothari is software engineer. He studied Engineering at Cooper Union and is intrested in Rust, Kubernetes, Scala, Android, Java.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Scala, java, Cooper Union, blog, talks, code, rust, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js"></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <div class="title important">Demystifying ANS.1 role in Cryptography</div>
+  <div class="date">2024-05-30</div>
+  </div>
+
+  <div class="content">
+    <p>ASN.1, PKCS #1, PKCS #8, pem, der, Pika Pika Chuuuu!</p>
+<p>Ever feel like cryptography is just a
+bunch of random acronyms that some just made up? I felt the same way and decided to change
+that by figuring out how these things actually get used in real world cryptography.</p>
+<span id="continue-reading"></span><h3 id="what-is-asn-1">What is ASN.1?</h3>
+<p>In order to demystify the link between theory and application I will take a practical
+first approach to dissecting this question. We will start by looking at a real ASN.1 object
+before diving into the theory. Finally, we will tie it back to &quot;real&quot; cryptography by
+seeing how these concepts are used in engineering.</p>
+<h4 id="practical">Practical</h4>
+<p>We start by inspecting the ASN.1 object representation of the certificate of <a href="https://lapo.it/asn1js/#MIIDoTCCA0egAwIBAgIQXQaw3dOjYeUOAEXcx7NKfzAKBggqhkjOPQQDAjA7MQswCQYDVQQGEwJVUzEeMBwGA1UEChMVR29vZ2xlIFRydXN0IFNlcnZpY2VzMQwwCgYDVQQDEwNXRTEwHhcNMjQwOTIzMTUwMDI4WhcNMjQxMjIyMTUwMDI3WjAVMRMwEQYDVQQDEwp0b2lkaXUuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEk5N_4mwUFBbfq_DwqGxTtZDXQ-G_F9y9e5NYaXWS2HQsh6UwPMLrQRwlQ77OsWBW_z-HKtRwsY9QgrMVISYVlqOCAlEwggJNMA4GA1UdDwEB_wQEAwIHgDATBgNVHSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBSfYjReoEA85TK6jSVwxd2HjyfElzAfBgNVHSMEGDAWgBSQd5I1Z8T_qMyp5nvZgHl7zJP5ODBeBggrBgEFBQcBAQRSMFAwJwYIKwYBBQUHMAGGG2h0dHA6Ly9vLnBraS5nb29nL3Mvd2UxL1hRWTAlBggrBgEFBQcwAoYZaHR0cDovL2kucGtpLmdvb2cvd2UxLmNydDAjBgNVHREEHDAaggp0b2lkaXUuY29tggwqLnRvaWRpdS5jb20wEwYDVR0gBAwwCjAIBgZngQwBAgEwNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2MucGtpLmdvb2cvd2UxL1BDVWVRVmlRbFljLmNybDCCAQQGCisGAQQB1nkCBAIEgfUEgfIA8AB2AHb_iD8KtvuVUcJhzPWHujS0pM27KdxoQgqf5mdMWjp0AAABkh-c4_QAAAQDAEcwRQIhAJwMeBGNP9ofyl-PQ0AuL4qSkz9clmmZ175jDZYcNPSFAiBtZVemYmFbhFOch99Kq1EvAX4i_CroxuMRCJowzxitUgB2AEiw42vapkc0D-VqAvqdMOscUgHLVt0sgdm7v6s52IRzAAABkh-c5B4AAAQDAEcwRQIhAIh7iC-IxstglYu3qnIplFopHD6ixr3aAHyv5sZWTKEeAiAY_zjE9cj-pVehys2Sx0MZMnRVmmecrhNu0bDaA2P3HDAKBggqhkjOPQQDAgNIADBFAiEAvXutcWdEDhwh0yA6wxuYjWK-Z_ESF-apfTM8UZ340psCIAy2V8z3q5dPnyJ-hLfwQDh4yX5mD8yyTmwCirr12FwK">this
+website</a>.
+Notice how the certificate is just big object with a bunch of different fields pertaining
+to the <a href="https://www.rfc-editor.org/rfc/rfc5280">RFC 5280</a>. See if you can find:</p>
+<ul>
+<li>The <a href="https://www.rfc-editor.org/rfc/rfc5280#section-4.1.2.6">Subject</a> which should be
+&quot;toidiu.com&quot;.</li>
+<li>The <a href="https://www.rfc-editor.org/rfc/rfc5280#section-4.1.2.4">Issuer</a> which should be the
+intermediate (&quot;WE1&quot;) and root (&quot;Google Trust Services&quot;) certificates.</li>
+<li>The <a href="https://www.rfc-editor.org/rfc/rfc5280#section-4.1.2.7">Subject Public Key Info</a>
+associated with the certificate (search for &quot;subjectPublicKeyInfo&quot; and
+&quot;subjectPublicKey&quot;). This is the public key associated with the site &quot;toidiu.com&quot;</li>
+<li>Finally notice how
+<a href="https://www.rfc-editor.org/rfc/rfc5280#section-4.1.1.2">signatureAlgorithm</a> (search
+&quot;signatureAlgorithm&quot;) is different from the Subject Public Key Info above. This is CA's
+(Certificate Authority) signature computed upon the contents of this certificate. This
+is what helps us verify that the CA has actually issued the certificate for
+&quot;toidiu.com&quot;.</li>
+</ul>
+<h4 id="theory">Theory</h4>
+<p>For a detailed dive into ASN.1, I highly recommend reading the post <a href="https://letsencrypt.org/docs/a-warm-welcome-to-asn1-and-der">Warm Welcome to ASN.1
+and DER</a>. ASN.1 is an
+interface definition language
+(<a href="https://en.wikipedia.org/wiki/Interface_description_language">IDL</a>) (it defines an
+interface to a system). An IDL needs to be able to do 2 things:</p>
+<ol>
+<li>defining data structures (i.e. define structure of a certificate)</li>
+<li>serialization and deserialization of those data structures</li>
+</ol>
+<blockquote>
+<p>The advantage of writing ASN.1 definitions instead of Go or C definitions is that they are
+language-independent.</p>
+</blockquote>
+<p>While it is possible to represent a data structure in the language your application is written in
+(e.g. Rust), the ASN.1 representation is language agnostic and can be used across multiple languages
+(ASN.1 parser implementations are available for multiple languages).  I like to use the analogy of
+Java, which allows you to &quot;write code once, run anywhere&quot;. ANS.1 allows your to &quot;define object and
+serialize in one application, deserialize and reconstruct in any other application&quot;.</p>
+<pre><code>&#x2F;&#x2F; C representation
+struct point {
+  int x, y;
+  char label[10];
+};
+
+&#x2F;&#x2F; Go representation
+type point struct {
+  x, y int
+  label string
+}
+
+&#x2F;&#x2F; ASN.1 representation is language agnostic
+Point ::= SEQUENCE {
+  x INTEGER,
+  y INTEGER,
+  label UTF8String
+}
+</code></pre>
+<blockquote>
+<p>There are some other languages that do the same things as ASN.1. For instance, Protocol Buffers
+offer both a language for defining types and a serialization format for encoding objects of the
+types you’ve defined... ASN.1 (1984) had the significant advantage of already existing when
+certificates (1988) and HTTPS (1994) were invented.</p>
+</blockquote>
+<p>ASN.1, while not perfect (a ASN.1 parser is complicated to implement), has become the
+standard in cryptography.</p>
+<h4 id="real-world-usage">&quot;Real&quot; world usage</h4>
+<p>Now that we have an understanding of what ASN.1 objects are, lets see how we can make use
+of them in real engineering applications. TLS, PKI, and VPNs are just a few examples where
+these concepts are applied.</p>
+<p>In the following code snippet we are encoding a private key as der and pem representation
+of a ASN.1 object. In real cryptography we often have to do similar operations on other
+secret material such as public key, certificates, etc.</p>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">&#x2F;&#x2F; 1. generate cryptrographic key (ex. ecdhe)
+let private_key = ecdhe_handshake();
+
+&#x2F;&#x2F; 2. generate a BIG_NUM
+let big_num_key: BIG_NUM = BN_set_word(private_key);
+
+&#x2F;&#x2F; 3.
+&#x2F;&#x2F; asn1_obj = ASN.1: ()
+&#x2F;&#x2F;   - PKCS #1: defines the RSA format
+&#x2F;&#x2F;   - PKCS #8: defines the key format (RSA, EC, ..)
+let asn1_obj = Pkcs8::new(private_key);
+
+&#x2F;&#x2F; 4: The der encoded ans1 object is simply the raw bytes
+let der = asn1_obj.to_bytes();
+
+&#x2F;&#x2F; 5: The pem encoded asn1 object is the base64 encoding
+&#x2F;&#x2F; of the raw bytes
+&#x2F;&#x2F;
+&#x2F;&#x2F; pem = cat private_key.der | base64
+let pem = der.to_base64();
+</code></pre>
+<ol>
+<li><code>private_key</code>: private key generate perhaps from a key exchange</li>
+<li><code>big_num_key</code>: generate a <a href="https://docs.openssl.org/1.0.2/man3/bn/#synopsis">bignum</a>
+from the private key</li>
+<li>create a <code>PKCS #8</code> encoded ASN.1 object: <code>asn1_obj</code></li>
+</ol>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/ASN.1">ASN.1</a>: a language for defining data structure.
+In cryptography, we care about a few encodings:
+<ul>
+<li><code>PKCS #1</code>: format for encoding and decoding RSA private and public keys</li>
+<li><code>PKCS #8</code>: format for encoding cryptographic private keys, often containing pairs of
+private and public keys. Can encode multiple key types (RSA, ECDSA, etc) and
+should be preferred over PKCS #1.</li>
+<li><code>X.509</code>: format for encoding digital certificates</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li><code>der</code> is just the raw bytes of the ans1 object</li>
+<li><code>pem</code> is the base64 representation of the der bytes</li>
+</ol>
+<h3 id="conclusion">Conclusion</h3>
+<p>In engineering applications we care about taking some secret material (key, certificate)
+and serializing it so that we can then share (via network, file, memory) it our peer.</p>
+<p>ASN.1 is the common format that cryptographic implementations have agreed upon. We looked
+at PKCS #1 and PKCS #8 which are optional of ASN.1 formats used primarily for storing key
+material (there are many other PKCS formats for different contexts). We also saw how the
+binary representation of an ASN.1 object is called DER, and how PEM is simply the base64
+representation.</p>
+<hr />
+<h3 id="resources">Resources:</h3>
+<ul>
+<li>https://letsencrypt.org/docs/a-warm-welcome-to-asn1-and-der/</li>
+<li>http://luca.ntop.org/Teaching/Appunti/asn1.html</li>
+<li>https://lapo.it/asn1js/</li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc5280">Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</a></li>
+<li><a href="https://www.itu.int/rec/T-REC-X.680">ASN.1 lang</a></li>
+<li><a href="https://www.itu.int/rec/T-REC-X.690">ASN.1 serialization format</a></li>
+<li><a href="http://oid-info.com/get/1.3.6.1.4.1.11129">oid</a></li>
+</ul>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+
