@@ -15,6 +15,7 @@ An brief overview of a TLS in simple language. https://www.rfc-editor.org/rfc/rf
 
 ## Table of Contents
 - [TLS guarantees](#tls-guarantees)
+  - [Authentication](#tls-authentication)
 - [Sub protocols](#sub-protocols)
   - [Handshake protocols](#handshake-protocol)
   - [Record protocols](#record-protocol)
@@ -31,8 +32,9 @@ provide 3 security properties:
 
 But how exactly does TLS enforce these properties?
 
-**Authentication** is achieved via trusting the peers certificates. The server sends its
-certificate during the handshake.
+### <a name="tls-authentication">##</a> Authentication
+In TLS authentication is satisfied by the use of certificates.
+A The server sends its certificate during the handshake.
 
 Certificate trust is complicated and typically involves parsing a certificate chain
 (root-cert => intermediate-cert => peer-cert). Trust is established if the server trusts
@@ -45,9 +47,9 @@ which helps facilitate the internet.
 The certificate contains the server's public key pair
 and can be used to verify [signatures](https://en.wikipedia.org/wiki/Digital_signature)
 created by the server. Signatures are used by the TLS handshake to ensure that we are
-speaking with the "real" peer (toidiu.com) and not an attacker. This works
-since only the real toidiu.com will have the private key associated with the public key on
-the certificate.
+speaking with the "real" peer (toidiu.com) and not an attacker. This works since only the
+real "toidiu.com" website server will have the private key associated with the public key
+on the certificate.
 
 - Confidentiality:
   - During the handshake, the client and server perform a key exchange (kex).
