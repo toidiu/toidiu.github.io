@@ -19,7 +19,7 @@ Rust concepts explained simply.
 - [Traits](#traits)
 - [Asyn](#async)
 
-## <a name="borrow">#</a> Borrow Checker
+## <a name="borrow">Borrow Checker</a>
 ### Ownership:
 prevents double free, accessing memory after free and ensuring memory safety
 
@@ -31,7 +31,7 @@ prevents invalid or dangling references. ensures that references remain valid
 and dont outlive the data they point to.
 
 
-## <a name="mutability">#</a> Shared mutability/ownership
+## <a name="mutability">Shared mutability/ownership</a>
 
 cell (shared mutability) vs rc (shared ownership) vs sync (synchronization)
 
@@ -90,7 +90,7 @@ assert!(!Rc::ptr_eq(&rc, &rc_other));
 - [Mutex](https://doc.rust-lang.org/std/sync/struct.Mutex.html)
 - [Arc](https://doc.rust-lang.org/std/sync/struct.Arc.html)
 
-## <a name="async">#</a> Async
+## <a name="async">Async</a>
 
 ### Send:
 todo
@@ -139,7 +139,7 @@ When T: Unpin, Pin<Box<T>> functions identically to a non-pinning Box<T>;
 similarly, Pin<&mut T> would impose no additional restrictions above a regular
 &mut T.
 
-## <a name="traits">#</a> Traits
+## <a name="traits">Traits</a>
 ### Deref:
 todo
 ### Drop:

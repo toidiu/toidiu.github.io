@@ -23,7 +23,7 @@ An brief overview of a TLS in simple language. https://www.rfc-editor.org/rfc/rf
   - [A Full TLS handshake](#full-handshake)
   - [A PSK TLS handshake](#psk-handshake)
 
-## <a name="tls-guarantees">##</a> TLS guarantees
+## <a name="tls-guarantees">TLS guarantees</a>
 The goal of the TLS protocol is to secure network communication. More formally it aim to
 provide 3 security properties:
 - Authentication: is the peer who they say they are.
@@ -32,7 +32,7 @@ provide 3 security properties:
 
 But how exactly does TLS enforce these properties?
 
-### <a name="tls-authentication">##</a> Authentication
+### <a name="tls-authentication">Authentication</a>
 In TLS authentication is satisfied by the use of certificates.
 A The server sends its certificate during the handshake.
 
@@ -73,10 +73,10 @@ on the certificate.
     it is good practice to use cipher schemes that offer Authenticated
     Encryption (authentication and encryption).
 
-## <a name="sub-protocols">##</a> Sub protocols
+## <a name="sub-protocols">Sub protocols</a>
 The TLS protocol is divided into two sub protocols: Handshake and Record.
 
-### <a name="handshake-protocols">###</a> Handshake protocol
+### <a name="handshake-protocols">Handshake protocol</a>
 The Handshake protocol is responsible for performing a key exchange with the
 peer. The secret material generated from the key exchange is then used in the
 Record protocol to encrypt data.
@@ -136,7 +136,7 @@ optional, while others are required for normal operation. A few of them include:
     `signature_algorithms_cert` extension list.
 
 
-### <a name="record-protocols">###</a> Record protocol
+### <a name="record-protocols">Record protocol</a>
 
 Once the Handshake protocol is complete, the peers now share the same secret key
 which they can use to encrypt/decrypt message. At this point it is possible for
@@ -155,12 +155,12 @@ Record protocol:
 
 ```
 
-## <a name="handshake-types">##</a> Handshake Types
+## <a name="handshake-types">Handshake Types</a>
 A connection might perform a full handshake (perform a ECDHE key exchange). Or
 it might have done so previously and already posesses a PSK (Pre-Shared Key),
 which is can use for sending encrypted data.
 
-### <a name="full-handshake">###</a> A full TLS handshake
+### <a name="full-handshake">A full TLS handshake</a>
 
 ```txt
      Client                                               Server
@@ -186,7 +186,7 @@ Initial Handshake:
      [Application Data]        <------->      [Application Data]
 ```
 
-### <a name="psk-handshake">###</a> A PSK TLS handshake
+### <a name="psk-handshake">A PSK TLS handshake</a>
 
 ```txt
 Subsequent Handshake:
