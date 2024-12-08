@@ -9,12 +9,19 @@ tag = ["crypto"]
 id = "blog-single"
 +++
 
-
 14 steps for learning crypto.
 
 <!-- more -->
 
-Originally provided by [@SalusaSecondus](https://github.com/SalusaSecondus)
+---
+
+I personally found the [Real World
+Cryptography](https://www.manning.com/books/real-world-cryptography) book invaluable in
+understanding cryptographic building blocks and how they tie together.
+
+---
+
+Below content was provide by [@SalusaSecondus](https://github.com/SalusaSecondus) [1]
 
 - [Dan Boneh's Cryptography I](https://www.coursera.org/learn/crypto)
 - [Cryptopals Crypto Challenges](https://cryptopals.com)
@@ -33,5 +40,5 @@ Originally provided by [@SalusaSecondus](https://github.com/SalusaSecondus)
 
 ---
 
-For more please also visit the excellent guide @SalusaSecondus has put together [Crypto Gotchas!](https://github.com/SalusaSecondus/CryptoGotchas/blob/master/README.md).
+[1] For more please also visit the excellent guide @SalusaSecondus has put together [Crypto Gotchas!](https://github.com/SalusaSecondus/CryptoGotchas/blob/master/README.md).
 

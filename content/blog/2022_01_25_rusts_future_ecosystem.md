@@ -1,5 +1,5 @@
 +++
-title = "Rust Future ecosystem"
+title = "Rust's Future ecosystem"
 date = 2022-01-25
 
 [taxonomies]
