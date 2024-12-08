@@ -16,8 +16,8 @@ Polymorphism is a word that means 'having  different forms'. In terms of OOP, th
 * Parametric Polymorphism
 * Ad-hoc Polymorphism
 
-> As an extra bit of info, the compiler evaluates subtype at Runtime
-> while parametric and ad-hoc are evaluated at compile time.
+> The Scala compiler evaluates subtype at Runtime while parametric and ad-hoc are evaluated
+> at compile time.
 
 I have found that I learn much better when I have to write about it and explain it to others. This is an exercise for my understanding but hopefully it will also help others. The accompanying code for this post can be found on [github](https://github.com/toidiu/ScalaPolymorphism).
 
@@ -219,7 +219,9 @@ printTexture(taco)(WetTacoTexture) //prints: soggy
 
 #### Different Syntax:
 
-As an extra bit let's look at another way we can write our ad-hoc polymorphism function. The Scala compiler provides syntactical sugar so that we can re-write the function as follows. So don't get confused when you see either representation.
+Let's look at another way we can write our ad-hoc polymorphism function. The Scala
+compiler provides syntactical sugar so that we can re-write the function as follows. So
+don't get confused when you see either representation.
 
 ```scala
 //def printTexture[T](t: T)(implicit o: Texture[T]): Unit = {

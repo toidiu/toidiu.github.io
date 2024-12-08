@@ -15,8 +15,6 @@ An brief overview of a TLS in simple language. https://www.rfc-editor.org/rfc/rf
 
 ## Table of Contents
 - [TLS guarantees](#tls-guarantees)
-  - [The TLS protocol provides 3 properties](#tls-3-properties)
-  - [How are these properties enforced](#tls-properties-enforced)
 - [Sub protocols](#sub-protocols)
   - [Handshake protocols](#handshake-protocol)
   - [Record protocols](#record-protocol)
@@ -25,16 +23,13 @@ An brief overview of a TLS in simple language. https://www.rfc-editor.org/rfc/rf
   - [A PSK TLS handshake](#psk-handshake)
 
 ## <a name="tls-guarantees">##</a> TLS guarantees
+The goal of the TLS protocol is to secure network communication. More formally it aim to
+provide 3 security properties:
+- Authentication: is the peer who they say they are.
+- Confidentiality: messages between two peers are secret and only visible to the peers
+- Integrity: messages sent to peers are tamper proof. A tampered message can be detected.
 
-### <a name="tls-3-properties">###</a> The TLS protocol provides 3 properties
-- Authentication: is the peer who they say they are. the client authenticates
-  the server. server can optionally authenticate the client.
-- Confidentiality: messages sent to the peer are secret and only visible to the
-  peer.
-- Integrity: messages sent to peer are tamper proof. If a message is modified
-  then this tamper can be detected.
-
-### <a name="tls-properties-enforced">###</a> How are these properties enforced
+But how exactly does TLS enforce these properties?
 - Authentication:
   - During the handshake, the server sends a certificate which ties its private
     key to the public key on the certificate.
