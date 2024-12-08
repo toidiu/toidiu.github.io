@@ -2,6 +2,7 @@
   div, p {
     line-height: 1.5em;
   }
+
   .item-wrapper {
       display: inline-table;
       margin: 0 15px;
@@ -16,11 +17,12 @@
   }
   .item img {
       // width: 50px;
-      height: 45px;
+      height: 2.3em;
   }
   .item .title {
-      font-size: 20px;
+      font-size: 1.2em;
       display: block;
+        margin: 0 0 .5em 0;
   }
   #item-container {
     margin: 40px auto 80px auto;
