@@ -9,7 +9,7 @@ tag = ["crypto"]
 id = "blog-single"
 +++
 
-An brief overview of a TLS in simple language. https://www.rfc-editor.org/rfc/rfc8446
+An brief overview of the [TLS](https://fx2.56b.myftpupload.com/t27) protocol.
 
 <!-- more -->
 
@@ -32,10 +32,11 @@ provide 3 security properties:
 But how exactly does TLS enforce these properties?
 
 ### <a name="tls-authentication">Authentication</a>
-In TLS authentication is satisfied by the use of certificates.
-A The server sends its certificate during the handshake.
+In TLS authentication is satisfied by the use of certificates. A server sends its
+certificate during the handshake. The client will optionally send its certificate if the
+server requests mutual authentication (aka. mutual TLS or mTLS).
 
-Certificate trust is complicated and typically involves parsing a certificate chain
+Trusting a certificate is complicated and typically involves parsing a certificate chain
 (`root-cert => intermediate-cert => peer-cert`). Trust is established if the server trusts
 one of the certificates in the chain. [RFC
 5280](https://datatracker.ietf.org/doc/html/rfc5280) defines the modern day certificate
@@ -43,23 +44,22 @@ infrastructure known as x.509 PKI (Public Key Infrastructure). Modern web browse
 installed with well-established root certificates (Cloudflare root, Mozilla root, etc)
 which helps facilitate the internet.
 
-The certificate contains the server's public key pair
-and can be used to verify [signatures](https://en.wikipedia.org/wiki/Digital_signature)
-created by the server. Signatures are used by the TLS handshake to ensure that we are
-speaking with the "real" peer (toidiu.com) and not an attacker. This works since only the
-real "toidiu.com" website server will have the private key associated with the public key
-on the certificate.
+The certificate contains the server's public key pair and can be used to verify
+[signatures](https://en.wikipedia.org/wiki/Digital_signature) created by the server.
+Signatures are used by the TLS handshake to ensure that browser is speaking with the "real"
+peer (toidiu.com) and not an attacker. This works since only the real "toidiu.com" website
+server will have the private key associated with the public key on the certificate.
 
 ### <a name="tls-confidentiality">Confidentiality</a>
 Confidentiality is achieved via encryption and its usually what most people think of when
 they think of "security". However, Confidentiality without Authentication (are you sure
-you are talking with your Bank?) or Integrity (are you really sure that some hacker
-didn't intercept and  message?) is not comprehensive security!
+you are talking with your Bank?) or Integrity (are you really sure that some hacker didn't
+intercept and modify the message?) is not comprehensive security!
 
-Peers using TLS exchange a shared secret key, which they use to encrypt messages they send
-to each other. The exchange of secret material is called a key exchange (kex) and is part
-of a TLS Handshake. There are many kex algorithms (RSA, DHE, EDHE). In TLS 1.3 has
-deprecated many old cipher suites in preference for forward-secret modern ones.
+Peers using TLS, exchange a shared secret key, which they use to encrypt messages they
+send to each other. The exchange of secret material is called a key exchange (kex) and is
+part of a TLS Handshake. There are many kex algorithms (RSA, DHE, EDHE). TLS 1.3 has
+deprecated many old cipher suites in preference for modern ones.
 
 [ECDHE](https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman) (elliptic
 curve diffie-hellman ephemeral) makes a fine choice because of additional security
@@ -73,7 +73,7 @@ server-public-kem => master-secret-key`).
 ### <a name="tls-integrity">Integrity</a>
 [MAC](https://en.wikipedia.org/wiki/Message_authentication_code) (message authentication
 code) is a cryptographic primitive that can be used to check the integrity of a piece of
-data. During the TLS handshake both peers agree upon a "secret key" which is then used to
+data. During the TLS handshake both peers agree upon a "secret key", which is then used to
 generate MACs for messages exchanged.
 
 Very similar to a digital signature, the MAC can be used to verify that the message was in
@@ -83,7 +83,7 @@ MAC](https://crypto.stackexchange.com/a/5647).
 
 In previous TLS protocols, the MAC was calculated separately. In TLS 1.3, only
 [AEAD](https://en.wikipedia.org/wiki/Authenticated_encryption) cipher suites are supported
-so MAC is coupled with encryption.
+so MAC and encryption happen together.
 
 
 ## <a name="sub-protocols">Sub protocols</a>
