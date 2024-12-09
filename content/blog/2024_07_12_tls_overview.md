@@ -16,12 +16,11 @@ An brief overview of a TLS in simple language. https://www.rfc-editor.org/rfc/rf
 ## Table of Contents
 - [TLS guarantees](#tls-guarantees)
   - [Authentication](#tls-authentication)
+  - [Confidentiality](#tls-confidentiality)
+  - [Integrity](#tls-integrity)
 - [Sub protocols](#sub-protocols)
-  - [Handshake protocols](#handshake-protocol)
-  - [Record protocols](#record-protocol)
-- [Handshake types](#handshake-types)
-  - [A Full TLS handshake](#full-handshake)
-  - [A PSK TLS handshake](#psk-handshake)
+  - [Handshake protocol](#handshake-protocol)
+  - [Record protocol](#record-protocol)
 
 ## <a name="tls-guarantees">TLS guarantees</a>
 The goal of the TLS protocol is to secure network communication. More formally it aim to
@@ -37,7 +36,7 @@ In TLS authentication is satisfied by the use of certificates.
 A The server sends its certificate during the handshake.
 
 Certificate trust is complicated and typically involves parsing a certificate chain
-(root-cert => intermediate-cert => peer-cert). Trust is established if the server trusts
+(`root-cert => intermediate-cert => peer-cert`). Trust is established if the server trusts
 one of the certificates in the chain. [RFC
 5280](https://datatracker.ietf.org/doc/html/rfc5280) defines the modern day certificate
 infrastructure known as x.509 PKI (Public Key Infrastructure). Modern web browsers come
@@ -51,32 +50,46 @@ speaking with the "real" peer (toidiu.com) and not an attacker. This works since
 real "toidiu.com" website server will have the private key associated with the public key
 on the certificate.
 
-- Confidentiality:
-  - During the handshake, the client and server perform a key exchange (kex).
-  - There are many kex algorithms (RSA, DHE, EDHE).
-  - ECDHE (elliptic curve diffie-hellman ephemeral) is preferred because it is
-    forward-secret. Note the word ephemeral in the title.
-  - The responsibility of kex is to allow for each peer to contribute some
-    public key material (`kem`) and together come up with a secret key for the
-    TLS connection.
-  - `client-public-kem + server-public-kem => connection-secret-key`.
-  - The connection secret key is a strong cryptographic secret, which when used
-    to encrypt messages provides confidentiality.
-- Integrity:
-  - Along with using the "connection secret key" for encryption, we also
-    generate a MAC (message authentication code) for the ciphertext when
-    encrypting data.
-  - This tag can be though of as a "signature" on the ciphertext, and guarantees
-    that only a peer which possesses the connection secret key could have
-    generated the encryption/tag.
-  - Previously the encryption and authentication were separate steps, but today
-    it is good practice to use cipher schemes that offer Authenticated
-    Encryption (authentication and encryption).
+### <a name="tls-confidentiality">Confidentiality</a>
+Confidentiality is achieved via encryption and its usually what most people think of when
+they think of "security". However, Confidentiality without Authentication (are you sure
+you are talking with your Bank?) or Integrity (are you really sure that some hacker
+didn't intercept and  message?) is not comprehensive security!
+
+Peers using TLS exchange a shared secret key, which they use to encrypt messages they send
+to each other. The exchange of secret material is called a key exchange (kex) and is part
+of a TLS Handshake. There are many kex algorithms (RSA, DHE, EDHE). In TLS 1.3 has
+deprecated many old cipher suites in preference for forward-secret modern ones.
+
+[ECDHE](https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman) (elliptic
+curve diffie-hellman ephemeral) makes a fine choice because of additional security
+properties ([forward-secret](https://en.wikipedia.org/wiki/Forward_secrecy)) and
+performance compared with other algotithms.
+
+To ensure a secure exchange, the TLS 1.3 kex samples key material (kem) from both the
+client and server when deriving the master secret key (`client-public-kem +
+server-public-kem => master-secret-key`).
+
+### <a name="tls-integrity">Integrity</a>
+[MAC](https://en.wikipedia.org/wiki/Message_authentication_code) (message authentication
+code) is a cryptographic primitive that can be used to check the integrity of a piece of
+data. During the TLS handshake both peers agree upon a "secret key" which is then used to
+generate MACs for messages exchanged.
+
+Very similar to a digital signature, the MAC can be used to verify that the message was in
+fact sent by the peer and not tampered with, i.e. Integrity. Check out this stackover post
+for the difference between [digital signature vs
+MAC](https://crypto.stackexchange.com/a/5647).
+
+In previous TLS protocols, the MAC was calculated separately. In TLS 1.3, only
+[AEAD](https://en.wikipedia.org/wiki/Authenticated_encryption) cipher suites are supported
+so MAC is coupled with encryption.
+
 
 ## <a name="sub-protocols">Sub protocols</a>
 The TLS protocol is divided into two sub protocols: Handshake and Record.
 
-### <a name="handshake-protocols">Handshake protocol</a>
+### <a name="handshake-protocol">Handshake protocol</a>
 The Handshake protocol is responsible for performing a key exchange with the
 peer. The secret material generated from the key exchange is then used in the
 Record protocol to encrypt data.
@@ -136,72 +149,9 @@ optional, while others are required for normal operation. A few of them include:
     `signature_algorithms_cert` extension list.
 
 
-### <a name="record-protocols">Record protocol</a>
+### <a name="record-protocol">Record protocol</a>
 
 Once the Handshake protocol is complete, the peers now share the same secret key
 which they can use to encrypt/decrypt message. At this point it is possible for
 the peers to send encrypted data to each another.
 
-```txt
-     Client                                               Server
-
-Handshake protocol:
-
-     [generate secret key]                 [generate secret key]
-                                  ....
-
-Record protocol:
-     [Application Data]        <------->      [Application Data]
-
-```
-
-## <a name="handshake-types">Handshake Types</a>
-A connection might perform a full handshake (perform a ECDHE key exchange). Or
-it might have done so previously and already posesses a PSK (Pre-Shared Key),
-which is can use for sending encrypted data.
-
-### <a name="full-handshake">A full TLS handshake</a>
-
-```txt
-     Client                                               Server
-
-Initial Handshake:
-     ClientHello
-     + key_share               -------->
-                                                     ServerHello
-                                                     + key_share
-                                           {EncryptedExtensions}
-                                           {CertificateRequest*}
-                                                  {Certificate*}
-                                            {CertificateVerify*}
-                                                      {Finished}
-                               <--------     [Application Data*]
-
-     {Certificate*}
-     {CertificateVerify*}
-     {Finished}                -------->
-
-                               <--------      [NewSessionTicket]
-
-     [Application Data]        <------->      [Application Data]
-```
-
-### <a name="psk-handshake">A PSK TLS handshake</a>
-
-```txt
-Subsequent Handshake:
-       ClientHello
-       + key_share*
-       + pre_shared_key          -------->
-
-                                                       ServerHello
-                                                  + pre_shared_key
-                                                      + key_share*
-                                             {EncryptedExtensions}
-                                                        {Finished}
-                                 <--------     [Application Data*]
-
-       {Finished}                -------->
-
-       [Application Data]        <------->      [Application Data]
-```
