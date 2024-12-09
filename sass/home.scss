@@ -2,39 +2,38 @@
   ol, ul {
      margin-left: 0em;
   }
-  ul li{
+  ul li {
     // list-style-position: inside;
     list-style: none;
   }
-  nav{
+  nav {
     position: absolute;
     width: 100%;
     z-index: 10;
   }
-  #name{
+  #name {
       color: #282D28;
       font-size: 2em;
       padding: 0 5%;
   }
-  .description{
-    /*color: #fff;*/
-    padding: 10px 15%;
+  .description {
+    padding: 10px 10%;
   }
   .link-icon img {
       width: 40px;
       height: 40px;
       margin: 0 20px;
   }
-  .icon-description{
+  .icon-description {
       display: block;
   }
-  .link-icon{
+  .link-icon {
       display: inline-block;
   }
-  #description-wrapper{
+  #description-wrapper {
     margin-bottom: 50px;
   }
-  .author-avatar{
+  .author-avatar {
     padding: 5px;
     border: 1px solid #f2f3f3;
     max-width: 110px;
