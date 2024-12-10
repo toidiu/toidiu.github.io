@@ -1,13 +1,14 @@
-@import "inc_colors";
+@import "inc_values";
 
 #reads {
+  font-size: $text-base;
+
   .title {
-    font-size: 18px;
     max-width: 600px;
     display: block;
     margin-bottom: 5px;
-    color: $s-color;
-    font-size: 20px;
+    color: $sec-color;
+    font-size: $text-lg;
 
     &::before {
       content: "# ";
@@ -22,6 +23,12 @@
   }
   .short {
     margin-bottom: -10px;
+  }
+  .paper-links {
+    font-size: $text-sm;
+  }
+  .more {
+    font-size: $text-sm;
   }
 
   /*-- more --*/

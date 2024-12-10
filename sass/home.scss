@@ -1,4 +1,8 @@
+@import "inc_values";
+
 #home {
+  font-size: $text-xxl;
+
   ol, ul {
      margin-left: 0em;
   }
@@ -12,8 +16,7 @@
     z-index: 10;
   }
   #name {
-      color: #282D28;
-      font-size: 2em;
+      font-size: $h1-size;
       padding: 0 5%;
   }
   .description {

@@ -1,4 +1,8 @@
+@import "inc_values";
+
 #blog-single {
+  font-size: $text-xl;
+
   .main-container {
     line-height: 1.5em;
   }

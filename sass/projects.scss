@@ -1,28 +1,31 @@
+@import "inc_values";
+
 #projects {
+  font-size: $text-base;
+
   div, p {
     line-height: 1.5em;
   }
 
   .item-wrapper {
-      display: inline-table;
-      margin: 0 15px;
-      max-width: 300px;
-      text-align: left;
-      padding-top: 20px;
-      padding-bottom: 15px;
+    display: inline-table;
+    margin: 0 15px;
+    max-width: 300px;
+    text-align: left;
+    padding-top: 20px;
+    padding-bottom: 15px;
   }
   .item {
-      display: inline-block;
-      margin-bottom: 5px;
+    display: inline-block;
+    margin-bottom: 5px;
   }
   .item img {
-      // width: 50px;
-      height: 2.3em;
+    height: 2.3em;
   }
   .item .title {
-      font-size: 1.2em;
-      display: block;
-        margin: 0 0 .5em 0;
+    font-size: $text-xl;
+    display: block;
+    margin: 0 0 .5em 0;
   }
   #item-container {
     margin: 40px auto 80px auto;
@@ -30,7 +33,7 @@
     text-align: center;
   }
   .section-divider {
-    font-size: 20px;
+    font-size: $text-lg;
     font-family: customFontBold;
     border-bottom: 1px solid #268cc3;
     padding-bottom: 6px;

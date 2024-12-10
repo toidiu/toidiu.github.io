@@ -1,23 +1,27 @@
-@import "inc_colors";
+@import "inc_values";
 
 #blog {
+  font-size: $text-xl;
+
   .section-year {
-    font-size: 18px;
+    font-size: $text-xl;
     border-bottom: 1px solid #268cc3;
     margin-bottom: 10px;
   }
-  .article-year {
-    font-family: customFontBold;
-    margin-right: 20px;
-    font-size: 18px;
-  }
   a.title {
-    font-size: 24px;
+    font-size: $text-xxl;
     display: inline-block;
   }
-  .date {
-    font-size: 18px;
+  .date-tag {
     margin-bottom: 10px;
+  }
+  .date {
+    font-family: customFontBold;
+    margin-right: 20px;
+    font-size: $text-base;
+  }
+  .tags {
+    font-size: $text-xl;
   }
   .main-container {
     line-height: 1.5em;

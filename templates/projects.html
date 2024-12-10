@@ -6,26 +6,6 @@
 {% block content %}
 <div id="item-container">
 
-  {#-- featured --#}
-  <div class="section">
-    <a href="#featured" name="featured"
-      class="section-divider important">Featured</a>
-    {% for page in section.pages %}
-        {% if page.extra.featured %}
-          <div class="item-wrapper">
-            <a class="item" href={{page.extra.link}} target=_blank" rel="noopener">
-              <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="</>"/>
-              <span class="title">{{page.title}}</span>
-            </a>
-            <div>
-              {{ page.content | safe }}
-            </div>
-          </div>
-        {% endif %}
-    {% endfor %}
-  </div>
-
-
   {#-- open source contributions --#}
   <div class="section">
     <a href="#open-source-contributions" name="open-source-contributions"
@@ -48,30 +28,11 @@
   {#-- my projects --#}
   <div class="section">
     <a href="#individual-projects" name="individual-projects"
-      class="section-divider important">Individual Projects</a>
+      class="section-divider important">Projects</a>
     {% for page in section.pages %}
         {% set col = page.extra.colloborated | default(value=false) %}
         {% set open = page.extra.open | default(value=false) %}
         {% if col == false and open == false %}
-          <div class="item-wrapper">
-            <a class="item" href={{page.extra.link}} target=_blank" rel="noopener">
-              <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="</>"/>
-              <span class="title">{{page.title}}</span>
-            </a>
-            <div>
-              {{ page.content | safe }}
-            </div>
-          </div>
-        {% endif %}
-    {% endfor %}
-  </div>
-
-  {#-- projects I collaborated on --#}
-  <div class="section">
-    <a href="#collaboration" name="collaboration"
-      class="section-divider important">Collaboration</a>
-    {% for page in section.pages %}
-        {% if page.extra.colloborated %}
           <div class="item-wrapper">
             <a class="item" href={{page.extra.link}} target=_blank" rel="noopener">
               <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="</>"/>

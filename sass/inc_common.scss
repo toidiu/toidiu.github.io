@@ -1,4 +1,3 @@
-@import "inc_colors";
 @import "inc_values";
 
 @font-face {
@@ -8,6 +7,9 @@
 @font-face {
   font-family: customFontBold;
   src: url(fonts/Inconsolata-Bold.ttf);
+}
+body {
+  font-size: $text-base;
 }
 h1, h2 {
   margin-bottom: .25em;
@@ -26,7 +28,7 @@ h2 {
   font-size: $h2-size;
 }
 h3 {
-  font-size: $h2-size;
+  font-size: $h3-size;
 }
 h4, h5, h6 {
   font-size: $h4-plus-size;
@@ -90,15 +92,11 @@ ol {
   list-style: decimal;
 }
 body {
-  background-color: $p-color;
-}
-nav {
-  background-color: $p-color-dark;
+  background-color: $pri-color;
 }
 footer {
-  background: $p-color-light;
+  background: $pri-color-light;
 }
-
 body {
   font: 16px customFont;
   color: $font-color;
@@ -107,16 +105,13 @@ body {
 a {
   display: inline-flex;
   text-decoration: none;
-  color: #ffffff;
+  color: $link-color;
 }
 a:hover {
-  color: #000 !important;
+  color: $link-hover-color !important;
 }
 body, nav, footer, .outer {
   min-width: 320px;
-}
-nav {
-  line-height: 1;
 }
 strong {
   font-family: customFontBold;
@@ -135,7 +130,7 @@ i {
   text-decoration: underline;
 }
 .important {
-  color: $s-color;
+  color: $sec-color;
 }
 .white{
   color: #ffffff;
