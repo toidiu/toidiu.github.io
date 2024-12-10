@@ -9,7 +9,7 @@
   {#-- open source contributions --#}
   <div class="section">
     <a href="#open-source-contributions" name="open-source-contributions"
-      class="section-divider important">Open Source Contributions</a>
+      class="section-divider">Open Source Contributions</a>
     {% for page in section.pages %}
         {% if page.extra.open %}
           <div class="item-wrapper">
@@ -28,7 +28,7 @@
   {#-- my projects --#}
   <div class="section">
     <a href="#individual-projects" name="individual-projects"
-      class="section-divider important">Projects</a>
+      class="section-divider">Projects</a>
     {% for page in section.pages %}
         {% set col = page.extra.colloborated | default(value=false) %}
         {% set open = page.extra.open | default(value=false) %}

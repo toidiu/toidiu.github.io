@@ -31,20 +31,22 @@
       display: block;
   }
   .link-icon {
-      display: inline-block;
+    display: inline-block;
+    font-size: $text-lg;
   }
   #description-wrapper {
     margin-bottom: 50px;
   }
   .author-avatar {
     padding: 5px;
-    border: 1px solid #f2f3f3;
+    border: 1px solid #000;
     max-width: 110px;
     border-radius: 50%;
     margin-top: 45px;
     margin-bottom: 15px;
   }
   #credit {
+    font-size: $text-sm;
     margin-bottom: 10px;
   }
 }

@@ -7,7 +7,6 @@
     max-width: 600px;
     display: block;
     margin-bottom: 5px;
-    color: $sec-color;
     font-size: $text-lg;
 
     &::before {
@@ -18,7 +17,7 @@
     margin-bottom: 50px;
     .content {
       padding-bottom: 10px;
-      border-bottom: 1px solid #268cc3;
+      border-bottom: 1px solid #000;
     }
   }
   .short {
