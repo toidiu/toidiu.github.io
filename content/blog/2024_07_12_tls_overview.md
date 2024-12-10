@@ -9,7 +9,7 @@ tag = ["crypto"]
 id = "blog-single"
 +++
 
-An brief overview of the [TLS](https://fx2.56b.myftpupload.com/t27) protocol.
+An brief overview of the TLS 1.3 protocol.
 
 <!-- more -->
 

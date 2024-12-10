@@ -19,8 +19,8 @@
 
       <div class="post">
         <a class="title" href="{{ page.permalink }}">{{ page.title }}</a>
-        <div class="date">
-          <span class="article-year">{{ page.date }}</span>
+        <div class="date-tag">
+          <span class="date">{{ page.date }}</span>
           {% for tag in page.taxonomies.tag %}
             <span class="tags">#{{ tag }}</span>
           {% endfor %}

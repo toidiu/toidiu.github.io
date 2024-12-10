@@ -1,48 +1,52 @@
+@import "inc_values";
+
 #home {
+  font-size: $text-xxl;
+
   ol, ul {
      margin-left: 0em;
   }
-  ul li{
+  ul li {
     // list-style-position: inside;
     list-style: none;
   }
-  nav{
+  nav {
     position: absolute;
     width: 100%;
     z-index: 10;
   }
-  #name{
-      color: #282D28;
-      font-size: 2em;
+  #name {
+      font-size: $h1-size;
       padding: 0 5%;
   }
-  .description{
-    /*color: #fff;*/
-    padding: 10px 15%;
+  .description {
+    padding: 10px 10%;
   }
   .link-icon img {
       width: 40px;
       height: 40px;
       margin: 0 20px;
   }
-  .icon-description{
+  .icon-description {
       display: block;
   }
-  .link-icon{
-      display: inline-block;
+  .link-icon {
+    display: inline-block;
+    font-size: $text-lg;
   }
-  #description-wrapper{
+  #description-wrapper {
     margin-bottom: 50px;
   }
-  .author-avatar{
+  .author-avatar {
     padding: 5px;
-    border: 1px solid #f2f3f3;
+    border: 1px solid #000;
     max-width: 110px;
     border-radius: 50%;
     margin-top: 45px;
     margin-bottom: 15px;
   }
   #credit {
+    font-size: $text-sm;
     margin-bottom: 10px;
   }
 }

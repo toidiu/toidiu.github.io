@@ -1,13 +1,13 @@
-@import "inc_colors";
+@import "inc_values";
 
 #reads {
+  font-size: $text-base;
+
   .title {
-    font-size: 18px;
     max-width: 600px;
     display: block;
     margin-bottom: 5px;
-    color: $s-color;
-    font-size: 20px;
+    font-size: $text-lg;
 
     &::before {
       content: "# ";
@@ -17,11 +17,17 @@
     margin-bottom: 50px;
     .content {
       padding-bottom: 10px;
-      border-bottom: 1px solid #268cc3;
+      border-bottom: 1px solid #000;
     }
   }
   .short {
     margin-bottom: -10px;
+  }
+  .paper-links {
+    font-size: $text-sm;
+  }
+  .more {
+    font-size: $text-sm;
   }
 
   /*-- more --*/
@@ -51,6 +57,6 @@
 
 @media screen and (min-width: 600px) {
   #reads .article {
-    padding: 0px 40px;
+    padding: 0px 5%;
   }
 }

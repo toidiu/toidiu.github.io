@@ -1,5 +1,24 @@
-$font-size: 1.4em;
+// size
+$text-xxs: 0.5rem;
+$text-xs: 0.65rem;
+$text-sm: 0.75rem;
+$text-sm: 0.875rem;
+$text-base: 1rem;
+$text-lg: 1.125rem;
+$text-xl: 1.25rem;
+$text-xxl: 1.4rem;
+
 $h1-size: 1.55em;
-$h2-size: 1.4em;
+$h2-size: 1.425em;
 $h3-size: 1.25em;
-$h4-plus-size: 1.1em;
+$h4-plus-size: 1.125em;
+
+// color
+$pri-color: #fff;
+$pri-color-light: #fff;
+$pri-color-dark: #fff;
+$sec-color: #3382c8;
+
+$link-color: #9d0707;
+$link-hover-color: #000;
+$font-color: #000;

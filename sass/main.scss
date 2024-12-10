@@ -2,7 +2,6 @@
 @import "inc_reset";
 @import "inc_footer";
 @import "inc_nav";
-@import "inc_colors";
 @import "inc_common";
 
 @import "home";
@@ -16,24 +15,17 @@
 @import "photos-single";
 @import "brag";
 
-/*------------------------END GENERAL---------------------*/
-body {
-  font-size: $font-size;
-}
-
 /*------------------------RESPONSIVE---------------------*/
+
 @media screen and (min-width: 400px) {
-  #name{
+  html {
+    font-size: 20px;
   }
 }
 
 @media screen and (min-width: 600px) {
-  .link-icon img {
-      /*width: 50px;*/
-      /*height: 50px;*/
-  }
-  nav .nav-link{
-      font-size: 24px;
+  html {
+    font-size: 20px;
   }
 }
 /*------------------------END RESPONSIVE---------------------*/
