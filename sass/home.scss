@@ -1,7 +1,7 @@
 @import "inc_values";
 
 #home {
-  font-size: $text-xxl;
+  font-size: $text-base;
 
   ol, ul {
      margin-left: 0em;
@@ -17,14 +17,14 @@
   }
   #name {
       font-size: $h1-size;
-      padding: 0 5%;
+      padding: 0px 5% 5% 5%;
   }
   .description {
-    padding: 10px 10%;
+    padding: 0px 10%;
   }
   .link-icon img {
-      width: 40px;
-      height: 40px;
+      width: 35px;
+      height: 35px;
       margin: 0 20px;
   }
   .icon-description {
@@ -32,7 +32,7 @@
   }
   .link-icon {
     display: inline-block;
-    font-size: $text-lg;
+    font-size: $text-sm;
   }
   #description-wrapper {
     margin-bottom: 50px;
@@ -46,7 +46,7 @@
     margin-bottom: 15px;
   }
   #credit {
-    font-size: $text-sm;
+    font-size: $text-xs;
     margin-bottom: 10px;
   }
 }
