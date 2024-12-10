@@ -1,5 +1,5 @@
 +++
-title = "Rust concepts"
+title = "Rust primitives"
 date = 2024-08-22
 
 [taxonomies]
@@ -9,7 +9,7 @@ tag = ["rust"]
 id = "blog-single"
 +++
 
-Rust concepts explained simply.
+An attempt to plainly explain some Rust primitives you are likely to come across.
 
 <!-- more -->
 

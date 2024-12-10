@@ -50,13 +50,18 @@ code { /*inline code blocks*/
   line-height: 1.5em;
 }
 blockquote {
-  color: #2f2f2f;
+  font-style: italic;
   border-radius: 6px;
-  background-color: #e8e8e8ad;
-  margin-left: 1em;
-  color: #2f2f2f;
+  margin-left: .5em;
+  color: $font-color;
   padding-left: .5em;
   padding-right: .5em;
+  p::before {
+    content: '\201C';
+  }
+   p::after {
+    content: '\201D';
+  }
 }
 div, p {
   line-height: 1.5em;

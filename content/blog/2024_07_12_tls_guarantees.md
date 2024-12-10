@@ -1,5 +1,5 @@
 +++
-title = "TLS overview"
+title = "TLS guarantees"
 date = 2024-07-12
 
 [taxonomies]
@@ -9,7 +9,9 @@ tag = ["crypto"]
 id = "blog-single"
 +++
 
-An brief overview of the TLS 1.3 protocol.
+TLS is the protocol that secures most of the browse web traffic on the internet. The
+internet is more secure than it has ever been but what exactly does that mean. What are
+the guarantees that TLS provides and how exactly does it deliver on its promise?
 
 <!-- more -->
 

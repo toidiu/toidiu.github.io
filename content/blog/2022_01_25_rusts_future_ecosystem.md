@@ -3,7 +3,7 @@ title = "Rust's Future ecosystem"
 date = 2022-01-25
 
 [taxonomies]
-tag = ["Rust", "future"]
+tag = ["rust"]
 
 [extra]
 id = "blog-single"

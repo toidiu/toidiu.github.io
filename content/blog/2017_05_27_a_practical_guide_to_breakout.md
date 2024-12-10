@@ -3,7 +3,7 @@ title = "A practical guide to breakOut"
 date = 2017-05-27
 
 [taxonomies]
-tag = ["Scala", "code"]
+tag = ["Scala"]
 
 [extra]
 id = "blog-single"

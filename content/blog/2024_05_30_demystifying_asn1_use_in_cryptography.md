@@ -1,5 +1,5 @@
 +++
-title = "Demystifying ANS.1 role in Cryptography"
+title = "Demystifying ANS.1's use in Cryptography"
 date = 2024-05-30
 
 [taxonomies]

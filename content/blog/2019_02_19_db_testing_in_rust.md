@@ -3,7 +3,7 @@ title = "DB testing in Rust"
 date = 2019-02-19
 
 [taxonomies]
-tag = ["Rust", "postgres", "testing"]
+tag = ["rust", "testing"]
 
 [extra]
 id = "blog-single"

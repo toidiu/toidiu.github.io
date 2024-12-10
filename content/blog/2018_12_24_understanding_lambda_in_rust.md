@@ -3,7 +3,7 @@ title = "Understanding Lambda in Rust"
 date = 2018-12-24
 
 [taxonomies]
-tag = ["Rust", "lambda", "aws"]
+tag = ["rust", "aws"]
 
 [extra]
 id = "blog-single"
