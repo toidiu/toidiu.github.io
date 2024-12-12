@@ -9,17 +9,42 @@ tag = ["rust"]
 id = "blog-single"
 +++
 
-An attempt to plainly explain some Rust primitives you are likely to come across.
+**WIP**. An attempt to plainly explain Rust primitives and why they matter.
 
 <!-- more -->
 
-## Table of Contents
-- [Borrow Checker](#borrow)
-- [Shared mutability/ownership](#mutability)
-- [Traits](#traits)
-- [Asyn](#async)
+## Intro
+[Aliasing](https://en.wikipedia.org/wiki/Aliasing_(computing))
 
-## <a name="borrow">Borrow Checker</a>
+> In computing, aliasing describes a situation in which a data location in memory can be accessed through different symbolic names in the program. Thus, modifying the data through one name implicitly modifies the values associated with all aliased names, which may not be expected by the programmer. As a result, aliasing makes it particularly difficult to understand, analyze and optimize programs.
+
+
+## Table of Contents
+- [Borrow Checker](#borrow-checker)
+  - [Ownership](#ownership)
+  - [Lifetimes](#lifetimes)
+- [Aliasing modules](#aliasing-modules)
+  - [Shared mutability](#shared-mutability)
+    - [Cell](#cell)
+    - [RefCell](#refcell)
+  - [Shared ownership](#shared-ownership)
+    - [Rc](#rc)
+  - [Synchronization](#synchronization)
+    - [Mutex](#mutex) todo
+    - [Arc](#arc) todo
+- [Asyn](#async)
+  - [Send](#send) todo
+  - [Sync](#sync)
+  - [Future/Task](#future-task)
+- [Traits](#traits)
+  - [Deref](#deref) todo
+  - [Drop](#drop) todo
+  - [PhantomData](#phantomdata) todo
+  - [Unpin](#unpin)
+    - [Pin](#pin-struct)
+    - [PhantomPinned](#phantompinned) todo
+
+## Borrow Checker
 ### Ownership:
 prevents double free, accessing memory after free and ensuring memory safety
 
@@ -30,13 +55,20 @@ prevents aliasing and data races. ensure single writer and multiple writes.
 prevents invalid or dangling references. ensures that references remain valid
 and dont outlive the data they point to.
 
+## Aliasing modules
+To help us deal with aliasing rules Rust provides some containers that a allow us to
+safetly alias memory while also allowing the compiler to reason about them.
 
-## <a name="mutability">Shared mutability/ownership</a>
+- `mod cell` gives us shared mutability
+- `mod rc` gives us shared ownership
+- `mod sync` gives us synchronization
 
-cell (shared mutability) vs rc (shared ownership) vs sync (synchronization)
+### Shared mutability
 
-### cell: shared mutability
-- [Cell](https://doc.rust-lang.org/std/cell/struct.Cell.html): interior mutability by copying/moving the interior value
+#### Cell
+[Cell](https://doc.rust-lang.org/std/cell/struct.Cell.html): interior mutability by
+copying/moving the interior value
+
 ```
 // assert_eq!(min_path(&[&[1, 2], &[3, 4]]), 3);
 let cell = Cell::new(3);
@@ -45,7 +77,10 @@ assert_eq!(cell.take(), 3); // take and replace with default value
 assert_eq!(cell.get(), 0); // assert default value
 ```
 
-- [RefCell](https://doc.rust-lang.org/std/cell/struct.RefCell.html): runtime "dynamic borrowing" to avoid copy/move and give exclusive mutable access
+#### RefCell
+[RefCell](https://doc.rust-lang.org/std/cell/struct.RefCell.html): runtime "dynamic
+borrowing" to avoid copy/move and give exclusive mutable access
+
 ```
 // RefCell::replace()
 // RefCell::swap()
@@ -66,8 +101,10 @@ num_mut.0 = 4;
 assert_eq!(num.0, 4);
 ```
 
-### rc: shared ownership
-- [Rc](https://doc.rust-lang.org/std/rc/struct.Rc.html)
+### Shared ownership
+
+#### Rc
+[Rc](https://doc.rust-lang.org/std/rc/struct.Rc.html)
 ```
 use std::rc::Rc;
 
@@ -86,14 +123,19 @@ assert!(rc.0 == rc_other.0);
 assert!(!Rc::ptr_eq(&rc, &rc_other));
 ```
 
-### sync
-- [Mutex](https://doc.rust-lang.org/std/sync/struct.Mutex.html)
-- [Arc](https://doc.rust-lang.org/std/sync/struct.Arc.html)
+### Synchronization
+#### Mutex
+[Mutex](https://doc.rust-lang.org/std/sync/struct.Mutex.html)
+
+#### Arc
+[Arc](https://doc.rust-lang.org/std/sync/struct.Arc.html)
+
 
 ## <a name="async">Async</a>
 
 ### Send:
 todo
+
 ### Sync:
 https://doc.rust-lang.org/nomicon/send-and-sync.html
 https://doc.rust-lang.org/std/marker/trait.Send.html
@@ -105,9 +147,9 @@ Auto Impl
 `impl Sync for Arc`
 `impl<T: ?Sized + Send> Sync for Mutex<T>`
 
-> The precise definition is: a type T is Sync if and only if &T is Send. In
-other words, if there is no possibility of undefined behavior (including data
-races) when passing &T references between threads.
+> The precise definition is: a type T is Sync if and only if &T is Send. In other words,
+> if there is no possibility of undefined behavior (including data races) when passing &T
+> references between threads.
 
 
 > A shorter overview of how Sync and Send relate to referencing:
@@ -121,29 +163,59 @@ races) when passing &T references between threads.
 ### Future/Task:
 Check out the dedicated post on Futures: https://toidiu.com/blog/rust-future-ecosystem/
 
-### Pin:
-Definition of “pinning"
-- Not be moved out of its memory location
-- More generally, remain valid at that same memory location
-
-“Pinning” allows us to put a value which exists at some location in memory into
-a state where safe code cannot move that value to a different location in memory
-or otherwise invalidate it at its current location
-
-### Unpin
-The vast majority of Rust types have no address-sensitive states. These types
-implement the Unpin auto-trait, which cancels the restrictive effects of Pin
-when the pointee type T is Unpin.
-
-When T: Unpin, Pin<Box<T>> functions identically to a non-pinning Box<T>;
-similarly, Pin<&mut T> would impose no additional restrictions above a regular
-&mut T.
 
 ## <a name="traits">Traits</a>
+The Rust type system is rich and allows us to express complex concepts to the compiler.
+
 ### Deref:
 todo
+https://doc.rust-lang.org/std/ops/trait.Deref.html
+
 ### Drop:
 todo
+https://doc.rust-lang.org/std/ops/trait.Drop.html
+
 ### PhantomData:
 todo
+https://doc.rust-lang.org/std/marker/struct.PhantomData.html
+
+### Unpin
+The vast majority of Rust types have no address-sensitive states. For example, an integer
+can be copies to another address while mainting the correct semantic. Most types implement
+the [Unpin](https://doc.rust-lang.org/std/marker/trait.Unpin.html) auto-trait by default.
+
+On the contrary, an object which is self-referential (contains a pointer to itself), will
+become invalid if the struct is moved to a different address. These objects need to be
+`Pin`ed (see below) to prevent them from being accidentally move.
+
+#### Pin (struct):
+If an object should not be moved, then the user can `Pin` it by wrapping the object in a
+`Pin<T>`. The [pin](https://doc.rust-lang.org/std/pin/index.html) module defines the
+concept of "pinning" and has more detailed info.
+
+But do we really need to care about pining? It seems complicated with little benefits. Why
+does the compiler care if a value is moved or not? If a user is writing self-referential
+objects, they should be responsible for doing a proper copy/move.
+
+> All values in Rust are trivially moveable. This means that the address at which a value
+> is located is not necessarily stable in between borrows. The compiler is allowed to move
+> a value to a new address without running any code to notify that value that its address
+> has changed.
+
+Ok so the compiler can "move" an object at will. Sure that makes sense but its not very
+satisfying and doesn't explain why the compiler need to move objects. The answer is
+`async` programming in Rust.
+
+In-order to support `async`, Rust had to essentially crate implicit Future objects that
+could be polled, yield, and return. These objects also had to store state about the
+progress of the Future (aka. self-referential objects). To seamlessly support async
+programming, the compile needed to reason about object moves and hence the need for
+`Unpin` auto-trait.
+
+See [comment](https://users.rust-lang.org/t/high-level-pin-async-future/71876/2) and book
+[chapter](https://rust-lang.github.io/async-book/04_pinning/01_chapter.html) for further
+details.
+
+#### PhantomPinned:
+https://doc.rust-lang.org/std/marker/struct.PhantomPinned.html
 
