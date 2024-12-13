@@ -13,41 +13,22 @@ id = "blog-single"
 
 <!-- more -->
 
-## Intro
-
-> In computing, aliasing describes a situation in which a data location in memory can be
-> accessed through different symbolic names in the program. Thus, modifying the data
-> through one name implicitly modifies the values associated with all aliased names, which
-> may not be expected by the programmer. As a result, aliasing makes it particularly
-> difficult to understand, analyze and optimize programs.
-
-Rust makes it easier to reason about
-[aliasing](https://en.wikipedia.org/wiki/Aliasing_(computing)). Unlike C, Rust attempts to
-automatically track if some data is being referenced, or read or written to or already
-cleaned up. By tracking this automatically, it is able to prevent common pitfalls we run
-into in C and also able to make performance optimizations that would be very risky to do
-when tracking aliasing manually.
-
-The following post describes some core Rust primitives that Rust provides to help us
-reason about aliasing.
-
 ## Table of Contents
 - [Borrow Checker](#borrow-checker)
-  - [Ownership](#ownership)
-  - [Lifetimes](#lifetimes)
-- [Aliasing modules](#aliasing-modules)
-  - [Shared mutability](#shared-mutability)
-    - [Cell](#cell)
-    - [RefCell](#refcell)
-  - [Shared ownership](#shared-ownership)
-    - [Rc](#rc)
+  - [Ownership](#ownership) todo
+  - [Lifetimes](#lifetimes) todo
+- [Memory Aliasing modules](#memory-aliasing-modules)
+  - [Shared mutability](#shared-mutability) todo
+    - [Cell](#cell) todo
+    - [RefCell](#refcell) todo
+  - [Shared ownership](#shared-ownership) todo
+    - [Rc](#rc) todo
   - [Synchronization](#synchronization)
     - [Mutex](#mutex) todo
     - [Arc](#arc) todo
-- [Asyn](#async)
-  - [Send](#send) todo
+- [Thread-safety](#thread-safety) todo
+  - [Send](#send)
   - [Sync](#sync)
-  - [Future/Task](#future-task)
 - [Traits](#traits)
   - [Deref](#deref) todo
   - [Drop](#drop) todo
@@ -57,6 +38,27 @@ reason about aliasing.
     - [PhantomPinned](#phantompinned) todo
 
 ## Borrow Checker
+
+> In computing, aliasing describes a situation in which a data location in memory can be
+> accessed through different symbolic names in the program. Thus, modifying the data
+> through one name implicitly modifies the values associated with all aliased names, which
+> may not be expected by the programmer. As a result, aliasing makes it particularly
+> difficult to understand, analyze and optimize programs.
+
+In my opinion, the biggest value that Rust provides is making it easier to reason about
+[aliasing](https://en.wikipedia.org/wiki/Aliasing_(computing)). At the end of the day it
+comes down to where is your data, who owns it and who is accessing it. The Borrow Checker
+provides abstractions which allows the Rust compiler to track and reason about these
+aliasing rules and prevent misuse.
+
+Unlike C, Rust attempts to automatically track if some data is being referenced, or read
+or written to or already cleaned up. By tracking this automatically, it is able to prevent
+common pitfalls we run into in C and also able to make performance optimizations that
+would be very risky to do when tracking aliasing manually.
+
+The following post describes some core Rust primitives that Rust provides to help us
+reason about aliasing.
+
 ### Ownership:
 Prevents double free, accessing memory after free and ensuring memory safety.
 
@@ -67,7 +69,7 @@ Prevents aliasing and data races. ensure single writer and multiple writes.
 prevents invalid or dangling references. ensures that references remain valid and dont
 outlive the data they point to.
 
-## Aliasing modules
+## Memory Aliasing modules
 To help us deal with aliasing rules Rust provides some containers that a allow us to
 safetly alias memory while also allowing the compiler to reason about them.
 
@@ -136,6 +138,13 @@ assert!(!Rc::ptr_eq(&rc, &rc_other));
 ```
 
 ### Synchronization
+Synchronization is useful when a program is operating with multiple threads and wishes to
+share data across those threads. Shared mutation across threads requires excusive access
+(i.e. atomics or locks).
+
+The [sync](https://doc.rust-lang.org/std/sync/index.html) module also has a pretty decent
+explanation which I recommend reading.
+
 #### Mutex
 [Mutex](https://doc.rust-lang.org/std/sync/struct.Mutex.html)
 todo
@@ -145,37 +154,49 @@ todo
 todo
 
 
-## <a name="async">Async</a>
+## Thread-safety
+
+You know its complicated when there is a
+[chapter](https://doc.rust-lang.org/nomicon/send-and-sync.html) for it in the
+Rust Nomicon. Send and Sync traits help the Rust compiler reason about thread safety. They
+are used to mark data that can be shared or moved across different threads. Typically this
+is not safe to do for and requires the use of synchronization.
+
 
 ### Send:
-todo
+[Send](https://doc.rust-lang.org/std/marker/trait.Send.html) marks objects that can be
+sent to different threads (its ok to move ownership to a different thread).
+
+Some types that are marked Send:
+- RefCell is a type that [is
+Send](https://doc.rust-lang.org/std/cell/struct.RefCell.html#impl-Send-for-RefCell%3CT%3E)
+but [not
+Sync](https://doc.rust-lang.org/std/cell/struct.RefCell.html#impl-Sync-for-RefCell%3CT%3E).
+
+The reason why RefCell doesn't implement Sync is because it doesn't synchronize interior
+mutability (mutating internal state). This means that multiple threads could concurrenlty
+attempt to mutate the internal state and result in a race condition. RefCell is allowed to
+be Send since its fine to mutate internal state within one thread if we transfer ownership
+of RefCell to that thread.
 
 ### Sync:
-https://doc.rust-lang.org/nomicon/send-and-sync.html
-https://doc.rust-lang.org/std/marker/trait.Send.html
-https://doc.rust-lang.org/std/marker/trait.Sync.html
-
-Types which are safe to share references between threads.
-
-Auto Impl
-`impl Sync for Arc`
-`impl<T: ?Sized + Send> Sync for Mutex<T>`
+[Sync](https://doc.rust-lang.org/std/marker/trait.Sync.html) marks objects which are safe
+to share among threads (its ok to borrow a reference across threads).
 
 > The precise definition is: a type T is Sync if and only if &T is Send. In other words,
 > if there is no possibility of undefined behavior (including data races) when passing &T
 > references between threads.
 
+Or more concisely:
 
-> A shorter overview of how Sync and Send relate to referencing:
->
-> - &T is Send if and only if T is Sync
-> - &mut T is Send if and only if T is Send
-> - &T and &mut T are Sync if and only if T is Sync
+> &T and &mut T are Sync if and only if T is Sync
 
+Some types that are marked Sync:
+- `impl Sync for Arc`
+- `impl<T: ?Sized + Send> Sync for Mutex<T>`
 
-
-### Future/Task:
-Check out the dedicated post on Futures: https://toidiu.com/blog/rust-future-ecosystem/
+Arc and Mutex implement Sync since they use synchronization (i.e. atomics and locks) to
+ensure access to the data is excusive even across multiple threads.
 
 
 ## <a name="traits">Traits</a>
