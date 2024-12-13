@@ -14,10 +14,22 @@ id = "blog-single"
 <!-- more -->
 
 ## Intro
-[Aliasing](https://en.wikipedia.org/wiki/Aliasing_(computing))
 
-> In computing, aliasing describes a situation in which a data location in memory can be accessed through different symbolic names in the program. Thus, modifying the data through one name implicitly modifies the values associated with all aliased names, which may not be expected by the programmer. As a result, aliasing makes it particularly difficult to understand, analyze and optimize programs.
+> In computing, aliasing describes a situation in which a data location in memory can be
+> accessed through different symbolic names in the program. Thus, modifying the data
+> through one name implicitly modifies the values associated with all aliased names, which
+> may not be expected by the programmer. As a result, aliasing makes it particularly
+> difficult to understand, analyze and optimize programs.
 
+Rust makes it easier to reason about
+[aliasing](https://en.wikipedia.org/wiki/Aliasing_(computing)). Unlike C, Rust attempts to
+automatically track if some data is being referenced, or read or written to or already
+cleaned up. By tracking this automatically, it is able to prevent common pitfalls we run
+into in C and also able to make performance optimizations that would be very risky to do
+when tracking aliasing manually.
+
+The following post describes some core Rust primitives that Rust provides to help us
+reason about aliasing.
 
 ## Table of Contents
 - [Borrow Checker](#borrow-checker)
@@ -46,14 +58,14 @@ id = "blog-single"
 
 ## Borrow Checker
 ### Ownership:
-prevents double free, accessing memory after free and ensuring memory safety
+Prevents double free, accessing memory after free and ensuring memory safety.
 
 ### Borrowing:
-prevents aliasing and data races. ensure single writer and multiple writes.
+Prevents aliasing and data races. ensure single writer and multiple writes.
 
 ### Lifetimes:
-prevents invalid or dangling references. ensures that references remain valid
-and dont outlive the data they point to.
+prevents invalid or dangling references. ensures that references remain valid and dont
+outlive the data they point to.
 
 ## Aliasing modules
 To help us deal with aliasing rules Rust provides some containers that a allow us to
@@ -126,9 +138,11 @@ assert!(!Rc::ptr_eq(&rc, &rc_other));
 ### Synchronization
 #### Mutex
 [Mutex](https://doc.rust-lang.org/std/sync/struct.Mutex.html)
+todo
 
 #### Arc
 [Arc](https://doc.rust-lang.org/std/sync/struct.Arc.html)
+todo
 
 
 ## <a name="async">Async</a>
