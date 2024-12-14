@@ -26,12 +26,12 @@ id = "blog-single"
   - [Synchronization](#synchronization)
     - [Mutex](#mutex) todo
     - [Arc](#arc) todo
-- [Thread-safety](#thread-safety) todo
+- [Thread-safety](#thread-safety)
   - [Send](#send)
   - [Sync](#sync)
 - [Traits](#traits)
-  - [Deref](#deref) todo
-  - [Drop](#drop) todo
+  - [Deref](#deref)
+  - [Drop](#drop)
   - [PhantomData](#phantomdata) todo
   - [Unpin](#unpin)
     - [Pin](#pin-struct)
@@ -157,10 +157,10 @@ todo
 ## Thread-safety
 
 You know its complicated when there is a
-[chapter](https://doc.rust-lang.org/nomicon/send-and-sync.html) for it in the
-Rust Nomicon. Send and Sync traits help the Rust compiler reason about thread safety. They
-are used to mark data that can be shared or moved across different threads. Typically this
-is not safe to do for and requires the use of synchronization.
+[chapter](https://doc.rust-lang.org/nomicon/send-and-sync.html) for it in the Rust
+Nomicon. The `Send` and `Sync` traits help the Rust compiler reason about thread safety.
+They are used to mark data that can be shared or moved across different threads. Typically
+this is not safe to do for and requires the use of synchronization.
 
 
 ### Send:
@@ -202,21 +202,91 @@ ensure access to the data is excusive even across multiple threads.
 ## <a name="traits">Traits</a>
 The Rust type system is rich and allows us to express complex concepts to the compiler.
 
-### Deref:
+### Deref
 todo
-https://doc.rust-lang.org/std/ops/trait.Deref.html
+Rust encourages the use of types, which encourages safe usage enforced by the compiler.
+For example, rather than representing distance as `usize`, one should create a new-type
+`Distance(usize)`. This helps maintain type checking but also allows us to attach special
+context around a Distance type.
+
+```
+struct Distance(usize);
+
+impl Distance {
+    fn add_len(&self, len: &usize) -> usize {
+        self.0 + len
+    }
+}
+
+fn main() {
+    let dist1 = Distance(1);
+    let dist2 = Distance(2);
+
+    dist1.add_len(&dist2.0); // 1: explicitly access the inner field
+}
+```
+
+However, notice how the usage (1) is more verbose now and require accessing the inner
+field `dist2.0`. [Deref](https://doc.rust-lang.org/std/ops/trait.Deref.html) offers
+automatic immutable deferencing so that its possible avoid access the inner data without
+the explicit access. By implementing Deref we are able to simplify the usage to `&dist2`
+below.
+
+```
+impl std::ops::Deref for Distance {
+    type Target = usize;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+fn main() {
+    let dist1 = Distance(1);
+    let dist2 = Distance(2);
+
+    dist1.add_len(&dist2);
+}
+```
+
+The full example code is available in this Rust playground
+[link](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=29fcde8dc36ceb60cde97d2035b61eb4)
+
+This is a powerful tool but should be used carefully since it does mean we potentially
+lose the benefit of the new-type.
 
 ### Drop:
-todo
-https://doc.rust-lang.org/std/ops/trait.Drop.html
+In our programs one need to perform "cleanup" after use or risk resource (memory) leakage
+or worse. This is a non-trivial problem in C where one needs a paranoid attitude (really
+all aspects of C require a paranoid attitude) to make sure that all resources are
+properly cleaned up.
 
-### PhantomData:
+Rust offers us the [Drop](https://doc.rust-lang.org/std/ops/trait.Drop.html) trait to make
+this task trivial.
+
+The Drop trait requires `fn drop(&mut self)` function which is run when an object goes out
+of scope is no longer used. It should then run and "destructor" methods to cleanup
+associated resources.
+
+The Rust compiler recursively calls the `drop()` function on all fields of an object and
+implements the Drop trait for std types (u8, u16, etc...) so that most of the time proper
+cleanup happens automatically. Here is a Rust playground
+[link](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=c5c784713e26f1c957a772ec2edc76c6)
+which shows how the recursive drop functionality works.
+
+So when should users implement the Drop trait themselves? In this description I have been
+using "resources" rather than memory because I wanted to be general. Resources could
+include memory, network connection, file handle, locks, database cleanup, or any other
+custom logic that users want to run at "cleanup".
+
+
+### PhantomData
 todo
-https://doc.rust-lang.org/std/marker/struct.PhantomData.html
+[PhantomData](https://doc.rust-lang.org/std/marker/struct.PhantomData.html)
 
 ### Unpin
 The vast majority of Rust types have no address-sensitive states. For example, an integer
-can be copies to another address while mainting the correct semantic. Most types implement
+can be copies to another address while maintaining the correct semantic. Most types implement
 the [Unpin](https://doc.rust-lang.org/std/marker/trait.Unpin.html) auto-trait by default.
 
 On the contrary, an object which is self-referential (contains a pointer to itself), will
