@@ -15,8 +15,9 @@ id = "blog-single"
 
 ## Table of Contents
 - [Borrow Checker](#borrow-checker)
-  - [Ownership](#ownership) todo
-  - [Lifetimes](#lifetimes) todo
+  - [Ownership](#ownership)
+  - [Borrowing](#borrowing)
+  - [Lifetimes](#lifetimes)
 - [Memory Aliasing modules](#memory-aliasing-modules)
   - [Shared mutability](#shared-mutability) todo
     - [Cell](#cell) todo
@@ -60,22 +61,49 @@ The following post describes some core Rust primitives that Rust provides to hel
 reason about aliasing.
 
 ### Ownership:
-Prevents double free, accessing memory after free and ensuring memory safety.
+Rust has a concept of ownership which assigns "ownership" of data to a variable. Since
+ownership is exclusive, the Rust compiler is able to reason about when data is valid vs
+when it has been freed. Ownersip can be transfered, but that still maintains the exclusive
+owership rule.
+
+Ownership rules allows the Rust compiler to:
+- prevent double free
+- prevent accessing memory after free
+  - which ensures memory safety
 
 ### Borrowing:
-Prevents aliasing and data races. ensure single writer and multiple writes.
+Since each piece of data has an exclusive owner, borrowing is the mechanism that allows
+for multiple functions to interact with some data. Multiple reads (`&` which is an
+immutable reference) or a single write (`&mut` mutable reference) are allowed and enforced
+by the Rust compiler.
+
+Borrowing rules allows the Rust compiler to:
+- prevent aliasing
+- prevent data races
+  - which ensures single writer **or** multiple reads
 
 ### Lifetimes:
-prevents invalid or dangling references. ensures that references remain valid and dont
-outlive the data they point to.
+In C, while it is possible to hand out references to data its also necessary to enforce
+that the underlying data is valid for as long as the reference is in use. For example, it
+would be undefined behavior if we were to hand out a reference to some data, and free the
+data (dangling pointer). Accessing the data after free is undefined behavior and
+considered catastrophic.
+
+Tracking a single piece of data and its reference might seem feasible but quickly an
+operational risk as the program grows in complexity.
+
+Lifetime rules allows the Rust compiler to:
+- prevent invalid or dangling references
+  - which ensures that references remain valid
+  - which ensures references dont outlive the data they point to
 
 ## Memory Aliasing modules
 To help us deal with aliasing rules Rust provides some containers that a allow us to
 safetly alias memory while also allowing the compiler to reason about them.
 
-- `mod cell` gives us shared mutability
-- `mod rc` gives us shared ownership
-- `mod sync` gives us synchronization
+- `mod cell` provides shared mutability
+- `mod rc` provides shared ownership
+- `mod sync` provides synchronization
 
 ### Shared mutability
 
