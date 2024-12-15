@@ -33,7 +33,7 @@ id = "blog-single"
 - [Traits](#traits)
   - [Deref](#deref)
   - [Drop](#drop)
-  - [PhantomData](#phantomdata) todo
+  - [PhantomData](#phantomdata)
   - [Unpin](#unpin)
     - [Pin](#pin-struct)
     - [PhantomPinned](#phantompinned) todo
@@ -309,8 +309,58 @@ custom logic that users want to run at "cleanup".
 
 
 ### PhantomData
-todo
-[PhantomData](https://doc.rust-lang.org/std/marker/struct.PhantomData.html)
+[PhantomData](https://doc.rust-lang.org/std/marker/struct.PhantomData.html) is considered
+a phantom type. A phantom type is a type not actually present at runtime but instead used
+at compile time for static analysis.
+
+> Adding a PhantomData<T> field to your type tells the compiler that your type acts as
+> though it stores a value of type T, even though it doesn’t really. This information is
+> used when computing certain safety properties.
+
+Lets look at some example code:
+
+```
+struct MyType<'a, A> {
+    field: usize,
+    // PhantomData is used to avoid unused warning for 'a and A
+    a: PhantomData<&'a A>,
+}
+```
+
+So essentially, the Rust compiler will emit an unused warning if a generic type or
+lifetime is not actually used. PhantomData can be used to mute these warning. But why
+would we have a type that we are not using?
+
+
+```
+// Example taken from: https://cliffle.com/blog/rust-typestate
+//
+// S is the state parameter. We require it to impl
+// our ResponseState trait (below) to prevent users
+// from trying weird types like HttpResponse<u8>.
+struct HttpResponse<S: ResponseState> {
+    // This is the same field as in the previous example.
+    state: Box<ActualResponseState>,
+    // This reassures the compiler that the parameter
+    // gets used.
+    marker: std::marker::PhantomData<S>,
+}
+
+// State type options.
+enum Start {} // expecting status line
+enum Headers {} // expecting headers or body
+
+trait ResponseState {}
+impl ResponseState for Start {}
+impl ResponseState for Headers {}
+```
+
+The best usecase which demonstrates PhantomData's is the
+[Typestate](https://cliffle.com/blog/rust-typestate/) pattern. `PhantomData<T>` is used in
+the Typestate pattern to switch implementation behavior based on the type `T`. However,
+since there is no need to actually instiantiate T (we only need the type `T` to switch
+behavior), it will emit an unused warning unless included in PhantomData.
+
 
 ### Unpin
 The vast majority of Rust types have no address-sensitive states. For example, an integer
@@ -350,5 +400,14 @@ See [comment](https://users.rust-lang.org/t/high-level-pin-async-future/71876/2)
 details.
 
 #### PhantomPinned:
-https://doc.rust-lang.org/std/marker/struct.PhantomPinned.html
+Similar to PhantomData (discussed [above](#phantomdata)),
+[PhantomPinned](https://doc.rust-lang.org/std/marker/struct.PhantomPinned.html) is also a
+phantom type which is only useful for the Rust compiler's static analysis.
+
+Where PhantomData was used to mark "used" parameters, PhantomPinned is used to mark a type
+as `Pin`ned. Since there is no Pin trait, a more accurate statement from the official
+documentation states:
+
+> A marker type which does not implement Unpin.
+> If a type contains a PhantomPinned, it will not implement Unpin by default.
 
