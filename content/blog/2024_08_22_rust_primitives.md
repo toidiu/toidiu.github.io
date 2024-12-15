@@ -19,11 +19,11 @@ id = "blog-single"
   - [Borrowing](#borrowing)
   - [Lifetimes](#lifetimes)
 - [Memory Aliasing modules](#memory-aliasing-modules)
+  - [Shared ownership](#shared-ownership)
+    - [Rc](#rc)
   - [Shared mutability](#shared-mutability) todo
     - [Cell](#cell) todo
     - [RefCell](#refcell) todo
-  - [Shared ownership](#shared-ownership) todo
-    - [Rc](#rc) todo
   - [Synchronization](#synchronization)
     - [Mutex](#mutex) todo
     - [Arc](#arc) todo
@@ -95,15 +95,47 @@ operational risk as the program grows in complexity.
 Lifetime rules allows the Rust compiler to:
 - prevent invalid or dangling references
   - which ensures that references remain valid
-  - which ensures references dont outlive the data they point to
+  - which ensures references don't outlive the data they point to
 
 ## Memory Aliasing modules
 To help us deal with aliasing rules Rust provides some containers that a allow us to
-safetly alias memory while also allowing the compiler to reason about them.
+safely alias memory while also allowing the compiler to reason about them.
 
 - `mod cell` provides shared mutability
 - `mod rc` provides shared ownership
 - `mod sync` provides synchronization
+
+
+### Shared ownership
+In the Ownership section we discussed how the Rust compiler enforces exclusive ownership
+of data. The Rust compiler enforces these rules at compile time, but sometimes there is a
+need to relax these rules to runtime. The
+[rc](https://doc.rust-lang.org/std/rc/index.html) module doesn't eliminate the rules, but
+instead "shifts" them to runtime.
+
+#### Rc
+[Rc](https://doc.rust-lang.org/std/rc/struct.Rc.html) allows us to shift how the Ownership
+rules are enforced. Let refer back to the guarantees provided by Ownership and connect
+them to how Rc achieve the same at runtime:
+1. prevent double free
+2. prevent accessing memory after free
+
+Rc allocates data on the heap (by default Rust allocates on the stack) and then tracking
+the number of access via a 'non-atomic' (single threaded) reference count. Each access,
+`Rc::clone()`, increments the reference count and each `drop()` decrements the count.
+
+If the count reaches '0', there are no outstanding references to the data and we can free
+it (**1.** prevents double free). Once the last reference is dropped, its impossible to
+create new references (**2.** prevents accessing memory after free).
+
+Here is a Rust playground
+[link](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=21622aa0d3d60c9fd73aee58d9717f07)
+which demonstrate some of these concepts.
+
+I haven't covered [Weak](https://doc.rust-lang.org/std/rc/struct.Weak.html) which is
+necessary when creating for creating cyclical structures using Rc but requires more user
+vigilance to use correctly.
+
 
 ### Shared mutability
 
@@ -143,27 +175,6 @@ num_mut.0 = 4;
 assert_eq!(num.0, 4);
 ```
 
-### Shared ownership
-
-#### Rc
-[Rc](https://doc.rust-lang.org/std/rc/struct.Rc.html)
-```
-use std::rc::Rc;
-
-#[derive(Debug)]
-struct NoCopyu32(u32);
-
-let rc = Rc::new(NoCopyu32(3));
-let clone = rc.clone();
-
-assert!(Rc::ptr_eq(&rc, &clone));
-assert!(rc.0 == clone.0);
-assert!(Rc::strong_count(&rc) == 2);
-
-let rc_other = Rc::new(NoCopyu32(3));
-assert!(rc.0 == rc_other.0);
-assert!(!Rc::ptr_eq(&rc, &rc_other));
-```
 
 ### Synchronization
 Synchronization is useful when a program is operating with multiple threads and wishes to
