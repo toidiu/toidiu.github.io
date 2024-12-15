@@ -36,7 +36,7 @@ id = "blog-single"
   - [PhantomData](#phantomdata)
   - [Unpin](#unpin)
     - [Pin](#pin-struct)
-    - [PhantomPinned](#phantompinned) todo
+    - [PhantomPinned](#phantompinned)
 
 ## Borrow Checker
 
@@ -411,3 +411,6 @@ documentation states:
 > A marker type which does not implement Unpin.
 > If a type contains a PhantomPinned, it will not implement Unpin by default.
 
+This type can be used when you need to ensure that a type should not be moved. You might
+need this if you are implementing some unsafe self referential code and should throughly
+understand pin.
