@@ -21,12 +21,12 @@ id = "blog-single"
 - [Memory Aliasing modules](#memory-aliasing-modules)
   - [Shared ownership](#shared-ownership)
     - [Rc](#rc)
-  - [Shared mutability](#shared-mutability) todo
-    - [Cell](#cell) todo
-    - [RefCell](#refcell) todo
+  - [Shared mutability](#shared-mutability)
+    - [Cell](#cell)
+    - [RefCell](#refcell)
   - [Synchronization](#synchronization)
-    - [Mutex](#mutex) todo
-    - [Arc](#arc) todo
+    - [Arc](#arc)
+    - [Mutex](#mutex)
 - [Thread-safety](#thread-safety)
   - [Send](#send)
   - [Sync](#sync)
@@ -46,11 +46,11 @@ id = "blog-single"
 > may not be expected by the programmer. As a result, aliasing makes it particularly
 > difficult to understand, analyze and optimize programs.
 
-In my opinion, the biggest value that Rust provides is making it easier to reason about
-[aliasing](https://en.wikipedia.org/wiki/Aliasing_(computing)). At the end of the day it
-comes down to where is your data, who owns it and who is accessing it. The Borrow Checker
-provides abstractions which allows the Rust compiler to track and reason about these
-aliasing rules and prevent misuse.
+A mental model for thinking about guarantees that Rust provides is that it makes it easy
+to reason about [aliasing](https://en.wikipedia.org/wiki/Aliasing_(computing)). At the end
+of the day it comes down to where is your data, who owns it and who is accessing it. The
+Borrow Checker provides abstractions which allows the Rust compiler to track and reason
+about these aliasing rules and prevent misuse.
 
 Unlike C, Rust attempts to automatically track if some data is being referenced, or read
 or written to or already cleaned up. By tracking this automatically, it is able to prevent
@@ -63,8 +63,8 @@ reason about aliasing.
 ### Ownership:
 Rust has a concept of ownership which assigns "ownership" of data to a variable. Since
 ownership is exclusive, the Rust compiler is able to reason about when data is valid vs
-when it has been freed. Ownersip can be transfered, but that still maintains the exclusive
-owership rule.
+when it has been freed. Ownersip can be transferred, but that still maintains the exclusive
+ownership rule.
 
 Ownership rules allows the Rust compiler to:
 - prevent double free
@@ -108,25 +108,32 @@ safely alias memory while also allowing the compiler to reason about them.
 
 ### Shared ownership
 In the Ownership section we discussed how the Rust compiler enforces exclusive ownership
-of data. The Rust compiler enforces these rules at compile time, but sometimes there is a
+of data. The Rust compiler enforces these rules at compile-time, but sometimes there is a
 need to relax these rules to runtime. The
-[rc](https://doc.rust-lang.org/std/rc/index.html) module doesn't eliminate the rules, but
-instead "shifts" them to runtime.
+[`rc`](https://doc.rust-lang.org/std/rc/index.html) module doesn't eliminate the rules,
+but instead "shifts" them to runtime.
 
 #### Rc
 [Rc](https://doc.rust-lang.org/std/rc/struct.Rc.html) allows us to shift how the Ownership
-rules are enforced. Let refer back to the guarantees provided by Ownership and connect
-them to how Rc achieve the same at runtime:
+and Lifetime rules are enforced. Let see how Rc achieves the same guarantees provided by
+Ownership and Lifetime:
+
+Ownership:
 1. prevent double free
 2. prevent accessing memory after free
 
+Lifetime:
+
+3. prevent invalid or dangling references
+
 Rc allocates data on the heap (by default Rust allocates on the stack) and then tracking
 the number of access via a 'non-atomic' (single threaded) reference count. Each access,
-`Rc::clone()`, increments the reference count and each `drop()` decrements the count.
-
-If the count reaches '0', there are no outstanding references to the data and we can free
-it (**1.** prevents double free). Once the last reference is dropped, its impossible to
-create new references (**2.** prevents accessing memory after free).
+`Rc::clone()`, increments the reference count and each `drop()` decrements the count . If
+the count reaches '0', there are no outstanding references to the data and we can free it
+(**1.** prevents double free). Once the last reference is dropped, its impossible to
+create new references (**2.** prevents accessing memory after free). Together, the logic
+behind Rc helps ensure that references are valid (**3.** prevents invalid or dangling
+references).
 
 Here is a Rust playground
 [link](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=21622aa0d3d60c9fd73aee58d9717f07)
@@ -138,59 +145,114 @@ vigilance to use correctly.
 
 
 ### Shared mutability
+Similar to how the Shared ownership module, `rc`, shifts the Ownership/Lifetime rules to
+runtime, the Shared mutability module
+[`cell`](https://doc.rust-lang.org/std/cell/index.html), "shifts" Borrowing guarantees
+from compile-time to runtime. Let list these guarantees so we can compare their runtime
+equivalent.
+
+Borrowing:
+1. prevent aliasing
+2. prevent data races
+
 
 #### Cell
-[Cell](https://doc.rust-lang.org/std/cell/struct.Cell.html): interior mutability by
-copying/moving the interior value
+[Cell](https://doc.rust-lang.org/std/cell/struct.Cell.html) offers us interior mutability
+by copying (`Cell::get()`) or moving (`Cell::take()` and `Cell::replace()`) the interior
+value. By copying/moving the data, Cell ensures that there is only ever a single source of
+data. This simplistic yet effective data model helps ensure memory safety (**1.** prevent
+aliasing. **2.** prevent data races).
 
-```
-// assert_eq!(min_path(&[&[1, 2], &[3, 4]]), 3);
-let cell = Cell::new(3);
-assert_eq!(cell.get(), 3); // duplicate inner value
-assert_eq!(cell.take(), 3); // take and replace with default value
-assert_eq!(cell.get(), 0); // assert default value
-```
+Here is a Rust playground
+[link](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=bf97fdc984b61b910e68c5293a2f43c4)
+which demonstrates some of Cell's APIs.
+
+
 
 #### RefCell
-[RefCell](https://doc.rust-lang.org/std/cell/struct.RefCell.html): runtime "dynamic
-borrowing" to avoid copy/move and give exclusive mutable access
+Instead of copying/moving values,
+[RefCell](https://doc.rust-lang.org/std/cell/struct.RefCell.html) achieves interior
+mutability by enforcing exclusive mutable access by runtime "dynamic borrowing".
 
-```
-// RefCell::replace()
-// RefCell::swap()
-// RefCell::borrow()
-// RefCell::borrow_mut()
+Using RefCell, its possible to `try_borrow()` to get a `&T` or `try_borrow_mut()` to get a
+`&mut T`. Underneath RefCell enforces memory safety (**1.** prevent aliasing. **2.**
+prevent data races). Less safe version of these APIs which panic on violation are also
+available but those seem risky for production use (`borrow()` and `borrow_mut()`).
 
-use std::cell::RefCell;
+List of mutable APIs:
+- RefCell::borrow_mut()
+- RefCell::replace()
+- RefCell::swap()
 
-#[derive(Debug)]
-struct NoCopyu32(u32);
-
-let ref_cell = RefCell::new(NoCopyu32(3));
-let num: &NoCopyu32 = &ref_cell.borrow();
-assert_eq!(num.0, 3);
-
-let num_mut: &mut NoCopyu32 = &mut ref_cell.borrow_mut();
-num_mut.0 = 4;
-assert_eq!(num.0, 4);
-```
+Here is a Rust playground
+[link](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=f78e6ea5441d3f13a0f076736ab654c4)
+which demonstrates some of RefCell's APIs.
 
 
 ### Synchronization
 Synchronization is useful when a program is operating with multiple threads and wishes to
-share data across those threads. Shared mutation across threads requires excusive access
-(i.e. atomics or locks).
+share data across those threads. Shared mutation across threads requires primitives (i.e.
+atomics or locks) to enforce exclusive ownership and usage guarantees.
 
-The [sync](https://doc.rust-lang.org/std/sync/index.html) module also has a pretty decent
-explanation which I recommend reading.
-
-#### Mutex
-[Mutex](https://doc.rust-lang.org/std/sync/struct.Mutex.html)
-todo
+The [sync](https://doc.rust-lang.org/std/sync/index.html) module provides these
+synchronization primitives and has decent explanation which I recommend reading.
 
 #### Arc
-[Arc](https://doc.rust-lang.org/std/sync/struct.Arc.html)
-todo
+[Arc](https://doc.rust-lang.org/std/sync/struct.Arc.html) provides us with shared
+ownership across threads while enforcing Rust's Ownership/Lifetime rules. This is similar
+to Rc, except Rc is not thread-safe (Arc stands for Atomic Reference Counted or
+Atomic-Rc).
+
+Very similar to [Rc](#rc), the only difference is the atomic nature of Arc works within a
+multi-threaded environment. The reference count increments when a new `clone()` is created
+and decremented on `drop()`. The count allows for tracking the number of outstanding
+instances of Arc and initiaing memory cleanup when the last one goes out of scope (atomic
+reference count hits 0).
+
+```
+// Example modified from
+// https://doc.rust-lang.org/std/sync/struct.Arc.html#method.strong_count
+
+use std::sync::Arc;
+
+let five = Arc::new(5);
+let _also_five = Arc::clone(&five);
+
+assert_eq!(2, Arc::strong_count(&five));
+```
+
+
+#### Mutex
+[Mutex](https://doc.rust-lang.org/std/sync/struct.Mutex.html) provides us with shared
+mutability across threads while enforcing Rust's Borrow rules. This is similar to RefCell,
+except [RefCell](#refcell) is not thread-safe.
+
+A Mutex helps preserves Rusts Borrow guarantees by enforcing exclusive access to the
+underlying mutable object. Exclusive access can be taken by calling `Mutex::try_lock()`
+(`Mutext::lock()` will block). Here is an example of how to use a Mutex:
+
+```
+// Example taken from
+// https://doc.rust-lang.org/std/sync/struct.Mutex.html#method.lock
+
+use std::sync::{Arc, Mutex};
+use std::thread;
+
+// Arc is used since we are "sharing" the Mutex across threads.
+//
+// Mutex is used to mutate the object. If we didn't need mutation
+// we could simply use Arc.
+let mutex = Arc::new(Mutex::new(0));
+let c_mutex = Arc::clone(&mutex);
+
+thread::spawn(move || {
+    *c_mutex.lock().unwrap() = 10;
+}).join().expect("thread::spawn failed");
+
+// assert new value
+assert_eq!(*mutex.lock().unwrap(), 10);
+```
+
 
 
 ## Thread-safety
@@ -235,7 +297,7 @@ Some types that are marked Sync:
 - `impl<T: ?Sized + Send> Sync for Mutex<T>`
 
 Arc and Mutex implement Sync since they use synchronization (i.e. atomics and locks) to
-ensure access to the data is excusive even across multiple threads.
+ensure access to the data is exclusive even across multiple threads.
 
 
 ## <a name="traits">Traits</a>
