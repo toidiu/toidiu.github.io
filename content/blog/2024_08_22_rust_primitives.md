@@ -9,7 +9,8 @@ tag = ["rust"]
 id = "blog-single"
 +++
 
-**WIP**. An attempt to plainly explain Rust primitives and why they matter.
+In this post I explore guarantees the Rust language provide and how language primitives
+help enforce those guarantees.
 
 <!-- more -->
 
