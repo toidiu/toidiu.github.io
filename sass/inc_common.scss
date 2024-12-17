@@ -51,17 +51,20 @@ code { /*inline code blocks*/
 }
 blockquote {
   font-style: italic;
-  border-radius: 6px;
+  // border-radius: 6px;
+  border-left: 3px solid #000;
   margin-left: .5em;
   color: $font-color;
   padding-left: .5em;
   padding-right: .5em;
-  p::before {
-    content: '\201C';
-  }
-   p::after {
-    content: '\201D';
-  }
+
+  // Add "quotes" to blockquote
+  // p::before {
+  //   content: '\201C';
+  // }
+  //  p::after {
+  //   content: '\201D';
+  // }
 }
 div, p {
   line-height: 1.5em;

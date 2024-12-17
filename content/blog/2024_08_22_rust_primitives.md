@@ -64,8 +64,8 @@ reason about aliasing.
 ### Ownership:
 Rust has a concept of ownership which assigns "ownership" of data to a variable. Since
 ownership is exclusive, the Rust compiler is able to reason about when data is valid vs
-when it has been freed. Ownersip can be transferred, but that still maintains the exclusive
-ownership rule.
+when it has been freed. Ownership can be transferred, but that still maintains the
+exclusive ownership rule.
 
 Ownership rules allows the Rust compiler to:
 - prevent double free
@@ -207,7 +207,7 @@ Atomic-Rc).
 Very similar to [Rc](#rc), the only difference is the atomic nature of Arc works within a
 multi-threaded environment. The reference count increments when a new `clone()` is created
 and decremented on `drop()`. The count allows for tracking the number of outstanding
-instances of Arc and initiaing memory cleanup when the last one goes out of scope (atomic
+instances of Arc and initiating memory cleanup when the last one goes out of scope (atomic
 reference count hits 0).
 
 ```
@@ -276,7 +276,7 @@ but [not
 Sync](https://doc.rust-lang.org/std/cell/struct.RefCell.html#impl-Sync-for-RefCell%3CT%3E).
 
 The reason why RefCell doesn't implement Sync is because it doesn't synchronize interior
-mutability (mutating internal state). This means that multiple threads could concurrenlty
+mutability (mutating internal state). This means that multiple threads could concurrently
 attempt to mutate the internal state and result in a race condition. RefCell is allowed to
 be Send since its fine to mutate internal state within one thread if we transfer ownership
 of RefCell to that thread.
@@ -293,7 +293,7 @@ Or more concisely:
 
 > &T and &mut T are Sync if and only if T is Sync
 
-Some types that are marked Sync:
+Some std types that are used for synchronization and marked `Sync`:
 - `impl Sync for Arc`
 - `impl<T: ?Sized + Send> Sync for Mutex<T>`
 
@@ -305,7 +305,6 @@ ensure access to the data is exclusive even across multiple threads.
 The Rust type system is rich and allows us to express complex concepts to the compiler.
 
 ### Deref
-todo
 Rust encourages the use of types, which encourages safe usage enforced by the compiler.
 For example, rather than representing distance as `usize`, one should create a new-type
 `Distance(usize)`. This helps maintain type checking but also allows us to attach special
@@ -330,7 +329,7 @@ fn main() {
 
 However, notice how the usage (1) is more verbose now and require accessing the inner
 field `dist2.0`. [Deref](https://doc.rust-lang.org/std/ops/trait.Deref.html) offers
-automatic immutable deferencing so that its possible avoid access the inner data without
+automatic immutable dereferencing so that its possible avoid access the inner data without
 the explicit access. By implementing Deref we are able to simplify the usage to `&dist2`
 below.
 
@@ -432,7 +431,7 @@ impl ResponseState for Headers {}
 The best usecase which demonstrates PhantomData's is the
 [Typestate](https://cliffle.com/blog/rust-typestate/) pattern. `PhantomData<T>` is used in
 the Typestate pattern to switch implementation behavior based on the type `T`. However,
-since there is no need to actually instiantiate T (we only need the type `T` to switch
+since there is no need to actually instantiate T (we only need the type `T` to switch
 behavior), it will emit an unused warning unless included in PhantomData.
 
 
@@ -486,5 +485,5 @@ documentation states:
 > If a type contains a PhantomPinned, it will not implement Unpin by default.
 
 This type can be used when you need to ensure that a type should not be moved. You might
-need this if you are implementing some unsafe self referential code and should throughly
+need this if you are implementing some unsafe self referential code and should thoroughly
 understand pin.
