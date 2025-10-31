@@ -40,7 +40,7 @@ to the [RFC 5280](https://www.rfc-editor.org/rfc/rfc5280). See if you can find:
   "signatureAlgorithm"). Notice that signatureAlgorithm is different from the "Subject
   Public Key Info" above. signatureAlgorithm is CA's (Certificate Authority) signature
   computed on the contents of this certificate. The "signature" is what helps us verify
-  that the CAiwactually issued the certificate for "toidiu.com".
+  that the CA actually issued the certificate for "toidiu.com".
 
 #### Theory
 For a detailed dive into ASN.1, I highly recommend reading the post [Warm Welcome to ASN.1
@@ -93,10 +93,10 @@ standard in cryptography.
 
 #### "Real" world usage
 Now that we have an understanding of what ASN.1 objects are, lets see how we can make use
-of them in real engineering applications. TLS, PKI, and VPNs are just a few examples where
-these concepts are applied.
+of it in real engineering applications. TLS, PKI, and VPNs are just a few examples where
+these concepts apply.
 
-In the following code snippet we are representing a private key as ASN.1 and then encoding
+In the following code snippet we are representing a private key as ASN.1 and then encode
 it as der/pem. In real cryptography we often have to do similar operations on other secret
 material such as public key, certificates, etc.
 
@@ -140,15 +140,15 @@ let pem = der.to_base64();
 5. `pem` is the base64 representation of the der bytes
 
 I hope this example illustrates how a "private key" ends up into a "priv.pem" file that
-you often see in cryptographic contexts. The "priv.pem" file could then then be given to
-your application, which could reconstuct the key and use it to securely communicate with a
-database.
+you often see in cryptographic contexts. The "priv.pem" file could then be given
+to your application, and the application can then reconstuct the key and use it
+to securely communicate with a database.
 
 
 ### Conclusion
 
 In engineering applications we care about taking some secret material (key, certificate)
-and serializing it so that we can then share (via network, file, memory) it our peer.
+and serializing it so that we can then share (via network, file, memory) it with our peer.
 
 ASN.1 is the common format that cryptographic implementations have agreed upon. We looked
 at PKCS #1 and PKCS #8 which are optional of ASN.1 formats used primarily for storing key
