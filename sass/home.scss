@@ -38,6 +38,8 @@
     margin-bottom: 50px;
   }
   .author-avatar {
+    width: 150px;
+    height: 150px;
     padding: 5px;
     border: 1px solid #000;
     max-width: 150px;
@@ -48,6 +50,14 @@
   #credit {
     font-size: $text-xs;
     margin-bottom: 10px;
+  }
+  @media screen and (min-width: 400px) {
+    .author-avatar {
+      width: 150px;
+      height: 150px;
+    }
+  }
+  @media screen and (min-width: 600px) {
   }
 }
 
