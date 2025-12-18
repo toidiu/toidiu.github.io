@@ -7,6 +7,7 @@ image = "s2n-tls.png"
 link = "https://github.com/aws/s2n-tls"
 featured = true
 open = true
+contributions = "https://github.com/aws/s2n-tls/commits?author=toidiu"
 +++
 s2n-tls is AWS's C99 implementation of the TLS/SSL protocols.
 

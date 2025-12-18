@@ -7,6 +7,7 @@ image = "s2n-quic.png"
 link = "https://github.com/aws/s2n-tls"
 featured = true
 open = true
+contributions = "https://github.com/aws/s2n-quic/commits?author=toidiu"
 +++
 s2n-quic is AWS's production ready a Rust implementation of the IETF [QUIC](https://quicwg.org/) protocol.
 

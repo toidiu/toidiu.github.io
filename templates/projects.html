@@ -13,10 +13,17 @@
     {% for page in section.pages %}
         {% if page.extra.open %}
           <div class="item-wrapper">
+            <!-- Title and image -->
             <a class="item" href={{page.extra.link}} target=_blank" rel="noopener">
               <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="</>"/>
               <span class="title">{{page.title}}</span>
             </a>
+
+            <!-- Contributions -->
+            <a class="item" href={{page.extra.contributions}} target=_blank" rel="noopener">
+              <div class="contributions">contributions</div>
+            </a>
+
             <div>
               {{ page.content | safe }}
             </div>
