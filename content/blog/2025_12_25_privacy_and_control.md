@@ -10,13 +10,13 @@ id = "blog-single"
 +++
 
 "I don't need to care about privacy because I have nothing to hide." is an
-argument that I have heard countless times. It's not unreasonable argument that
-I found difficult to counter in the past. Yet deep down I knew the reasoning was
-flawed.
+argument that I have heard countless times. I found this argument difficult to
+counter in the past, yet deep-down I knew the reasoning was flawed.
 
-Recently, while talking with a friend, I realized that instead of "privacy"
-we should be talking about "control". Framed in the context of control, the
-stakes become much higher.
+The problem is that the word "privacy" is dialuted and mean different things to
+different people. Instead of "privacy" we really should be talking about
+"control". Framed in this context, we can more concretely talk about why it's
+important to protect your digital identity.
 
 <!-- more -->
 
@@ -26,17 +26,35 @@ model (journalists on the other hand should care). I am personally motivated by
 the notion of "control". Can someone else meditate how I experience the world
 and what information I consume? Whether that is censoring, influencing how much
 time I have to spend watching ads or which ads I am allowed to watch. Can they
-influence how I vote?
+influence how I vote? Watch the talk [In Defense of
+Privacy](https://www.youtube.com/watch?v=1oCDLbCyalM) for a more on this.
 
 Many of the convenient tools we use today (email, messaging, social media,
-shopping, password manager) are essential for daily life but they also yield
-control over to organizations (Google, Facebook, Amazon) that don't necessarily
-have our best interst in mind.
+password manager) are essential for daily life but they also yield control over
+to organizations (Google, Facebook, Amazon) that don't necessarily have our best
+interst in mind [1].
 
-## My tech stack
+## My setup
 
-**Questioning how "incentives align" is a really good litmus test for alot of
-things.**
+> Questioning how "incentives align" is a really good litmus test for most
+things.
+
+Most of the following recommendations are based on my own threat model and
+comfort level. There will always be a compromise between effort and easy. It's
+best to pick what fits your lifestyle.
+
+### Password manager
+Use a password manager! I use [GNU pass](https://www.passwordstore.org/) because
+I don't want to hand over my passwords to a 3rd party. I typically only use the
+password manager from my laptop and don't access passwords from my phone (I
+consider this a better security practice). I have been meaning to try out
+[passage](https://github.com/FiloSottile/passage). I would also recommend
+[Bitwarden](https://bitwarden.com/) for those who want a better UI experience.
+
+### Messanging
+(Whatsapp is an unfortunate exception and I hate that I need it to stay
+connected to friends and family). Signal for messaging is preferable [2]. Venmo
+is disabled.
 
 ### Phone
 I run [GrapheneOS](https://grapheneos.org/features) on my Android. This allows
@@ -55,26 +73,12 @@ usable (wtf do I need to but a new phone every 2 years?). I barely use social
 media and don't install it on my phone (I use social media in Browser containers
 to limit 3rd party cookies).
 
-### Messanging
-(Whatsapp is an unfortunate exception and I hate that I need it to stay
-connected to friends and family).
-Signal for messaging is preferable. Venmo is
-disabled.
-
 ### Email
 I have a personal domain, which I use for email i.e. hello@toidiu.com. This
 allows me to switch providers if I want (e.g. lack of trust in Google,
 ProtonMail can raise their prices). These days I am using [Tuta](tuta.com) as my
 email provider because they are fast, offer a better price and have a strong
 focus on secure email. Also I can't be bothered to host my own email server.
-
-### Password manager
-Use a password manager! I use [GNU pass](https://www.passwordstore.org/) because
-I don't want to hand over my passwords to a 3rd party. I typically only use the
-password manager from my laptop and don't access passwords from my phone (I
-consider this a better security practice). I have been meaning to try out
-[passage](https://github.com/FiloSottile/passage). I would also recommend
-[Bitwarden](https://bitwarden.com/) for those who want a better UI experience.
 
 ### Browsing
 I use firefox with privacy badger and uOrigin because I do not opt into
@@ -95,8 +99,8 @@ on domain registration.
 ### DNS resolution
 I use Cloudflare's  DNS because I trust them more than other companies; purely
 based on their business and how their incentives align
-(https://one.one.one.one/). I 
+(https://one.one.one.one/). There are other secure/anaonymous ones out there.
 
-### Cloud storage
-To this same effect I limit cloud storage for critical things (not 100% true, I
-use github and Google docs for shared documents with my partner).
+## Resources
+- [1] https://arstechnica.com/tech-policy/2024/03/facebook-secretly-spied-on-snapchat-usage-to-confuse-advertisers-court-docs-say/
+- [2] https://www.youtube.com/live/AyH7zoP-JOg?t=222s
