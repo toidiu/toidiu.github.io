@@ -3,7 +3,7 @@ title = "On privacy and control"
 date = 2025-12-25
 
 [taxonomies]
-tag = ["privacy"]
+tag = ["security"]
 
 [extra]
 id = "blog-single"
@@ -32,7 +32,7 @@ Privacy](https://www.youtube.com/watch?v=1oCDLbCyalM) for a more on this.
 Many of the convenient tools we use today (email, messaging, social media,
 password manager) are essential for daily life but they also yield control over
 to organizations (Google, Facebook, Amazon) that don't necessarily have our best
-interst in mind [1].
+interst in mind [1][2].
 
 ## My setup
 
@@ -53,7 +53,7 @@ consider this a better security practice). I have been meaning to try out
 
 ### Messanging
 (Whatsapp is an unfortunate exception and I hate that I need it to stay
-connected to friends and family). Signal for messaging is preferable [2]. Venmo
+connected to friends and family). Signal for messaging is preferable [3]. Venmo
 is disabled.
 
 ### Phone
@@ -75,7 +75,7 @@ to limit 3rd party cookies).
 
 ### Email
 I have a personal domain, which I use for email i.e. hello@toidiu.com. This
-allows me to switch providers if I want (e.g. lack of trust in Google,
+allows me to switch providers whenever I want (e.g. lack of trust in Google,
 ProtonMail can raise their prices). These days I am using [Tuta](tuta.com) as my
 email provider because they are fast, offer a better price and have a strong
 focus on secure email. Also I can't be bothered to host my own email server.
@@ -103,4 +103,5 @@ based on their business and how their incentives align
 
 ## Resources
 - [1] https://arstechnica.com/tech-policy/2024/03/facebook-secretly-spied-on-snapchat-usage-to-confuse-advertisers-court-docs-say/
-- [2] https://www.youtube.com/live/AyH7zoP-JOg?t=222s
+- [2] https://arstechnica.com/security/2025/06/meta-and-yandex-are-de-anonymizing-android-users-web-browsing-identifiers/
+- [3] https://www.youtube.com/live/AyH7zoP-JOg?t=222s
