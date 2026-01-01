@@ -13,7 +13,7 @@ id = "blog-single"
 argument that I have heard countless times. I found this argument difficult to
 counter in the past, yet deep-down I knew the reasoning was flawed.
 
-The problem is that the word "privacy" is dialuted and mean different things to
+The problem is that the word "privacy" is diluted and mean different things to
 different people. Instead of "privacy" we really should be talking about
 "control". Framed in this context, we can more concretely talk about why it's
 important to protect your digital identity.
