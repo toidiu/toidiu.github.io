@@ -99,7 +99,7 @@ on domain registration.
 ### DNS resolution
 I use Cloudflare's  DNS because I trust them more than other companies; purely
 based on their business and how their incentives align
-(https://one.one.one.one/). There are other secure/anaonymous ones out there.
+(https://one.one.one.one/). There are other secure/anonymous ones out there.
 
 ## Resources
 - [1] https://arstechnica.com/tech-policy/2024/03/facebook-secretly-spied-on-snapchat-usage-to-confuse-advertisers-court-docs-say/
