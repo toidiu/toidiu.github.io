@@ -32,7 +32,7 @@ Privacy](https://www.youtube.com/watch?v=1oCDLbCyalM) for a more on this.
 Many of the convenient tools we use today (email, messaging, social media,
 password manager) are essential for daily life but they also yield control over
 to organizations (Google, Facebook, Amazon) that don't necessarily have our best
-interst in mind [1][2].
+interest in mind [1][2].
 
 ## My setup
 
@@ -51,7 +51,7 @@ consider this a better security practice). I have been meaning to try out
 [passage](https://github.com/FiloSottile/passage). I would also recommend
 [Bitwarden](https://bitwarden.com/) for those who want a better UI experience.
 
-### Messanging
+### Messaging
 (Whatsapp is an unfortunate exception and I hate that I need it to stay
 connected to friends and family). Signal for messaging is preferable [3]. Venmo
 is disabled.
@@ -59,7 +59,7 @@ is disabled.
 ### Phone
 I run [GrapheneOS](https://grapheneos.org/features) on my Android. This allows
 me to sandbox, disable or uninstall apps rather than allowing super-privileged
-Google/ISP apps from doing whatever they wany on my personal device. By default,
+Google/ISP apps from doing whatever they want on my personal device. By default,
 [Google Play apps are
 unpriviledged](https://grapheneos.org/features#sandboxed-google-play) and have
 to work within the sandbox model. GrapheneOS also allows you to restrict
