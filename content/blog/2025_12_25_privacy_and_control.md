@@ -34,6 +34,10 @@ password manager) are essential for daily life but they also yield control over
 to organizations (Google, Facebook, Amazon) that don't necessarily have our best
 interest in mind [1][2].
 
+**Discussion**
+- [lobste.rs](https://lobste.rs/s/sp7fkl/on_privacy_control_my_tech_setup)
+- [Hacker News](https://news.ycombinator.com/item?id=46446938)
+
 ## My setup
 
 > Questioning how "incentives align" is a really good litmus test for most
@@ -92,14 +96,22 @@ I use [DAVx⁵](https://www.davx5.com/) to sync the contacts on my phone.
 
 ### Domain
 Disclaimer: Cloudflare is my current employer. I switched to Cloudflare
-Registrar recently because they offered a lower price when my previous Registrar
-raised the price at renewal. I don't think Cloudflare really cares to make money
-on domain registration.
+Registrar recently (prior to being employed by Cloudflare) because they offered
+a lower price when my previous Registrar raised the price at renewal. I don't
+think Cloudflare really cares to make money on domain registration and so it
+passed my "incentives align" test.
 
 ### DNS resolution
-I use Cloudflare's  DNS because I trust them more than other companies; purely
-based on their business and how their incentives align
-(https://one.one.one.one/). There are other secure/anonymous ones out there.
+**Edit**: some folks have called out my conflict of interest with Cloudflare and
+the sensitivity of DNS. I think thats fair. Here is a [Reddit thread of other
+DNS
+providers](https://www.reddit.com/r/dns/comments/1c8huvl/need_private_dns_list/)
+so readers can make their own choice.
+
+Disclaimer: Cloudflare is my current employer. I use Cloudflare's  DNS because I
+trust them more than other companies; purely based on their business and how
+their incentives align (https://one.one.one.one/). There are other
+secure/anonymous ones out there.
 
 ## Resources
 - [1] https://arstechnica.com/tech-policy/2024/03/facebook-secretly-spied-on-snapchat-usage-to-confuse-advertisers-court-docs-say/
