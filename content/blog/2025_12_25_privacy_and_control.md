@@ -56,9 +56,9 @@ consider this a better security practice). I have been meaning to try out
 [Bitwarden](https://bitwarden.com/) for those who want a better UI experience.
 
 ### Messaging
-(Whatsapp is an unfortunate exception and I hate that I need it to stay
-connected to friends and family). Signal for messaging is preferable [3]. Venmo
-is disabled.
+Signal for messaging is preferable [3]. (Whatsapp is an
+unfortunate exception and I hate that I need it to stay connected to friends and
+family).
 
 ### Phone
 I run [GrapheneOS](https://grapheneos.org/features) on my Android. This allows
@@ -80,9 +80,10 @@ to limit 3rd party cookies).
 ### Email
 I have a personal domain, which I use for email i.e. hello@toidiu.com. This
 allows me to switch providers whenever I want (e.g. lack of trust in Google,
-ProtonMail can raise their prices). These days I am using [Tuta](tuta.com) as my
-email provider because they are fast, offer a better price and have a strong
-focus on secure email. Also I can't be bothered to host my own email server.
+ProtonMail can raise their prices). These days I am using
+[Tuta](https://tuta.com/) as my email provider because they are fast, offer a
+better price and have a strong focus on secure email. Also I can't be bothered
+to host my own email server.
 
 ### Browsing
 I use firefox with privacy badger and uOrigin because I do not opt into
@@ -91,10 +92,10 @@ to make money).
 
 ### Calendar/Contacts
 I host my calendar and contacts on a raspberrypi, which you can only access on
-localhost. The Caldav server is https://sabre.io/baikal, gets the job done.
-I use [DAVx⁵](https://www.davx5.com/) to sync the contacts on my phone.
+localhost. The Caldav server is [Baïkal](https://sabre.io/baikal), gets the job
+done. I use [DAVx⁵](https://www.davx5.com/) to sync the contacts on my phone.
 
-### Domain
+### Domain Registrar
 Disclaimer: Cloudflare is my current employer. I switched to Cloudflare
 Registrar recently (prior to being employed by Cloudflare) because they offered
 a lower price when my previous Registrar raised the price at renewal. I don't
@@ -112,6 +113,12 @@ Disclaimer: Cloudflare is my current employer. I use Cloudflare's  DNS because I
 trust them more than other companies; purely based on their business and how
 their incentives align (https://one.one.one.one/). There are other
 secure/anonymous ones out there.
+
+### Banking
+Venmo is disabled. I do have a Banking app that I only use to deposit checks.
+Here is a list of [Banking
+apps](https://privsec.dev/posts/android/banking-applications-compatibility-with-grapheneos/)
+that work with GrapheneOS ([credit](https://news.ycombinator.com/item?id=46447862)).
 
 ## Resources
 - [1] https://arstechnica.com/tech-policy/2024/03/facebook-secretly-spied-on-snapchat-usage-to-confuse-advertisers-court-docs-say/
