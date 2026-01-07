@@ -5,11 +5,8 @@ author = "Apoorv Kothari"
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
 
-
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = true
-
-generate_rss = false
 
 taxonomies = [
   {name = "tag", rss = false}, # each tag will have its own RSS feed
@@ -26,7 +23,7 @@ highlight_theme = "monokai"
 
 menu = [
   {url = "$BASE_URL", name = "home"},
-  {url = "$BASE_URL/projects/", name = "projects"},
-  {url = "$BASE_URL/reads/", name = "reads"},
-  {url = "$BASE_URL/blog/", name = "blog"},
+  {url = "$BASE_URL/projects", name = "projects"},
+  {url = "$BASE_URL/reads", name = "reads"},
+  {url = "$BASE_URL/blog", name = "blog"},
 ]
