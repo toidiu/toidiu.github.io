@@ -41,9 +41,10 @@ h1, h2, h3, h4, h5, h6 {
     color: $font-color !important;
   }
 }
-pre { /* preformatted */
+pre {
+  padding: 1rem;
+  overflow: auto;
   font-family: monospace; /* Uses a fixed-width font */
-  padding: .2em .4em;
 }
 code { /*inline code blocks*/
   border-radius: 6px;
