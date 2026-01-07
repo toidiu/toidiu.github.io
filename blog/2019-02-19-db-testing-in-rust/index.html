@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="I have 15+ years of software engineering experience across different parts of the tech
+              stack including networking libraries, congestion control, performance improvements,
+              Backend, and Android development.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Rust, Protocols, QUIC, IETF,
+              networking, TLS, Scala, java, Cooper Union, blog, talks, code, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js" defer></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <h1 class="title">DB testing in Rust</h1>
+  <div class="date">2019-02-19</div>
+  </div>
+
+  <div class="content">
+    <p>Writing integration tests for databases is often a cryptic art. The challenge stems from the fact that a database is stateful and instead we would like our tests to be reproducible. In this post I will share my experience writing database tests in Rust, some limitations of my current setup and thoughts on future improvements.</p>
+<span id="continue-reading"></span>
+<p>Note: As I continue to make progress on this, things might have changed and or improved :) Please have a peek at the code for the latest and greatest: https://github.com/toidiu/fin-public</p>
+<h3 id="motivation">Motivation</h3>
+<p>The real benefit of strongly typed languages is that they give us the freedom to evolve our code at high mobility. This might seem trivial but has compounding effects over the lifetime of a codebase. However this guarantee breaks down at the edges, specifically at the database and routing edge for a webservice. So when faced with a Postgres schema migration, for a project I have been working on, <em>Fin</em>, I set out to write some integration tests and migrate with confidence.</p>
+<p>The solution is heavily inspired from this (post)[https://medium.com/@ericdreichert/test-setup-and-teardown-in-rust-without-a-framework-ba32d97aa5ab].</p>
+<h3 id="goal">Goal</h3>
+<p>The task we have at hand is to create a Fixture that does the following:</p>
+<ul>
+<li>Access a database other than the one in production when running tests.</li>
+<li>Mirror our production database schema during testing.</li>
+<li>Populate fake data for testing.</li>
+<li>Clean up the data since we might make updates.</li>
+<li>Do the above per test.</li>
+</ul>
+<h3 id="application-setup">Application Setup</h3>
+<p>To help manage SQL schemas and migration for Fin, I use <code>diesel cli</code>. It is an awesome little tool that I manage along side the application. I can write <code>up.sql</code> and <code>down.sql</code> scripts per change and <code>run</code>, <code>revert</code> or <code>list</code> them.</p>
+<p>For reference, the following is a susccient folder structure for <em>Fin</em>:</p>
+<pre style="background-color:#272822;color:#f8f8f2;"><code><span>▾ fin/
+</span><span>  ▾ src/
+</span><span>      main.rs
+</span><span>    Cargo.lock
+</span><span>    Cargo.toml
+</span><span>▾ migrations/
+</span><span>  ▸ 00000000000000_diesel_initial_setup/
+</span><span>  ▾ 2018-10-07-022941_init/
+</span><span>      down.sql
+</span><span>      up.sql
+</span><span>  ▸ 2018-10-07-232226_fake_data/
+</span></code></pre>
+<h3 id="solution">Solution</h3>
+<pre data-lang="rust" style="background-color:#272822;color:#f8f8f2;" class="language-rust "><code class="language-rust" data-lang="rust"><span>
+</span><span style="color:#f92672;">use </span><span>chrono::prelude::</span><span style="color:#f92672;">*</span><span>;
+</span><span style="color:#f92672;">use </span><span>postgres::{Connection, TlsMode};
+</span><span style="color:#f92672;">use </span><span>r2d2_postgres::{PostgresConnectionManager, TlsMode </span><span style="color:#f92672;">as</span><span> R2TlsMode};
+</span><span style="color:#f92672;">use </span><span>std::env;
+</span><span style="color:#f92672;">use </span><span>std::fs;
+</span><span style="color:#f92672;">use </span><span>std::io::prelude::</span><span style="color:#f92672;">*</span><span>;
+</span><span>
+</span><span style="font-style:italic;color:#66d9ef;">const </span><span style="color:#ae81ff;">TEST_DB</span><span>: </span><span style="color:#f92672;">&amp;&#39;static </span><span style="font-style:italic;color:#66d9ef;">str </span><span style="color:#f92672;">= </span><span style="color:#e6db74;">&quot;fin_unit_test&quot;</span><span>;
+</span><span style="font-style:italic;color:#66d9ef;">const </span><span style="color:#ae81ff;">CLUSTER_URI</span><span>: </span><span style="color:#f92672;">&amp;&#39;static </span><span style="font-style:italic;color:#66d9ef;">str </span><span style="color:#f92672;">= </span><span style="color:#e6db74;">&quot;postgres://postgres@localhost:5432&quot;</span><span>;
+</span><span>
+</span><span>lazy_static! {
+</span><span>    </span><span style="font-style:italic;color:#66d9ef;">static </span><span style="color:#f92672;">ref </span><span style="color:#ae81ff;">DB_URI</span><span>: </span><span style="font-style:italic;color:#66d9ef;">String </span><span style="color:#f92672;">= </span><span>format!(</span><span style="color:#e6db74;">&quot;</span><span style="color:#ae81ff;">{}</span><span style="color:#e6db74;">/</span><span style="color:#ae81ff;">{}</span><span style="color:#e6db74;">&quot;</span><span>, </span><span style="color:#ae81ff;">CLUSTER_URI</span><span>, </span><span style="color:#ae81ff;">TEST_DB</span><span>);
+</span><span>}
+</span><span>
+</span><span style="font-style:italic;color:#66d9ef;">fn </span><span style="color:#a6e22e;">run_test</span><span>&lt;T&gt;(</span><span style="font-style:italic;color:#fd971f;">test</span><span>: T) -&gt; ()
+</span><span style="color:#f92672;">where
+</span><span>    T: FnOnce(</span><span style="color:#f92672;">&amp;</span><span style="font-style:italic;color:#66d9ef;">str</span><span>) -&gt; () + std::panic::UnwindSafe,
+</span><span>{
+</span><span>    </span><span style="font-style:italic;color:#66d9ef;">let</span><span> db_name </span><span style="color:#f92672;">= </span><span style="color:#e6db74;">&quot;make this unique per test&quot;</span><span>; </span><span style="color:#75715e;">// &lt;- not currently used
+</span><span>    </span><span style="color:#66d9ef;">teardown</span><span>();
+</span><span>    </span><span style="color:#66d9ef;">setup</span><span>();
+</span><span>    </span><span style="font-style:italic;color:#66d9ef;">let</span><span> result </span><span style="color:#f92672;">= </span><span>std::panic::catch_unwind(|| </span><span style="color:#66d9ef;">test</span><span>(</span><span style="color:#f92672;">&amp;</span><span>db_name));
+</span><span>    assert!(result.</span><span style="color:#66d9ef;">is_ok</span><span>())
+</span><span>}
+</span><span>
+</span><span style="color:#66d9ef;">setup</span><span>() {
+</span><span>    </span><span style="color:#75715e;">// initialize a logger so we can see nice error messages during testing
+</span><span>    pretty_env_logger::try_init();
+</span><span>
+</span><span>    </span><span style="color:#75715e;">// create the database
+</span><span>    </span><span style="font-style:italic;color:#66d9ef;">let</span><span> db_conn </span><span style="color:#f92672;">= </span><span>Connection::connect(</span><span style="color:#ae81ff;">CLUSTER_URI</span><span>, TlsMode::None)
+</span><span>        .</span><span style="color:#66d9ef;">expect</span><span>(</span><span style="color:#e6db74;">&quot;unable to create db conn&quot;</span><span>);
+</span><span>    db_conn
+</span><span>        .</span><span style="color:#66d9ef;">execute</span><span>(
+</span><span>            </span><span style="color:#f92672;">&amp;</span><span>format!(
+</span><span>                </span><span style="color:#e6db74;">&quot;CREATE DATABASE </span><span style="color:#ae81ff;">{name}</span><span style="color:#e6db74;">;&quot;</span><span>,
+</span><span>                name </span><span style="color:#f92672;">= &amp;</span><span style="color:#ae81ff;">TEST_DB</span><span>.</span><span style="color:#66d9ef;">clone</span><span>()
+</span><span>            ),
+</span><span>            </span><span style="color:#f92672;">&amp;</span><span>[],
+</span><span>        )
+</span><span>        .</span><span style="color:#66d9ef;">expect</span><span>(</span><span style="color:#e6db74;">&quot;unable to create db&quot;</span><span>);
+</span><span>
+</span><span>    </span><span style="color:#75715e;">// apply schema and add fake data
+</span><span>    </span><span style="font-style:italic;color:#66d9ef;">let c_str </span><span style="color:#f92672;">= </span><span>format!(</span><span style="color:#e6db74;">&quot;</span><span style="color:#ae81ff;">{}</span><span style="color:#e6db74;">/</span><span style="color:#ae81ff;">{}</span><span style="color:#e6db74;">&quot;</span><span>, </span><span style="color:#ae81ff;">CLUSTER_URI</span><span>, </span><span style="color:#ae81ff;">TEST_DB</span><span>);
+</span><span>    </span><span style="font-style:italic;color:#66d9ef;">let</span><span> conn </span><span style="color:#f92672;">= </span><span>Connection::connect(</span><span style="color:#ae81ff;">DB_URI</span><span>.</span><span style="color:#66d9ef;">as_str</span><span>(), TlsMode::None).</span><span style="color:#66d9ef;">unwrap</span><span>();
+</span><span>    </span><span style="font-style:italic;color:#66d9ef;">let</span><span> init </span><span style="color:#f92672;">=
+</span><span>        fs::read_to_string(</span><span style="color:#e6db74;">&quot;../migrations/2018-10-07-022941_init/up.sql&quot;</span><span>)
+</span><span>            .</span><span style="color:#66d9ef;">expect</span><span>(</span><span style="color:#e6db74;">&quot;file not found&quot;</span><span>);
+</span><span>    </span><span style="font-style:italic;color:#66d9ef;">let</span><span> fake_data </span><span style="color:#f92672;">= </span><span>fs::read_to_string(
+</span><span>        </span><span style="color:#e6db74;">&quot;../migrations/2018-10-07-232226_fake_data/up.sql&quot;</span><span>,
+</span><span>    )
+</span><span>    .</span><span style="color:#66d9ef;">expect</span><span>(</span><span style="color:#e6db74;">&quot;file not found&quot;</span><span>);
+</span><span>
+</span><span>    conn.</span><span style="color:#66d9ef;">batch_execute</span><span>(</span><span style="color:#f92672;">&amp;</span><span>init).</span><span style="color:#66d9ef;">unwrap</span><span>();
+</span><span>    conn.</span><span style="color:#66d9ef;">batch_execute</span><span>(</span><span style="color:#f92672;">&amp;</span><span>fake_data).</span><span style="color:#66d9ef;">unwrap</span><span>();
+</span><span>}
+</span><span>
+</span><span style="font-style:italic;color:#66d9ef;">fn </span><span style="color:#a6e22e;">teardown</span><span>() {
+</span><span>    </span><span style="font-style:italic;color:#66d9ef;">let</span><span> db_conn </span><span style="color:#f92672;">= </span><span>Connection::connect(</span><span style="color:#ae81ff;">CLUSTER_URI</span><span>, TlsMode::None)
+</span><span>        .</span><span style="color:#66d9ef;">expect</span><span>(</span><span style="color:#e6db74;">&quot;unable to delete db conn&quot;</span><span>);
+</span><span>
+</span><span>    db_conn
+</span><span>        .</span><span style="color:#66d9ef;">execute</span><span>(</span><span style="color:#f92672;">&amp;</span><span>format!(</span><span style="color:#e6db74;">&quot;DROP database </span><span style="color:#ae81ff;">{}</span><span style="color:#e6db74;">;&quot;</span><span>, </span><span style="color:#f92672;">&amp;</span><span style="color:#ae81ff;">TEST_DB</span><span>), </span><span style="color:#f92672;">&amp;</span><span>[])
+</span><span>        .</span><span style="color:#66d9ef;">expect</span><span>(</span><span style="color:#e6db74;">&quot;unable to delete db&quot;</span><span>);
+</span><span>}
+</span></code></pre>
+<p>And then to use it in our tests:</p>
+<pre data-lang="rust" style="background-color:#272822;color:#f8f8f2;" class="language-rust "><code class="language-rust" data-lang="rust"><span>#[test]
+</span><span style="font-style:italic;color:#66d9ef;">fn </span><span style="color:#a6e22e;">test_get_user</span><span>() {
+</span><span>    </span><span style="color:#66d9ef;">run_test</span><span>(|</span><span style="font-style:italic;color:#fd971f;">db_name</span><span>| {
+</span><span>        </span><span style="font-style:italic;color:#66d9ef;">let</span><span> db </span><span style="color:#f92672;">= </span><span style="color:#66d9ef;">get_db</span><span>();
+</span><span>        </span><span style="font-style:italic;color:#66d9ef;">let</span><span> res </span><span style="color:#f92672;">=</span><span> db.</span><span style="color:#66d9ef;">get_user</span><span>(</span><span style="color:#e6db74;">&quot;apoorv@toidiu.com&quot;</span><span>);
+</span><span>        assert_eq!(res.</span><span style="color:#66d9ef;">is_ok</span><span>(), </span><span style="color:#ae81ff;">true</span><span>);
+</span><span>        assert_eq!(res.</span><span style="color:#66d9ef;">unwrap</span><span>().email, </span><span style="color:#e6db74;">&quot;apoorv@toidiu.com&quot;</span><span>);
+</span><span>    })
+</span><span>}
+</span><span>
+</span></code></pre>
+<h3 id="limitations">Limitations</h3>
+<ul>
+<li>Wont work automatically on CI</li>
+<li>Need a separate test database</li>
+<li>Needs a script for inserting fake data</li>
+<li>Need to declare run_test closure per test (macro?)</li>
+</ul>
+<h3 id="closing-thoughts">Closing thoughts</h3>
+<ul>
+<li>Rust should natively support this functionality.</li>
+<li>This is a per test fixture, we still need a per suite fixture.</li>
+<li>Ideally we could start an in-memory postgres process for testing.</li>
+<li>Need a pre-test script to initialize stuff (start postgres process)</li>
+</ul>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+
