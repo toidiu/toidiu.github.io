@@ -210,7 +210,7 @@ and decremented on `drop()`. The count allows for tracking the number of outstan
 instances of Arc and initiating memory cleanup when the last one goes out of scope (atomic
 reference count hits 0).
 
-```
+```Rust
 // Example modified from
 // https://doc.rust-lang.org/std/sync/struct.Arc.html#method.strong_count
 
@@ -232,7 +232,7 @@ A Mutex helps preserves Rusts Borrow guarantees by enforcing exclusive access to
 underlying mutable object. Exclusive access can be taken by calling `Mutex::try_lock()`
 (`Mutext::lock()` will block). Here is an example of how to use a Mutex:
 
-```
+```Rust
 // Example taken from
 // https://doc.rust-lang.org/std/sync/struct.Mutex.html#method.lock
 
@@ -310,7 +310,7 @@ For example, rather than representing distance as `usize`, one should create a n
 `Distance(usize)`. This helps maintain type checking but also allows us to attach special
 context around a Distance type.
 
-```
+```Rust
 struct Distance(usize);
 
 impl Distance {
@@ -333,7 +333,7 @@ automatic immutable dereferencing so that its possible avoid access the inner da
 the explicit access. By implementing Deref we are able to simplify the usage to `&dist2`
 below.
 
-```
+```Rust
 impl std::ops::Deref for Distance {
     type Target = usize;
 
@@ -392,7 +392,7 @@ at compile time for static analysis.
 
 Lets look at some example code:
 
-```
+```Rust
 struct MyType<'a, A> {
     field: usize,
     // PhantomData is used to avoid unused warning for 'a and A
@@ -405,7 +405,7 @@ lifetime is not actually used. PhantomData can be used to mute these warning. Bu
 would we have a type that we are not using?
 
 
-```
+```Rust
 // Example taken from: https://cliffle.com/blog/rust-typestate
 //
 // S is the state parameter. We require it to impl
