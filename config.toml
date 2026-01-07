@@ -1,5 +1,6 @@
 # The URL the site will be built for
 base_url = "https://toidiu.com"
+author = "Apoorv Kothari"
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
@@ -28,5 +29,3 @@ menu = [
   {url = "$BASE_URL/reads/", name = "reads"},
   {url = "$BASE_URL/blog/", name = "blog"},
 ]
-
-
