@@ -9,7 +9,7 @@
   {% for sub in section.subsections %}
     {% set sub_section = get_section(path=sub) %}
     <div class="post">
-      <a class="title" href={{ sub_section.permalink }}># {{ sub_section.extra.name }}</a>
+      <a class="title" href={{ sub_section.permalink }}>- {{ sub_section.extra.name }}</a>
     </div>
 
   {% endfor %}

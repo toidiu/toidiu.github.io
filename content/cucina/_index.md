@@ -4,8 +4,8 @@ template = "blog-list.html"
 sort_by = "weight"
 
 [extra]
-id = "personal"
-name = "personal"
+id = "cucina"
+name = "cucina"
 +++
 
 some content
