@@ -3,7 +3,7 @@ title = "TLS guarantees"
 date = 2024-07-12
 
 [taxonomies]
-tag = ["crypto"]
+tag = ["crypto", "protocols"]
 
 [extra]
 id = "blog-single"
