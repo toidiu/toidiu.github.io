@@ -1,6 +1,6 @@
 @import "inc_values";
 
-#personal {
+#personal, #cucina {
   .main-container {
     line-height: 1.5em;
   }
@@ -8,7 +8,7 @@
     margin-bottom: 50px;
   }
   a.title {
-    font-size: 24px;
+    font-size: $text-xxl;
     display: inline-block;
   }
 
