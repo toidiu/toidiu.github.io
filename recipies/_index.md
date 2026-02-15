@@ -7,7 +7,7 @@ sort_by = "date"
 
 [extra]
 id = "blog"
-name = "recittario"
+name = "cooking"
 +++
 
 some content
