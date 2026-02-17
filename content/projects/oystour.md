@@ -1,6 +1,7 @@
 +++
 title = "Oystour"
 date = 2017-09-24
+weight = 15
 
 [extra]
 image = "oystour.png"

@@ -1,6 +1,7 @@
 +++
 title = "learn-rust"
 date = 2018-07-24
+weight = 20
 
 [extra]
 link = "https://github.com/toidiu/learn-rust"

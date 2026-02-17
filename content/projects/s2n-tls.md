@@ -1,6 +1,7 @@
 +++
 title = "s2n-tls"
 date = 2021-01-01
+weight = 2
 
 [extra]
 image = "s2n-tls.png"

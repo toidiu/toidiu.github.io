@@ -1,6 +1,7 @@
 +++
 title = "mta-status"
 date = 2017-09-24
+weight = 18
 
 [extra]
 image = "mta-status.svg"

@@ -1,6 +1,7 @@
 +++
 title = "fin"
 date = 2019-05-11
+weight = 11
 
 [extra]
 image = "fin.svg"

@@ -1,6 +1,7 @@
 +++
 title = "quiche"
 date = 2024-01-01
+weight = 5
 
 [extra]
 image = "quiche.svg"

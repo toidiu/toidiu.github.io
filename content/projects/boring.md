@@ -1,6 +1,7 @@
 +++
 title = "boring"
 date = 2024-10-01
+weight = 10
 
 [extra]
 link = "https://github.com/cloudflare/boring"
