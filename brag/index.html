@@ -1,0 +1,2436 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="I have 15+ years of software engineering experience across different parts of the tech
+              stack including networking libraries, congestion control, performance improvements,
+              Backend, and Android development.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Rust, Protocols, QUIC, IETF,
+              networking, TLS, Scala, java, Cooper Union, blog, talks, code, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js" defer></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=brag >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;cucina">
+
+      cucina
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+
+    <h3>Sub sections</h3>
+    
+      
+      <div class="post">
+        <li><a class="title" href=https:&#x2F;&#x2F;toidiu.com&#x2F;brag&#x2F;interview-prep&#x2F;>Interview Prep</a></li>
+        <div class="summary">
+        </div>
+      </div>
+
+    
+      
+      <div class="post">
+        <li><a class="title" href=https:&#x2F;&#x2F;toidiu.com&#x2F;brag&#x2F;brag&#x2F;>Brag</a></li>
+        <div class="summary">
+        </div>
+      </div>
+
+    
+
+    <h3><a class="" href=https://jvns.ca/blog/brag-documents>What are Brag documents</a></h3>
+
+    <div>STAR</div>
+    <li>Situation: Describe the situation or task you faced</li>
+    <li>Task: Explain what you were required to achieve</li>
+    <li>Action: Describe the actions you took to complete the task</li>
+    <li>Result: Explain the outcome of your actions and what you learned from
+        the experience </li>
+
+
+    <div><a
+            href="https://github.com/toidiu/toidiu.github.io/blob/live-code/content/brag/_index.md"
+            target=_blank" rel="noopener">Amazon Leadership Principles</a></div>
+
+
+    <h4>Table of content</h4>
+
+    <div id="item-container">
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#netbench-orchestrator">netbench orchestrator</a>
+              <div class="company">aws_crypto</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#ktls">ktls</a>
+              <div class="company">aws_crypto</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#s2n-quic-optimistic-ack-mitigation">s2n-quic optimistic ack mitigation</a>
+              <div class="company">aws_crypto</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#s2n-quic-ack-delay">s2n-quic ack delay</a>
+              <div class="company">aws_crypto</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#s2n-tls-default-tls-1-3-support">s2n-tls default TLS 1.3 support</a>
+              <div class="company">aws_crypto</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#s2n-quic-async-client-hello">s2n-quic async client hello</a>
+              <div class="company">aws_crypto</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#s2n-quic-rustls-testing-and-parity">s2n-quic rustls testing and parity</a>
+              <div class="company">aws_crypto</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#s2n-quic-advocate-better-slowloris-mitigation">s2n-quic advocate better slowloris mitigation</a>
+              <div class="company">aws_crypto</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#s2n-quic-handshake-status">s2n-quic handshake status</a>
+              <div class="company">aws_crypto</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#s2n-quic-path-challenge">s2n-quic path challenge</a>
+              <div class="company">aws_crypto</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#s2n-quic-client-implementation">s2n-quic client implementation</a>
+              <div class="company">aws_crypto</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#s2n-quic-connection-migration">s2n-quic connection migration</a>
+              <div class="company">aws_crypto</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#mentor-auto-pulling-andon">Mentor auto pulling andon</a>
+              <div class="company">aws_lm</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#mentor-intern">Mentor Intern</a>
+              <div class="company">aws_lm</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#pdt-build">PDT build</a>
+              <div class="company">aws_lm</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#simplify-metrics">Simplify metrics</a>
+              <div class="company">aws_lm</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #invent and simplify
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #dive deep
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#customer-impact-remediation">Customer impact remediation</a>
+              <div class="company">aws_lm</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #bias for action
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#ice-investication">ICE investication</a>
+              <div class="company">aws_lm</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#granular-andon">Granular andon</a>
+              <div class="company">aws_lm</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#detect-stuck-migrations">Detect stuck migrations</a>
+              <div class="company">aws_lm</div>
+              <!-- global variable to set divider -->
+              
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#fingerprint-service">Fingerprint service</a>
+              <div class="company">aws_lm</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #invent and simplify
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #bias for action
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#advise-sp-on-technical-contractor">Advise SP on technical contractor</a>
+              <div class="company">shatterproof</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #right alot
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #disagree and commit
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#access-and-expose-recs-generated-by-data-science">Access and expose recs generated by Data Science</a>
+              <div class="company">ihr</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #invent and simplify
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #frugality
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #earn trust
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#max-connections-and-failing-kube-watch">Max connections and failing kube watch</a>
+              <div class="company">ihr</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #right alot
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #bias for action
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #dive deep
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#fastly-blacklist-to-whitelist-migration">Fastly blacklist to whitelist migration</a>
+              <div class="company">ihr</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #highest standard
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #earn trust
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#postgresmapper-increasing-code-realibility">PostgresMapper - increasing code realibility</a>
+              <div class="company">rust</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #learn and be curious
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #think big
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#batch-job-alerting-and-little-knowledge-of-system-on-call">Batch job alerting and little knowledge of system (on-call)</a>
+              <div class="company">ihr</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #bias for action
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#amazon-subscription-not-enabling-features">Amazon subscription not enabling features</a>
+              <div class="company">ihr</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #customer obsession
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #dive deep
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#vertical-squad-lacking-resources">Vertical squad lacking resources</a>
+              <div class="company">ihr</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #disagree and commit
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #develop the best
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#migrate-jenkins-from-standalone-to-k8s">Migrate jenkins from standalone to k8s</a>
+              <div class="company">ihr</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #think big
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #invent and simplify
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#skynet-delivering-results-for-hackday-project">Skynet - delivering results for hackday project</a>
+              <div class="company">ihr</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #deliver results
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #right alot
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#templating-kube-config">Templating kube config</a>
+              <div class="company">ihr</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #think big
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #disagree and commit
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#pr-to-rust-lang-infer-outlives-predicates">PR to rust lang - infer outlives predicates</a>
+              <div class="company">rust</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #learn and be curious
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #ownership
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #think big
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#own-production-outage-when-on-call-was-in-transit">Own production outage when on-call was in transit</a>
+              <div class="company">ihr</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #ownership
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #customer obsession
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#android-rotation-work-took-much-longer-than-expected">Android rotation work took much longer than expected</a>
+              <div class="company">s&amp;j</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #customer obsession
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #highest standard
+                </span>
+                
+              
+          </div>
+      </div>
+    
+      <div class="item-wrapper">
+          <div  class="scenario-list">
+            <a href="#starting-and-leading-the-rust-meetup">Starting and leading the Rust meetup</a>
+              <div class="company">rust</div>
+              <!-- global variable to set divider -->
+              
+              
+                <span class="lp">
+                  
+                  #ownership
+                </span>
+                
+              
+                <span class="lp">
+                  |
+                  #develop the best
+                </span>
+                
+              
+          </div>
+      </div>
+    
+    </div>
+
+    <span>----------</span>
+    <span>----------</span>
+    <br>
+
+    
+      <div class="scenario">
+        <a name="netbench-orchestrator" href="#netbench-orchestrator">netbench orchestrator</a>
+        <div>
+          <span class="company">aws_crypto</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div><p>https://github.com/aws/s2n-netbench/tree/main/netbench-orchestrator</p>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="ktls" href="#ktls">ktls</a>
+        <div>
+          <span class="company">aws_crypto</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div><p>https://github.com/aws/s2n-tls/issues/3711</p>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="s2n-quic-optimistic-ack-mitigation" href="#s2n-quic-optimistic-ack-mitigation">s2n-quic optimistic ack mitigation</a>
+        <div>
+          <span class="company">aws_crypto</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div><p>https://github.com/aws/s2n-quic/pull/1986</p>
+<h4 id="s">S</h4>
+<ul>
+<li>Add mitigation for optimistic acks</li>
+<li>The rfc was clear how to do this (skip packets), but also vague because it didnt mention how many packets to skip and how often.</li>
+</ul>
+<h4 id="t">T</h4>
+<ul>
+<li>Come up with a strategy for skipping packet and mitigating the attack.</li>
+<li>Implement the mitigation in s2n-quic.</li>
+</ul>
+<h4 id="a">A</h4>
+<ul>
+<li>Audited other QUIC implementations and conducted analysis to answer two key questions:
+<ul>
+<li>How many packets to skip?</li>
+<li>How often should packets be skipped?</li>
+</ul>
+</li>
+<li>There were 2 other implementations that were using a "static" (skipping did not evolve with cwnd)
+approach. Their strategy was to:
+<ul>
+<li>Track skipping 1 pn. Overwrite value when a new pn needs to be skipped.</li>
+<li>Skip a random pn in some static range.</li>
+</ul>
+</li>
+<li>The "static" approach was network dependent (DC vs public wifi):
+<ul>
+<li>Does overriting skip pn nullify the mitigation?</li>
+<li>Is a static skip range effective for all networks?
+<ul>
+<li>A cwnd is very different in a DS vs public internet</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Considered the option of skipping multiple packets:
+<ul>
+<li>Pro: This would allow us to skip more frequenly</li>
+<li>Con: Require storing multiple skip pn. How many pn should we store?</li>
+</ul>
+</li>
+<li>Analyzed the purpose of the mitigation to come up with an optimal solution.
+<ul>
+<li>The goal of the mitigation was to prevent cwnd bloat.</li>
+<li>Which could be done if packets were acked prior to the peer receiving them.</li>
+<li>By basing skip range on the number of packets that could be received with an cwnd.</li>
+</ul>
+</li>
+<li>Solution: evolve skip packet range based on cwnd and only store 1 skip pn.</li>
+<li>Calculate range based on packets we expect to send in a single period.
+<ul>
+<li><code>pkt_per_cwnd = cwnd / mtu</code></li>
+<li><code>rand = pkt_per_cwnd/2..pkt_per_cwnd*2</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="r">R</h4>
+<ul>
+<li>Successfully implemented the mitigation.</li>
+<li>Only had to store 1 skip pn.</li>
+<li>By evolving the skip range based on cwnd, s2n-quic would scale to all networks.</li>
+</ul>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="s2n-quic-ack-delay" href="#s2n-quic-ack-delay">s2n-quic ack delay</a>
+        <div>
+          <span class="company">aws_crypto</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div><h4 id="summary">summary</h4>
+<ul>
+<li>tracking issue: https://github.com/aws/s2n-quic/issues/1276</li>
+<li>cpu increase: https://github.com/aws/s2n-quic/pull/1298</li>
+<li>revert pr with some analysis shows : https://github.com/aws/s2n-quic/pull/1368</li>
+<li>measure batching multi-packets: https://user-images.githubusercontent.com/4350690/174196918-6af428e4-9ab7-4458-b3b9-e27ed89c3318.png</li>
+</ul>
+<h4 id="metrics">metrics</h4>
+<h4 id="s">S</h4>
+<ul>
+<li>Explore the ACK delay RFC and see if s2n-quic could benefit from implementing it.</li>
+</ul>
+<p>Pros of delay:</p>
+<ul>
+<li>send/recv acks is CPU expensive
+<ul>
+<li>on the send heavy server it takes 24.33%</li>
+</ul>
+</li>
+<li>asymmetric links like satellite</li>
+</ul>
+<p>Cons of delay:</p>
+<ul>
+<li>progress: delayed acknowledgment can delay data being sent from peer
+<ul>
+<li>the RFC lets you adjust thresholds</li>
+</ul>
+</li>
+<li>ECN: congestion signal by the network
+<ul>
+<li>ack packets with ECN markings immediately</li>
+</ul>
+</li>
+<li>loss recovery: detect a packet was not received and retransmit</li>
+<li>cc: regular acks help establish good RTT estimates and drive CC</li>
+<li>BBR: requires a high precision signal to work so it was unclear how delaying
+acks would affect this</li>
+</ul>
+<p>RFC features:</p>
+<ul>
+<li>negotiating the extension: min_ack_delay. the minimum amount of time, that the
+endpoint sending this value is willing to delay an acknowledgment</li>
+<li>ACK_FREQUENCY frame:
+<ul>
+<li>Ack-Eliciting Threshold: max ack eliciting <strong>packets</strong> received before sending an ack</li>
+<li>Requested Max Ack Delay:  max <strong>time</strong> to wait before sending an ack</li>
+<li>Reordering Threshold: max number of <strong>reordered packet</strong> before sending an ack</li>
+</ul>
+</li>
+<li>IMMEDIATE_ACK frame: asks peer to send an immediate ack</li>
+<li>Expedite ECN: ecn marked packets should not be delayed</li>
+</ul>
+<h4 id="t">T</h4>
+<p>Choose on an implementation.</p>
+<p>Options:</p>
+<ul>
+<li>single round batching (10 packet GSO payload)
+<ul>
+<li>easy to implement (1-2 sprints)</li>
+<li>this solution creates building blocks for others after it</li>
+</ul>
+</li>
+<li>multi round batching (multi-gso payload) (2-4 sprints)
+<ul>
+<li>medium difficulty to implement</li>
+<li>requires tuning with application, production usecase, traffic pattern</li>
+</ul>
+</li>
+<li>implement Ack delay RFC (4-8 sprints)
+<ul>
+<li>difficult to implement</li>
+<li>requires tuning with application, production usecase, traffic pattern</li>
+<li>requires negotiating the extension</li>
+</ul>
+</li>
+</ul>
+<h4 id="a">A</h4>
+<p><a rel="external" href="https://github.com/aws/s2n-quic/issues/1277">Impl: Batch ACK Processing (single round)</a></p>
+<ul>
+<li>single round batching (10 packet GSO payload)
+<ul>
+<li>connection can signal interest in processing acks</li>
+<li>store pending acks on connection</li>
+<li>refactor CC and LR to accept signals from batched ack processing (timestamp)</li>
+<li>swap from single processing to batched processing</li>
+<li>emit metrics</li>
+</ul>
+</li>
+</ul>
+<h4 id="r">R</h4>
+<ul>
+<li>Flamegraph result 24.33% -&gt; 25.81% https://github.com/aws/s2n-quic/pull/1298</li>
+<li>Batching different amount of packets (2, 10, 40, 80): https://user-images.githubusercontent.com/4350690/174196918-6af428e4-9ab7-4458-b3b9-e27ed89c3318.png</li>
+</ul>
+<p><strong>lessons learned:</strong></p>
+<ul>
+<li>we had to be cautious about delaying acks because we were operating on public
+internet</li>
+<li>I wonder if an environment like DC would be better for delaying acks</li>
+<li>acks are a signal within the noise of loss,delay,congestion,etc</li>
+<li>within a DC there is less noise so it makes sense that we can have less signal
+and get away with it</li>
+</ul>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="s2n-tls-default-tls-1-3-support" href="#s2n-tls-default-tls-1-3-support">s2n-tls default TLS 1.3 support</a>
+        <div>
+          <span class="company">aws_crypto</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div><h4 id="metrics">metrics</h4>
+<ul>
+<li>4000 tests</li>
+<li>~1500 scoped down tls 1.2 tests</li>
+<li>~33 "default" policy tests</li>
+</ul>
+<h4 id="s">S</h4>
+<ul>
+<li>include tls 1.3 support by default</li>
+<li>good modern default. tls 1.3 is provably secure, modern ciphers,</li>
+</ul>
+<h4 id="t">T</h4>
+<ul>
+<li>which can be risky because customers will see change in behavior</li>
+<li>it would also affect test coverage for tls 1.2
+<ul>
+<li>tests that <strong>test the tls 1.2 policy</strong>
+<ul>
+<li>can pass when switched to tls 1.3 because written previous to tls 1.3
+support and might not assert protocol</li>
+</ul>
+</li>
+<li>tests that <strong>test the "default" policy</strong></li>
+</ul>
+</li>
+</ul>
+<p>It is not possible to detect the difference between these.</p>
+<h4 id="a">A</h4>
+<ul>
+<li>assess different options</li>
+<li>balance the risk of security vs not making progress</li>
+<li>lay out the options, make a case for it</li>
+</ul>
+<h4 id="r">R</h4>
+<ul>
+<li>manually audit 4000 tests</li>
+<li>scope bad tls 1.2 to certain files</li>
+<li>pin all tests that are using default to a numbered policy
+<ul>
+<li>test regression for <strong>"default" policy tests</strong></li>
+</ul>
+</li>
+<li>don't pin tests
+<ul>
+<li>test regression for <strong>tls 1.2 tests</strong></li>
+</ul>
+</li>
+<li>run all tests twice (different platform, libcrypto, fuzz, valgrind)</li>
+<li>run a single tls 1.2 test and accept a minimal risk of tls 1.2 test regression</li>
+</ul>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="s2n-quic-async-client-hello" href="#s2n-quic-async-client-hello">s2n-quic async client hello</a>
+        <div>
+          <span class="company">aws_crypto</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div><p>https://github.com/aws/s2n-quic/issues/1137</p>
+<h4 id="s">S</h4>
+<p>Currently s2n-quic does the certificate lookup/loading operations synchronously.</p>
+<p>Non ideal for application which server multiple domains concurrently and need to
+load multiple certificates, since that would block the thread.</p>
+<h4 id="t">T</h4>
+<p>Allowed for certificate lookup/loading operations to be performed asynchronously
+and enable non-blocking behavior.</p>
+<h4 id="a">A</h4>
+<ul>
+<li>
+<p>s2n-quic:</p>
+<ul>
+<li>pass the connection waker down to the tls libraries so that they could wake
+on progress</li>
+</ul>
+</li>
+<li>
+<p>s2n-tls:</p>
+<ul>
+<li>The work involved converting the callback only-invoked-once to a
+poll-the-callback model in s2n-tls.</li>
+<li>s2n-tls by default did not allow for poll callbacks.</li>
+<li>s2n-tls previously only called the callback once, which not the Rust model
+and has quite a few drawbacks.
+<ul>
+<li>Polling only once means the application/s2n-quic has to schedule (separate
+thread possibly) the completion of the callback.</li>
+<li>It also needs to manage the state associated with the callback separately.</li>
+<li>The Rust polling model allows for all state associated with the future to
+live within the object bing polled.</li>
+<li>Additionally, the future can make progress as part of the already existing
+runtime that s2n-quic starts with.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>s2n-tls bindings:</p>
+<ul>
+<li>gluing the new callback polling behavior in an extensible way for other
+callbacks.</li>
+</ul>
+</li>
+</ul>
+<h4 id="r">R</h4>
+<ul>
+<li>setup the framework for future async callbacks in s2n-tls</li>
+</ul>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="s2n-quic-rustls-testing-and-parity" href="#s2n-quic-rustls-testing-and-parity">s2n-quic rustls testing and parity</a>
+        <div>
+          <span class="company">aws_crypto</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div></div>
+      </div>
+    
+      <div class="scenario">
+        <a name="s2n-quic-advocate-better-slowloris-mitigation" href="#s2n-quic-advocate-better-slowloris-mitigation">s2n-quic advocate better slowloris mitigation</a>
+        <div>
+          <span class="company">aws_crypto</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div><h4 id="s">S</h4>
+<p>The previous implementation involved closing the connection by default if the bytes transferred
+dropped below some user specified amount.</p>
+<h4 id="t">T</h4>
+<p>While simple and effective implementation, this seems like an sharp edge and made me uneasy.
+The reason for this was:</p>
+<ul>
+<li>the user specified value could become stale</li>
+<li>the default action closing the connection could be an availability risk</li>
+<li>in a worse case scenario this could lead to a stampede of closing all connections</li>
+</ul>
+<h4 id="a">A</h4>
+<h4 id="r">R</h4>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="s2n-quic-handshake-status" href="#s2n-quic-handshake-status">s2n-quic handshake status</a>
+        <div>
+          <span class="company">aws_crypto</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div></div>
+      </div>
+    
+      <div class="scenario">
+        <a name="s2n-quic-path-challenge" href="#s2n-quic-path-challenge">s2n-quic path challenge</a>
+        <div>
+          <span class="company">aws_crypto</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div></div>
+      </div>
+    
+      <div class="scenario">
+        <a name="s2n-quic-client-implementation" href="#s2n-quic-client-implementation">s2n-quic client implementation</a>
+        <div>
+          <span class="company">aws_crypto</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div></div>
+      </div>
+    
+      <div class="scenario">
+        <a name="s2n-quic-connection-migration" href="#s2n-quic-connection-migration">s2n-quic connection migration</a>
+        <div>
+          <span class="company">aws_crypto</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div></div>
+      </div>
+    
+      <div class="scenario">
+        <a name="mentor-auto-pulling-andon" href="#mentor-auto-pulling-andon">Mentor auto pulling andon</a>
+        <div>
+          <span class="company">aws_lm</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div><p>summary</p>
+<h4 id="metrics">metrics</h4>
+<ul>
+<li>conduct initial review of doc written by SDE1</li>
+<li>provide feedback on structure and clarity of doc</li>
+</ul>
+<h4 id="s">S</h4>
+<h4 id="t">T</h4>
+<h4 id="a">A</h4>
+<h4 id="r">R</h4>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="mentor-intern" href="#mentor-intern">Mentor Intern</a>
+        <div>
+          <span class="company">aws_lm</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div><p>Project plan: https://quip-amazon.com/Wa4iADaP4cqI/Intern-Project-LM-Detective</p>
+<h3 id="s">S</h3>
+<ul>
+<li>The Dispatcher is a critical component in LM but our team lacked metrics.</li>
+<li>The intern project "LM Detective" would give us:
+<ul>
+<li>better understanding of Dispatcher Service and ongoing migrations</li>
+<li>allow LM to take a data driven approach to improving the Dispatcher service and scheduling</li>
+</ul>
+</li>
+</ul>
+<h3 id="t">T</h3>
+<ul>
+<li>Draft the intern project plan. Omitting some information to probe for understanding.</li>
+<li>Help onboard the intern to AWS and LM specific technology.</li>
+<li>Educate the intern about LM technology and help guide to a successful delivery.</li>
+</ul>
+<h3 id="a">A</h3>
+<ul>
+<li>Met with the intern multiple times a week to ensure progress.</li>
+<li>Guided the intern to set milestones and define a project plan.</li>
+<li>Helped define the stretch goals and helped prepare their final presentation.</li>
+</ul>
+<h3 id="r">R</h3>
+<ul>
+<li>The intern successfuly completed the project and received a return offer.</li>
+<li>LM could use the project to answer questions such as:
+<ul>
+<li>What is the state of the dispatcher given a specific migration id?</li>
+<li>For all migrations in pending/executing state, what are the src droplets and tgt droplets?</li>
+<li>Why is a particular migration in status pending?</li>
+</ul>
+</li>
+<li>The intern also completed the stretch goal for the project
+<ul>
+<li>Create a UI (graph viz) to visualize the data</li>
+</ul>
+</li>
+</ul>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="pdt-build" href="#pdt-build">PDT build</a>
+        <div>
+          <span class="company">aws_lm</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div><p>Project plan: https://quip-amazon.com/NtptAZ55eOpb/LM-in-PDT-Work</p>
+<h3 id="s">S</h3>
+<ul>
+<li>LM was tasked to make the service available in PDT.</li>
+<li>PDT should be the last region; LM should therefore also be available in all other regions.</li>
+</ul>
+<h3 id="t">T</h3>
+<ul>
+<li>Build the entire LM stack in PDT to meet gov compliance. (canaries, dispatcher, alarms, metrics)</li>
+<li>Created a project plan to identify all components and missing regions.</li>
+<li>Automate the infrastructure to make builds reproducible.</li>
+</ul>
+<h3 id="a">A</h3>
+<ul>
+<li>Cleaned up our LPT rules to make service launches reqproducible, extensible and maintainable.</li>
+<li>Synthesized new alarms, cleaning-up/creating dashboards along the way.</li>
+</ul>
+<h3 id="r">R</h3>
+<ul>
+<li>Full LM availability in all regions, including PDT (met gov compliance).</li>
+<li>A clean, normalized LPT stack for all services owned by LM.</li>
+</ul>
+<h4 id="metrics">metrics</h4>
+<ul>
+<li>
+<p>helped surface questions and drive conversation for support in restricted regions</p>
+</li>
+<li>
+<p>create and manage doc to track work for PDT region build</p>
+</li>
+<li>
+<p>debug various issues as they came up during rebuild</p>
+</li>
+</ul>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="simplify-metrics" href="#simplify-metrics">Simplify metrics</a>
+        <div>
+          <span class="company">aws_lm</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #invent and simplify
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #dive deep
+            </span>
+            
+          
+
+        </div>
+
+        <div><h4 id="metrics">metrics</h4>
+<ul>
+<li>
+<p>while fixing workflow in PDT, i took the initiative to simplify metrics for all regions</p>
+</li>
+<li>
+<p>removed 2 metrics packages</p>
+</li>
+<li>
+<p>replaced packaged code with ~100 lines of code to capture the same metrics in a less concoluted manner</p>
+</li>
+<li>
+<p>dug into old profiler library codebase to understand implementation</p>
+<ul>
+<li>verified metrics in igraph against what the code was posting</li>
+</ul>
+</li>
+</ul>
+<h4 id="s">S</h4>
+<h4 id="t">T</h4>
+<h4 id="a">A</h4>
+<h4 id="r">R</h4>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="customer-impact-remediation" href="#customer-impact-remediation">Customer impact remediation</a>
+        <div>
+          <span class="company">aws_lm</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #bias for action
+            </span>
+            
+          
+
+        </div>
+
+        <div><p>bias for action: post lse, i took the initiative to dig into customer impact. created a doc to track impact, pulled in senior engineers for advice and drafted a remediation script. helped discover another race condition bug which was customer impacting</p>
+<h4 id="metrics">metrics</h4>
+<ul>
+<li>remediated ~40 customer impacting instances</li>
+</ul>
+<h4 id="s">S</h4>
+<h4 id="t">T</h4>
+<h4 id="a">A</h4>
+<h4 id="r">R</h4>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="ice-investication" href="#ice-investication">ICE investication</a>
+        <div>
+          <span class="company">aws_lm</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div><h4 id="metrics">metrics</h4>
+<ul>
+<li>
+<p>conducted initial deep research into ICEing and its various causes</p>
+<ul>
+<li>categoried data into actionable and non-actionable</li>
+</ul>
+</li>
+<li>
+<p>started conversations with cross teams to help gather more metrics</p>
+</li>
+</ul>
+<h4 id="s">S</h4>
+<h4 id="t">T</h4>
+<h4 id="a">A</h4>
+<h4 id="r">R</h4>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="granular-andon" href="#granular-andon">Granular andon</a>
+        <div>
+          <span class="company">aws_lm</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div><h4 id="metrics">metrics</h4>
+<ul>
+<li>
+<p>auto deploy rules</p>
+</li>
+<li>
+<p>integrate with workflow</p>
+</li>
+<li>
+<p>write requirement doc for deprecating old andon</p>
+</li>
+<li>
+<p>change matching rules from regext o string (eliminate errors)</p>
+</li>
+<li>
+<p>created pipeline for auto releasing the andon rules</p>
+</li>
+<li>
+<p>added alarms to catch if rules were not being read from lm workflow</p>
+</li>
+<li>
+<p>added validation logic to better catch malformed rules during code review</p>
+</li>
+</ul>
+<h4 id="s">S</h4>
+<h4 id="t">T</h4>
+<h4 id="a">A</h4>
+<h4 id="r">R</h4>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="detect-stuck-migrations" href="#detect-stuck-migrations">Detect stuck migrations</a>
+        <div>
+          <span class="company">aws_lm</span>
+
+          <!-- global variable to set divider -->
+          
+          
+
+        </div>
+
+        <div></div>
+      </div>
+    
+      <div class="scenario">
+        <a name="fingerprint-service" href="#fingerprint-service">Fingerprint service</a>
+        <div>
+          <span class="company">aws_lm</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #invent and simplify
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #bias for action
+            </span>
+            
+          
+
+        </div>
+
+        <div><ul>
+<li>invent and simplify: re use hibernate codebase, especially the tests and
+validation. also simplify the logic to make it more adaptable.</li>
+<li>bias for action: research other team's usecase; simplify and structure codebase
+to allow for extensibility. drove consensus when technical issues(java type
+generics) or framework choices made a right choice non obvious.</li>
+</ul>
+<p>FAQ: https://quip-amazon.com/3ujuAnetkBr1
+Dashboard: https://w.amazon.com/bin/view/EC2/LiveMigration/Dashboards/DropletFingerprintService/</p>
+<h3 id="s">S</h3>
+<ul>
+<li>KaOS owns fingerprint rules.</li>
+<li>KaOS deletes and then creates a DynamoDB table with updated rules. This causes elevated ICEing.</li>
+<li>LM consumed these rules.</li>
+</ul>
+<h3 id="t">T</h3>
+<ul>
+<li>Create a single highly available service to serve fingerprint rules.</li>
+<li>De-risk KaOS rolling out new fingerprint rules.</li>
+<li>Take the opportunity to change the format of fingerprint rules. This was a high risk item since a change in format made it difficult to detect mistakes in parsing logic.</li>
+<li>Emit metrics for fingerprint matching rules to track the flow migrations.</li>
+</ul>
+<h3 id="a">A</h3>
+<ul>
+<li>Wrote a FAQ to convince leadership: https://quip-amazon.com/3ujuAnetkBr1</li>
+<li>Coordinated with the KaOS team and launch a multi-region LM service.</li>
+<li>Wrote a lot of tests to ensure finger format change were equivalent.</li>
+<li>Mentored junior teammate (karthiga) on creating a detailed service health dashboard.</li>
+<li>Conducted ORR to ensure service best practices.</li>
+<li>Created a fully automated service using LPT, managed fleets, and paperwork.</li>
+</ul>
+<h3 id="r">R</h3>
+<ul>
+<li>Launched the service under MCM.</li>
+<li>There was zero impact to LM during the migration (due to the detailed metrics and tests).</li>
+<li>The ORR and automation served as a template for future service launches for the team.</li>
+</ul>
+<hr />
+<h3 id="extra-info">Extra info:</h3>
+<ul>
+<li>wrote prfaq to convince leadership</li>
+<li>wrote a deserializer to safely transition from old parser + old rule format -&gt;
+new parser + new rule format
+<ul>
+<li>multiple unit tests to ensure rules were exactly the same during migration</li>
+</ul>
+</li>
+<li>automated release of service with pipeline + rollback alarms
+<ul>
+<li>replaced MCM practice (manual inspection of metrics over ~2 weeks)</li>
+</ul>
+</li>
+<li>regional dashboards along with alarms for automated and manual debugging
+<ul>
+<li>set a template for regional dashboards</li>
+</ul>
+</li>
+<li>managed SDE1 who helped create alarms for the service</li>
+<li>learn and bootstrap out paperwork
+<ul>
+<li>unlocking team to move from substrate to prod</li>
+</ul>
+</li>
+<li>unblocked self by communicating cross teams for paperwork in substrate</li>
+<li>provision tod workers for lm team
+<ul>
+<li>lpt managed</li>
+<li>quilt pipelines</li>
+</ul>
+</li>
+<li>conducted an ORR for service pre/post launch (balancing the risk of doing some
+task post launch)</li>
+<li>successfully transfered the ownership of 'rules' to sister team (8hr time
+difference)
+<ul>
+<li>email + meetings + ongoing support</li>
+</ul>
+</li>
+<li>released under MCM
+<ul>
+<li>set team standards for not having false alarms prior to launch</li>
+</ul>
+</li>
+</ul>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="advise-sp-on-technical-contractor" href="#advise-sp-on-technical-contractor">Advise SP on technical contractor</a>
+        <div>
+          <span class="company">shatterproof</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #right alot
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #disagree and commit
+            </span>
+            
+          
+
+        </div>
+
+        <div><p>disagree and commit: present the risks, push back on execution and technical ability. support decision and provide help going forward</p>
+<h4 id="metrics">metrics</h4>
+<ul>
+<li>disagree
+<ul>
+<li>found an alternative contractor
+<ul>
+<li>interviewed 2 contractors</li>
+</ul>
+</li>
+<li>quantified the actual costs vs quoted costs from the contractor (asked for cost breakdown rather than lump sum)</li>
+<li>pointed out faults with architecture (lambda is ephemeral and not good for DB connections)</li>
+<li>US based was a positive for contractor
+<ul>
+<li>nudged them to find another US based contractor for comparison</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>commit
+<ul>
+<li>decision was based on business needs (far greater than future tech challenges)
+<ul>
+<li>learned the value and a process of how to end a stalemate!</li>
+</ul>
+</li>
+<li>reviewed future API spec and noted on the strengths of the contractor</li>
+<li>kept trust so that I could prove useful in helping them hire a full-time person to augment contractor</li>
+</ul>
+</li>
+</ul>
+<h4 id="s">S</h4>
+<p>I was a technical advisor for SP. They had a business goal which was to choose a contractor to help them build a website, and back and also conduct some user surveys.</p>
+<h4 id="t">T</h4>
+<p>I started the process by first identifying the overall architecture of the applicaiton. The second step was to find a second contractor and then interview both based on their technical expertise.</p>
+<h4 id="a">A</h4>
+<p>After speaking with both and reviewing the technical spec I was of the opinion that the original contractor did not have the technical expertise however they did have the best business insight.</p>
+<p>I recommended that there was a high risk of technical debt and that we seek out the second contractor.</p>
+<p>In the end my client decided to go with the first contractor. Their primary concern was to reduce the number of parties involved and since the first contractor was someone they were familiar with they choose the more expensive and less technically stable option.</p>
+<h4 id="r">R</h4>
+<p>Once the decision was made I supported the decision. The primarily goal was to move forward and do everything in our power to allow the first contractor to succeed.</p>
+<p>Recently my gut feeling has proven correct, in that the contractor is not very flexible technically or process wise and very expensive.</p>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="access-and-expose-recs-generated-by-data-science" href="#access-and-expose-recs-generated-by-data-science">Access and expose recs generated by Data Science</a>
+        <div>
+          <span class="company">ihr</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #invent and simplify
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #frugality
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #earn trust
+            </span>
+            
+          
+
+        </div>
+
+        <div><p>invent and simplify: come up with a solution and then simplify</p>
+<p>earn trust: negotiate a solution with DS to further the relationship</p>
+<p>frugality: reuse dynamo, jenkins rather than invent new solution</p>
+<h4 id="metrics">metrics</h4>
+<ul>
+<li>nightly job; system designed for time agnostic release</li>
+<li>kept 7 days of backups</li>
+<li>provide interface for testing</li>
+<li>reuse existing infrastructure (dynamo, jenkins, schema models)</li>
+<li>poll for new dataset every 5 min</li>
+</ul>
+<h4 id="s">S</h4>
+<ul>
+<li>Data Science (DS) ran a nightly job to generate music recommendations for
+users.</li>
+<li>The dataset would live in DynamoDB and the old DS workflow was to rewrite the
+same dynamo table with new dataset each night.</li>
+<li>This was a high risk operation for the my team (APIs). Additionally it caused
+some outages due to accidental schema changes.</li>
+</ul>
+<h4 id="t">T</h4>
+<ul>
+<li>I was in charge of creating a HA and resilient workflow.</li>
+<li>The ownership of the data would reside with them.</li>
+<li>We simply wanted assurances that there were some sanity for newly published
+data.</li>
+<li>Treat data as immutable
+<ul>
+<li>Enforce that DS publish the dataset to a new table each night.</li>
+<li>Maintain a backlog of 7 datasets into the past.</li>
+<li>This gives the benefit of 'rollback' if a new dataset was broken</li>
+</ul>
+</li>
+<li>Given multiple datasets (a,b,c); DS can 'point' to latest dataset
+<ul>
+<li>DS can maintain a few versions of the data. "Version Table"</li>
+<li>DS can run tests on new datasets to confirm schema compatibility</li>
+<li>rollbacks are as easy as pointing to an older known dataset</li>
+</ul>
+</li>
+<li>Maintain a log of actions (publish new dataset, test pass/fail, point to new
+dataset)</li>
+</ul>
+<h4 id="a">A</h4>
+<ul>
+<li>Work closely with DS to come up with the system design.</li>
+<li>Added a Jenkins tests which could be triggered by DS
+<ul>
+<li>used to verify that data schema would not be a breaking change</li>
+<li>extensible model for other types of tests</li>
+<li>potential to track failing/passing metrics</li>
+</ul>
+</li>
+<li>Poll based mechanism within API code to look at "Version Table" and start
+using the latest dataset.
+<ul>
+<li>A poll interval of 5 min was used since 'older' data would still produce
+good enough data.</li>
+<li>Log when a new dataset was detected (help correlate errors with new dataset)</li>
+</ul>
+</li>
+</ul>
+<h4 id="r">R</h4>
+<ul>
+<li>We saw a system that could be used to audit the creation of new datasets.</li>
+<li>Outages due to breaking schema's were eliminated.</li>
+</ul>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="max-connections-and-failing-kube-watch" href="#max-connections-and-failing-kube-watch">Max connections and failing kube watch</a>
+        <div>
+          <span class="company">ihr</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #right alot
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #bias for action
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #dive deep
+            </span>
+            
+          
+
+        </div>
+
+        <div><p>right alot: pin point the differences between stg and prod</p>
+<p>bias for action: execute a non invasive solution, which could go out quick while still preventing issues</p>
+<h4 id="metrics">metrics</h4>
+<ul>
+<li>errors occured at 1-2 week increment</li>
+<li>random 500 errors for a particular api only</li>
+<li>different behavior across stg and prod envs</li>
+<li>5 max connections</li>
+<li>fixed issue for 2 additional micro services</li>
+</ul>
+<h4 id="s">S</h4>
+<p>An API that I wrote and owned would start to 500 errors sporadically. When
+Additionally, when I inspected the stg vs prod environments the results would
+differ and not always align and would happen at seemingly random times.</p>
+<p>Restarting the container would fix the issue however.</p>
+<h4 id="t">T</h4>
+<p>After 2-3 more occurances, it became apparent that there was a deeper issue.
+In response I decided to add logging to the service around the relevant code.</p>
+<p>At the next occurance we noticed from the logs that the IP of the service was
+did not match the one being requested.</p>
+<h4 id="a">A</h4>
+<p>I then took a look at mechanism that was doing service discovery and added
+additionally logs. This showed that not all the kube watch events were
+working correctly.</p>
+<p>Further dive revealed that this condition was met at a convenient number of
+5 connections. Diving further into the http library used by the service
+discovery library(pandorum) I discovered that OkHttp has a default limit
+of 5 persistent connections.</p>
+<h4 id="r">R</h4>
+<p>I added a config change to increase the max connection limit. Additionally,
+I added a check at startup to confirm that the limit matched the number of
+services we were trying to connect to so as to prevent future failures.</p>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="fastly-blacklist-to-whitelist-migration" href="#fastly-blacklist-to-whitelist-migration">Fastly blacklist to whitelist migration</a>
+        <div>
+          <span class="company">ihr</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #highest standard
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #earn trust
+            </span>
+            
+          
+
+        </div>
+
+        <div><p>highest standard: rather than fix the symptom at hand fix the core issue</p>
+<p>earn trust: outages mean lower oncall morale. rolling out the changes in % meant gaining the trust of the team</p>
+<p>customer obsession: also bad for customers</p>
+<h4 id="metrics">metrics</h4>
+<ul>
+<li>approx 8 blacklist rules</li>
+<li>added approx 15 whitelist rules</li>
+<li>rolled out in increments of 10%-20%</li>
+<li>rolled out over 3 weeks</li>
+<li>maintained the hitratio of approx 89% over the roolout</li>
+</ul>
+<h4 id="s">S</h4>
+<p>Realized that our recs were being incorrectly cached. The reason for this was
+the historic configuration of specifying the blacklisted paths.</p>
+<h4 id="t">T</h4>
+<p>The inital fix for the recs service was an easy config change. However to avoid
+such a mistake in the future I proposed that we should change from blacklist to
+whitelist.</p>
+<h4 id="a">A</h4>
+<p>Initially this seems like a very risky manuver, expecially when changing this for
+live production traffic. Therefore I took a few precautions to eliminate the risk.</p>
+<p>Used randomint() VCL function to distribute the traffic.</p>
+<p>I decided the a % based rollout, and then progressed to do it over 3 weeks.</p>
+<h4 id="r">R</h4>
+<p>At each 10% increase I gained additional confidence, about the new configs. Watching
+the cache hit ratio (89%), the traffic pattern also remained the same. Additionally,
+by communicating with the rest of my team as well as being aware of other company
+events, I was able to aviod being suspect of any failures by mistake.</p>
+<p>The result was a clean migration, a more resilient system and probably a higher
+morale since there were no outages.</p>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="postgresmapper-increasing-code-realibility" href="#postgresmapper-increasing-code-realibility">PostgresMapper - increasing code realibility</a>
+        <div>
+          <span class="company">rust</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #learn and be curious
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #think big
+            </span>
+            
+          
+
+        </div>
+
+        <div><p>learn and be curious: learn how to do proc macros. read other source code</p>
+<h4 id="metrics">metrics</h4>
+<ul>
+<li>added 2 methods</li>
+<li>selectively replaced old code with new features</li>
+<li>fixed broken functionality with tokio-postgres</li>
+<li>reduced code update locations from 3 to 1
+<ul>
+<li>hit 0 runtime errors because of mismatch fields thereafter</li>
+</ul>
+</li>
+<li>technique allowed for slow adoption rather than breaking code</li>
+</ul>
+<h4 id="s">S</h4>
+<p>The crate was a side project written by someone to provide some simple deserialization capabilites for postgres in rust. It addressed a important need but failed to do any field name checks at compile time.</p>
+<h4 id="t">T</h4>
+<p>Add additional methods to reduce runtime errors.</p>
+<h4 id="a">A</h4>
+<p>Added simple methods that read annotations and provided two methogs <code>get_sql_table</code> and <code>get_fields</code>. this was something that the compiler could do really well and not error.</p>
+<h4 id="r">R</h4>
+<p>As a result, the runtime errors due to table migrations went down to zero.</p>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="batch-job-alerting-and-little-knowledge-of-system-on-call" href="#batch-job-alerting-and-little-knowledge-of-system-on-call">Batch job alerting and little knowledge of system (on-call)</a>
+        <div>
+          <span class="company">ihr</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #bias for action
+            </span>
+            
+          
+
+        </div>
+
+        <div><p>bias for action: took action with limited info, while evaluating risk.</p>
+<h4 id="metrics">metrics</h4>
+<ul>
+<li>10K messages queued</li>
+<li>10pm with no response for rest of team</li>
+<li>silenced alarms for 2 hr increments</li>
+<li>after 3 occurance and 2am alarm made decision to terminate job</li>
+</ul>
+<h4 id="s">S</h4>
+<p>I was on call got a page at approx 10pm. There was a rabbitMq that had
+backlogged and was alerting. The first hurdle was that there was no
+login/password information about how to access the queue and see what was going
+on.</p>
+<h4 id="t">T</h4>
+<p>I tried to reach the secondary in the hopes of gathering more information but
+to no avail. I tried the tertiary(boss) and also the primary on the ingestion
+team but received no answer.</p>
+<p>My task at this point became deciding how to proceed.</p>
+<h4 id="a">A</h4>
+<p>I was able to get login information from the SRE oncall and able to inspect the
+queue. At this point I saw that a message was causing a backlog so I cleared it
+manually.</p>
+<p>Once the queue started draining I silenced the specific alarm and went about
+the night. However the error happened again and I noticed that there was
+another message now causing the backlog.</p>
+<p>It became apparent that manually skipping the error message was not a solution.
+There were approx 10k messages queued, which was the limit of the queue but I
+suspected that if the backlog continued it could fill up the drives causing
+more damage.</p>
+<h4 id="r">R</h4>
+<p>It was also apparent that the batch job was not correct, in the sense that it
+was unable to handle all message types, which was resulting in the backlog. I
+therefore decided to cancel the batch job and drain the queue.</p>
+<p>Since it was a batch job and it was being developed (not customer facing),
+there was little harm in stopping the alert and job, which could be looked at
+in the morning.</p>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="amazon-subscription-not-enabling-features" href="#amazon-subscription-not-enabling-features">Amazon subscription not enabling features</a>
+        <div>
+          <span class="company">ihr</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #customer obsession
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #dive deep
+            </span>
+            
+          
+
+        </div>
+
+        <div><p>customer obsession: subscription is the core of customer experience</p>
+<p>dive deep: look at neighbouring code for amazon, google and apple</p>
+<h4 id="metrics">metrics</h4>
+<ul>
+<li>solved issue across 2 different services (amazon and heroku)</li>
+<li>added a test to cover the edge case</li>
+<li>traced and rebated a few thousand customers affected</li>
+</ul>
+<h4 id="s">S</h4>
+<p>Subscription micro-service was responsible for determining subscription status
+for users. A CS report indicated that a customer was charged for subscription
+but was not seeing premium features.</p>
+<h4 id="t">T</h4>
+<p>Verify that the customer was actually experiencing an error. Figure out a fix
+to the issue.</p>
+<h4 id="a">A</h4>
+<p>First I verified that the error was actually happening. This was done using a
+combination of two internal endpoints: subscription status and paid status of
+the user. I also verified that the subscription had not expired.</p>
+<p>The error was occurring for a Amazon user.</p>
+<p>Explored the other subscription services since the code should be similar,
+including Amazon, Apple, Google...</p>
+<p>Oddly enough, the code was slightly different for Amazon and Heroku users
+compared to the Google subscription code. Looking at git history one could see
+that the two had been added afterwards.</p>
+<h4 id="r">R</h4>
+<p>I was able to fix the subscription code and fix user experience for future
+users. This fix got applied not only to Amazon, but also Heroku users.</p>
+<p>A follow up task was to track other users affected and provide them with
+rebates/extended experience.</p>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="vertical-squad-lacking-resources" href="#vertical-squad-lacking-resources">Vertical squad lacking resources</a>
+        <div>
+          <span class="company">ihr</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #disagree and commit
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #develop the best
+            </span>
+            
+          
+
+        </div>
+
+        <div><p>disagree and commit: point out the lack of resources. end up at a compromise</p>
+<p>develop the best: involve and promote the design lead as the project leader</p>
+<h4 id="metrics">metrics</h4>
+<ul>
+<li>attrition of 2 prod manager, 1 ios, 1 android</li>
+<li>rollout/feedback taking up to 2 weeks</li>
+<li>perliminary work being delayed for over a quarter</li>
+<li>raised issue with 1 prod manager, my manager, 2 design, 1 coworker</li>
+</ul>
+<h4 id="s">S</h4>
+<p>The company had experimented with a new team structure "vertical team". The goal of the team would be to focus on improving a KPI.</p>
+<p>However, due to some employee churn and other org changes, the squads had started to lose direction.</p>
+<p>The recs team did not have enough resources but was expected to produce results. This worked alright for previously started projects however new projects were
+being proposed.</p>
+<h4 id="t">T</h4>
+<p>I had a strong hunch that without more  product involvement and dev resources the squad would not be able to succeed in its mission.</p>
+<h4 id="a">A</h4>
+<p>I took it upon myself to speak with the different stake holders involved. This involved the design team, a product manager I had a good relationship, a coworker and my manager.</p>
+<p>After speaking with individuals I was able to propose a meeting where we could come together and discuss risks, and goals. We also took this time to re-evaluate goals under current circumstances.</p>
+<h4 id="r">R</h4>
+<p>I was able to convince my manager and org to reach a middle compromise. There would be a shift in roles. The designer, who had the best idea about the product direction would assume a temporary product manager role. Additionally, we would be able to get an iOS dev for 2 sprints to comsume and execute the feature.</p>
+<p>With a reduction of scope and a more focused involvement of those part of the squad, I was able to shift my focus on other work that needed to be done while wrapping up and supporting previous features.</p>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="migrate-jenkins-from-standalone-to-k8s" href="#migrate-jenkins-from-standalone-to-k8s">Migrate jenkins from standalone to k8s</a>
+        <div>
+          <span class="company">ihr</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #think big
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #invent and simplify
+            </span>
+            
+          
+
+        </div>
+
+        <div><p>think big: improve reliability and reduce work exponentially</p>
+<p>invent and simplify: utilize helm chart and then customize for internal tools</p>
+<h4 id="metrics">metrics</h4>
+<ul>
+<li>able to upgrade jenkins from 1x to 2x</li>
+<li>able to upgrade all plugins with confidence</li>
+<li>able to address security warning in jenkins</li>
+<li>launched 3 slaves and restrict jobs to specific slaves
+<ul>
+<li>later more slaves were added addition slaves for rust</li>
+</ul>
+</li>
+<li>time to launch a new jenkins server took &lt; 2 hrs</li>
+<li>added detailed documentation so others would be able to contribute</li>
+</ul>
+<h4 id="s">S</h4>
+<p>Jenkins was the test automation server we used. However it was deployed on
+on a VM without any way to recover, upgrade or replicate the instance and data.</p>
+<p>This resulted in tech debt and a fear of doing anything new with the instance.</p>
+<h4 id="t">T</h4>
+<p>I took it upon myself to create a kube deployed instance which could be
+replaced and therefore upgraded.</p>
+<h4 id="a">A</h4>
+<p>I created a decrarative instance of the server based on an existing jenkins helm
+recipie. I then tweaked it to have custom values and secrets.</p>
+<p>The secrets were applied via a api call to the jenkins server (decrypt KMS).</p>
+<h4 id="r">R</h4>
+<p>We were able to migrate to the latest version of Jenkins.</p>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="skynet-delivering-results-for-hackday-project" href="#skynet-delivering-results-for-hackday-project">Skynet - delivering results for hackday project</a>
+        <div>
+          <span class="company">ihr</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #deliver results
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #right alot
+            </span>
+            
+          
+
+        </div>
+
+        <div><p>right alot: choosing java and solving part of the process was the correct small step to allow for adoption</p>
+<p>deliver results: deliver a project despite it not being the original all encompassing solution</p>
+<h4 id="metrics">metrics</h4>
+<ul>
+<li>reduced manual testing from 10-30 minutes to seconds</li>
+<li>removed human error during testing</li>
+<li>created a extensible framework, initially targeting 2 types of test</li>
+<li>agnostic testing framework for both android and ios</li>
+</ul>
+<h4 id="s">S</h4>
+<p>This was during a hack week project and the goal of our 3 person team was to
+help automate QA-testing done for apps at the company.</p>
+<p>The current way to do testing was to open the app, in a simulator and use
+charles proxy to collect http traffic logs. The logs would then be parsed
+manually.</p>
+<p>This could take entire days and sometimes resulted in incomplete testing if
+an urgent release was scheduled. It also meant long hours and sometimes
+weekend work for the QA team.</p>
+<p>The team was composed of a non-technical QA member, an iOS dev and myself (backend).</p>
+<h4 id="t">T</h4>
+<p>The initial goal was to use a UI testing framework for iOS and therefore automate
+the collection and then verification of the tests. We spent 1.5 days trying
+to get the UI framework to work, however it was unpredictable on different computers
+and eventually just didnt work.</p>
+<h4 id="a">A</h4>
+<p>Realizing that we were at risk of not having any product I decided to take a step
+back and see if we could produce something useful.</p>
+<p>I took half the day to create a simple POC; to tackle the testing and not the data
+gathering portion.</p>
+<p>This was a much simpler and predictable problem to solve. The log data could be ingested
+as Json and a series of tests could be run on it. Java was chosen since it was a
+language most people would be comfortable with, it was typed and the non-technical
+QA memebers could augment it.</p>
+<p>We created a somewhat abstract testing framework. It had 3 broad scopes: ingest data from file,
+filter data based on test to be run (user id, header), verify data based on custom test rules.</p>
+<p>At some point I devoted majority of my time to training and guiding the QA member on
+understanding and augmenting to the codebase. Transfering owenership to the QA team
+was an important goal for me if the project was to succeed.</p>
+<h4 id="r">R</h4>
+<p>We were also tackle time sensitive and manually arduous tests (token refresh every 5min).
+By the end of the week we were able to execute 6 different tests, implement
+2 different testing scenarios (find a value, stateful testing).</p>
+<p>Needless to say the QA team was very happy and with the testing abstraction in place they
+were then able to implement more tests themselves.</p>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="templating-kube-config" href="#templating-kube-config">Templating kube config</a>
+        <div>
+          <span class="company">ihr</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #think big
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #disagree and commit
+            </span>
+            
+          
+
+        </div>
+
+        <div><h4 id="metrics">metrics</h4>
+<ul>
+<li>goods:
+<ul>
+<li>used <code>helm template</code> command to avoid creating new tool</li>
+<li>would be able to slowly template and move over existing configs</li>
+<li>poc worked and was able to represent current config</li>
+</ul>
+</li>
+<li>bads:
+<ul>
+<li>would be 1 additional tool to install</li>
+<li>helm template was no longer supported</li>
+<li>go templating had complicated syntax</li>
+</ul>
+</li>
+<li>failures:
+<ul>
+<li>project got hijacked from under me (loss of trust)</li>
+<li>should have consulted seniors more (get buy in)</li>
+<li>should have demonstrated small example rather go for the cake</li>
+<li>should have asked for more feedback from team</li>
+<li>should have demonstrated the stability of heml template</li>
+</ul>
+</li>
+</ul>
+<h4 id="s">S</h4>
+<p>instead of updating configs across multiple envs and regions (qa, stg, us, au, nz) I wanted to create a template that would allow us to update the value in a single file. The remaining content could then be defined once.</p>
+<h4 id="t">T</h4>
+<h4 id="a">A</h4>
+<h4 id="r">R</h4>
+<p>Once the implementation had was done and the team clearly supported the other implementatino, I made it a point to verbally commend it in a meeting and show support.</p>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="pr-to-rust-lang-infer-outlives-predicates" href="#pr-to-rust-lang-infer-outlives-predicates">PR to rust lang - infer outlives predicates</a>
+        <div>
+          <span class="company">rust</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #learn and be curious
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #ownership
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #think big
+            </span>
+            
+          
+
+        </div>
+
+        <div><h4 id="metrics">metrics</h4>
+<ul>
+<li>took 7 months. actual work after mentorship took 4 months to release</li>
+<li>build times were up to 2hrs. incremental builds were 10-30 min</li>
+<li>added 48 different test scenarios</li>
+<li>working on the rust codebase was a exponential step forward for me
+<ul>
+<li>1,043,243 lines of code total in the project</li>
+<li>touched up to 45 files</li>
+</ul>
+</li>
+<li>added 4 additional fixes post PR</li>
+</ul>
+<h4 id="s">S</h4>
+<p>I wanted to get involved in the OSS community, learn and give back. To force myself to do this I got involved during the impl days and claimed a feature that offered mentorship.</p>
+<h4 id="t">T</h4>
+<p>Understand the codebase. Understand the context around the feature. Understand the feature. Learn to work with the codebase. Commit a PR to implement the feature.</p>
+<h4 id="a">A</h4>
+<p>Learned to build and work in a large codebase. Took 7 months but from the moment I asked to work on the feature I knew that I had to finish it.</p>
+<h4 id="r">R</h4>
+<p>Added feature to infer predicates and thus made a small contibution to the ergonomics of the langugage.
+Added docs for the feature.</p>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="own-production-outage-when-on-call-was-in-transit" href="#own-production-outage-when-on-call-was-in-transit">Own production outage when on-call was in transit</a>
+        <div>
+          <span class="company">ihr</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #ownership
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #customer obsession
+            </span>
+            
+          
+
+        </div>
+
+        <div><p>ownership: the api is owned by the team and not only the responsibility of an individual.</p>
+<p>customer obsession: prod outage means users are being affected</p>
+<h4 id="metrics">metrics</h4>
+<ul>
+<li>less than 1/2 hr outage</li>
+<li>restarted 3-4 failing services</li>
+<li>restarted up to 15 pods across all services that were in a bad state</li>
+</ul>
+<h4 id="s">S</h4>
+<p>Towards the end of the work day a sestamatic outage started to happen. The oncall member was in-transit and not available to handle the issue.</p>
+<p>Later we found out that the outage was due to a combination of AWS upgrade event and the weave CNI not being able to maintain a network mesh.</p>
+<h4 id="t">T</h4>
+<p>Step up and represent the API team in fixing the outage.</p>
+<h4 id="a">A</h4>
+<p>Restarted services that were showing errors in prometheus. Also tracked each service individually to ensure that there were no lingering bad pods.</p>
+<h4 id="r">R</h4>
+<p>Outage lasted less than 1/2 hour. Monitored the state of the system for a total of 1 hour.</p>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="android-rotation-work-took-much-longer-than-expected" href="#android-rotation-work-took-much-longer-than-expected">Android rotation work took much longer than expected</a>
+        <div>
+          <span class="company">s&amp;j</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #customer obsession
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #highest standard
+            </span>
+            
+          
+
+        </div>
+
+        <div><p>customer obsession: customer was my client... he would ned to read. and develop code afterwards</p>
+<p>highest standard: rather than hack a solution, there was clearly. a better way but more time consuming way to code</p>
+<h4 id="metrics">metrics:</h4>
+<h4 id="s">S</h4>
+<h4 id="t">T</h4>
+<h4 id="a">A</h4>
+<h4 id="r">R</h4>
+</div>
+      </div>
+    
+      <div class="scenario">
+        <a name="starting-and-leading-the-rust-meetup" href="#starting-and-leading-the-rust-meetup">Starting and leading the Rust meetup</a>
+        <div>
+          <span class="company">rust</span>
+
+          <!-- global variable to set divider -->
+          
+          
+            <span class="important lp">
+              
+              #ownership
+            </span>
+            
+          
+            <span class="important lp">
+              |
+              #develop the best
+            </span>
+            
+          
+
+        </div>
+
+        <div><p>ownership: take charge and take on responsibility</p>
+<p>develop the best: promote people to get involved and grow replacement</p>
+<h4 id="metrics">metrics</h4>
+<ul>
+<li>started as 1 old and 2 new co-organizers</li>
+<li>old dropped and found 1 additional</li>
+<li>hosted at 5 different companies</li>
+<li>found 1 repeat sponsor</li>
+<li>found and organized approx 36 speakers</li>
+<li>gathered approx 10 core repeating members</li>
+<li>gave 2 talks and led 1 learning session</li>
+</ul>
+<h4 id="s">S</h4>
+<p>Others bailed when it came time to actually put in time and organize the meetup. The tasks were no very rewarding and involved coordinating with companies, and speakers and trying to get sponsors.</p>
+<h4 id="t">T</h4>
+<p>I decided to take charge and try and build a sustainable community.</p>
+<h4 id="a">A</h4>
+<p>I created a list of companies.
+I spoke to attendees and convinced a few to speak or otherwise host.
+I invited everyone to speak on their side projects.
+I organized a un-meetup and volunteered to teach the begineer session.</p>
+<h4 id="r">R</h4>
+<p>I was able to organize a meetup each month for approx 1.5 years before transitioning it to a co-organizer. We had average 30 people attending per meetup with upwards of 60 at a few events. We had a home for the meetup where we could each month and a sponsor who would provide food and drinks. There were approx 10 consistent member who would show up very often and would help carry it forward.</p>
+</div>
+      </div>
+    
+
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+

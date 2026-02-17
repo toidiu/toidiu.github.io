@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title></title>
+    <link rel="self" type="application/atom+xml" href="https://toidiu.com/blog/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://toidiu.com/blog/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-12-25T00:00:00+00:00</updated>
+    <id>https://toidiu.com/blog/atom.xml</id>
+    <entry xml:lang="en">
+        <title>On privacy and control</title>
+        <published>2025-12-25T00:00:00+00:00</published>
+        <updated>2025-12-25T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Apoorv Kothari
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://toidiu.com/blog/2025-12-25-privacy-and-control/"/>
+        <id>https://toidiu.com/blog/2025-12-25-privacy-and-control/</id>
+        
+        <summary type="html">&lt;p&gt;&quot;I don&#x27;t need to care about privacy because I have nothing to hide.&quot; is an
+argument that I have heard countless times. I found this argument difficult to
+counter in the past, yet deep-down I knew the reasoning was flawed.&lt;&#x2F;p&gt;
+&lt;p&gt;The problem is that the word &quot;privacy&quot; is diluted and mean different things to
+different people. Instead of &quot;privacy&quot; we really should be talking about
+&quot;control&quot;. Framed in this context, we can more concretely talk about why it&#x27;s
+important to protect your digital identity.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Defending QUIC from acknowledgement-based DDoS attacks</title>
+        <published>2025-10-29T00:00:00+00:00</published>
+        <updated>2025-10-29T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Apoorv Kothari
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://toidiu.com/blog/2025-10-29-optimistic-ack-attack/"/>
+        <id>https://toidiu.com/blog/2025-10-29-optimistic-ack-attack/</id>
+        
+        <summary type="html">&lt;p&gt;Cross posting &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;blog.cloudflare.com&#x2F;defending-quic-from-acknowledgement-based-ddos-attacks&#x2F;&quot;&gt;Blog post&lt;&#x2F;a&gt;: Defending QUIC against the &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;www.rfc-editor.org&#x2F;rfc&#x2F;rfc9000#section-21.4&quot;&gt;Optimistic
+ACK&lt;&#x2F;a&gt; attack.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Rust primitives</title>
+        <published>2024-08-22T00:00:00+00:00</published>
+        <updated>2024-08-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Apoorv Kothari
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://toidiu.com/blog/2024-08-22-rust-primitives/"/>
+        <id>https://toidiu.com/blog/2024-08-22-rust-primitives/</id>
+        
+        <summary type="html">&lt;p&gt;In this post I explore guarantees the Rust language provide and how language primitives
+help enforce those guarantees.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>TLS guarantees</title>
+        <published>2024-07-12T00:00:00+00:00</published>
+        <updated>2024-07-12T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Apoorv Kothari
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://toidiu.com/blog/2024-07-12-tls-guarantees/"/>
+        <id>https://toidiu.com/blog/2024-07-12-tls-guarantees/</id>
+        
+        <summary type="html">&lt;p&gt;TLS is the protocol that secures most of the browse web traffic on the internet. The
+internet is more secure than it has ever been but what exactly does that mean. What are
+the guarantees that TLS provides and how exactly does it deliver on its promise?&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Demystifying ANS.1&#x27;s use in Cryptography</title>
+        <published>2024-05-30T00:00:00+00:00</published>
+        <updated>2024-05-30T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Apoorv Kothari
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://toidiu.com/blog/2024-05-30-demystifying-asn1-use-in-cryptography/"/>
+        <id>https://toidiu.com/blog/2024-05-30-demystifying-asn1-use-in-cryptography/</id>
+        
+        <summary type="html">&lt;p&gt;ASN.1, PKCS #1, PKCS #8, pem, der, Pika Pika Chuuuu!&lt;&#x2F;p&gt;
+&lt;p&gt;Ever feel like cryptography is just a bunch of random acronyms that someone just made up?
+I felt the same way and decided to change that by figuring out how these concepts are used
+in real world cryptography.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Making plans</title>
+        <published>2024-05-25T00:00:00+00:00</published>
+        <updated>2024-05-25T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Apoorv Kothari
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://toidiu.com/blog/2024-05-25-making-plans/"/>
+        <id>https://toidiu.com/blog/2024-05-25-making-plans/</id>
+        
+        <summary type="html">&lt;p&gt;Writing is thinking and can often facilitate executing tasks. It can be especially
+invaluable when tackling complex tasks. This is because it takes clarity of though to
+write well; clarity being the key to unwinding a complex issue. However, writing well can
+take time, requiring multiple drafts and revisions.&lt;&#x2F;p&gt;
+&lt;p&gt;I believe that one doesn&#x27;t actually need the perfect final draft. In most cases first
+draft usually provides majority of the value.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Rust&#x27;s Future ecosystem</title>
+        <published>2022-01-25T00:00:00+00:00</published>
+        <updated>2022-01-25T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Apoorv Kothari
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://toidiu.com/blog/2022-01-25-rusts-future-ecosystem/"/>
+        <id>https://toidiu.com/blog/2022-01-25-rusts-future-ecosystem/</id>
+        
+        <summary type="html">&lt;p&gt;The Rust future ecosystem is quite complex and in this post I hope to explore
+and shed light on the different pieces.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Learning Crypto</title>
+        <published>2021-02-15T00:00:00+00:00</published>
+        <updated>2021-02-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Apoorv Kothari
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://toidiu.com/blog/2021-02-15-learning-crypto/"/>
+        <id>https://toidiu.com/blog/2021-02-15-learning-crypto/</id>
+        
+        <summary type="html">&lt;p&gt;14 steps for learning crypto.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>DB testing in Rust</title>
+        <published>2019-02-19T00:00:00+00:00</published>
+        <updated>2019-02-19T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Apoorv Kothari
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://toidiu.com/blog/2019-02-19-db-testing-in-rust/"/>
+        <id>https://toidiu.com/blog/2019-02-19-db-testing-in-rust/</id>
+        
+        <summary type="html">&lt;p&gt;Writing integration tests for databases is often a cryptic art. The challenge stems from the fact that a database is stateful and instead we would like our tests to be reproducible. In this post I will share my experience writing database tests in Rust, some limitations of my current setup and thoughts on future improvements.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Understanding Lambda in Rust</title>
+        <published>2018-12-24T00:00:00+00:00</published>
+        <updated>2018-12-24T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Apoorv Kothari
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://toidiu.com/blog/2018-12-24-understanding-lambda-in-rust/"/>
+        <id>https://toidiu.com/blog/2018-12-24-understanding-lambda-in-rust/</id>
+        
+        <summary type="html">&lt;p&gt;Given the announcement of the Lambda runtime, there is now an officially supported story around writing lambda functions in Rust. I wanted to try for myself and see the amount of effort needed to get a lambda function working, while also diving deeper into whats involved.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>VM</title>
+        <published>2018-12-21T00:00:00+00:00</published>
+        <updated>2018-12-21T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Apoorv Kothari
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://toidiu.com/blog/2018-12-21-vms/"/>
+        <id>https://toidiu.com/blog/2018-12-21-vms/</id>
+        
+        <summary type="html">&lt;p&gt;There are two types of Virtual Machines: system VM and process&#x2F;language VM. A language VM
+is also called a runtime (while true for Java and JVM this is typically not the
+nomenclature with other languages). One abstracts out the OS while the other abstracts out
+a language runtime. A system VM might be good for isolation, security, portability, etc. A
+language VM is good for portability of a language (think JVM). For the purpose of this
+article we will consider system VMs.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Announcing Reads</title>
+        <published>2018-12-19T00:00:00+00:00</published>
+        <updated>2018-12-19T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Apoorv Kothari
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://toidiu.com/blog/2018-12-19-announcing-reads/"/>
+        <id>https://toidiu.com/blog/2018-12-19-announcing-reads/</id>
+        
+        <summary type="html">&lt;p&gt;I am starting an ongoing project&#x2F;section here called reads. The task will be to read,
+highlight and summarize a paper, and possibly a coded implementation. The primary goal of
+this project is to reference my thoughts, and also gain a better understanding of the
+topic in the process. Possibly other might also find this useful.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>A practical guide to breakOut</title>
+        <published>2017-05-27T00:00:00+00:00</published>
+        <updated>2017-05-27T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Apoorv Kothari
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://toidiu.com/blog/2017-05-27-a-practical-guide-to-breakout/"/>
+        <id>https://toidiu.com/blog/2017-05-27-a-practical-guide-to-breakout/</id>
+        
+        <summary type="html">&lt;p&gt;In this post I will be reviewing &lt;code&gt;scala.collection.breakOut&lt;&#x2F;code&gt; from an application
+developer&#x27;s perspective rather than a functional programming enthusiast. I will discuss
+why one would want to use it and how to recognize when it is applicable.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Polymorphism in Scala</title>
+        <published>2016-10-31T00:00:00+00:00</published>
+        <updated>2016-10-31T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Apoorv Kothari
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://toidiu.com/blog/2016-10-31-polymorphism-in-scala/"/>
+        <id>https://toidiu.com/blog/2016-10-31-polymorphism-in-scala/</id>
+        
+        <summary type="html">&lt;p&gt;Polymorphism is a word that means &#x27;having  different forms&#x27;. In terms of OOP, this mean
+that a class can have many different forms and behave in different manners depending on
+the context. Scala has 3 types of Polymorphism that we will explore further below.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Android low memory testing</title>
+        <published>2016-08-12T00:00:00+00:00</published>
+        <updated>2016-08-12T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Apoorv Kothari
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://toidiu.com/blog/2016-08-12-android-low-memory-testing/"/>
+        <id>https://toidiu.com/blog/2016-08-12-android-low-memory-testing/</id>
+        
+        <summary type="html">&lt;p&gt;Resource constraints is what separate mobile development from other types of development.
+This post focuses on &quot;low memory&quot; constraints and to test for this ephemeral state.&lt;&#x2F;p&gt;</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Learning Scala</title>
+        <published>2016-05-15T00:00:00+00:00</published>
+        <updated>2016-05-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Apoorv Kothari
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://toidiu.com/blog/2016-05-15-learning-scala/"/>
+        <id>https://toidiu.com/blog/2016-05-15-learning-scala/</id>
+        
+        <summary type="html">&lt;p&gt;Learning a new technology&#x2F;language is difficult, and it can seem daunting when getting
+started. This is the third time in 3 years that I have set out to learn something new and
+become proficient, so I wanted to share my experience on how I learned Scala and built
+SubwayTunes.&amp;hellip;
+&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>

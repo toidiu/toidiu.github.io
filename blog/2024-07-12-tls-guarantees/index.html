@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="I have 15+ years of software engineering experience across different parts of the tech
+              stack including networking libraries, congestion control, performance improvements,
+              Backend, and Android development.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Rust, Protocols, QUIC, IETF,
+              networking, TLS, Scala, java, Cooper Union, blog, talks, code, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js" defer></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;cucina">
+
+      cucina
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <h1 class="title">TLS guarantees</h1>
+  <div class="date">2024-07-12</div>
+  </div>
+
+  <div class="content">
+    <p>TLS is the protocol that secures most of the browse web traffic on the internet. The
+internet is more secure than it has ever been but what exactly does that mean. What are
+the guarantees that TLS provides and how exactly does it deliver on its promise?</p>
+<span id="continue-reading"></span><h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="https://toidiu.com/blog/2024-07-12-tls-guarantees/#tls-guarantees">TLS guarantees</a>
+<ul>
+<li><a href="https://toidiu.com/blog/2024-07-12-tls-guarantees/#tls-authentication">Authentication</a></li>
+<li><a href="https://toidiu.com/blog/2024-07-12-tls-guarantees/#tls-confidentiality">Confidentiality</a></li>
+<li><a href="https://toidiu.com/blog/2024-07-12-tls-guarantees/#tls-integrity">Integrity</a></li>
+</ul>
+</li>
+<li><a href="https://toidiu.com/blog/2024-07-12-tls-guarantees/#sub-protocols">Sub protocols</a>
+<ul>
+<li><a href="https://toidiu.com/blog/2024-07-12-tls-guarantees/#handshake-protocol">Handshake protocol</a></li>
+<li><a href="https://toidiu.com/blog/2024-07-12-tls-guarantees/#record-protocol">Record protocol</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="tls-guarantees"><a name="tls-guarantees">TLS guarantees</a></h2>
+<p>The goal of the TLS protocol is to secure network communication. More formally it aim to
+provide 3 security properties:</p>
+<ul>
+<li>Authentication: is the peer who they say they are.</li>
+<li>Confidentiality: messages between two peers are secret and only visible to the peers</li>
+<li>Integrity: messages sent to peers are tamper proof. A tampered message can be detected.</li>
+</ul>
+<p>But how exactly does TLS enforce these properties?</p>
+<h3 id="authentication"><a name="tls-authentication">Authentication</a></h3>
+<p>In TLS authentication is satisfied by the use of certificates. A server sends its
+certificate during the handshake. The client will optionally send its certificate if the
+server requests mutual authentication (aka. mutual TLS or mTLS).</p>
+<p>Trusting a certificate is complicated and typically involves parsing a certificate chain
+(<code>root-cert =&gt; intermediate-cert =&gt; peer-cert</code>). Trust is established if the server trusts
+one of the certificates in the chain. <a rel="external" href="https://datatracker.ietf.org/doc/html/rfc5280">RFC
+5280</a> defines the modern day certificate
+infrastructure known as x.509 PKI (Public Key Infrastructure). Modern web browsers come
+installed with well-established root certificates (Cloudflare root, Mozilla root, etc)
+which helps facilitate the internet.</p>
+<p>The certificate contains the server's public key pair and can be used to verify
+<a rel="external" href="https://en.wikipedia.org/wiki/Digital_signature">signatures</a> created by the server.
+Signatures are used by the TLS handshake to ensure that browser is speaking with the "real"
+peer (toidiu.com) and not an attacker. This works since only the real "toidiu.com" website
+server will have the private key associated with the public key on the certificate.</p>
+<h3 id="confidentiality"><a name="tls-confidentiality">Confidentiality</a></h3>
+<p>Confidentiality is achieved via encryption and its usually what most people think of when
+they think of "security". However, Confidentiality without Authentication (are you sure
+you are talking with your Bank?) or Integrity (are you really sure that some hacker didn't
+intercept and modify the message?) is not comprehensive security!</p>
+<p>Peers using TLS, exchange a shared secret key, which they use to encrypt messages they
+send to each other. The exchange of secret material is called a key exchange (kex) and is
+part of a TLS Handshake. There are many kex algorithms (RSA, DHE, EDHE). TLS 1.3 has
+deprecated many old cipher suites in preference for modern ones.</p>
+<p><a rel="external" href="https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman">ECDHE</a> (elliptic
+curve diffie-hellman ephemeral) makes a fine choice because of additional security
+properties (<a rel="external" href="https://en.wikipedia.org/wiki/Forward_secrecy">forward-secret</a>) and
+performance compared with other algotithms.</p>
+<p>To ensure a secure exchange, the TLS 1.3 kex samples key material (kem) from both the
+client and server when deriving the master secret key (<code>client-public-kem + server-public-kem =&gt; master-secret-key</code>).</p>
+<h3 id="integrity"><a name="tls-integrity">Integrity</a></h3>
+<p><a rel="external" href="https://en.wikipedia.org/wiki/Message_authentication_code">MAC</a> (message authentication
+code) is a cryptographic primitive that can be used to check the integrity of a piece of
+data. During the TLS handshake both peers agree upon a "secret key", which is then used to
+generate MACs for messages exchanged.</p>
+<p>Very similar to a digital signature, the MAC can be used to verify that the message was in
+fact sent by the peer and not tampered with, i.e. Integrity. Check out this stackover post
+for the difference between <a rel="external" href="https://crypto.stackexchange.com/a/5647">digital signature vs
+MAC</a>.</p>
+<p>In previous TLS protocols, the MAC was calculated separately. In TLS 1.3, only
+<a rel="external" href="https://en.wikipedia.org/wiki/Authenticated_encryption">AEAD</a> cipher suites are supported
+so MAC and encryption happen together.</p>
+<h2 id="sub-protocols"><a name="sub-protocols">Sub protocols</a></h2>
+<p>The TLS protocol is divided into two sub protocols: Handshake and Record.</p>
+<h3 id="handshake-protocol"><a name="handshake-protocol">Handshake protocol</a></h3>
+<p>The Handshake protocol is responsible for performing a key exchange with the
+peer. The secret material generated from the key exchange is then used in the
+Record protocol to encrypt data.
+<a rel="external" href="https://tls13.xargs.org/">https://tls13.xargs.org/</a> provides an interactive
+diagram of the TLS 1.3 handshake.</p>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="plain"><span class="giallo-l"><span>    Client                                               Server</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Handshake protocol:</span></span>
+<span class="giallo-l"><span>    ClientHello               --------&gt;</span></span>
+<span class="giallo-l"><span>                                                    ServerHello</span></span>
+<span class="giallo-l"><span>                                          [generate secret key]</span></span>
+<span class="giallo-l"><span>                              &lt;--------              {Finished}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    [generate secret key]</span></span>
+<span class="giallo-l"><span>    {Finished}                --------&gt;</span></span></code></pre>
+<p>The TLS protocol is extensible via the use of extesions. The peers can negotiate
+extensions in order to enable certain features. Some of these extensions are
+optional, while others are required for normal operation. A few of them include:</p>
+<ul>
+<li>server_name: specify the name of the server (useful for load balancing)</li>
+<li>heartbeat: remember the Heartbleed bug?</li>
+<li>supported_groups: allow a client to enumerate the elliptic curves it supports
+and/or the point formats it can parse.</li>
+<li>"signature extensions": I specifically choose these because they are subtly
+different and caused me much confusion in the past <a rel="external" href="https://www.rfc-editor.org/rfc/rfc8446#section-4.2.3">RFC
+section</a>
+<ul>
+<li>signature_algorithms: applies to signatures in the CertificateVerify
+message. This signature is generated by one of the TLS peers (client of
+server) and used to authenticate the handshake was tamper proof. More on
+this below.</li>
+<li>signature_algorithms_cert: allows a client to indicate which signature
+algorithms it can validate in X.509 certificates. This signature is
+generated by CAs (certificate authorities) and used to validate the
+certificate chain.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Difference between <code>signature_algorithms</code> and <code>signature_algorithms_cert</code></strong></p>
+<ul>
+<li>signature_algorithms:
+<ul>
+<li>Certificate message: As part of the handshake, a Server provides the Client
+with its certificate (its identitiy).</li>
+<li>CertificateVerify message: This message is used to provide explicit proof
+that the Server possesses the private key corresponding to its certificate.
+This is done by using the private key to <strong>sign some data</strong>. The algorithm
+used to sign this data must be in the <code>signature_algorithms</code> extension.</li>
+</ul>
+</li>
+<li>signature_algorithms_cert:
+<ul>
+<li>We discussed certificate chains above. A chain could mean that the
+certificate for this website (leaf) is <strong>signed</strong> by some intermediatary,
+which is <strong>signed</strong> by some root certificate. root-&gt;intermediate-&gt;leaf.</li>
+<li>My web browser might not trust every leaf certificate (every single website
+on the internet), but might trust some small number of root certificates.</li>
+<li>My browser is able to validate that chain by verifying that the root
+signature on the leaf certificate.</li>
+<li>The algorithm allowed for these certificate signature must be in the
+<code>signature_algorithms_cert</code> extension list.</li>
+</ul>
+</li>
+</ul>
+<h3 id="record-protocol"><a name="record-protocol">Record protocol</a></h3>
+<p>Once the Handshake protocol is complete, the peers now share the same secret key
+which they can use to encrypt/decrypt message. At this point it is possible for
+the peers to send encrypted data to each another.</p>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+

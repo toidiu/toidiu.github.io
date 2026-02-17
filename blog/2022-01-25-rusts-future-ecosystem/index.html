@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="I have 15+ years of software engineering experience across different parts of the tech
+              stack including networking libraries, congestion control, performance improvements,
+              Backend, and Android development.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Rust, Protocols, QUIC, IETF,
+              networking, TLS, Scala, java, Cooper Union, blog, talks, code, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js" defer></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;cucina">
+
+      cucina
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <h1 class="title">Rust&#x27;s Future ecosystem</h1>
+  <div class="date">2022-01-25</div>
+  </div>
+
+  <div class="content">
+    <p>The Rust future ecosystem is quite complex and in this post I hope to explore
+and shed light on the different pieces.</p>
+<span id="continue-reading"></span>
+<p>Note: the Futures ecosystem is still evolving and will likely change as the
+Rust community agrees on best practices. It is therefore best to consider this
+post as a snapshot in time.</p>
+<p>Why I think the ecosystem is so complicated:</p>
+<ul>
+<li>futures/asynchronous programming is complicated</li>
+<li>the ecosystem was developed and used outside the standard library and then
+slowly introduced into the library</li>
+<li>async is a lot of syntax sugar. It hides the complexity but just because its
+hidden doesn't mean its not there</li>
+<li>the ecosystem is being developed and is currently a bit fragmented</li>
+</ul>
+<h3 id="different-future-crates">Different future crates</h3>
+<ul>
+<li><a rel="external" href="https://docs.rs/futures/latest/futures/">futures-rs</a> from the repo
+<a rel="external" href="https://github.com/rust-lang/futures-rs">https://github.com/rust-lang/futures-rs</a> and
+website https://rust-lang.github.io/futures-rs/
+<ul>
+<li><a rel="external" href="https://docs.rs/futures-core/latest/futures_core/">futures-core</a></li>
+<li><a rel="external" href="https://docs.rs/futures-util/latest/futures_util/">futures-util</a></li>
+<li><a rel="external" href="https://docs.rs/futures-channel/latest/futures_channel/">futures-channel</a></li>
+</ul>
+</li>
+<li><a rel="external" href="https://doc.rust-lang.org/std/future/">std future</a> comes from the repo
+<a rel="external" href="https://github.com/rust-lang/rust">https://github.com/rust-lang/rust</a></li>
+<li><a rel="external" href="https://doc.rust-lang.org/std/task/index.html">task module</a></li>
+</ul>
+<h3 id="futures-rs">futures-rs</h3>
+<p>futures-rs is a project before there were futures in Rust. The goal of the
+project was to experiment with futures before officially supporting it in the
+Rust standard library. The project was a success and from it came the <a rel="external" href="https://doc.rust-lang.org/std/future/trait.Future.html">Future
+trait</a>. The trait is
+what allowed the rust team to then build an deliver the async feature that the
+community very much wanted for the 2018 edition.</p>
+<p>However, there is still so much more functionality that is part of the
+futures-rs project and a lot is already being used. The futures crate is the
+entire collection of all functionality exposed by futures-rs while the
+futures-* is the project broken into smaller modular pieces.</p>
+<p>So what does futures-rs offer? Stream, Channels, IO, task, and helpers to make
+it more convenient to work with futures!</p>
+<h3 id="std-future">std future</h3>
+<p>The standard future crate (which is part of the Rust standard library) offers
+the <strong>Future</strong> trait. This trait is what allows the Rust community to write
+interoperable code.</p>
+<h3 id="task-module">task module</h3>
+<p>While not actually a future, this module contains some core concepts necessary
+for writing asynchronous programs.</p>
+<p>We need a runtime to actually make progress in a program. For this post lets consider the
+work stealing tokio runtime. Rather than spawn threads, tokio, utilizes tasks (or green
+threads) to complete work. So within a single thread a task might run until it makes an
+async non-blocking call (file read, network send, timeout, etc.).</p>
+<p>The non-blocking is important because it allows the runtime to utilize the thread to run
+another task instead (ie. the network call is waiting for some packets to arrive and
+doesn't actually need cpu resources). This cooperative non-blocking scheduling by the
+executor allows for much denser workloads to occur compared to the thread per task model.</p>
+<p>In this cooperative scheduling, a task (as it is known in tokio) is the unit of work
+(rather than a thread). A task should contains all the information to start, make progress
+and finish the work. Being asynchronous, a task expects Future, which it can start, and
+then <code>poll()</code> to completion.</p>
+<ul>
+<li><strong>Poll</strong>: the result returned from calling <code>poll</code> on a Future. Can either be Ready or
+Pending.</li>
+<li><strong>Context</strong>: each task calls <code>poll(ctx: Context)</code>. Context contains a Waker.</li>
+<li><strong>Waker</strong>: notifies the runtime executor that a task is ready and should be polled
+again.</li>
+</ul>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+

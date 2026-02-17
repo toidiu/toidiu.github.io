@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="I have 15+ years of software engineering experience across different parts of the tech
+              stack including networking libraries, congestion control, performance improvements,
+              Backend, and Android development.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Rust, Protocols, QUIC, IETF,
+              networking, TLS, Scala, java, Cooper Union, blog, talks, code, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js" defer></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;cucina">
+
+      cucina
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <h1 class="title">AWS: Transport libs</h1>
+  <div class="date">2024-03-01</div>
+  </div>
+
+  <div class="content">
+    <p>In this role I was responsible for maintaining the secure transport libraries
+used to power AWS data centers.  These included s2n-quic and s2n-tls, which are
+implementations of the QUIC and TLS protocols respectively.</p>
+<p>As part of maintenance, my responsibilities included adding new library
+features, accessing and mitigating security vulnerability, on-boarding new
+customer integrations, helping debug existing customer integrations, helping
+onboard new team members, updating public and internal documentation.</p>
+<p>I joined the team when we were in the process of implementing s2n-quic so I am
+also one of the original core maintainers of s2n-quic who helped build and
+launch the library. In this capacity I designed and implemented core features in
+the library, coordinated 3rd party pentests, helped with customer integrations,
+etc.</p>
+<h3 id="s2n-quic-implement-optimistic-ack-attack-mitigations">s2n-quic: Implement Optimistic ACK Attack mitigations</h3>
+<p>Tracking issue: https://github.com/aws/s2n-quic/issues/1962
+Feature PR: https://github.com/aws/s2n-quic/pull/1986</p>
+<p>This was tricky since the RFC is very sparse in its guidance. How often should
+we skip packets? How many packets to skip? How do we track/clear skipped
+packets?</p>
+<blockquote>
+<p>An endpoint that acknowledges packets it has not received might cause a
+congestion controller to permit sending at rates beyond what the network
+supports. An endpoint MAY skip packet numbers when sending packets to detect
+this behavior. An endpoint can then immediately close the connection with a
+connection error of type PROTOCOL_VIOLATION</p>
+</blockquote>
+<p>We choose to skip 1 packet in the range [cwnd/2, cwnd*2]. Since we are trying to
+control cwnd explosion, basing the skip value on cwnd scaled with the cwnd state
+over the lifetime of the connection.</p>
+<p>Other implementations were choosing this value statically.</p>
+<blockquote>
+<p>Only skip a packet number after verifying the peer did not send the previous one.
+Many of the implementations were doing this check naively. They would skip
+packets at a regular interval, clearing the previous skipped pn. Only tracking a
+single skipped packet and clearing the skipped pn, before verifying the peer did
+not ack the previous skipped packet means that they were not necessarily doing
+the mitigation (depending on which packed was skipped).</p>
+</blockquote>
+<p>The above method allowed us to only skip a single pn (small mem footprint),
+while also effectively mitigating the attack.</p>
+<p>Example:</p>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="plain"><span class="giallo-l"><span>So lets say an impl skips every 5th packet. It would skip 5, 10, 15. But the</span></span>
+<span class="giallo-l"><span>impl should only skip</span></span>
+<span class="giallo-l"><span>[1,2,3,4]; skip 5</span></span>
+<span class="giallo-l"><span>&lt; ack [1,2,3,4]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>// the skip packet is cleared so the peer can send an ack for 5</span></span>
+<span class="giallo-l"><span>[1,2,3,4,6,7,8,9,11]; skip 10</span></span>
+<span class="giallo-l"><span>&lt; ack [5,6,7]</span></span></code></pre>
+<p>Actual calculation:</p>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="plain"><span class="giallo-l"><span>// bound the random value based on congestion window</span></span>
+<span class="giallo-l"><span>let pkt_per_cwnd = path.congestion_window() / path.mtu();</span></span>
+<span class="giallo-l"><span>let lower = pkt_per_cwnd / 2;</span></span>
+<span class="giallo-l"><span>let upper = pkt_per_cwnd.saturating_mul(2);</span></span>
+<span class="giallo-l"><span>let cardinality = upper - lower + 1;</span></span>
+<span class="giallo-l"><span>let mut rand = u32::rand() &amp; cardinality;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>// skip counter</span></span>
+<span class="giallo-l"><span>skip = (lower + MIN_SKIP_COUNTER_VALUE).saturating_add(rand);</span></span>
+<span class="giallo-l"><span>*skip_counter = Some(Counter::new(skip));</span></span></code></pre><h3 id="s2n-quic-onboarded-cloudfront-to-s2n-quic-for-http-3-support">s2n-quic: Onboarded CloudFront to s2n-quic for HTTP/3 support</h3>
+<blockquote>
+<p>Time to First Byte (TTFB) improved by 23.5% overall, but especially on Android with a 37.1%
+improvement. Additionally, customer engagement metrics from Snap showed improvement to story view
+times, ad impressions, and a reduction in viewer cancellation counts.</p>
+</blockquote>
+<p>s2n-quic was more performant due to the following reasons.</p>
+<ul>
+<li>cc algorithm (one of the main driver of the TTFB)
+<ul>
+<li>custom amplification factor</li>
+<li>gain value</li>
+<li>loss threshold values</li>
+<li>initial cwnd value</li>
+</ul>
+</li>
+<li>mtu probing</li>
+<li>packet pacing</li>
+<li>gso</li>
+<li>ecn</li>
+<li>testing
+<ul>
+<li>performance via flamegraph</li>
+<li>netbench</li>
+</ul>
+</li>
+<li>zero cost event framework</li>
+<li>custom data structures
+<ul>
+<li>ack range: interval set</li>
+<li>packet number map: ring buffer which stores consequetive values and allows
+for ranged delete</li>
+</ul>
+</li>
+</ul>
+<h3 id="s2n-quic-s2n-tls-async-cert-loading">s2n-quic/s2n-tls: Async cert loading</h3>
+<p>https://github.com/aws/s2n-quic/issues/1137
+Currently s2n-quic does the certificate lookup/loading operations synchronously.
+Non ideal for application which handle multiple connections concurrently. The
+work allowed for certificate lookup/loading operations to be performed
+asynchronously and enable non-blocking behavior.</p>
+<ul>
+<li>s2n-quic: pass the connection waker down to the tls libraries so that they
+could wake on progress</li>
+<li>s2n-tls: The work involved converting the callback is only invoked once to a
+poll the callback model in s2n-tls. s2n-tls by default did not allow for poll
+callbacks. s2n-tls previously only called the callback once, which not the
+Rust model and has quite a few drawbacks. Polling only once means the
+application/s2n-quic has to schedule (separate thread possibly) the completion
+of the callback. It also needs to manage the state associated with the
+callback separately. The Rust polling model allows for all state associated
+with the future to live within the object bing polled. Additionally, the
+future can make progress as part of the already existing runtime that s2n-quic
+starts with.</li>
+<li>s2n-tls bindings: gluing the new callback polling behavior in an extensible
+way for other callbacks.</li>
+</ul>
+<h3 id="s2n-quic-ack-frequency-optimizations">s2n-quic: ACK frequency optimizations</h3>
+<p>link: https://github.com/aws/s2n-quic/issues/1276</p>
+<p>Initial experiments with single batch did not show much improvements. Theory
+was that having to aggregate acks and then process it separately was just as
+expensive (cost savings of 2-3% simply didn't materialize) as simply processing
+the acks individually.</p>
+<p><strong>Delaying ack meant:</strong></p>
+<ul>
+<li>delayed signals to CC and loss recovery</li>
+<li>delayed processing of ECN signals (mitigated by processing immediately)</li>
+<li>mtu discovery (mitigated by not delaying mtu probes)</li>
+<li>handshake and anti-amplificaiton (mitigated by delaying after the handshake)</li>
+</ul>
+<p><strong>Proposed solutions: 3 possible solutions</strong></p>
+<ul>
+<li>single payload batch would aggregate acks from multiple packets (10) and
+process them once (gso by default batches 10 packets). projected cost savings
+of 2-3% based on flamegraph.
+<ul>
+<li>Projected Pros:
+<ul>
+<li>relative CPU savings of ~20%</li>
+<li>bytes/instruction (150k → 125k)</li>
+<li>syscalls savings (20k → 6k)</li>
+<li>This solution does not affect LR and CC!!</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>multi payload batch would store the acks and process them at some delay. this
+would be equivalent to implementing the RFC, except it can be implemented
+locally without having to negotiate with the peer. (batch acks from multiple
+payloads would require additional storage and tracking)
+<ul>
+<li>Projected Pros:
+<ul>
+<li>more sophisticated delay strategy based on time/packets</li>
+<li>doesn't require negotiating extension with peer</li>
+<li>a stepping stone towards full RFC compliance</li>
+</ul>
+</li>
+<li>Cons:
+<ul>
+<li>Affects CC and LR</li>
+<li>requires tuning and experimental data to fine-tune</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ack freq rfc (the full rfc, which requires the peer to negotiate)
+<ul>
+<li>Projected Pros:
+<ul>
+<li>can influence peer ack delay</li>
+</ul>
+</li>
+<li>Cons:
+<ul>
+<li>Affects CC and LR</li>
+<li>requires tuning and experimental data to fine-tune</li>
+<li>requires peer to negotiate</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="s2n-quic-connection-migration">s2n-quic: Connection Migration</h3>
+<p>https://github.com/aws/s2n-quic/pulls?q=is%3Apr+connection+migration+is%3Aclosed+author%3Atoidiu
+Connection migration is one of the selling features of QUIC. It addresses the
+modern network usage pattern where clients running on phones switch from one cell
+tower to another. Reestablishing a new connection requires a new handshake to
+establish new keys. Additionally, any in-progress transfers might have to start
+over.</p>
+<p>QUIC facilitates Connection Migration by introducing an explicit ConnectionId,
+rather than using ip/port to identify a connection. This allows a server to tie
+a client connection which is changing ip/ports back to the same connection
+context and avoid a new handshake.</p>
+<h3 id="s2n-quic-client-implementation">s2n-quic: client implementation</h3>
+<p>https://github.com/aws/s2n-quic/issues/1009</p>
+<p>AWS is primarily a datacenter company so the initial implementation of s2n-quic
+only supported the server usecase. I added client support to the library.</p>
+<p>Previously integration tests were based on a third-party QUIC library(quinn)
+which made introspection and configuration more difficult. Adding client support
+meant owning the entire QUIC stack for both the client and server. This
+eventually enabled more sophisticated integration and fuzz testing.</p>
+<p>The task involved reading the QUIC RFC for all requirements and implementing the
+features to support to the library.</p>
+<h3 id="s2n-quic-event-framework">s2n-quic: Event framework</h3>
+<p>https://github.com/aws/s2n-quic/issues/439</p>
+<p>The event framework is a zero-cost abstraction which allows customers to enable
+logging for s2n-quic. This kind of falls out of the sans I/O methodology.</p>
+<p>The original verion of this was done with syntax macros, which I worked on
+extensively. The final implementation was a standalone Rust token parse (via syn
+crate) and outputed a generated.rs file. The parser was responsible for
+correctly constructing events, their default impl, testing impl and builder
+pattern for each event.</p>
+<h3 id="s2n-tls-pedantic-valgrind-checks">s2n-tls: Pedantic Valgrind checks</h3>
+<p>https://github.com/aws/s2n-tls/issues/3758</p>
+<p>Inspired by s2n_cleanup not properly cleaning up.</p>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="plain"><span class="giallo-l"><span>// a comma separated list of one or more of: definite indirect possible reachable.</span></span>
+<span class="giallo-l"><span>--errors-for-leak-kinds=&lt;set&gt; [default: definite,possible]</span></span>
+<span class="giallo-l"><span>--errors-for-leak-kinds=all</span></span></code></pre>
+<p>Leaks of kind "Still reachable" were not caught by Vangrind because by default
+Valgrind enables "definite and possible". While this might be a safe assumption
+for applications it is not for libraries that need to cleanup possibly stateful
+resources. Solution was to run <code>--errors-for-leak-kinds=all</code> in tests.</p>
+<h3 id="s2n-tls-openssl-3-0-support">s2n-tls: Openssl 3.0 support</h3>
+<p><strong>TODO expand on this work.</strong> low
+https://github.com/aws/s2n-tls/issues/3442</p>
+<h3 id="s2n-netbench-orchestrator">s2n-netbench: orchestrator</h3>
+<p><strong>TODO expand on this work.</strong> low</p>
+<h2 id="not-mentioned-in-resume">Not mentioned in resume</h2>
+<h3 id="s2n-quic-support-min-initial-max-mtu-per-connection">s2n-quic: Support min, initial, max MTU per connection</h3>
+<p>Some mobile networks will fragment and reassemble packets despite the DNF (do no
+fragment) flag. While this is a good thing for availability, it skews MTU
+probing measurements and results in dereased throughput due to packet loss.</p>
+<p>s2n-quic probes for the max mtu values on each network path and uses that to
+that when sending packets. Since mobile networks are essentially claiming larger
+MTU values than the path actually supports, s2n-quic continues to send larger
+MTU values. Additionally, fragmenting/reassembing is an expensive operation
+(io/cpu/time), which requies the fragmented packets to be buffered and then
+reassemble.</p>
+<p>The result is that s2n-quic sends larger and larger packets, which take longer
+and longer for the mobile network to process. This results in packet loss and an
+overall decrease in throughput.</p>
+<h3 id="s2n-quic-presented-a-talk-at-cryptocon">s2n-quic Presented a talk at CryptoCon</h3>
+<p>I presented a talk about s2n-quic and the QUIC protocol at CryptoCon, an internal AWS cryptography
+conference. The talk was recored and shared in the internal Amazon video repository.</p>
+<p>The goal of the talk was to illuminate what makes QUIC a novel protocol over the
+previous iterations: TLS1.3, TLS1.2, etc. Imo the biggest shift in QUIC was
+moving critical protocol components from the kernel-space to user-space (CC,
+recovery, pacing). This shift allowed for quicker iterations but comes at the
+higher cost and complexity of the user-space implementation.</p>
+<h3 id="s2n-quic-add-fips-support-which-lead-to-issues-when-updating-rustls-to-use-aws-lc-by-default">s2n-quic:  Add fips support which lead to issues when updating rustls to use aws-lc by default</h3>
+<p>rustls doesnt have a stable API and is pre-1.x. Additionally, it frequently
+publishes breaking changes (although the introduction of
+https://github.com/rustls/pki-types might mean a more stable API).</p>
+<ul>
+<li>s2n-quic is 1.x</li>
+<li>s2n-quic took a dep on rustls.</li>
+<li>s2n-quic re-exported some rustls types.</li>
+<li>rustls broke API in new versions.</li>
+<li>Upgrading rustls would mean breaking API for s2n-quic.</li>
+</ul>
+<h3 id="created-internal-customer-list">created internal customer list</h3>
+<h3 id="s2n-quic-rustls-testing-and-parity">s2n-quic:  rustls testing and parity</h3>
+<h3 id="s2n-quic-advocate-better-slowloris-mitigation">s2n-quic:  advocate better slowloris mitigation</h3>
+<h3 id="s2n-quic-handshake-status">s2n-quic:  handshake status</h3>
+<p>https://github.com/aws/s2n-quic/pull/960</p>
+<p>Identified missing loose requirement with the handshake status. Took initiative to figure out the
+correct requirement for client vs server. Added data typed enum to capture the complex handshake
+transition. Added fuzz testing alongside the fix which increased confidence in the solution.</p>
+<h3 id="s2n-quic-path-challenge">s2n-quic path challenge</h3>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+

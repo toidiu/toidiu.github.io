@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="I have 15+ years of software engineering experience across different parts of the tech
+              stack including networking libraries, congestion control, performance improvements,
+              Backend, and Android development.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Rust, Protocols, QUIC, IETF,
+              networking, TLS, Scala, java, Cooper Union, blog, talks, code, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js" defer></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;cucina">
+
+      cucina
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <h1 class="title">Rust primitives</h1>
+  <div class="date">2024-08-22</div>
+  </div>
+
+  <div class="content">
+    <p>In this post I explore guarantees the Rust language provide and how language primitives
+help enforce those guarantees.</p>
+<span id="continue-reading"></span><h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#borrow-checker">Borrow Checker</a>
+<ul>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#ownership">Ownership</a></li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#borrowing">Borrowing</a></li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#lifetimes">Lifetimes</a></li>
+</ul>
+</li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#memory-aliasing-modules">Memory Aliasing modules</a>
+<ul>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#shared-ownership">Shared ownership</a>
+<ul>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#rc">Rc</a></li>
+</ul>
+</li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#shared-mutability">Shared mutability</a>
+<ul>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#cell">Cell</a></li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#refcell">RefCell</a></li>
+</ul>
+</li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#synchronization">Synchronization</a>
+<ul>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#arc">Arc</a></li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#mutex">Mutex</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#thread-safety">Thread-safety</a>
+<ul>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#send">Send</a></li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#sync">Sync</a></li>
+</ul>
+</li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#traits">Traits</a>
+<ul>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#deref">Deref</a></li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#drop">Drop</a></li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#phantomdata">PhantomData</a></li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#unpin">Unpin</a>
+<ul>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#pin-struct">Pin</a></li>
+<li><a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#phantompinned">PhantomPinned</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="borrow-checker">Borrow Checker</h2>
+<blockquote>
+<p>In computing, aliasing describes a situation in which a data location in memory can be
+accessed through different symbolic names in the program. Thus, modifying the data
+through one name implicitly modifies the values associated with all aliased names, which
+may not be expected by the programmer. As a result, aliasing makes it particularly
+difficult to understand, analyze and optimize programs.</p>
+</blockquote>
+<p>A mental model for thinking about guarantees that Rust provides is that it makes it easy
+to reason about <a rel="external" href="https://en.wikipedia.org/wiki/Aliasing_(computing)">aliasing</a>. At the end
+of the day it comes down to where is your data, who owns it and who is accessing it. The
+Borrow Checker provides abstractions which allows the Rust compiler to track and reason
+about these aliasing rules and prevent misuse.</p>
+<p>Unlike C, Rust attempts to automatically track if some data is being referenced, or read
+or written to or already cleaned up. By tracking this automatically, it is able to prevent
+common pitfalls we run into in C and also able to make performance optimizations that
+would be very risky to do when tracking aliasing manually.</p>
+<p>The following post describes some core Rust primitives that Rust provides to help us
+reason about aliasing.</p>
+<h3 id="ownership">Ownership:</h3>
+<p>Rust has a concept of ownership which assigns "ownership" of data to a variable. Since
+ownership is exclusive, the Rust compiler is able to reason about when data is valid vs
+when it has been freed. Ownership can be transferred, but that still maintains the
+exclusive ownership rule.</p>
+<p>Ownership rules allows the Rust compiler to:</p>
+<ul>
+<li>prevent double free</li>
+<li>prevent accessing memory after free
+<ul>
+<li>which ensures memory safety</li>
+</ul>
+</li>
+</ul>
+<h3 id="borrowing">Borrowing:</h3>
+<p>Since each piece of data has an exclusive owner, borrowing is the mechanism that allows
+for multiple functions to interact with some data. Multiple reads (<code>&amp;</code> which is an
+immutable reference) or a single write (<code>&amp;mut</code> mutable reference) are allowed and enforced
+by the Rust compiler.</p>
+<p>Borrowing rules allows the Rust compiler to:</p>
+<ul>
+<li>prevent aliasing</li>
+<li>prevent data races
+<ul>
+<li>which ensures single writer <strong>or</strong> multiple reads</li>
+</ul>
+</li>
+</ul>
+<h3 id="lifetimes">Lifetimes:</h3>
+<p>In C, while it is possible to hand out references to data its also necessary to enforce
+that the underlying data is valid for as long as the reference is in use. For example, it
+would be undefined behavior if we were to hand out a reference to some data, and free the
+data (dangling pointer). Accessing the data after free is undefined behavior and
+considered catastrophic.</p>
+<p>Tracking a single piece of data and its reference might seem feasible but quickly an
+operational risk as the program grows in complexity.</p>
+<p>Lifetime rules allows the Rust compiler to:</p>
+<ul>
+<li>prevent invalid or dangling references
+<ul>
+<li>which ensures that references remain valid</li>
+<li>which ensures references don't outlive the data they point to</li>
+</ul>
+</li>
+</ul>
+<h2 id="memory-aliasing-modules">Memory Aliasing modules</h2>
+<p>To help us deal with aliasing rules Rust provides some containers that a allow us to
+safely alias memory while also allowing the compiler to reason about them.</p>
+<ul>
+<li><code>mod cell</code> provides shared mutability</li>
+<li><code>mod rc</code> provides shared ownership</li>
+<li><code>mod sync</code> provides synchronization</li>
+</ul>
+<h3 id="shared-ownership">Shared ownership</h3>
+<p>In the Ownership section we discussed how the Rust compiler enforces exclusive ownership
+of data. The Rust compiler enforces these rules at compile-time, but sometimes there is a
+need to relax these rules to runtime. The
+<a rel="external" href="https://doc.rust-lang.org/std/rc/index.html"><code>rc</code></a> module doesn't eliminate the rules,
+but instead "shifts" them to runtime.</p>
+<h4 id="rc">Rc</h4>
+<p><a rel="external" href="https://doc.rust-lang.org/std/rc/struct.Rc.html">Rc</a> allows us to shift how the Ownership
+and Lifetime rules are enforced. Let see how Rc achieves the same guarantees provided by
+Ownership and Lifetime:</p>
+<p>Ownership:</p>
+<ol>
+<li>prevent double free</li>
+<li>prevent accessing memory after free</li>
+</ol>
+<p>Lifetime:</p>
+<ol start="3">
+<li>prevent invalid or dangling references</li>
+</ol>
+<p>Rc allocates data on the heap (by default Rust allocates on the stack) and then tracking
+the number of access via a 'non-atomic' (single threaded) reference count. Each access,
+<code>Rc::clone()</code>, increments the reference count and each <code>drop()</code> decrements the count . If
+the count reaches '0', there are no outstanding references to the data and we can free it
+(<strong>1.</strong> prevents double free). Once the last reference is dropped, its impossible to
+create new references (<strong>2.</strong> prevents accessing memory after free). Together, the logic
+behind Rc helps ensure that references are valid (<strong>3.</strong> prevents invalid or dangling
+references).</p>
+<p>Here is a Rust playground
+<a rel="external" href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=21622aa0d3d60c9fd73aee58d9717f07">link</a>
+which demonstrate some of these concepts.</p>
+<p>I haven't covered <a rel="external" href="https://doc.rust-lang.org/std/rc/struct.Weak.html">Weak</a> which is
+necessary when creating for creating cyclical structures using Rc but requires more user
+vigilance to use correctly.</p>
+<h3 id="shared-mutability">Shared mutability</h3>
+<p>Similar to how the Shared ownership module, <code>rc</code>, shifts the Ownership/Lifetime rules to
+runtime, the Shared mutability module
+<a rel="external" href="https://doc.rust-lang.org/std/cell/index.html"><code>cell</code></a>, "shifts" Borrowing guarantees
+from compile-time to runtime. Let list these guarantees so we can compare their runtime
+equivalent.</p>
+<p>Borrowing:</p>
+<ol>
+<li>prevent aliasing</li>
+<li>prevent data races</li>
+</ol>
+<h4 id="cell">Cell</h4>
+<p><a rel="external" href="https://doc.rust-lang.org/std/cell/struct.Cell.html">Cell</a> offers us interior mutability
+by copying (<code>Cell::get()</code>) or moving (<code>Cell::take()</code> and <code>Cell::replace()</code>) the interior
+value. By copying/moving the data, Cell ensures that there is only ever a single source of
+data. This simplistic yet effective data model helps ensure memory safety (<strong>1.</strong> prevent
+aliasing. <strong>2.</strong> prevent data races).</p>
+<p>Here is a Rust playground
+<a rel="external" href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=bf97fdc984b61b910e68c5293a2f43c4">link</a>
+which demonstrates some of Cell's APIs.</p>
+<h4 id="refcell">RefCell</h4>
+<p>Instead of copying/moving values,
+<a rel="external" href="https://doc.rust-lang.org/std/cell/struct.RefCell.html">RefCell</a> achieves interior
+mutability by enforcing exclusive mutable access by runtime "dynamic borrowing".</p>
+<p>Using RefCell, its possible to <code>try_borrow()</code> to get a <code>&amp;T</code> or <code>try_borrow_mut()</code> to get a
+<code>&amp;mut T</code>. Underneath RefCell enforces memory safety (<strong>1.</strong> prevent aliasing. <strong>2.</strong>
+prevent data races). Less safe version of these APIs which panic on violation are also
+available but those seem risky for production use (<code>borrow()</code> and <code>borrow_mut()</code>).</p>
+<p>List of mutable APIs:</p>
+<ul>
+<li>RefCell::borrow_mut()</li>
+<li>RefCell::replace()</li>
+<li>RefCell::swap()</li>
+</ul>
+<p>Here is a Rust playground
+<a rel="external" href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=f78e6ea5441d3f13a0f076736ab654c4">link</a>
+which demonstrates some of RefCell's APIs.</p>
+<h3 id="synchronization">Synchronization</h3>
+<p>Synchronization is useful when a program is operating with multiple threads and wishes to
+share data across those threads. Shared mutation across threads requires primitives (i.e.
+atomics or locks) to enforce exclusive ownership and usage guarantees.</p>
+<p>The <a rel="external" href="https://doc.rust-lang.org/std/sync/index.html">sync</a> module provides these
+synchronization primitives and has decent explanation which I recommend reading.</p>
+<h4 id="arc">Arc</h4>
+<p><a rel="external" href="https://doc.rust-lang.org/std/sync/struct.Arc.html">Arc</a> provides us with shared
+ownership across threads while enforcing Rust's Ownership/Lifetime rules. This is similar
+to Rc, except Rc is not thread-safe (Arc stands for Atomic Reference Counted or
+Atomic-Rc).</p>
+<p>Very similar to <a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#rc">Rc</a>, the only difference is the atomic nature of Arc works within a
+multi-threaded environment. The reference count increments when a new <code>clone()</code> is created
+and decremented on <code>drop()</code>. The count allows for tracking the number of outstanding
+instances of Arc and initiating memory cleanup when the last one goes out of scope (atomic
+reference count hits 0).</p>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="rust"><span class="giallo-l"><span style="color: #928374;font-style: italic;">// Example modified from</span></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">// https://doc.rust-lang.org/std/sync/struct.Arc.html#method.strong_count</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FB4934;">use</span><span style="color: #FABD2F;"> std</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">sync</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">Arc</span><span style="color: #A89984;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FE8019;">let</span><span style="color: #83A598;"> five</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> Arc</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">new</span><span style="color: #A89984;">(</span><span style="color: #D3869B;">5</span><span style="color: #A89984;">);</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">let</span><span style="color: #83A598;"> _also_five</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> Arc</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">clone</span><span style="color: #A89984;">(</span><span style="color: #8EC07C;">&amp;</span><span style="color: #83A598;">five</span><span style="color: #A89984;">);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FABD2F;">assert_eq!</span><span style="color: #A89984;">(</span><span style="color: #D3869B;">2</span><span style="color: #A89984;">,</span><span style="color: #FABD2F;"> Arc</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">strong_count</span><span style="color: #A89984;">(</span><span style="color: #8EC07C;">&amp;</span><span style="color: #83A598;">five</span><span style="color: #A89984;">));</span></span></code></pre><h4 id="mutex">Mutex</h4>
+<p><a rel="external" href="https://doc.rust-lang.org/std/sync/struct.Mutex.html">Mutex</a> provides us with shared
+mutability across threads while enforcing Rust's Borrow rules. This is similar to RefCell,
+except <a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#refcell">RefCell</a> is not thread-safe.</p>
+<p>A Mutex helps preserves Rusts Borrow guarantees by enforcing exclusive access to the
+underlying mutable object. Exclusive access can be taken by calling <code>Mutex::try_lock()</code>
+(<code>Mutext::lock()</code> will block). Here is an example of how to use a Mutex:</p>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="rust"><span class="giallo-l"><span style="color: #928374;font-style: italic;">// Example taken from</span></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">// https://doc.rust-lang.org/std/sync/struct.Mutex.html#method.lock</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FB4934;">use</span><span style="color: #FABD2F;"> std</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">sync</span><span style="color: #8EC07C;">::</span><span style="color: #A89984;">{</span><span style="color: #FABD2F;">Arc</span><span style="color: #A89984;">,</span><span style="color: #FABD2F;"> Mutex</span><span style="color: #A89984;">};</span></span>
+<span class="giallo-l"><span style="color: #FB4934;">use</span><span style="color: #FABD2F;"> std</span><span style="color: #8EC07C;">::</span><span>thread</span><span style="color: #A89984;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">// Arc is used since we are &quot;sharing&quot; the Mutex across threads.</span></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">//</span></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">// Mutex is used to mutate the object. If we didn&#39;t need mutation</span></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">// we could simply use Arc.</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">let</span><span style="color: #83A598;"> mutex</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> Arc</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">new</span><span style="color: #A89984;">(</span><span style="color: #FABD2F;">Mutex</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">new</span><span style="color: #A89984;">(</span><span style="color: #D3869B;">0</span><span style="color: #A89984;">));</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">let</span><span style="color: #83A598;"> c_mutex</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> Arc</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">clone</span><span style="color: #A89984;">(</span><span style="color: #8EC07C;">&amp;</span><span style="color: #83A598;">mutex</span><span style="color: #A89984;">);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FABD2F;">thread</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">spawn</span><span style="color: #A89984;">(</span><span style="color: #FB4934;">move ||</span><span style="color: #A89984;"> {</span></span>
+<span class="giallo-l"><span style="color: #8EC07C;">    *</span><span style="color: #83A598;">c_mutex</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">lock</span><span style="color: #A89984;">()</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">unwrap</span><span style="color: #A89984;">()</span><span style="color: #8EC07C;"> =</span><span style="color: #D3869B;"> 10</span><span style="color: #A89984;">;</span></span>
+<span class="giallo-l"><span style="color: #A89984;">})</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">join</span><span style="color: #A89984;">()</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">expect</span><span style="color: #A89984;">(&quot;</span><span style="color: #B8BB26;">thread::spawn failed</span><span style="color: #A89984;">&quot;);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">// assert new value</span></span>
+<span class="giallo-l"><span style="color: #FABD2F;">assert_eq!</span><span style="color: #A89984;">(</span><span style="color: #8EC07C;">*</span><span style="color: #83A598;">mutex</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">lock</span><span style="color: #A89984;">()</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">unwrap</span><span style="color: #A89984;">(),</span><span style="color: #D3869B;"> 10</span><span style="color: #A89984;">);</span></span></code></pre><h2 id="thread-safety">Thread-safety</h2>
+<p>You know its complicated when there is a
+<a rel="external" href="https://doc.rust-lang.org/nomicon/send-and-sync.html">chapter</a> for it in the Rust
+Nomicon. The <code>Send</code> and <code>Sync</code> traits help the Rust compiler reason about thread safety.
+They are used to mark data that can be shared or moved across different threads. Typically
+this is not safe to do for and requires the use of synchronization.</p>
+<h3 id="send">Send:</h3>
+<p><a rel="external" href="https://doc.rust-lang.org/std/marker/trait.Send.html">Send</a> marks objects that can be
+sent to different threads (its ok to move ownership to a different thread).</p>
+<p>Some types that are marked Send:</p>
+<ul>
+<li>RefCell is a type that <a rel="external" href="https://doc.rust-lang.org/std/cell/struct.RefCell.html#impl-Send-for-RefCell%3CT%3E">is
+Send</a>
+but <a rel="external" href="https://doc.rust-lang.org/std/cell/struct.RefCell.html#impl-Sync-for-RefCell%3CT%3E">not
+Sync</a>.</li>
+</ul>
+<p>The reason why RefCell doesn't implement Sync is because it doesn't synchronize interior
+mutability (mutating internal state). This means that multiple threads could concurrently
+attempt to mutate the internal state and result in a race condition. RefCell is allowed to
+be Send since its fine to mutate internal state within one thread if we transfer ownership
+of RefCell to that thread.</p>
+<h3 id="sync">Sync:</h3>
+<p><a rel="external" href="https://doc.rust-lang.org/std/marker/trait.Sync.html">Sync</a> marks objects which are safe
+to share among threads (its ok to borrow a reference across threads).</p>
+<blockquote>
+<p>The precise definition is: a type T is Sync if and only if &amp;T is Send. In other words,
+if there is no possibility of undefined behavior (including data races) when passing &amp;T
+references between threads.</p>
+</blockquote>
+<p>Or more concisely:</p>
+<blockquote>
+<p>&amp;T and &amp;mut T are Sync if and only if T is Sync</p>
+</blockquote>
+<p>Some std types that are used for synchronization and marked <code>Sync</code>:</p>
+<ul>
+<li><code>impl Sync for Arc</code></li>
+<li><code>impl&lt;T: ?Sized + Send&gt; Sync for Mutex&lt;T&gt;</code></li>
+</ul>
+<p>Arc and Mutex implement Sync since they use synchronization (i.e. atomics and locks) to
+ensure access to the data is exclusive even across multiple threads.</p>
+<h2 id="traits"><a name="traits">Traits</a></h2>
+<p>The Rust type system is rich and allows us to express complex concepts to the compiler.</p>
+<h3 id="deref">Deref</h3>
+<p>Rust encourages the use of types, which encourages safe usage enforced by the compiler.
+For example, rather than representing distance as <code>usize</code>, one should create a new-type
+<code>Distance(usize)</code>. This helps maintain type checking but also allows us to attach special
+context around a Distance type.</p>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FE8019;">struct</span><span style="color: #FABD2F;"> Distance</span><span style="color: #A89984;">(</span><span style="color: #FABD2F;">usize</span><span style="color: #A89984;">);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FB4934;">impl</span><span style="color: #FABD2F;"> Distance</span><span style="color: #A89984;"> {</span></span>
+<span class="giallo-l"><span style="color: #FB4934;">    fn</span><span style="color: #FABD2F;"> add_len</span><span style="color: #A89984;">(</span><span style="color: #8EC07C;">&amp;</span><span style="color: #83A598;">self</span><span style="color: #A89984;">,</span><span style="color: #83A598;"> len</span><span style="color: #8EC07C;">: &amp;</span><span style="color: #FABD2F;">usize</span><span style="color: #A89984;">)</span><span style="color: #8EC07C;"> -&gt;</span><span style="color: #FABD2F;"> usize</span><span style="color: #A89984;"> {</span></span>
+<span class="giallo-l"><span style="color: #83A598;">        self</span><span style="color: #8EC07C;">.</span><span style="color: #D3869B;">0</span><span style="color: #8EC07C;"> +</span><span style="color: #83A598;"> len</span></span>
+<span class="giallo-l"><span style="color: #A89984;">    }</span></span>
+<span class="giallo-l"><span style="color: #A89984;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FB4934;">fn</span><span style="color: #FABD2F;"> main</span><span style="color: #A89984;">() {</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">    let</span><span style="color: #83A598;"> dist1</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> Distance</span><span style="color: #A89984;">(</span><span style="color: #D3869B;">1</span><span style="color: #A89984;">);</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">    let</span><span style="color: #83A598;"> dist2</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> Distance</span><span style="color: #A89984;">(</span><span style="color: #D3869B;">2</span><span style="color: #A89984;">);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #83A598;">    dist1</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">add_len</span><span style="color: #A89984;">(</span><span style="color: #8EC07C;">&amp;</span><span style="color: #83A598;">dist2</span><span style="color: #8EC07C;">.</span><span style="color: #D3869B;">0</span><span style="color: #A89984;">);</span><span style="color: #928374;font-style: italic;"> // 1: explicitly access the inner field</span></span>
+<span class="giallo-l"><span style="color: #A89984;">}</span></span></code></pre>
+<p>However, notice how the usage (1) is more verbose now and require accessing the inner
+field <code>dist2.0</code>. <a rel="external" href="https://doc.rust-lang.org/std/ops/trait.Deref.html">Deref</a> offers
+automatic immutable dereferencing so that its possible avoid access the inner data without
+the explicit access. By implementing Deref we are able to simplify the usage to <code>&amp;dist2</code>
+below.</p>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FB4934;">impl</span><span style="color: #FABD2F;"> std</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">ops</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">Deref</span><span style="color: #FB4934;"> for</span><span style="color: #FABD2F;"> Distance</span><span style="color: #A89984;"> {</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">    type</span><span style="color: #FABD2F;"> Target</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> usize</span><span style="color: #A89984;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FB4934;">    fn</span><span style="color: #FABD2F;"> deref</span><span style="color: #A89984;">(</span><span style="color: #8EC07C;">&amp;</span><span style="color: #83A598;">self</span><span style="color: #A89984;">)</span><span style="color: #8EC07C;"> -&gt; &amp;</span><span style="color: #83A598;">Self</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">Target</span><span style="color: #A89984;"> {</span></span>
+<span class="giallo-l"><span style="color: #8EC07C;">        &amp;</span><span style="color: #83A598;">self</span><span style="color: #8EC07C;">.</span><span style="color: #D3869B;">0</span></span>
+<span class="giallo-l"><span style="color: #A89984;">    }</span></span>
+<span class="giallo-l"><span style="color: #A89984;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FB4934;">fn</span><span style="color: #FABD2F;"> main</span><span style="color: #A89984;">() {</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">    let</span><span style="color: #83A598;"> dist1</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> Distance</span><span style="color: #A89984;">(</span><span style="color: #D3869B;">1</span><span style="color: #A89984;">);</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">    let</span><span style="color: #83A598;"> dist2</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> Distance</span><span style="color: #A89984;">(</span><span style="color: #D3869B;">2</span><span style="color: #A89984;">);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #83A598;">    dist1</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">add_len</span><span style="color: #A89984;">(</span><span style="color: #8EC07C;">&amp;</span><span style="color: #83A598;">dist2</span><span style="color: #A89984;">);</span></span>
+<span class="giallo-l"><span style="color: #A89984;">}</span></span></code></pre>
+<p>The full example code is available in this Rust playground
+<a rel="external" href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=29fcde8dc36ceb60cde97d2035b61eb4">link</a></p>
+<p>This is a powerful tool but should be used carefully since it does mean we potentially
+lose the benefit of the new-type.</p>
+<h3 id="drop">Drop:</h3>
+<p>In our programs one need to perform "cleanup" after use or risk resource (memory) leakage
+or worse. This is a non-trivial problem in C where one needs a paranoid attitude (really
+all aspects of C require a paranoid attitude) to make sure that all resources are
+properly cleaned up.</p>
+<p>Rust offers us the <a rel="external" href="https://doc.rust-lang.org/std/ops/trait.Drop.html">Drop</a> trait to make
+this task trivial.</p>
+<p>The Drop trait requires <code>fn drop(&amp;mut self)</code> function which is run when an object goes out
+of scope is no longer used. It should then run and "destructor" methods to cleanup
+associated resources.</p>
+<p>The Rust compiler recursively calls the <code>drop()</code> function on all fields of an object and
+implements the Drop trait for std types (u8, u16, etc...) so that most of the time proper
+cleanup happens automatically. Here is a Rust playground
+<a rel="external" href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=c5c784713e26f1c957a772ec2edc76c6">link</a>
+which shows how the recursive drop functionality works.</p>
+<p>So when should users implement the Drop trait themselves? In this description I have been
+using "resources" rather than memory because I wanted to be general. Resources could
+include memory, network connection, file handle, locks, database cleanup, or any other
+custom logic that users want to run at "cleanup".</p>
+<h3 id="phantomdata">PhantomData</h3>
+<p><a rel="external" href="https://doc.rust-lang.org/std/marker/struct.PhantomData.html">PhantomData</a> is considered
+a phantom type. A phantom type is a type not actually present at runtime but instead used
+at compile time for static analysis.</p>
+<blockquote>
+<p>Adding a PhantomData<T> field to your type tells the compiler that your type acts as
+though it stores a value of type T, even though it doesn’t really. This information is
+used when computing certain safety properties.</p>
+</blockquote>
+<p>Lets look at some example code:</p>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FE8019;">struct</span><span style="color: #FABD2F;"> MyType</span><span style="color: #A89984;">&lt;&#39;</span><span style="color: #FABD2F;">a</span><span style="color: #A89984;">,</span><span style="color: #FABD2F;"> A</span><span style="color: #A89984;">&gt; {</span></span>
+<span class="giallo-l"><span style="color: #83A598;">    field</span><span style="color: #8EC07C;">:</span><span style="color: #FABD2F;"> usize</span><span style="color: #A89984;">,</span></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">    // PhantomData is used to avoid unused warning for &#39;a and A</span></span>
+<span class="giallo-l"><span style="color: #83A598;">    a</span><span style="color: #8EC07C;">:</span><span style="color: #FABD2F;"> PhantomData</span><span style="color: #A89984;">&lt;</span><span style="color: #8EC07C;">&amp;</span><span style="color: #A89984;">&#39;</span><span style="color: #FABD2F;">a A</span><span style="color: #A89984;">&gt;,</span></span>
+<span class="giallo-l"><span style="color: #A89984;">}</span></span></code></pre>
+<p>So essentially, the Rust compiler will emit an unused warning if a generic type or
+lifetime is not actually used. PhantomData can be used to mute these warning. But why
+would we have a type that we are not using?</p>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="rust"><span class="giallo-l"><span style="color: #928374;font-style: italic;">// Example taken from: https://cliffle.com/blog/rust-typestate</span></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">//</span></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">// S is the state parameter. We require it to impl</span></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">// our ResponseState trait (below) to prevent users</span></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">// from trying weird types like HttpResponse&lt;u8&gt;.</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">struct</span><span style="color: #FABD2F;"> HttpResponse</span><span style="color: #A89984;">&lt;</span><span style="color: #FABD2F;">S</span><span style="color: #8EC07C;">:</span><span style="color: #FABD2F;"> ResponseState</span><span style="color: #A89984;">&gt; {</span></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">    // This is the same field as in the previous example.</span></span>
+<span class="giallo-l"><span style="color: #83A598;">    state</span><span style="color: #8EC07C;">:</span><span style="color: #FABD2F;"> Box</span><span style="color: #A89984;">&lt;</span><span style="color: #FABD2F;">ActualResponseState</span><span style="color: #A89984;">&gt;,</span></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">    // This reassures the compiler that the parameter</span></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">    // gets used.</span></span>
+<span class="giallo-l"><span style="color: #83A598;">    marker</span><span style="color: #8EC07C;">:</span><span style="color: #FABD2F;"> std</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">marker</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">PhantomData</span><span style="color: #A89984;">&lt;</span><span style="color: #FABD2F;">S</span><span style="color: #A89984;">&gt;,</span></span>
+<span class="giallo-l"><span style="color: #A89984;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">// State type options.</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">enum</span><span style="color: #FABD2F;"> Start</span><span style="color: #A89984;"> {}</span><span style="color: #928374;font-style: italic;"> // expecting status line</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">enum</span><span style="color: #FABD2F;"> Headers</span><span style="color: #A89984;"> {}</span><span style="color: #928374;font-style: italic;"> // expecting headers or body</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FE8019;">trait</span><span style="color: #FABD2F;"> ResponseState</span><span style="color: #A89984;"> {}</span></span>
+<span class="giallo-l"><span style="color: #FB4934;">impl</span><span style="color: #FABD2F;"> ResponseState</span><span style="color: #FB4934;"> for</span><span style="color: #FABD2F;"> Start</span><span style="color: #A89984;"> {}</span></span>
+<span class="giallo-l"><span style="color: #FB4934;">impl</span><span style="color: #FABD2F;"> ResponseState</span><span style="color: #FB4934;"> for</span><span style="color: #FABD2F;"> Headers</span><span style="color: #A89984;"> {}</span></span></code></pre>
+<p>The best usecase which demonstrates PhantomData's is the
+<a rel="external" href="https://cliffle.com/blog/rust-typestate/">Typestate</a> pattern. <code>PhantomData&lt;T&gt;</code> is used in
+the Typestate pattern to switch implementation behavior based on the type <code>T</code>. However,
+since there is no need to actually instantiate T (we only need the type <code>T</code> to switch
+behavior), it will emit an unused warning unless included in PhantomData.</p>
+<h3 id="unpin">Unpin</h3>
+<p>The vast majority of Rust types have no address-sensitive states. For example, an integer
+can be copies to another address while maintaining the correct semantic. Most types implement
+the <a rel="external" href="https://doc.rust-lang.org/std/marker/trait.Unpin.html">Unpin</a> auto-trait by default.</p>
+<p>On the contrary, an object which is self-referential (contains a pointer to itself), will
+become invalid if the struct is moved to a different address. These objects need to be
+<code>Pin</code>ed (see below) to prevent them from being accidentally move.</p>
+<h4 id="pin-struct">Pin (struct):</h4>
+<p>If an object should not be moved, then the user can <code>Pin</code> it by wrapping the object in a
+<code>Pin&lt;T&gt;</code>. The <a rel="external" href="https://doc.rust-lang.org/std/pin/index.html">pin</a> module defines the
+concept of "pinning" and has more detailed info.</p>
+<p>But do we really need to care about pining? It seems complicated with little benefits. Why
+does the compiler care if a value is moved or not? If a user is writing self-referential
+objects, they should be responsible for doing a proper copy/move.</p>
+<blockquote>
+<p>All values in Rust are trivially moveable. This means that the address at which a value
+is located is not necessarily stable in between borrows. The compiler is allowed to move
+a value to a new address without running any code to notify that value that its address
+has changed.</p>
+</blockquote>
+<p>Ok so the compiler can "move" an object at will. Sure that makes sense but its not very
+satisfying and doesn't explain why the compiler need to move objects. The answer is
+<code>async</code> programming in Rust.</p>
+<p>In-order to support <code>async</code>, Rust had to essentially crate implicit Future objects that
+could be polled, yield, and return. These objects also had to store state about the
+progress of the Future (aka. self-referential objects). To seamlessly support async
+programming, the compile needed to reason about object moves and hence the need for
+<code>Unpin</code> auto-trait.</p>
+<p>See <a rel="external" href="https://users.rust-lang.org/t/high-level-pin-async-future/71876/2">comment</a> and book
+<a rel="external" href="https://rust-lang.github.io/async-book/04_pinning/01_chapter.html">chapter</a> for further
+details.</p>
+<h4 id="phantompinned">PhantomPinned:</h4>
+<p>Similar to PhantomData (discussed <a href="https://toidiu.com/blog/2024-08-22-rust-primitives/#phantomdata">above</a>),
+<a rel="external" href="https://doc.rust-lang.org/std/marker/struct.PhantomPinned.html">PhantomPinned</a> is also a
+phantom type which is only useful for the Rust compiler's static analysis.</p>
+<p>Where PhantomData was used to mark "used" parameters, PhantomPinned is used to mark a type
+as <code>Pin</code>ned. Since there is no Pin trait, a more accurate statement from the official
+documentation states:</p>
+<blockquote>
+<p>A marker type which does not implement Unpin.
+If a type contains a PhantomPinned, it will not implement Unpin by default.</p>
+</blockquote>
+<p>This type can be used when you need to ensure that a type should not be moved. You might
+need this if you are implementing some unsafe self referential code and should thoroughly
+understand pin.</p>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+

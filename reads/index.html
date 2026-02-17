@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="I have 15+ years of software engineering experience across different parts of the tech
+              stack including networking libraries, congestion control, performance improvements,
+              Backend, and Android development.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Rust, Protocols, QUIC, IETF,
+              networking, TLS, Scala, java, Cooper Union, blog, talks, code, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js" defer></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=reads >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      active"
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;cucina">
+
+      cucina
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+
+  
+    <div class="article">
+      <div class="content">
+        <a class="title" name="making-quic-quicker-with-nic-offload" href="#making-quic-quicker-with-nic-offload">Making QUIC Quicker With NIC Offload</a>
+
+        <a class="paper-links" href="/reads/Making_QUIC_Quicker_With_NIC_Offload.pdf">[paper]</a>
+
+        
+
+        <div class="short summary">
+          <p>The authors measured different components of the QUIC protocol. They identified kernel to userspace communication (data copy), crypto, and packer reordering as CPU hungry tasks which could be offloaded to a NIC.</p>
+        </div>
+
+        <div class="summary hide-more">
+          <a class="more" href="#">expand...</a>
+          <div class="more-container">
+            <p>Kernel-userspace data copy accounts for 40-50% of total CPU usage. When kernel bypass is used, crypto operations become the bottleneck and consume up to 40% of CPU per connection. Packet re-ordering accounts for 5-20% of total CPU.</p>
+<blockquote>
+<p>CPU usage in the multi-connection scenario and saw that the major difference compared to the single connection scenario is that the CPU time spent on packet sending, e.g., pkt formatting, crypto, pkt I/O, has increased by about 10%.</p>
+</blockquote>
+<p>The cost of going from single connection to multi-connections is ~10% CPU.</p>
+<p>For the crypto task, <code>enc_aead()</code> and <code>dec_aead()</code> calls were responsible for approx 90% of CPU time.</p>
+<p>The QUIC impls Quant, Quicly, Picoquic and Facebook’s Mvfst were used for the analysis.</p>
+<ul>
+<li>Mvfst seems to be the most balanced in terms of functionality and performance.</li>
+<li>Quicly seems to lack performance compared to other impls.</li>
+<li>Quant however is a research tool and lacks alot of real functionality.</li>
+<li>Picoquic's CC seems to ignore packet loss?? or is this a packet re-ordering functionality?
+<ul>
+<li>Picoquic implements packet re-ordering engine which could help it maintain throughput when faced with packet loss/re-ordering. They had two different algorithms for the re-ordering engine (splay tree and linear search).</li>
+</ul>
+</li>
+</ul>
+<p><code>Netmap</code> is an efficient I/O framework for sumulating network. <code>TLEM</code> is a utility which allows for controlling traffic perturbations, i.e., loss, delay, re-ordering.. etc. TLEM is an extension on Netmap.</p>
+<blockquote>
+<p>Network Interface Cards (NICs) with programmable hardware components, e.g., network processor, FPGA, can help by easing the host CPU from expensive computation tasks.</p>
+</blockquote>
+<p>Seems like the industry is looking into programable NICs.</p>
+
+          </div>
+          <!-- <a class="less" href="#">less</a> -->
+        </div>
+      </div>
+    </div>
+  
+    <div class="article">
+      <div class="content">
+        <a class="title" name="carousel-scalable-traffic-shaping-at-end-hosts" href="#carousel-scalable-traffic-shaping-at-end-hosts">Carousel: Scalable Traffic Shaping at End Hosts</a>
+
+        <a class="paper-links" href="/reads/Carousel_Scalable_Traffic_Shaping_at_End_Hosts.pdf">[paper]</a>
+
+        
+
+        <div class="short summary">
+          <p>Traffic shaping is a critical feature for datacenters. It is used to apply policy-based bandwidth allocation, for packet pacing, and used by rate-based congestion control. Typical traffic shaping mechanisms can be CPU expensive, while not being very accurate. Carousel improves upon the state of the ary(8% CPU savings); i) a single queue shaper, ii) fine-grained, just-in-time freeing of resources coupled to packet departure iii) one shaper per CPU core with lock-free coordination.</p>
+        </div>
+
+        <div class="summary hide-more">
+          <a class="more" href="#">expand...</a>
+          <div class="more-container">
+            <p>Network bandwidth is an expensive resource to overprovision and bursty links can lead to packet loss, less accurate bandwidth estimation, longer RTT times. Deep buffers, have typically been used but lead to poor latencies. Traffic shaping refers to pacing: injecting inter-packet gaps to smooth traffic and rate limiting: enforcing rate on flow-aggregate on connections. Within datacenters, the need to shape traffic is critial since there are multiple customer VMs which all compete for network bandwidth.</p>
+<p><strong>traditional shapers</strong></p>
+<p>HTB are good for enforcing rate limits on flow aggregates, but scales poorly with the number of rate limited aggregates. FQ/pacing is used for pacing individual TCP connections, but this solution does not support flow aggregates. Policers are used in hypervisor switch deployments where HTB or FQ/pacing are too CPU intensive.</p>
+<p>Policers: a token bucket mechanism to assign resources to a flow, with zero buffering and packet dropping as a side effect.</p>
+<p>HTB: a complex buffer/token bucket/tree structure to support advanced traffic management. Backpressure is needed to avoid unbounded queue growth. Can group flows into individual or aggregate groups and thus apply complex logic to traffic shaping.</p>
+<p>FQ/pacing: FQ tracks per-flow sate in an array of Red-Black trees indexed on flow hash IDs. A deficit round robin scheduler is used for outgoing packets from active flows. A garbage collector deletes inactive flows. Pacing is based on packet length and current pacing rate. Future packets are kept in a separate RB tree index. This all sounds very CPU intensive.</p>
+<p><strong>cost of shaping</strong>
+...</p>
+<p><strong>carousel design principles</strong>
+...</p>
+
+          </div>
+          <!-- <a class="less" href="#">less</a> -->
+        </div>
+      </div>
+    </div>
+  
+    <div class="article">
+      <div class="content">
+        <a class="title" name="quic-a-udp-based-multiplexed-and-secure-transport-rfc" href="#quic-a-udp-based-multiplexed-and-secure-transport-rfc">QUIC: A UDP-Based Multiplexed and Secure Transport (rfc)</a>
+
+        <a class="paper-links" href="/reads/QUIC_A_UDP_Based_Multiplexed_and_Secure_Transport_rfc9000.pdf">[paper]</a>
+
+        
+
+        <div class="short summary">
+          <p>QUIC is a UDP based network protocol that will be the basis for HTTP&#x2F;3. It moves much of the TCP logic from the network layer to the application layer. The implications of this are massive since hardware is very difficult to replace&#x2F;upgrade compared with application code. It is also secure by default.</p>
+        </div>
+
+        <div class="summary hide-more">
+          <a class="more" href="#">expand...</a>
+          <div class="more-container">
+            <p>main rfc: https://datatracker.ietf.org/doc/html/rfc9000
+tls rfc: https://datatracker.ietf.org/doc/html/rfc9001
+recovery rfc: https://datatracker.ietf.org/doc/html/rfc9002</p>
+
+          </div>
+          <!-- <a class="less" href="#">less</a> -->
+        </div>
+      </div>
+    </div>
+  
+    <div class="article">
+      <div class="content">
+        <a class="title" name="hmac-keyed-hashing-for-message-authentication-rfc-2104" href="#hmac-keyed-hashing-for-message-authentication-rfc-2104">HMAC: Keyed-Hashing for Message Authentication (rfc 2104)</a>
+
+        <a class="paper-links" href="/reads/HMAC_Keyed-Hashing_for_Message_Authentication_rfc2104.pdf">[paper]</a>
+
+        
+
+        <div class="short summary">
+          <p>MAC, message authentication codes, is a mechanism to check the integrity of information transmitted over unreliable medium. HMAC is an implementation of MAC using a cryptographic hash function. SHA-3 is probably a good algorithm to use. HMAC is designed to allows for inter-chaning hash functions seamlessly, not incur performance penalty on top of the hash function, have simple key usage and have cryptographic strength based on the strength of the hash function.</p>
+        </div>
+
+        <div class="summary hide-more">
+          <a class="more" href="#">expand...</a>
+          <div class="more-container">
+            <p>original rfc: https://www.ietf.org/rfc/rfc2104.txt</p>
+<p><strong>introduction</strong></p>
+<p>The paper quotes MD5 and SHA-1 (SHA-3 should probably be used) as viable cryptographic hash functions. Along with a cryptographic algorithm, HMAC also requires a shared secret key.</p>
+<p>HMAC has the following goals:</p>
+<ul>
+<li>use existing cryptographic function, which can be interchanged</li>
+<li>does not incur performance degradation on top of the cryptographic function</li>
+<li>uses and handles keys in a simple way</li>
+<li>cryptographic strength of the auth mechanism is based on the strength of the underlying hash function</li>
+</ul>
+<p><strong>definition of HMAC</strong></p>
+<p>H = hash function</p>
+<p>K = secred key (it is recommended that the length of K be at minimum L)</p>
+<p>B = length of input block</p>
+<p>L = length of output block</p>
+<p>ipad = the byte 0x36 repeated B times</p>
+<p>opad = the byte 0x5C repeated B times</p>
+<p>HMAC is calculated as = H(K XOR opad, H(K XOR ipad, text))</p>
+<ul>
+<li>1: append zeros to the end of K to create a B byte string (e.g., if K is of length 20 bytes and B=64, then K will be appended with 44 zero bytes 0x00)</li>
+<li>2: XOR (bitwise exclusive-OR) the B byte string computed in step (1) with ipad</li>
+<li>3: append the stream of data ’text’ to the B byte string resulting from step (2)</li>
+<li>4: apply H to the stream generated in step (3)</li>
+<li>5: XOR (bitwise exclusive-OR) the B byte string computed in step (1) with opad</li>
+<li>6: append the H result from step (4) to the B byte string resulting from step (5)</li>
+<li>7: apply H to the stream generated in step (6) and output the result</li>
+</ul>
+<p><strong>keys</strong></p>
+<p>I is advices that the length of K be atleast L otherwise security is decreased. Keys need to be chosen at random using a cryptographically strong pseudo-random generator and periodically refreshed.</p>
+<p><strong>truncated output</strong></p>
+<p>Truncation of the output MAC is a known practice since the entire length is not need to verify that the hash was computed. This can save on transmission bandwidth I imagine but not sure how useful it is. The recommendation is that the truncation not be less than half the length of the output and not less than 80 bits (might be more in modern days).</p>
+<p><strong>security</strong></p>
+<ul>
+<li>the construction of HMAC is independent of the details of a particular hash function</li>
+<li>message authentication, as opposed to encryption, has a "transient" effect. so that breaking a cryptographic function today will require us to change the function to prevent future MACs. However, past messages remain verified the present break doesn't affect the past verification.</li>
+</ul>
+
+          </div>
+          <!-- <a class="less" href="#">less</a> -->
+        </div>
+      </div>
+    </div>
+  
+    <div class="article">
+      <div class="content">
+        <a class="title" name="a-universally-unique-identifier-uuid-urn-namespace-rfc-4122" href="#a-universally-unique-identifier-uuid-urn-namespace-rfc-4122">A Universally Unique IDentifier (UUID) URN Namespace (rfc 4122)</a>
+
+        <a class="paper-links" href="/reads/A_Universally_Unique_IDentifier_(UUID)_URN_Namespace_rfc4122.pdf">[paper]</a>
+
+        
+
+        <div class="short summary">
+          <p>todo</p>
+        </div>
+
+        <div class="summary hide-more">
+          <a class="more" href="#">expand...</a>
+          <div class="more-container">
+            <p>rfc: https://www.ietf.org/rfc/rfc4122.txt</p>
+
+          </div>
+          <!-- <a class="less" href="#">less</a> -->
+        </div>
+      </div>
+    </div>
+  
+    <div class="article">
+      <div class="content">
+        <a class="title" name="in-search-of-an-understandable-consensus-algorithm-extended-raft" href="#in-search-of-an-understandable-consensus-algorithm-extended-raft">In Search of an Understandable Consensus Algorithm (Extended Raft)</a>
+
+        <a class="paper-links" href="/reads/In_Search_of_an_Understandable_Consensus_Algorithm_(Extended_Raft).pdf">[paper]</a>
+
+        
+
+        <div class="short summary">
+          <p>Raft is a concensus protocol that aims to improve upon Paxos by being more understandable. It claims to be as efficient as Paxos. The paper outlines an implementation in great detail. To quote: &#x27;The greatest difference between Raft and Paxos is Raft’s strong leadership: Raft uses leader election as an essential part of the consensus protocol, and it concentrates as much functionality as possible in the leader.&#x27; By basing actions on a &#x27;consistent leader&#x27;, subsequent actions and state space is simplified</p>
+        </div>
+
+        <div class="summary hide-more">
+          <a class="more" href="#">expand...</a>
+          <div class="more-container">
+            <p>Note: It is not possible to summarize the details of the Raft implementation so I will instead cover some high-level points/decision/tradeoffs by by the authors(take a look at the paper which highlights important content). Also sections (6)Log Compaction and (7)Cluster membership changes are currently left out.</p>
+<p>It should be noted that there is distinction between the entry <code>log</code> and <code>state machine</code>. The log is a mechanism used to make progress while an update to the state machine(an index pointing to the log) precludes that a entry and all previous entries have been <code>committed</code>(a decision was made).</p>
+<p>Raft seperates the protocol into 3 different modes (leader election, log replication and safety). It first elects a leader(choose a new one if current one fails) and gives it complete control for managing the replicated log(accept entries from client, replicating entries and committing entries). The safety property guarantees that if an entry is committed to the state machine, all members of the cluster agreed upon the value.</p>
+<p>A member of the cluster can only be in one of 3 states: leader, follower, candidate. A <code>term</code> is used as a logical clock in Raft(clock skew makes this a good choice). There are two RPC in Raft (RequestVote and AppendEntries) and they are idempotent.</p>
+<p>Leader Election: A heartbeat mechanism is used to track the liveliness of the leader. There is only ever 1 leader (term is used to decide the which leader is valid). A failure to elect a leader(split vote, packet loss) will cause members to timout (150-300ms) and issue a RequestVote of their own and thus starting a new election.</p>
+<p>Log Replication: A leader is the only one that can modify the logs. It services client request and sends AppendEntries RPC in parallel to members. Once an entry has been safely replicated, it will answer the client. At the start of leadership, the leader will force all members to match its logs and therefore delete log entries from followers if necessary. The log on the leader is only ever append only.</p>
+<p>Safety: A restriction for voting for a leader is that the RequestVote RPC includes log information and the voter denies the vote if its own log is more up-to-date than that of the candidate. This ensures that the winning candidate must contain all committed entries since a majority vote is needed.</p>
+<p>A caveat: clients send all interactions to the leader(a follower will reject and provide information about the current leader). Therefore the leader is responsible for handling all reads and writes which could cause hot-spot on a single server. Additionally, even a read-only operation requires the leader to verify it has the latest information and thus contact a majority of the members.</p>
+<p>A caveat: Paxos is a paper and implementations vary out in the field. Egalitarian Paxos (EPaxos) can achieve higher performance under some conditions with a leaderless approach; however it is more complex.</p>
+
+          </div>
+          <!-- <a class="less" href="#">less</a> -->
+        </div>
+      </div>
+    </div>
+  
+    <div class="article">
+      <div class="content">
+        <a class="title" name="building-the-real-time-big-data-database-seven-design-principles-behind-scylla" href="#building-the-real-time-big-data-database-seven-design-principles-behind-scylla">Building the Real-Time Big Data Database: Seven Design Principles behind Scylla</a>
+
+        <a class="paper-links" href="/reads/Building_the_Real-Time_Big_Data_Database-_Seven_Design_Principles_behind_Scylla.pdf">[paper]</a>
+
+        
+
+        <div class="short summary">
+          <p>This paper is structured more like a whitepaper than a research paper and gives really nice insight into engineering a high performant DB. Scylla is a drop-in replacement for Cassandra and promises to provide better performance. It claims to do so by leveraging modern harware features and automation. The paper explores 7 key design decisions that helped guide Scylla&#x27;s development.</p>
+        </div>
+
+        <div class="summary hide-more">
+          <a class="more" href="#">expand...</a>
+          <div class="more-container">
+            <ol>
+<li>
+<p>Using C++ instead of Java meant avoiding GC latencies in JVM, while gaining precise control over memory and being able to access <a rel="external" href="https://lwn.net/Articles/743714/">advance kernal features</a>.</p>
+</li>
+<li>
+<p>Scylla chose to be compatible with Cassandra drivers, query language and ecosystem and was therefore able to market to the existing vast Cassandra community.</p>
+</li>
+<li>
+<p>Async architecture was used for all I/O and CPU operations in Scylla. This not only avoided traditional concurrency problems and also capped the performance to system resources rather than the application framework. See <a rel="external" href="https://github.com/scylladb/seastar">Seastar</a> for more info on the async engine used in Scylla.</p>
+</li>
+<li>
+<p>A shared-nothing (one shard/core)architecture was used to avoid using locks. This lets the application developer avoid context, cache invalidation, and locks. Instead shared memory queues are used to communicated between shards. So like Cassandra, the entire dataset of the cluster is sharded to nodes(machines), but additionally, the data on the node is sharded per core.</p>
+</li>
+<li>
+<p>Cassandra uses a key cache and row cache in addition to the general purpose Linux page cache. This adds complixity with unpredictable performance. Scylla chose to implement a singe unified cache which can tune itself depending on the current workload. It also uses things like direct memory access(DMA) to access disk when there is a cache miss. DMA operates independent of CPU.</p>
+</li>
+<li>
+<p>Scylla utilizes I/O schedulers to self tune and balance between foreground and background I/O operations. The tool <code>scylla_ io_setup</code> is used to ensure maximum useful disk concurrency while maintaining good latency and not overloading drives.</p>
+</li>
+<li>
+<p>The self-tuning capabilities allow Scylla to make informed decisions without manual intervention or needing to hire an expert. This design is used in compaction, caches and many other parts of the system.</p>
+</li>
+</ol>
+
+          </div>
+          <!-- <a class="less" href="#">less</a> -->
+        </div>
+      </div>
+    </div>
+  
+    <div class="article">
+      <div class="content">
+        <a class="title" name="consistent-hashing-and-random-trees-distributed-caching-protocols-for-relieving-hot-spots-on-the-world-wide-web" href="#consistent-hashing-and-random-trees-distributed-caching-protocols-for-relieving-hot-spots-on-the-world-wide-web">Consistent Hashing and Random Trees: Distributed Caching Protocols for Relieving Hot Spots on the World Wide Web</a>
+
+        <a class="paper-links" href="/reads/Consistent_Hashing_and_Random_Trees-_Distributed_Caching_Protocols_for_Relieving_Hot_Spots_on_the_World_Wide_Web.pdf">[paper]</a>
+
+        
+          <a class="paper-links" href="https:&#x2F;&#x2F;github.com&#x2F;toidiu&#x2F;consistent-rs" target=_blank" rel="noopener">[code]</a>
+        
+
+        <div class="short summary">
+          <p>In distributed systems there exists a problem of how to spread load across many servers in a scalable manner. Consistent hashing is a hashing design that allows for distribution with minimal coordination between the machines.</p>
+        </div>
+
+        <div class="summary hide-more">
+          <a class="more" href="#">expand...</a>
+          <div class="more-container">
+            <p>A first solution might be to hash the requests across the different servers. In terms of a caching, this means to take item (<code>i</code>), hash it (good distribution) and then assign it to the available caches (<code>C</code>), maybe with modulo: <code>hash\_fn(i) % C</code>. There are two problems with this approach. First is that the distribution is a function of the servers, so as we add or remove servers, we now need to recalculate the modulo and therefore the distribution. The second problem, which derives from the first, is that now each server node now needs to be updated - said differently, each server node now needs to be aware of every node. Consensus is hard, so this is not ideal.</p>
+<p>Section 4 contained proof and discussion of Consistent Hashing.</p>
+<p>The authors define 4 properties that define their notion of consistency: <strong>balance</strong> requires that the hash function distribute the objects in a balanced fashion amongst the buckets. <strong>monotonicity</strong> says if items are initially assigned to a set of buckets and then some new buckets are added, then an item may move from an old bucket to a new bucket, but not from one old bucket to another. <strong>spread</strong> implies that references for a given object are only directed to a small number of caching machines. <strong>load</strong> implies that no one cache is assigned an unreasonable number of objects.objects.</p>
+<p>Next they define some properties of a good ranged hash function: Given <code>Rb</code>(hash for buckets) and <code>Ri</code>(hash for items). An item <code>i</code> should be assigned to the closest bucket. Given max of <code>C</code> buckets. For each bucket create <code>k*log(C)</code>, some constant <code>k</code> virtual buckets and map them using the hash function <code>Rb</code>. To save space, have <code>Rb</code> and <code>Ri</code> map to the range <code>[0,1]</code>. To differentiate a point from another, we only needs to have <code>log(number of points)</code> random bits (decimal precision) identifying a point.</p>
+<p>Lastly they share an efficient implementation of a possible consistent hash function: Use a balanced binary search tree to store the buckets and their assignment in the range. If there are <code>C</code> buckets, then there will be <code>k*C*log(C)</code> entries, which gives a worse tree depth of <code>log(C)</code> and a worse possible calculation of <code>log(C)</code>. The time for adding and removing a bucket is <code>log^2(C)</code> since we would need to remove <code>k*log(C)</code> points. To reduce this time to constant lookup, the authors suggest dividing the range into <code>k*C*log(C)</code> equal length segments and have a separate tree for each one. This allows us to more predictably have one bucket per segment. The problem with segments is that it requires smaller segments as more buckets are added. An amortized way recommended by the authors is to choose intervals of size <code>1/2^x</code> such that <code>1/2^x &lt; 1/k*C*log(C)</code>. Then as new buckets are added, gradually bisect each section.</p>
+
+          </div>
+          <!-- <a class="less" href="#">less</a> -->
+        </div>
+      </div>
+    </div>
+  
+    <div class="article">
+      <div class="content">
+        <a class="title" name="impossibility-of-distributed-consensus-with-one-faulty-process" href="#impossibility-of-distributed-consensus-with-one-faulty-process">Impossibility of Distributed Consensus with One Faulty Process</a>
+
+        <a class="paper-links" href="/reads/Impossibility_of_Distributed_Consensus_with_One_Faulty_Process.pdf">[paper]</a>
+
+        
+
+        <div class="short summary">
+          <p>The consensus problem involves a system of asynchronous processes, some of which may be unreliable&#x2F;faulty (die or crash). This paper proves that every solution, with even a single faulty process, has the possibility of non-termination. The important takeaway: we can design our systems to make the possibility of a livelock small, but the probability is non-zero.</p>
+        </div>
+
+        <div class="summary hide-more">
+          <a class="more" href="#">expand...</a>
+          <div class="more-container">
+            <p>Despite being a short paper, the proofs themselves were pretty confusing. This <a href="https://www.the-paper-trail.org/post/2008-08-13-a-brief-tour-of-flp-impossibility/" target="_blank" rel="noopener">post</a> was critical for my understanding.</p>
+<p>The proof is comprised of two lemmas. The first lemma showed that there must be some initial configuration where consensus is not yet determined (caused by errors or message delays). Think of this as <strong>bivalent</strong> (having two possible truths) state. The second lemma shows that it is always possible to remain in a <strong>bivalent</strong> state by delaying a message.</p>
+<p>Lets note the assumptions made by the proof: The underlying transport protocol is reliable; messages are delivered correctly and exactly once. There is no synchronized clock, and it is not possible to detect a slow process vs a dead process. Additionally, the proof relaxes the <strong>termination</strong> requirement and requires that only some process eventually decide on a value (weak consensus). Put another way, a message will always be delivered but can be delayed and can be delivered out-of-order.</p>
+<p>For Strong Consensus these 3 properties must hold: <strong>termination</strong>: eventually, every correct process decides some value. <strong>agreement</strong>: all processes that decide do so on the same value. <strong>validity</strong>: the value must have been proposed by some process.</p>
+<p>By proving their results under assumptions of weak concensus, the authors are able to extend the result to strong concensus systems.</p>
+
+          </div>
+          <!-- <a class="less" href="#">less</a> -->
+        </div>
+      </div>
+    </div>
+  
+
+</div>
+
+
+        
+          <footer>
+  <a class="link-icon" href="https://www.linkedin.com/in/toidiu" target=_blank" rel="noopener">
+      <img src="/images/linked-in.png"/>
+      <span class="icon-description">linked-in</span >
+  </a>
+  <a class="link-icon" href="http://www.github.com/toidiu" target=_blank" rel="noopener">
+      <img src="/images/github.png"/>
+      <span class="icon-description">github</span >
+  </a>
+  <a class="link-icon" href="mailto:toidiu@protonmail.com" target=_blank" rel="noopener">
+      <img src="/images/email.png"/>
+      <span class="icon-description">e-mail</span >
+  </a>
+  <a class="link-icon" href="https://bsky.app/profile/toidiu.com">
+      <img src="images/bluesky.png"/>
+      <span class="icon-description">bluesky</span >
+  </a>
+  <a class="link-icon" href="/apoorv_kothari.pdf" target=_blank" rel="noopener">
+      <img src="/images/resume.png"/>
+      <span class="icon-description">resume</span >
+  </a>
+</footer>
+
+        
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+

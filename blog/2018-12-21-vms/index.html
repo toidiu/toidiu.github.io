@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="I have 15+ years of software engineering experience across different parts of the tech
+              stack including networking libraries, congestion control, performance improvements,
+              Backend, and Android development.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Rust, Protocols, QUIC, IETF,
+              networking, TLS, Scala, java, Cooper Union, blog, talks, code, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js" defer></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;cucina">
+
+      cucina
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <h1 class="title">VM</h1>
+  <div class="date">2018-12-21</div>
+  </div>
+
+  <div class="content">
+    <p>There are two types of Virtual Machines: system VM and process/language VM. A language VM
+is also called a runtime (while true for Java and JVM this is typically not the
+nomenclature with other languages). One abstracts out the OS while the other abstracts out
+a language runtime. A system VM might be good for isolation, security, portability, etc. A
+language VM is good for portability of a language (think JVM). For the purpose of this
+article we will consider system VMs.</p>
+<span id="continue-reading"></span>
+<p>Note: these are some thoughts I compiled awhile ago and only now getting to posting them.
+I am trying to get in the habit of pushing out content more consistently rather than
+waiting for it to be perfect.. so please let me know if there are errors or if I have
+failed to give proper credit.</p>
+<h4 id="hypervisor-https-en-m-wikipedia-org-wiki-hypervisor">Hypervisor: (https://en.m.wikipedia.org/wiki/Hypervisor)</h4>
+<p>A hypervisor or virtual machine manager (VMM) is computer software, firmware or hardware
+that creates and runs virtual machines. A computer on which a hypervisor runs one or more
+virtual machines is called a host machine, and each virtual machine is called a guest
+machine. The hypervisor presents the guest operating systems with a virtual operating
+platform and manages the execution of the guest operating systems. Multiple instances of a
+variety of operating systems may share the virtualized hardware resources.</p>
+<h4 id="kvm-https-en-m-wikipedia-org-wiki-kernel-based-virtual-machine">KVM: (https://en.m.wikipedia.org/wiki/Kernel-based_Virtual_Machine)</h4>
+<p>Kernel-based Virtual Machine (KVM) is a virtualization infrastructure for the Linux kernel
+that turns it into a hypervisor. It was merged into the Linux kernel mainline in kernel
+version 2.6.20, which was released on February 5, 2007.</p>
+<h4 id="stack-machine-https-en-wikipedia-org-wiki-stack-machine">Stack machine: (https://en.wikipedia.org/wiki/Stack_machine)</h4>
+<p>Instructions in a computer can be implemented via a stack or via a register. A register
+machine will specify register where its operands and results are. The stack machine on the
+other hand will assume operands are on the stack and will place the result on the stack as
+well. For example an <code>Add</code> instruction will pop its operands of the stack and will push
+the result onto the stack to prepare for the next instruction.</p>
+<p>Some advantages of stack machines are:</p>
+<ul>
+<li>compact object code(smaller code size)</li>
+<li>simple copilers</li>
+<li>simple interpreters</li>
+<li>fast operand access</li>
+<li>minimal processor state</li>
+</ul>
+<p>Some disadvantages of stack machines are:</p>
+<ul>
+<li>more memory references</li>
+<li>common evaluations can't easily be factored out</li>
+<li>ridgid code order</li>
+</ul>
+<h4 id="firecracker">Firecracker:</h4>
+<p>Firecracker is a microVM written in Rust :) Being mico, it is lightweight and offers all
+the benefits of a VM without the overhead (consumes about 5Mib memory). Because it is
+written in Rust, it offers safety and performances guarantees. It is currently being used
+by Amazon to power their Lambda and Fargate services.</p>
+<p>https://github.com/firecracker-microvm/firecracker/blob/master/docs/design.md</p>
+<h2 id="tutorial">tutorial</h2>
+<p>[30] https://www.youtube.com/watch?v=BNXP0w4Ppto</p>
+<p>Resources</p>
+<h2 id="firecracker-1">Firecracker:</h2>
+<p>[1] http://firecracker-microvm.io
+[3] https://aws.amazon.com/blogs/aws/firecracker-lightweight-virtualization-for-serverless-computing/</p>
+<h2 id="kvm">KVM</h2>
+<p>[10] https://en.m.wikipedia.org/wiki/Kernel-based_Virtual_Machine</p>
+<h2 id="stack-machine">stack machine</h2>
+<p>[40] https://en.wikipedia.org/wiki/Stack_machine</p>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+

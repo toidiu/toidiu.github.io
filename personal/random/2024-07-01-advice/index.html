@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="I have 15+ years of software engineering experience across different parts of the tech
+              stack including networking libraries, congestion control, performance improvements,
+              Backend, and Android development.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Rust, Protocols, QUIC, IETF,
+              networking, TLS, Scala, java, Cooper Union, blog, talks, code, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js" defer></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;cucina">
+
+      cucina
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <h1 class="title">Advice</h1>
+  <div class="date">2024-07-01</div>
+  </div>
+
+  <div class="content">
+    <p>The following collection of advice, quotes and rules were originally compiled by <a rel="external" href="https://www.linkedin.com/in/heymarcel">Marcel
+Levy</a>.</p>
+<span id="continue-reading"></span><h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="https://toidiu.com/personal/random/2024-07-01-advice/#promotions">Promotions</a></li>
+<li><a href="https://toidiu.com/personal/random/2024-07-01-advice/#rules">Rules</a></li>
+<li><a href="https://toidiu.com/personal/random/2024-07-01-advice/#advice">Advice</a></li>
+<li><a href="https://toidiu.com/personal/random/2024-07-01-advice/#force-multiplying-activities">Force Multiplying Activities</a>
+<ul>
+<li><a href="https://toidiu.com/personal/random/2024-07-01-advice/#share-best-practices">Share best practices</a></li>
+<li><a href="https://toidiu.com/personal/random/2024-07-01-advice/#create-templates">Create templates</a></li>
+<li><a href="https://toidiu.com/personal/random/2024-07-01-advice/#build-tools">Build tools</a></li>
+<li><a href="https://toidiu.com/personal/random/2024-07-01-advice/#introduce-a-new-mental-model">Introduce a new mental model</a></li>
+<li><a href="https://toidiu.com/personal/random/2024-07-01-advice/#propose-new-goals-and-metrics">Propose new goals and metrics</a></li>
+<li><a href="https://toidiu.com/personal/random/2024-07-01-advice/#create-or-modify-a-mechanism">Create or modify a mechanism</a></li>
+<li><a href="https://toidiu.com/personal/random/2024-07-01-advice/#propose-organizational-changes">Propose organizational changes</a></li>
+<li><a href="https://toidiu.com/personal/random/2024-07-01-advice/#participate-in-strategic-sessions">Participate in strategic sessions</a></li>
+<li><a href="https://toidiu.com/personal/random/2024-07-01-advice/#create-durable-deliverables">Create durable deliverables</a>
+<ul>
+<li><a href="https://toidiu.com/personal/random/2024-07-01-advice/#measuring-impact">Measuring Impact</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://toidiu.com/personal/random/2024-07-01-advice/#quotes">Quotes</a></li>
+<li><a href="https://toidiu.com/personal/random/2024-07-01-advice/#books">Books</a></li>
+</ul>
+<h2 id="promotions">Promotions</h2>
+<p>https://jvns.ca/blog/brag-documents/</p>
+<h2 id="rules">Rules</h2>
+<ul>
+<li>Don't surprise your manager.</li>
+<li>Don't break Prod.</li>
+<li>Design early, or ship late.</li>
+<li>Run the code on your own desktop before running it anywhere else.</li>
+<li>Yes, <a rel="external" href="http://catern.com/run.html">all of it</a>.</li>
+<li>Leave the code better than you found it.</li>
+<li>Metrics or it didn't happen.</li>
+<li>Ask the dumb questions. At least one person is guaranteed to learn something.</li>
+<li>Before you reinvent the wheel, use the one that's laying around.</li>
+<li>There are five correct answers to any question:
+<ul>
+<li>"Yes."</li>
+<li>"No."</li>
+<li>A number</li>
+<li>A date</li>
+<li>"I don't know, and I'll find out by <date>"</li>
+</ul>
+</li>
+<li>Answer. Explain. Educate (in that order)
+<ul>
+<li>When talking, listen for opportunites to A,E,E.</li>
+<li>When writing, create opportunites to A,E,E. The writing will come across
+clearer.</li>
+<li>When listening. Listen to what is not being said. You need to have an
+expectation for what should be said (ei. if A is missing then it was not
+said and you should dig deeper).</li>
+</ul>
+</li>
+</ul>
+<h2 id="advice">Advice</h2>
+<ul>
+<li><a rel="external" href="http://www.informit.com/articles/article.aspx?p=1941206">Debugging advice from Rob Pike</a></li>
+<li><a rel="external" href="http://mattgemmell.com/2008/12/08/what-have-you-tried/">What have you tried?</a></li>
+<li>Sane Data Updates Are Harder Than You Think: Three part-series that pretty much nails the problems you'll find in data synchronization:
+<ul>
+<li><a rel="external" href="http://source.mozillaopennews.org/en-US/learning/sane-data-updates-are-harder-you-think/">Part 1</a></li>
+<li><a rel="external" href="http://source.mozillaopennews.org/en-US/learning/sane-data-updates-are-harder-you-think-part-2/">Part 2</a></li>
+<li><a rel="external" href="http://source.mozillaopennews.org/en-US/learning/sane-data-updates-are-harder-you-think-part-3/">Part 3</a></li>
+</ul>
+</li>
+<li><a rel="external" href="http://xkcd.com/1205/">Is it worth the time?</a></li>
+<li><a rel="external" href="http://www.zoon.cc/stupid/">The basic laws of human stupidity</a></li>
+<li><a rel="external" href="http://blog.plover.com/misc/evaluation.html">Mark Dominus' approach to annual self-evaluations</a></li>
+<li><a rel="external" href="https://web.archive.org/web/20181001110144/http://www.safetydifferently.com/why-do-things-go-right/">Why Things Go Right</a></li>
+<li><a rel="external" href="https://www.joelonsoftware.com/2000/04/10/controlling-your-environment-makes-you-happy/">Controlling Your Environment Makes You Happy</a></li>
+<li>Automation is Good Intentions: automation is not the end. We still needs feedback loops to make sure the automation is applying the correct set of rules.</li>
+<li>Zonal Architecture for Regional Services: Aside from being good advice for service redundancy, this is also a good primer on what we mean by "regional," "zonal" and "cellular" around here.</li>
+</ul>
+<h2 id="force-multiplying-activities">Force Multiplying Activities</h2>
+<p>"Force-multiplying" is manager-speak for making everyone around you better at their job. But how
+do you do that? The following is written from the standpoint of a UX designer, but you can easily
+adapt it to your domain.</p>
+<h2 id="share-best-practices">Share best practices</h2>
+<ul>
+<li>Share best practices in one-off settings (Slack, Email, meetings, etc.)
+<ul>
+<li>Make your thought process visible</li>
+<li>Highlight others' great examples</li>
+<li>Take on a mentee or an apprentice</li>
+<li>Become a mentor or start office hours</li>
+</ul>
+</li>
+</ul>
+<p>Pro tip: Don’t just share a best practice or a link to an interesting article,
+describe the thought process behind it and why it’s relevant to your audience.
+This makes advice more useful—nobody will be solving the exact same problem as
+you in the future, but the approach can be similar.</p>
+<ul>
+<li>Create internal documentation
+<ul>
+<li>AWS Ops Wins (case studies that reduce latency, cost and errors to AWS and
+our customers)</li>
+<li>Document writing for designers</li>
+<li>Project milestones and resources</li>
+<li>Internal docsite: Design system documentation</li>
+<li>Internal Q&amp;A platform: Answer a question publicly, i.e. on Sage, or on
+Answers</li>
+</ul>
+</li>
+</ul>
+<p>In all these examples: When you document a best practice, others are able to
+learn from you without the need for a face-to-face interaction</p>
+<ul>
+<li>Write a blog or newsletter:
+<ul>
+<li>Write It Right</li>
+<li>Luu's Tran’s Blog</li>
+<li>Adam Elman’s Blog</li>
+<li>Making Great Decisions Blog</li>
+</ul>
+</li>
+<li>Host in-person training (mentor at scale):
+<ul>
+<li>Required new employee training (i.e. Peculiar UX)</li>
+<li>Regular 1-to-1, 1-to-many coaching (i.e. Office Hours, CXBR consultations,
+presentations)</li>
+<li>Seasonal training sessions</li>
+</ul>
+</li>
+<li>Record videos:
+<ul>
+<li>For all Amazonians: Working Backwards</li>
+<li>For UX: Design tutorials</li>
+<li>For UX, PM, and Devs: Kumo Clips</li>
+</ul>
+</li>
+</ul>
+<h2 id="create-templates">Create templates</h2>
+<ul>
+<li>Doc templates:
+<ul>
+<li>Amazon-wide document templates</li>
+<li>Org-wide templates for project kick-offs, research reports, and other common
+project milestones</li>
+</ul>
+</li>
+</ul>
+<p>Pro tip: Create a template whenever there’s an activity that happens over and
+over again and is done by different people. Combine sharing best practices (#1
+above) with creating templates to make your guidance easier to copy and more
+actionable</p>
+<ul>
+<li>Design templates:
+<ul>
+<li>Compositions of design system components</li>
+<li>Presentation templates</li>
+<li>Research methods (i.e. a great participant screener template for
+usertesting.com would ensure more inclusive recruiting for others' research
+projects)</li>
+</ul>
+</li>
+<li>Ideation / workshop templates:
+<ul>
+<li>Quip templates for remote workshops</li>
+<li>Quip templates for self-service ideation sessions</li>
+</ul>
+</li>
+<li>Code templates:
+<ul>
+<li>Design files + design system component code</li>
+</ul>
+</li>
+</ul>
+<p>Code templates make it easy to reuse patterns. Patterns may reduce unnecessary
+overrides of the design system.</p>
+<ul>
+<li>Decision-tree templates:
+<ul>
+<li>AWS Well-Architected</li>
+</ul>
+</li>
+</ul>
+<h2 id="build-tools">Build tools</h2>
+<ul>
+<li>Examples of tools built by Amazonians:
+<ul>
+<li>PR/FAQ Writing Tool</li>
+<li>UX Writer Tool</li>
+<li>Amazon Accessibility Evaluator</li>
+<li>Non-inclusive Term Converter</li>
+<li>Policy Engine (discover problems that need attention)</li>
+<li>Kumo Automation Service (a framework that allows people to build tools to automate away support issues)</li>
+</ul>
+</li>
+</ul>
+<p>Pro tip: Great tools apply best practices automatically to someone’s document,
+code, or designs.</p>
+<h2 id="introduce-a-new-mental-model">Introduce a new mental model</h2>
+<ul>
+<li>Mental model examples:
+<ul>
+<li>Company-wide: Leadership Principles</li>
+<li>Org: RACI framework (Responsible, Accountable, Consulted, Informed), used to make decision-making more efficient</li>
+<li>Org/Team:
+<ul>
+<li>Shape the culture via a vision/mission statement</li>
+<li>Tenets – especially aspirational tenets, which will allow you to push your team's bar higher</li>
+<li>List of key truths or decisions made to establish a common ground during discussions
+<ul>
+<li>Returns Progress Tracker</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Product: Product framework (a product framework may expand the scope of work and ground future conversations):
+"Zones" framework on Product Detail Pages (video – 12:18+)</li>
+</ul>
+</li>
+</ul>
+<p>Pro tip: Great mental models are principles and frameworks that set a new,
+higher standard for the team’s work quality. With all these examples, it takes
+documenting and then proposing the new mental model to your peers or leaders to
+get buy-in.</p>
+<h2 id="propose-new-goals-and-metrics">Propose new goals and metrics</h2>
+<ul>
+<li>Goals can be introduced at different levels:
+<ul>
+<li>Org: “A CXBR review is required for all new products”</li>
+<li>Org: “Each employee must attend Customer Connection training twice a year”</li>
+<li>Org: “Resolve # shopper frustrations”</li>
+<li>Product: New product metrics, evaluated regularly in MBRs (product goal can bring ongoing focus to an area that may not be getting enough attention)</li>
+<li>Design team: “100% of design projects will identify the customer value they will deliver and then measure whether it was delivered"</li>
+</ul>
+</li>
+</ul>
+<p>Pro tip: Goals are a great way to influence: they add a target and ongoing
+accountability to meeting a certain outcome.</p>
+<h2 id="create-or-modify-a-mechanism">Create or modify a mechanism</h2>
+<ul>
+<li>Mechanisms created by Amazonians:
+<ul>
+<li>Andon Cord, Andon Cord for Everyone</li>
+<li>Shopper Frustration Program</li>
+<li>Customer Service Contact Review</li>
+<li>Role Guidelines</li>
+<li>Resource: How to create a mechanism</li>
+<li>Resource: Mechanisms eLearning</li>
+</ul>
+</li>
+</ul>
+<p>Pro tip: Mechanisms provide solutions to recurring problems and don’t require
+you to be in the room to affect positive outcomes. But you don’t always have to
+create new mechanisms, start by first thinking about whether you can adjust an
+existing one.</p>
+<ul>
+<li>Modify a mechanism:
+<ul>
+<li>Add a new required field to a Quarterly Planning Doc Template</li>
+<li>Add new required FAQs to your org's Press Release template</li>
+<li>Add a new step to Embark for new employees</li>
+<li>Add required steps in design reviews</li>
+<li>CC a UX designer on all front-end code reviews to improve Design Quality Assurance</li>
+</ul>
+</li>
+</ul>
+<p>Pro tip: Modifying a mechanism always starts with (a) identifying what are the
+existing mechanisms (b) changing it get better outcomes in the future. The
+“Modify” tactic also applies to existing tools, templates, goals, and metrics.</p>
+<h2 id="propose-organizational-changes">Propose organizational changes</h2>
+<ul>
+<li>Ways to affect organizational structure and resourcing:
+<ul>
+<li>Author a narrative, PRs, or OP1 paragraph, which will require new resources</li>
+<li>Partner with others to create a company-wide group
+<ul>
+<li>Software Builder Experience Org (created to focus on improving the
+experience for software builders across Amazon)</li>
+<li>Amazon Affinity Groups</li>
+</ul>
+</li>
+<li>Author a cross-org narrative that solves shared problems (i.e. via multi-org
+working groups)</li>
+<li>Take on direct reports</li>
+</ul>
+</li>
+</ul>
+<h2 id="participate-in-strategic-sessions">Participate in strategic sessions</h2>
+<ul>
+<li>Strategic session examples:
+<ul>
+<li>Cross-org: Become a CXBR or a Hiring BR</li>
+<li>Org: Lead brainstorming / Think Big strategic sessions (i.e. get invited OR
+lead them, make it more inclusive and more customer obsessed)</li>
+<li>Org: Provide feedback on PRs, project kick-offs (feedback on PRs influences
+all downstream steps)</li>
+<li>Org/team: Organize generative research to uncover new opportunities for the
+business</li>
+</ul>
+</li>
+</ul>
+<h2 id="create-durable-deliverables">Create durable deliverables</h2>
+<p>Most "project" deliverables only advance the current project from one stage to
+the next. "Durable" deliverables on the other hand—are useful during multiple
+stages of your current project as well as during future projects.</p>
+<p><strong>3 Steps To Apply a Force-Multiplying Activity</strong></p>
+<ul>
+<li>Aim for atleast for 10% of deliverables to be durable.</li>
+<li>Take initiative to define durable deliverables per project (atleast 2)</li>
+<li>Make sure that these are easy to find and not lost within a project.</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<ul>
+<li>Architecture diagrams
+<ul>
+<li>Amazon Shopping Product Detail Page "Zones"</li>
+<li>AWS Trusted Advisor Technical architecture</li>
+</ul>
+</li>
+<li>Coding standards
+<ul>
+<li>Guidance for Region Building and Special partitions in AWS Kumo</li>
+<li>DynamoDB Operational Best Practices</li>
+</ul>
+</li>
+<li>Project/Program/Team tenets
+<ul>
+<li>Tenet examples</li>
+</ul>
+</li>
+<li>Design principles
+<ul>
+<li>AWS Trusted Advisor UX design - unification principles</li>
+</ul>
+</li>
+<li>Personas and their Jobs-To-Be-Done (JTBDs)
+<ul>
+<li>AWS Personas</li>
+</ul>
+</li>
+<li>Journey maps
+<ul>
+<li>AWS Support Troubleshooting Journey Map</li>
+</ul>
+</li>
+<li>Timeless customer needs
+<ul>
+<li>AWS Support timeless customer needs</li>
+</ul>
+</li>
+<li>Ideal business outcomes
+<ul>
+<li>Measurable goals tracked in a "2x2" business health update</li>
+</ul>
+</li>
+<li>Ideal customer feelings/Emotional Design outcomes
+<ul>
+<li>Tutorial: How to apply Emotional Design to your product</li>
+</ul>
+</li>
+<li>North Star Designs (mockups or Press Release descriptions)
+<ul>
+<li>Your Orders UX mobile design architecture video</li>
+</ul>
+</li>
+<li>Design system and brand guidelines
+<ul>
+<li>Amazon Shopping's Rio design system</li>
+</ul>
+</li>
+</ul>
+<h3 id="measuring-impact">Measuring Impact</h3>
+<p>To ensure your force multiplying activity is working, you should have a way to
+audit its effectiveness on a consistent basis. Data will help you adjust along
+the way and it will allow you to show the impact of your work. Here are several
+ways impact can be measured:</p>
+<ul>
+<li>Awareness – this includes: views, clicks, attendees, subscribers, anecdotes
+(note: these provide a signal on adoption but may not be strong enough to
+demonstrate impact, see #2)</li>
+<li>Before-and-after comparisons – anecdotal examples of improvements (i.e. via
+anecdotal or survey feedback), A/B tests, Connections, Tech Survey results</li>
+<li>Organizational changes – resource reallocations, new investments, changes to
+mechanisms,
+executive buy-in of new initiatives</li>
+</ul>
+<p>Pro tip: Since being an effective force multiplier requires adoption,
+collaboration, and usually buy-in from your peers and leaders, regular Earn
+Trust-building activities are key to maximizing your impact!</p>
+<h2 id="quotes">Quotes</h2>
+<ul>
+<li>I do not pretend to start with precise questions. I do not think you can start
+with anything precise. You have to achieve such precision as you can, as you
+go along. -- Bertrand</li>
+<li>Writing is nature's way of letting you know how sloppy your thinking is. --
+Guindon</li>
+<li>Correlation is not causation but it sure is a hint. -- Edward</li>
+<li>If we have data, let’s look at data. If all we have are opinions, let’s go
+with mine. -- James</li>
+<li>The data may not contain the answer. The combination of some data and an
+aching desire for an answer does not ensure that a reasonable answer can be
+extracted from a given body of data. -- John</li>
+<li>I have no tools because I've destroyed my tools with my tools. -- James</li>
+<li>If you want to build a ship, don’t drum up the [people] to gather wood, divide
+the work, and give orders. Instead, teach them to yearn for the vast and
+endless sea. Incorrectly attributed to Antoine de Saint-Exupéry</li>
+<li>You must never confuse faith that you will prevail in the end—which you can
+never afford to lose—with the discipline to confront the most brutal facts of
+your current reality, whatever they might be. James</li>
+<li>Much of my trip focused on my personal faults, which were displayed in detail,
+and my anger at myself for being unable to correct them. The answer I got was
+"GET STRAIGHT! DO WHAT IT TAKES TO STRAIGHTEN OUT THE SHIT!" When I argued
+that it really didn't matter, the answer was "EVERYTHING MATTERS" -- Daniel</li>
+<li>There are two hard things in computer science: cache invalidation, naming
+things, and off-by-one errors. -- Leon</li>
+<li>There are only two hard problems in distributed systems:
+<ul>
+<li>Exactly-once delivery</li>
+<li>Guaranteed order of messages</li>
+<li>Exactly-once delivery -- Mathias</li>
+</ul>
+</li>
+<li>Among the maxims on Lord Naoshige's wall there was this one: "Matters of great
+concern should be treated lightly." Master lttei commented, "Matters of small
+concern should be treated seriously." Among one's affairs there should not be
+more than two or three matters of what one could call great concern. If these
+are deliberated upon during ordinary times, they can be understood. Thinking
+about things previously and then handling them lightly when the time comes is
+what this is all about. -- Yamamoto</li>
+<li>In its passivity and resignation, cynicism is a hardening, a calcification of
+the soul. Hope is a stretching of its ligaments, a limber reach for something
+greater. -- Maria</li>
+<li>The universe tends toward maximum irony. Don't push it. -- Jamie</li>
+<li>The universe seeks equilibriums; it prefers to disperse energy, disrupt
+organization, and maximize chaos. Life is designed to combat these forces. We
+slow down reactions, concentrate matter, and organize chemicals into
+compartments; we sort laundry on Wednesdays. -- Siddhartha Mukherjee, in The
+Gene: An Intimate History</li>
+<li>A foolish consistency is the hobgoblin with fine calipers, adored by little
+statesmen and philosophers and developers. -- Jim</li>
+<li>Move as a team. Never move alone -- Public Enemy, "Welcome To The Terrordome"</li>
+<li>Work. Don't stress about the fruit of your labor. Work. -- Premalatha</li>
+<li>If I knew less, I’d have been better off. -- Benjamin</li>
+<li>Programs must be written for people to read, and only incidentally for
+machines to execute. -- Harold</li>
+<li>Adjectives are like lard. They make all writing flabby. -- Jake</li>
+<li>New organs of perception come into being as a result of necessity. Therefore,
+O man, increase your necessity, so that you may increase your perception. --
+Rumi</li>
+<li>If we could see the whole truth of any situation, our only response would be
+one of compassion. -- Yongey</li>
+<li>Be joyful though you have considered all the facts. -- Wendell</li>
+<li>[HSMs] are not a sustainable operational load. -- Todd</li>
+<li>The only good thing about [certificate] pinning is that it makes revocation
+seem like a good idea. -- Trevor</li>
+<li>When someone says “assume that a public key cryptosystem exists,” this is
+roughly equivalent to saying “assume that you could clone dinosaurs, and that
+you could fill a park with these dinosaurs, and that you could get a ticket to
+this ‘Jurassic Park,’ and that you could stroll throughout this park without
+getting eaten, clawed, or otherwise quantum entangled with a macroscopic
+dinosaur particle.” -- James Mickens, "This World of Ours"</li>
+<li>It's a program, not a project. -- Michael</li>
+<li>HTTPS &amp; SSL doesn't mean "trust this." It means "this is private." You may be
+having a private conversation with Satan.</li>
+<li>A human being should be able to change a diaper, plan an invasion, butcher a
+hog, conn a ship, design a building, write a sonnet, balance accounts, build a
+wall, set a bone, comfort the dying, take orders, give orders, cooperate, act
+alone, solve equations, analyze a new problem, pitch manure, program a
+computer, cook a tasty meal, fight efficiently, die gallantly. Specialization
+is for insects. -- Robert A. Heinlein, in Time Enough for Love, 1973</li>
+<li>The realization came over me with full force that a good part of the remainder
+of my life was going to be spent in finding errors in my own programs. --
+Maurice</li>
+</ul>
+<h2 id="books">Books</h2>
+<ul>
+<li>Required books for an SDE I
+<ul>
+<li>The Design of Everyday Things: More than a book about physical design, it
+illustrates how you actually obsess over customers.</li>
+<li>Every Computer Performance Book: How to Avoid and Solve Performance Problems
+on The Computers You Work With: This deceptively simple book will give you a
+grounding in the basics of keeping complex systems running, and improving
+them as you go.</li>
+</ul>
+</li>
+<li>Useful books for all SDEs and SDMs
+<ul>
+<li>How Big Things Get Done, by Bent Flyvbjerg and Dan Gardner. Most projects
+come in late and over budget. This book will help you avoid that.</li>
+<li>The Design of Design: Essays from a Computer Scientist: By Fred Brooks, the
+author of the “Mythical Man-Month.” These essays are underrated gold.</li>
+<li>The Elements of Style, by Strunk and White: At some point in your career,
+you realize that the majority of your writing is for other people. If it's
+in English, let this be your constant companion.</li>
+<li>The Systems Bible: The Beginner's Guide to Systems Large and Small: At
+first, you laugh at all the jokes. Then you realize he's describing a
+situation that came up in a recent COE. Then you stop laughing. And then you
+realize this is a bundle of koans for system designers and operators.</li>
+<li>The Utopia of Rules: On Technology, Stupidity, and the Secret Joys of
+Bureaucracy: Sophisticated, intelligent critiques of complex bureaucratic
+systems (and their critics).</li>
+</ul>
+</li>
+<li>Books specific to TLS, PKI or cryptography
+<ul>
+<li>Bulletproof TLS and PKI, by Ivan Ristic. The most comprehensive work on the
+subject.</li>
+<li>Real-World Cryptography, by David Wong. I'm not a cryptographer. My
+mathematical abilities are not strong, and yet this book filled in a lot of
+the gaps in my cryptographic knowledge.</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+
