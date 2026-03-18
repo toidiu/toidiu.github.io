@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="I have 15+ years of software engineering experience across different parts of the tech
+              stack including networking libraries, congestion control, performance improvements,
+              Backend, and Android development.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Rust, Protocols, QUIC, IETF,
+              networking, TLS, Scala, java, Cooper Union, blog, talks, code, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js" defer></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;cucina">
+
+      cucina
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <h1 class="title">orange</h1>
+  <div class="date">2024-04-01</div>
+  </div>
+
+  <div class="content">
+    <h2 id="project-retrospective-1hr">Project retrospective: 1hr</h2>
+<p>TODO:</p>
+<ul>
+<li>pick two projects and be able to dive into project details</li>
+</ul>
+<h3 id="ack-frequency">ACK frequency</h3>
+<ul>
+<li>tracking issue: https://github.com/aws/s2n-quic/issues/1276</li>
+<li>cpu increase: https://github.com/aws/s2n-quic/pull/1298</li>
+<li>revert pr with some analysis shows : https://github.com/aws/s2n-quic/pull/1368</li>
+</ul>
+<h4 id="rfc">RFC:</h4>
+<ul>
+<li>Acks uses:
+<ul>
+<li>progress: acknowledge packet received</li>
+<li>loss recovery: detect a packet was not received and retransmit</li>
+<li>cc: regular acks help establish good RTT estimates and drive CC</li>
+<li>ECN: congestion signal by the network</li>
+</ul>
+</li>
+</ul>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="plain"><span class="giallo-l"><span>ACK Frame {</span></span>
+<span class="giallo-l"><span>  Type (i) = 0x02..0x03,</span></span>
+<span class="giallo-l"><span>  Largest Acknowledged (i),</span></span>
+<span class="giallo-l"><span>  ACK Delay (i),</span></span>
+<span class="giallo-l"><span>  ACK Range Count (i),</span></span>
+<span class="giallo-l"><span>  First ACK Range (i),</span></span>
+<span class="giallo-l"><span>  ACK Range (..) ...,</span></span>
+<span class="giallo-l"><span>  [ECN Counts (..)],</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<ul>
+<li>motivation: expensive cpu to send/recv. asymmetric links like satellite. ack
+rate can affect link efficiency.</li>
+<li>negotiating the extension: min_ack_delay. the minimum amount of time, in
+microseconds, that the endpoint sending this value is willing to delay an
+acknowledgment</li>
+<li>ACK_FREQUENCY frame:
+<ul>
+<li>Ack-Eliciting Threshold: max ack eliciting <strong>packets</strong> received before sending an ack</li>
+<li>Requested Max Ack Delay:  max <strong>time</strong> to wait before sending an ack</li>
+<li>Reordering Threshold: max number of <strong>reordered packet</strong> before sending an ack</li>
+</ul>
+</li>
+<li>IMMEDIATE_ACK frame: asks peer to send an immediate ack</li>
+<li>Expedite ECN: ecn marked packets should not be delayed</li>
+<li>other concerns:
+<ul>
+<li>congestion control:</li>
+<li>application limited:</li>
+<li>burst mitigation: if sending is dependent on recieving acks. use pacing</li>
+<li>loss detection is hard: RFC doesnt provide a good solution</li>
+<li>connecion migration: send IMMEDIATE_ACK to expedite path validation. ack
+frequency is NOT reset!! on new path.. but should be update to the new path</li>
+</ul>
+</li>
+</ul>
+<h3 id="optimistic-ack-mitigation">optimistic ack mitigation</h3>
+<ul>
+<li>pr https://github.com/aws/s2n-quic/pull/1986</li>
+<li>rfc link https://www.rfc-editor.org/rfc/rfc9000#section-21.4</li>
+</ul>
+<h3 id="netbench">netbench</h3>
+<h2 id="technical-1hr">Technical: 1hr</h2>
+<h2 id="orange-cloud-behavioral-30-min">Orange cloud: Behavioral: 30 min</h2>
+<p>TODO:</p>
+<ul>
+<li>pick 5 projects and STAR them.</li>
+<li>read https://www.hellointerview.com/learn/behavioral/overview/introduction</li>
+</ul>
+<p><strong>TOP</strong></p>
+<ul>
+<li>A design choice that encured technical debt but you think it was a good choice.</li>
+<li>Tell me about a time you worked well within a team.
+<ul>
+<li>Helped co-worker in CLOUDFRONT integrate with async cert loading feature.</li>
+<li>helped deliver quic over 2 years. specifically worked in a team of three to review prs, make design
+decisions etc.</li>
+<li>connection migration pentest</li>
+<li>orchestrator. i implemented the library logic and he helped me with the automated infra</li>
+</ul>
+</li>
+<li>Tell me about a time you dealt with conflict on a team. How did you solve it?
+<ul>
+<li>prioritize features for the orchestrator. we met with the stake holder and figured out which
+features they actually wanted to help prioritize the project</li>
+<li>
+<ul>
+<li>How do you respond when you disagree with a coworker?
+<ul>
+<li>disagrements usually stem form mis-matched assumptions or lack of
+communication. so i like to start with having a conversation and
+trying to understand why there is a disagreemet. usually when this
+happens we both end up learning something.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Tell me about a time you failed at work.
+<ul>
+<li>ack frequency project. the cpu usage went up after implementing the solution</li>
+</ul>
+</li>
+<li>Can you give me an example of how you set goals for yourself?
+<ul>
+<li>daily task list. mark what got done and what did not</li>
+</ul>
+</li>
+<li><strong>Tell me about a time you showed leadership.</strong>
+<ul>
+<li>spoke up about technical decisions that I spoke out on</li>
+<li>representing someone external to yourself
+<ul>
+<li>took initiative to fix handshake status. added fuzz testing verify the solution.</li>
+<li>automate release versioning</li>
+<li>customer contact list</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Tell me about your biggest weakness.</li>
+</ul>
+<p><strong>MID</strong></p>
+<ul>
+<li>Tell me about a time you faced a really hard problem / a challenge at work.</li>
+<li>Tell me about an interesting project you’ve worked on recently.</li>
+<li>Tell me about a time you had to meet a tight deadline.</li>
+<li>Tell me about a time you had to prioritize projects under pressure.</li>
+</ul>
+<p><strong>LOW</strong></p>
+<ul>
+<li>What is the most helpful feedback you've ever gotten?</li>
+<li>As a software engineer, you must be both predictable and innovative. How can these traits coexist
+in your work?</li>
+<li>Tell me about a time you adapted to a new situation or environment.</li>
+<li>Tell me about a time you needed information from someone who wasn't responsive. How did you
+handle it?</li>
+</ul>
+<p><strong>Other</strong></p>
+<ul>
+<li>Why do you want to work here?</li>
+<li>Walk me through your resume and relevant experience.</li>
+</ul>
+<h2 id="system-design-1hr">System Design: 1hr</h2>
+<p>TODO:</p>
+<ul>
+<li>Watch this video to understand how to structure the solution: https://www.youtube.com/watch?v=fhdPyoO6aXI</li>
+<li>read https://www.hellointerview.com/learn/system-design/in-a-hurry/introduction</li>
+<li>design 2 systems as practice</li>
+</ul>
+<h2 id="executive-call">Executive call</h2>
+<blockquote>
+<p>https://blog.cloudflare.com/cloudflare-2024-annual-founders-letter/</p>
+<p>One of the most common questions we’re asked is how we plan to preserve Cloudflare's culture? Our
+answer is always the same: the goal isn't how to preserve our culture, it's always how to improve
+it.</p>
+</blockquote>
+<ul>
+<li>It seems to me that CLOUDFLARE is in a crowded market space (cdn/securing the internet (fastly),
+paas (aws), data security (crowdstrike)). What do you believe is your single biggest technical or
+non-technical advantage that will make you successful over your competitors?</li>
+<li>What is the top kpi/metric you personally pay attention to, to make sure CLOUDFLARE is maintaining
+its momentum?</li>
+<li>What is the most imporant thing CLOUDFLARE does to build high-functioning and talented teams?</li>
+<li>AWS's customers dislike that there are over 200 services.
+<ul>
+<li>In one of you blog posts [1] you mentioned:</li>
+<li>"we believe our continued success should be primarily driven by new innovation, not by milking
+old features for revenue."</li>
+<li>How will you preserve a seamless user experience as you continue to launch new features?</li>
+</ul>
+</li>
+</ul>
+<p>[1] https://blog.cloudflare.com/adjusting-pricing-introducing-annual-plans-and-accelerating-innovation/</p>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+

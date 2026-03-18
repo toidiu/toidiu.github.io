@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="I have 15+ years of software engineering experience across different parts of the tech
+              stack including networking libraries, congestion control, performance improvements,
+              Backend, and Android development.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Rust, Protocols, QUIC, IETF,
+              networking, TLS, Scala, java, Cooper Union, blog, talks, code, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js" defer></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;cucina">
+
+      cucina
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <h1 class="title">A practical guide to breakOut</h1>
+  <div class="date">2017-05-27</div>
+  </div>
+
+  <div class="content">
+    <p>In this post I will be reviewing <code>scala.collection.breakOut</code> from an application
+developer's perspective rather than a functional programming enthusiast. I will discuss
+why one would want to use it and how to recognize when it is applicable.</p>
+<span id="continue-reading"></span>
+<p>When I first saw <code>breakOut</code>, it seemed like an extremely intimidating concept and a little
+like black magic. It certainly didn't help that I found explanations of <code>breakOut</code>
+intermingled with the equally intimidating concept of <code>CanBuildFrom</code>. This is a shame
+because, with proper application, <code>breakOut</code> can make your code run faster.</p>
+<p>The full code sample in this blog can be found at
+<a rel="external" href="https://github.com/toidiu/Scala-breakOut">github</a>.</p>
+<h4 id="why-we-care">Why we care</h4>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="scala"><span class="giallo-l"><span style="color: #FB4934;">val</span><span style="color: #83A598;"> list</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> List</span><span>(</span><span style="color: #A89984;">&quot;</span><span style="color: #B8BB26;">one</span><span style="color: #A89984;">&quot;</span><span>, </span><span style="color: #A89984;">&quot;</span><span style="color: #B8BB26;">two</span><span style="color: #A89984;">&quot;</span><span>, </span><span style="color: #A89984;">&quot;</span><span style="color: #B8BB26;">three</span><span style="color: #A89984;">&quot;</span><span>, </span><span style="color: #A89984;">&quot;</span><span style="color: #B8BB26;">four</span><span style="color: #A89984;">&quot;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FB4934;">val</span><span style="color: #83A598;"> expensiveMap</span><span style="color: #8EC07C;"> =</span><span> list     </span><span style="color: #928374;font-style: italic;">// type Map[Int, String] is infered by the compiler</span></span>
+<span class="giallo-l"><span>  .map(n </span><span style="color: #8EC07C;">=&gt;</span><span> n.length </span><span style="color: #8EC07C;">-&gt;</span><span> n)</span><span style="color: #928374;font-style: italic;">  // 1</span></span>
+<span class="giallo-l"><span>  .toMap                    </span><span style="color: #928374;font-style: italic;">// 2</span></span></code></pre>
+<p>Since Scala eager evaluation by default, this code ends up being memory inefficient. We
+first create an intermediate list at line (1) and then convert it to a Map on line (2).
+Ideally we could do it all in one step. Well thanks to <code>breakOut</code> we can!</p>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="scala"><span class="giallo-l"><span style="color: #FB4934;">import</span><span style="color: #FABD2F;"> scala</span><span style="color: #A89984;">.</span><span style="color: #FABD2F;">collection</span><span style="color: #A89984;">.</span><span style="color: #FABD2F;">breakOut</span></span>
+<span class="giallo-l"><span style="color: #FB4934;">val</span><span style="color: #83A598;"> list</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> List</span><span>(</span><span style="color: #A89984;">&quot;</span><span style="color: #B8BB26;">one</span><span style="color: #A89984;">&quot;</span><span>, </span><span style="color: #A89984;">&quot;</span><span style="color: #B8BB26;">two</span><span style="color: #A89984;">&quot;</span><span>, </span><span style="color: #A89984;">&quot;</span><span style="color: #B8BB26;">three</span><span style="color: #A89984;">&quot;</span><span>, </span><span style="color: #A89984;">&quot;</span><span style="color: #B8BB26;">four</span><span style="color: #A89984;">&quot;</span><span>)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FB4934;">val</span><span style="color: #83A598;"> efficientMap</span><span style="color: #8EC07C;">:</span><span style="color: #FABD2F;"> Map</span><span>[</span><span style="color: #FABD2F;">Int</span><span>, </span><span style="color: #FABD2F;">String</span><span>]</span><span style="color: #8EC07C;"> =</span><span> list   </span><span style="color: #928374;font-style: italic;">// you need to specify the type</span></span>
+<span class="giallo-l"><span>  .map(n </span><span style="color: #8EC07C;">=&gt;</span><span> (n.length, n))(breakOut)</span></span></code></pre>
+<p>This results in the <code>Map</code> we want without the intermediate list. Win!</p>
+<h4 id="when-to-use">When to use</h4>
+<p>So when should we use <code>breakOut</code>? An easy way to remember when to use it is if we have the
+following list of conditions:</p>
+<ul>
+<li>we have a traversable collection (List, Seq, Vector)</li>
+<li>we want to transform the elements (pairing the string length with the string)</li>
+<li>we want the final output to be a <code>Map</code></li>
+</ul>
+<h4 id="conclusion">Conclusion</h4>
+<p>Scala has a robust immutable collections library, which has a tendency to make it more GC
+heavy. However, with some attention to the implementation details, it is possible to
+remain efficient and functional.</p>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+
