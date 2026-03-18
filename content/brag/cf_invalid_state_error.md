@@ -14,7 +14,7 @@ https://github.com/cloudflare/quiche/pull/2366
 - error per day (1% sampling):      1,000,000
 - error per day (100% sampling):    100,000,000
 - sec in day:                       86,400
-- error per sec:                    1,157
+- error per sec:                    **1,157**
 - bastion conn error %:            .17%
 
 - InvalidState is a little like a catch all for quiche getting into invalid state.
