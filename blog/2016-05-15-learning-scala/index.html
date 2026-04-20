@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="I have 15+ years of software engineering experience across different parts of the tech
+              stack including networking libraries, congestion control, performance improvements,
+              Backend, and Android development.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Rust, Protocols, QUIC, IETF,
+              networking, TLS, Scala, java, Cooper Union, blog, talks, code, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js" defer></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;cucina">
+
+      cucina
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <h1 class="title">Learning Scala</h1>
+  <div class="date">2016-05-15</div>
+  </div>
+
+  <div class="content">
+    <p>Learning a new technology/language is difficult, and it can seem daunting when getting
+started. This is the third time in 3 years that I have set out to learn something new and
+become proficient, so I wanted to share my experience on how I learned Scala and built
+SubwayTunes. <span id="continue-reading"></span></p>
+<p>The code if now available on <a rel="external" href="https://github.com/toidiu/SubwayTunes">github</a>.</p>
+<h2 id="cheatsheet">Cheatsheet</h2>
+<p>Some of the technology behind SubwayTunes includes the Play Framework, ReactiveMongo,
+Docker, AWS Elastic Beanstalk, AWS S3.</p>
+<p>Here is a list of resources I used to help me learn Scala and Play Framework in no
+particular order:</p>
+<ul>
+<li><a rel="external" href="http://www.horstmann.com/scala/index.html">Scala for the Impatient</a> for basic Scala
+syntax.</li>
+<li><a rel="external" href="https://www.manning.com/books/functional-programming-in-scala">Functional Programming in
+Scala</a> and the
+accompanying <a rel="external" href="https://github.com/toidiu/fpinscala">solutions</a>. A great book that uses
+exercises to re-enforce concepts in Scala. I recommend reading as much of this book as
+possible and attempting the exercises yourself first.</li>
+<li><a rel="external" href="http://danielwestheide.com/scala/neophytes.html">Ebook</a> - amazingly through and yet
+concise. Great reference for all levels.</li>
+<li><a rel="external" href="https://github.com/toidiu/react-vs-shared-state-inventory/tree/master/reactive-inventory">Look at other's
+code</a>
+<ul>
+<li>don't worry about all the setup and just <code>git clone</code> and use <code>activator run</code> to
+launch.</li>
+</ul>
+</li>
+<li><a rel="external" href="https://www.coursera.org/course/progfun">Coursera class</a> taught by the master. Coursera
+classes are not for me but the course offers great sources and I do recommend it.</li>
+<li><a rel="external" href="http://www.meetup.com/ny-scala/">NYC Scala Meetup</a></li>
+</ul>
+<h2 id="why">Why?</h2>
+<p>Once a doctor graduates from Medical school, he or she has the responsibility to stay up
+to date with new developments in the field, by reading publications and attending
+conferences. Similarly, as software engineers, I believe it is our responsibility to stay
+current with new technology and best practices. You wouldn't build a Flash app for a
+website, would you?</p>
+<h2 id="idea">Idea</h2>
+<p>When attempting to learn a new technology, the biggest barrier you will face is
+frustration and becoming overwhelmed. For this reason, it is important to supplement your
+technical learning with practical application. Doing so will allow you to switch contexts
+if one task becomes too tedious and help mitigate your frustration.</p>
+<p>In my experience, having a tangible project is critical for successful follow-through.
+Better yet, choose an idea that is relevant to your daily life or your interests. Maybe
+you hate waking up in the morning...so make an alarm app.</p>
+<h2 id="play">Play</h2>
+<p>Spend some time setting up your environment and then write some code. There are plenty of
+resources to help you get started and write something more significant than a "Hello
+World!". Find a sample project on Github and get it to build. Then start tinkering with
+it.</p>
+<p>The idea behind starting with a sample is to see a finished product in action and whet
+your appetite. You may not be able to accomplish much else, but thats ok.</p>
+<h2 id="meet">Meet</h2>
+<p>Imagine wanting to be a chef and having Alton Brown show you how to perfect a recipe that
+he tried last week. That is the power of a good Meetup: being able to speak with some of
+the top professionals in the industry. Not only are you exposing yourself to the
+opportunity to network but also absorbing the jargon and best practices relevant to your
+project.</p>
+<p>The biggest risk of attempting to learn something by yourself, is to waste time learning
+the wrong thing or just figuring out what to learn in the first place. A book can be a
+great resource, but it can quickly become outdated, especially in the field of software.
+My advice is to attend a few Meetups on the topic and see if one or two stand out. Then
+attend regularly for some time. I find myself feeling more motivated each time I attend a
+Meetup.</p>
+<h2 id="ask">Ask</h2>
+<p>When at a Meetup, don't simply go for the organized talks. Ask people for recommendations
+on relevant books, tutorials, videos, conferences, and even other Meetups. Chances are,
+the people you meet have been in the same position as you are and can help you save weeks
+of guessing. Remember, you want to avoid wasting time as much as possible.</p>
+<h2 id="repeat">Repeat</h2>
+<p>Expect to get stuck. It takes years to be an expert at any technology. The goal is not to
+be perfect, but to keep stepping forward. You are bound to stumble across the finish like
+eventually! Switch between expanding your technical knowledge and project implementation.
+After gaining the preliminary knowledge, try your best to break your learning into
+discrete steps so that each new step helps you accomplish a piece of your project.</p>
+<p>You might find yourself getting frustrated trying to achieve perfect implementation. Stop
+yourself. Just write something that works. I guarantee that regardless of what you write,
+it will change 2-3 times before the end of the project anyway.</p>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+

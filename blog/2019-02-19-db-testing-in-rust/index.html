@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="I have 15+ years of software engineering experience across different parts of the tech
+              stack including networking libraries, congestion control, performance improvements,
+              Backend, and Android development.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Rust, Protocols, QUIC, IETF,
+              networking, TLS, Scala, java, Cooper Union, blog, talks, code, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js" defer></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;cucina">
+
+      cucina
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <h1 class="title">DB testing in Rust</h1>
+  <div class="date">2019-02-19</div>
+  </div>
+
+  <div class="content">
+    <p>Writing integration tests for databases is often a cryptic art. The challenge stems from the fact that a database is stateful and instead we would like our tests to be reproducible. In this post I will share my experience writing database tests in Rust, some limitations of my current setup and thoughts on future improvements.</p>
+<span id="continue-reading"></span>
+<p>Note: As I continue to make progress on this, things might have changed and or improved :) Please have a peek at the code for the latest and greatest: https://github.com/toidiu/fin-public</p>
+<h3 id="motivation">Motivation</h3>
+<p>The real benefit of strongly typed languages is that they give us the freedom to evolve our code at high mobility. This might seem trivial but has compounding effects over the lifetime of a codebase. However this guarantee breaks down at the edges, specifically at the database and routing edge for a webservice. So when faced with a Postgres schema migration, for a project I have been working on, <em>Fin</em>, I set out to write some integration tests and migrate with confidence.</p>
+<p>The solution is heavily inspired from this (post)[https://medium.com/@ericdreichert/test-setup-and-teardown-in-rust-without-a-framework-ba32d97aa5ab].</p>
+<h3 id="goal">Goal</h3>
+<p>The task we have at hand is to create a Fixture that does the following:</p>
+<ul>
+<li>Access a database other than the one in production when running tests.</li>
+<li>Mirror our production database schema during testing.</li>
+<li>Populate fake data for testing.</li>
+<li>Clean up the data since we might make updates.</li>
+<li>Do the above per test.</li>
+</ul>
+<h3 id="application-setup">Application Setup</h3>
+<p>To help manage SQL schemas and migration for Fin, I use <code>diesel cli</code>. It is an awesome little tool that I manage along side the application. I can write <code>up.sql</code> and <code>down.sql</code> scripts per change and <code>run</code>, <code>revert</code> or <code>list</code> them.</p>
+<p>For reference, the following is a susccient folder structure for <em>Fin</em>:</p>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="plain"><span class="giallo-l"><span>▾ fin/</span></span>
+<span class="giallo-l"><span>  ▾ src/</span></span>
+<span class="giallo-l"><span>      main.rs</span></span>
+<span class="giallo-l"><span>    Cargo.lock</span></span>
+<span class="giallo-l"><span>    Cargo.toml</span></span>
+<span class="giallo-l"><span>▾ migrations/</span></span>
+<span class="giallo-l"><span>  ▸ 00000000000000_diesel_initial_setup/</span></span>
+<span class="giallo-l"><span>  ▾ 2018-10-07-022941_init/</span></span>
+<span class="giallo-l"><span>      down.sql</span></span>
+<span class="giallo-l"><span>      up.sql</span></span>
+<span class="giallo-l"><span>  ▸ 2018-10-07-232226_fake_data/</span></span></code></pre><h3 id="solution">Solution</h3>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="rust"><span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FB4934;">use</span><span style="color: #FABD2F;"> chrono</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">prelude</span><span style="color: #8EC07C;">::*</span><span style="color: #A89984;">;</span></span>
+<span class="giallo-l"><span style="color: #FB4934;">use</span><span style="color: #FABD2F;"> postgres</span><span style="color: #8EC07C;">::</span><span style="color: #A89984;">{</span><span style="color: #FABD2F;">Connection</span><span style="color: #A89984;">,</span><span style="color: #FABD2F;"> TlsMode</span><span style="color: #A89984;">};</span></span>
+<span class="giallo-l"><span style="color: #FB4934;">use</span><span style="color: #FABD2F;"> r2d2_postgres</span><span style="color: #8EC07C;">::</span><span style="color: #A89984;">{</span><span style="color: #FABD2F;">PostgresConnectionManager</span><span style="color: #A89984;">,</span><span style="color: #FABD2F;"> TlsMode</span><span style="color: #FB4934;"> as</span><span style="color: #FABD2F;"> R2TlsMode</span><span style="color: #A89984;">};</span></span>
+<span class="giallo-l"><span style="color: #FB4934;">use</span><span style="color: #FABD2F;"> std</span><span style="color: #8EC07C;">::</span><span>env</span><span style="color: #A89984;">;</span></span>
+<span class="giallo-l"><span style="color: #FB4934;">use</span><span style="color: #FABD2F;"> std</span><span style="color: #8EC07C;">::</span><span>fs</span><span style="color: #A89984;">;</span></span>
+<span class="giallo-l"><span style="color: #FB4934;">use</span><span style="color: #FABD2F;"> std</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">io</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">prelude</span><span style="color: #8EC07C;">::*</span><span style="color: #A89984;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FE8019;">const</span><span style="color: #D3869B;font-weight: bold;"> TEST_DB</span><span style="color: #8EC07C;">: &amp;</span><span style="color: #A89984;">&#39;</span><span style="color: #FABD2F;">static str</span><span style="color: #8EC07C;"> =</span><span style="color: #A89984;"> &quot;</span><span style="color: #B8BB26;">fin_unit_test</span><span style="color: #A89984;">&quot;;</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">const</span><span style="color: #D3869B;font-weight: bold;"> CLUSTER_URI</span><span style="color: #8EC07C;">: &amp;</span><span style="color: #A89984;">&#39;</span><span style="color: #FABD2F;">static str</span><span style="color: #8EC07C;"> =</span><span style="color: #A89984;"> &quot;</span><span style="color: #B8BB26;">postgres://postgres@localhost:5432</span><span style="color: #A89984;">&quot;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FABD2F;">lazy_static!</span><span style="color: #A89984;"> {</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">    static</span><span style="color: #FB4934;"> ref</span><span style="color: #D3869B;font-weight: bold;"> DB_URI</span><span style="color: #8EC07C;">:</span><span style="color: #FABD2F;"> String</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> format!</span><span style="color: #A89984;">(&quot;{}</span><span style="color: #B8BB26;">/</span><span style="color: #A89984;">{}&quot;,</span><span style="color: #D3869B;font-weight: bold;"> CLUSTER_URI</span><span style="color: #A89984;">,</span><span style="color: #D3869B;font-weight: bold;"> TEST_DB</span><span style="color: #A89984;">);</span></span>
+<span class="giallo-l"><span style="color: #A89984;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FB4934;">fn</span><span style="color: #FABD2F;"> run_test</span><span style="color: #A89984;">&lt;</span><span style="color: #FABD2F;">T</span><span style="color: #A89984;">&gt;(</span><span style="color: #83A598;">test</span><span style="color: #8EC07C;">:</span><span style="color: #FABD2F;"> T</span><span style="color: #A89984;">)</span><span style="color: #8EC07C;"> -&gt;</span><span style="color: #A89984;"> ()</span></span>
+<span class="giallo-l"><span style="color: #FB4934;">where</span></span>
+<span class="giallo-l"><span style="color: #FABD2F;">    T</span><span style="color: #8EC07C;">:</span><span style="color: #FABD2F;"> FnOnce</span><span style="color: #A89984;">(</span><span style="color: #8EC07C;">&amp;</span><span style="color: #FABD2F;">str</span><span style="color: #A89984;">)</span><span style="color: #8EC07C;"> -&gt;</span><span style="color: #A89984;"> ()</span><span style="color: #8EC07C;"> +</span><span style="color: #FABD2F;"> std</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">panic</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">UnwindSafe</span><span style="color: #A89984;">,</span></span>
+<span class="giallo-l"><span style="color: #A89984;">{</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">    let</span><span style="color: #83A598;"> db_name</span><span style="color: #8EC07C;"> =</span><span style="color: #A89984;"> &quot;</span><span style="color: #B8BB26;">make this unique per test</span><span style="color: #A89984;">&quot;;</span><span style="color: #928374;font-style: italic;"> // &lt;- not currently used</span></span>
+<span class="giallo-l"><span style="color: #FABD2F;">    teardown</span><span style="color: #A89984;">();</span></span>
+<span class="giallo-l"><span style="color: #FABD2F;">    setup</span><span style="color: #A89984;">();</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">    let</span><span style="color: #83A598;"> result</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> std</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">panic</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">catch_unwind</span><span style="color: #A89984;">(</span><span style="color: #FB4934;">||</span><span style="color: #FABD2F;"> test</span><span style="color: #A89984;">(</span><span style="color: #8EC07C;">&amp;</span><span style="color: #83A598;">db_name</span><span style="color: #A89984;">));</span></span>
+<span class="giallo-l"><span style="color: #FABD2F;">    assert!</span><span style="color: #A89984;">(</span><span style="color: #83A598;">result</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">is_ok</span><span style="color: #A89984;">())</span></span>
+<span class="giallo-l"><span style="color: #A89984;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FABD2F;">setup</span><span style="color: #A89984;">() {</span></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">    // initialize a logger so we can see nice error messages during testing</span></span>
+<span class="giallo-l"><span style="color: #FABD2F;">    pretty_env_logger</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">try_init</span><span style="color: #A89984;">();</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">    // create the database</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">    let</span><span style="color: #83A598;"> db_conn</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> Connection</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">connect</span><span style="color: #A89984;">(</span><span style="color: #D3869B;font-weight: bold;">CLUSTER_URI</span><span style="color: #A89984;">,</span><span style="color: #FABD2F;"> TlsMode</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">None</span><span style="color: #A89984;">)</span></span>
+<span class="giallo-l"><span style="color: #8EC07C;">        .</span><span style="color: #FABD2F;">expect</span><span style="color: #A89984;">(&quot;</span><span style="color: #B8BB26;">unable to create db conn</span><span style="color: #A89984;">&quot;);</span></span>
+<span class="giallo-l"><span style="color: #83A598;">    db_conn</span></span>
+<span class="giallo-l"><span style="color: #8EC07C;">        .</span><span style="color: #FABD2F;">execute</span><span style="color: #A89984;">(</span></span>
+<span class="giallo-l"><span style="color: #8EC07C;">            &amp;</span><span style="color: #FABD2F;">format!</span><span style="color: #A89984;">(</span></span>
+<span class="giallo-l"><span style="color: #A89984;">                &quot;</span><span style="color: #B8BB26;">CREATE DATABASE </span><span style="color: #A89984;">{</span><span style="color: #B8BB26;">name</span><span style="color: #A89984;">}</span><span style="color: #B8BB26;">;</span><span style="color: #A89984;">&quot;,</span></span>
+<span class="giallo-l"><span style="color: #83A598;">                name</span><span style="color: #8EC07C;"> = &amp;</span><span style="color: #D3869B;font-weight: bold;">TEST_DB</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">clone</span><span style="color: #A89984;">()</span></span>
+<span class="giallo-l"><span style="color: #A89984;">            ),</span></span>
+<span class="giallo-l"><span style="color: #8EC07C;">            &amp;</span><span style="color: #A89984;">[],</span></span>
+<span class="giallo-l"><span style="color: #A89984;">        )</span></span>
+<span class="giallo-l"><span style="color: #8EC07C;">        .</span><span style="color: #FABD2F;">expect</span><span style="color: #A89984;">(&quot;</span><span style="color: #B8BB26;">unable to create db</span><span style="color: #A89984;">&quot;);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #928374;font-style: italic;">    // apply schema and add fake data</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">    let</span><span style="color: #83A598;"> c_str</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> format!</span><span style="color: #A89984;">(&quot;{}</span><span style="color: #B8BB26;">/</span><span style="color: #A89984;">{}&quot;,</span><span style="color: #D3869B;font-weight: bold;"> CLUSTER_URI</span><span style="color: #A89984;">,</span><span style="color: #D3869B;font-weight: bold;"> TEST_DB</span><span style="color: #A89984;">);</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">    let</span><span style="color: #83A598;"> conn</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> Connection</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">connect</span><span style="color: #A89984;">(</span><span style="color: #D3869B;font-weight: bold;">DB_URI</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">as_str</span><span style="color: #A89984;">(),</span><span style="color: #FABD2F;"> TlsMode</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">None</span><span style="color: #A89984;">)</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">unwrap</span><span style="color: #A89984;">();</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">    let</span><span style="color: #83A598;"> init</span><span style="color: #8EC07C;"> =</span></span>
+<span class="giallo-l"><span style="color: #FABD2F;">        fs</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">read_to_string</span><span style="color: #A89984;">(&quot;</span><span style="color: #B8BB26;">../migrations/2018-10-07-022941_init/up.sql</span><span style="color: #A89984;">&quot;)</span></span>
+<span class="giallo-l"><span style="color: #8EC07C;">            .</span><span style="color: #FABD2F;">expect</span><span style="color: #A89984;">(&quot;</span><span style="color: #B8BB26;">file not found</span><span style="color: #A89984;">&quot;);</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">    let</span><span style="color: #83A598;"> fake_data</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> fs</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">read_to_string</span><span style="color: #A89984;">(</span></span>
+<span class="giallo-l"><span style="color: #A89984;">        &quot;</span><span style="color: #B8BB26;">../migrations/2018-10-07-232226_fake_data/up.sql</span><span style="color: #A89984;">&quot;,</span></span>
+<span class="giallo-l"><span style="color: #A89984;">    )</span></span>
+<span class="giallo-l"><span style="color: #8EC07C;">    .</span><span style="color: #FABD2F;">expect</span><span style="color: #A89984;">(&quot;</span><span style="color: #B8BB26;">file not found</span><span style="color: #A89984;">&quot;);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #83A598;">    conn</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">batch_execute</span><span style="color: #A89984;">(</span><span style="color: #8EC07C;">&amp;</span><span style="color: #83A598;">init</span><span style="color: #A89984;">)</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">unwrap</span><span style="color: #A89984;">();</span></span>
+<span class="giallo-l"><span style="color: #83A598;">    conn</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">batch_execute</span><span style="color: #A89984;">(</span><span style="color: #8EC07C;">&amp;</span><span style="color: #83A598;">fake_data</span><span style="color: #A89984;">)</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">unwrap</span><span style="color: #A89984;">();</span></span>
+<span class="giallo-l"><span style="color: #A89984;">}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FB4934;">fn</span><span style="color: #FABD2F;"> teardown</span><span style="color: #A89984;">() {</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">    let</span><span style="color: #83A598;"> db_conn</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> Connection</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">connect</span><span style="color: #A89984;">(</span><span style="color: #D3869B;font-weight: bold;">CLUSTER_URI</span><span style="color: #A89984;">,</span><span style="color: #FABD2F;"> TlsMode</span><span style="color: #8EC07C;">::</span><span style="color: #FABD2F;">None</span><span style="color: #A89984;">)</span></span>
+<span class="giallo-l"><span style="color: #8EC07C;">        .</span><span style="color: #FABD2F;">expect</span><span style="color: #A89984;">(&quot;</span><span style="color: #B8BB26;">unable to delete db conn</span><span style="color: #A89984;">&quot;);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #83A598;">    db_conn</span></span>
+<span class="giallo-l"><span style="color: #8EC07C;">        .</span><span style="color: #FABD2F;">execute</span><span style="color: #A89984;">(</span><span style="color: #8EC07C;">&amp;</span><span style="color: #FABD2F;">format!</span><span style="color: #A89984;">(&quot;</span><span style="color: #B8BB26;">DROP database </span><span style="color: #A89984;">{}</span><span style="color: #B8BB26;">;</span><span style="color: #A89984;">&quot;,</span><span style="color: #8EC07C;"> &amp;</span><span style="color: #D3869B;font-weight: bold;">TEST_DB</span><span style="color: #A89984;">),</span><span style="color: #8EC07C;"> &amp;</span><span style="color: #A89984;">[])</span></span>
+<span class="giallo-l"><span style="color: #8EC07C;">        .</span><span style="color: #FABD2F;">expect</span><span style="color: #A89984;">(&quot;</span><span style="color: #B8BB26;">unable to delete db</span><span style="color: #A89984;">&quot;);</span></span>
+<span class="giallo-l"><span style="color: #A89984;">}</span></span></code></pre>
+<p>And then to use it in our tests:</p>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="rust"><span class="giallo-l"><span style="color: #A89984;">#[</span><span>test</span><span style="color: #A89984;">]</span></span>
+<span class="giallo-l"><span style="color: #FB4934;">fn</span><span style="color: #FABD2F;"> test_get_user</span><span style="color: #A89984;">() {</span></span>
+<span class="giallo-l"><span style="color: #FABD2F;">    run_test</span><span style="color: #A89984;">(</span><span style="color: #FB4934;">|</span><span style="color: #83A598;">db_name</span><span style="color: #FB4934;">|</span><span style="color: #A89984;"> {</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">        let</span><span style="color: #83A598;"> db</span><span style="color: #8EC07C;"> =</span><span style="color: #FABD2F;"> get_db</span><span style="color: #A89984;">();</span></span>
+<span class="giallo-l"><span style="color: #FE8019;">        let</span><span style="color: #83A598;"> res</span><span style="color: #8EC07C;"> =</span><span style="color: #83A598;"> db</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">get_user</span><span style="color: #A89984;">(&quot;</span><span style="color: #B8BB26;">apoorv@toidiu.com</span><span style="color: #A89984;">&quot;);</span></span>
+<span class="giallo-l"><span style="color: #FABD2F;">        assert_eq!</span><span style="color: #A89984;">(</span><span style="color: #83A598;">res</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">is_ok</span><span style="color: #A89984;">(),</span><span style="color: #D3869B;"> true</span><span style="color: #A89984;">);</span></span>
+<span class="giallo-l"><span style="color: #FABD2F;">        assert_eq!</span><span style="color: #A89984;">(</span><span style="color: #83A598;">res</span><span style="color: #8EC07C;">.</span><span style="color: #FABD2F;">unwrap</span><span style="color: #A89984;">()</span><span style="color: #8EC07C;">.</span><span>email</span><span style="color: #A89984;">, &quot;</span><span style="color: #B8BB26;">apoorv@toidiu.com</span><span style="color: #A89984;">&quot;);</span></span>
+<span class="giallo-l"><span style="color: #A89984;">    })</span></span>
+<span class="giallo-l"><span style="color: #A89984;">}</span></span>
+<span class="giallo-l"></span></code></pre><h3 id="limitations">Limitations</h3>
+<ul>
+<li>Wont work automatically on CI</li>
+<li>Need a separate test database</li>
+<li>Needs a script for inserting fake data</li>
+<li>Need to declare run_test closure per test (macro?)</li>
+</ul>
+<h3 id="closing-thoughts">Closing thoughts</h3>
+<ul>
+<li>Rust should natively support this functionality.</li>
+<li>This is a per test fixture, we still need a per suite fixture.</li>
+<li>Ideally we could start an in-memory postgres process for testing.</li>
+<li>Need a pre-test script to initialize stuff (start postgres process)</li>
+</ul>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+

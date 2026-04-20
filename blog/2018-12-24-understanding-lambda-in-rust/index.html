@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="I have 15+ years of software engineering experience across different parts of the tech
+              stack including networking libraries, congestion control, performance improvements,
+              Backend, and Android development.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Rust, Protocols, QUIC, IETF,
+              networking, TLS, Scala, java, Cooper Union, blog, talks, code, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js" defer></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=blog-single >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;cucina">
+
+      cucina
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+  <div id="post-header">
+  <h1 class="title">Understanding Lambda in Rust</h1>
+  <div class="date">2018-12-24</div>
+  </div>
+
+  <div class="content">
+    <p>Given the announcement of the Lambda runtime, there is now an officially supported story around writing lambda functions in Rust. I wanted to try for myself and see the amount of effort needed to get a lambda function working, while also diving deeper into whats involved.</p>
+<span id="continue-reading"></span>
+<p>This <a rel="external" href="https://aws.amazon.com/blogs/opensource/rust-runtime-for-aws-lambda/">blog post</a> describes how to use the lambda runtime to create a lambda function in Rust, so I wont detail the actual process. Instead I will try to expand on what is actually happening behind the scenes and reasons for certain steps.</p>
+<p>Here is some <a rel="external" href="https://github.com/toidiu/lambda-rust-test">code</a> that creates and invokes a lambda function.</p>
+<h3 id="why-we-need-bin-bootstrap-and-autobins-false">Why we need "[[bin]] bootstrap" and "autobins = false"</h3>
+<p>Since we are going to include a custom runtime(tokio runtime), we need the executable to be called 'bootstrap'. These settings allow us to dictate these settings.</p>
+<h3 id="what-is-glibc-and-musl-and-whats-the-difference">What is "glibc" and "musl" and whats the difference</h3>
+<p>This is a much larger topic but I will try to cover the relevant pieces. A computer comprises of layers of abstractions. So for example, if we wish to execute a task in our application, we request a thread from the kernel, which schedules our task to run on a core.</p>
+<pre class="giallo" style="color: #EBDBB2; background-color: #32302F;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #FABD2F;">  hardware(cores</span><span>) </span><span style="color: #8EC07C;">&lt;</span><span>-</span><span style="color: #8EC07C;">&gt;</span><span> kernel(</span><span style="color: #FABD2F;">thread</span><span style="color: #B8BB26;"> management</span><span>) </span><span style="color: #8EC07C;">&lt;</span><span>-</span><span style="color: #8EC07C;">&gt;</span><span> user space(</span><span style="color: #FABD2F;">application</span><span>)</span></span></code></pre>
+<p>So to access resources of a computer we need to communicate with the kernel. The kernel in turn exposes the API via a C standard called the <em>libc</em>. <code>glibc</code> (GNU C Library) and <code>musl</code> are two different implementations of this standard.</p>
+<p><code>glibc</code> is the most commonly supported libc but Amazon instances require <code>musl</code>. From it's site: <code>musl</code> is lightweight, fast, simple, free, and strives to be correct in the sense of standards-conformance and safety.</p>
+<h3 id="static-vs-dynamic-lib">static vs dynamic lib</h3>
+<p>I was not able to figure out if the musl lib is statically or dynamically linked. If I had to guess, I would say it is dynamically linked so as not to bloat the size of our lambda function. Additionally, since all functions should be targeting musl, it doesn't make sense to include it with each function.</p>
+<h3 id="what-is-a-lambda-runtime">what is a lambda runtime?</h3>
+<p>The <code>lambda!</code> macro takes an optional field: tokio runtime. As per <a rel="external" href="https://docs.rs/tokio/0.1.13/tokio/runtime/index.html">docs</a> creating a runtime does the following:</p>
+<ul>
+<li>Spawn a background thread running a Reactor instance.</li>
+<li>Start a ThreadPool for executing futures.</li>
+<li>Run an instance of Timer per thread pool worker thread.</li>
+</ul>
+<p>One can imagine configuring a runtime to specify the number of threads. Configuration options for the tokio runtime can be found in <a rel="external" href="https://docs.rs/tokio/0.1.13/tokio/runtime/struct.Builder.html">docs</a></p>
+<p>Btw, as per AWS <a rel="external" href="https://docs.aws.amazon.com/lambda/latest/dg/limits.html">docs</a> there is a default limit of 1024 threads/processes per function.</p>
+<h3 id="why-we-need-target-x86-64-unknown-linux-musl">Why we need target.x86_64-unknown-linux-musl</h3>
+<p>The amazon linux instances require <code>musl</code>. For reference here is a <a rel="external" href="https://forge.rust-lang.org/platform-support.html">list</a> of all the target that the Rust compiler supports!</p>
+<h3 id="why-we-need-linker-x86-64-linux-musl-gcc">Why we need linker = "x86_64-linux-musl-gcc"</h3>
+<p>We need to download the linker so that we can locally compile for the musl target.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>The smart folks at AWS have done a lot to make developing for lambda easy. However, it is always nice to understand where and how our code is actually running... yes, event in the world of lambda. In a future post I hope to explore <a rel="external" href="https://github.com/firecracker-microvm/firecracker">firecracker</a>, the micro-vm(yup written in Rust) where all lambda functions run.</p>
+<div id="references">
+<h4 id="references">References:</h4>
+<ul>
+<li><a href="https://www.reddit.com/r/linuxmasterrace/comments/41q2m9/eli5_what_is_musl_and_glibc/cz4cy3k" >https://www.reddit.com/r/linuxmasterrace/comments/41q2m9/eli5_what_is_musl_and_glibc/cz4cy3k</a></li>
+</ul>
+</div>
+
+  </div>
+</div>
+
+
+        
+  
+
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+
