@@ -3,7 +3,7 @@ title = "Making plans"
 date = 2024-05-25
 
 [taxonomies]
-tag = ["focus"]
+tag = ["writing", "thinking"]
 
 [extra]
 id = "blog-single"
