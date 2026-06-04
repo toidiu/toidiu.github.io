@@ -1,0 +1,41 @@
+{% extends "index.html" %}
+
+{% macro render_page(page) %}
+  <div class="article" id="{{ page.title | slugify }}">
+    <div class="content">
+      <h3><a class="title" name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">{{ page.title }}</a></h2>
+
+      <div class="meta">
+        {% if page.extra.company %}
+          <span class="company">{{ page.extra.company }}</span>
+        {% endif %}
+        <span class="date">{{ page.date }}</span>
+      </div>
+
+      <div class="summary">
+        {{ page.content | safe }}
+      </div>
+    </div>
+  </div>
+{% endmacro render_page %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block content %}
+<div class="main-container">
+
+  {% for page in section.pages %}
+    {% if page.extra.highlight %}
+      {{ self::render_page(page=page) }}
+    {% endif %}
+  {% endfor %}
+
+  {% for page in section.pages %}
+    {% if not page.extra.highlight %}
+      {{ self::render_page(page=page) }}
+    {% endif %}
+  {% endfor %}
+
+</div>
+{% endblock content %}
