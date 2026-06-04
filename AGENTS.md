@@ -15,6 +15,7 @@
 
 ## Content sections
 - `blog/` — blog posts, sorted by `date`, tags like `writing`, `thinking`, `crypto`, `rust`, `tls`
+- `brag/` — brag/career pages, sorted by `weight`, each file has `[extra]` with `company`
 - `personal/recipe/` — recipes, sorted by `date`, tags are cuisine-based (`indian`, `thai`, `french`)
 - `personal/career/` — brag/career entries, each file has `[extra]` with `company`, `lp` array
 - `personal/career/roles/` — role-based brag entries (uses `blog.html` template)
