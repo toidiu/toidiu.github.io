@@ -1,11 +1,11 @@
 +++
-template = "brag.html"
+template = "career.html"
 
 sort_by = "date"
 
 [extra]
-id = "brag"
-name = "brag"
+id = "career"
+name = "career"
 +++
 
 S: situation
