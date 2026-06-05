@@ -3,7 +3,7 @@
 {% macro render_page(page) %}
   <div class="article" id="{{ page.title | slugify }}">
     <div class="content">
-      <h3><a class="title" name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">{{ page.title }}</a></h2>
+      <h3><a class="title" name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">{{ page.title }}</a></h3>
 
       <div class="meta">
         {% if page.extra.company %}
@@ -25,15 +25,38 @@
 {% block content %}
 <div class="main-container">
 
+  <!--Work sample: highlighted-->
+  <h2 id="work-samples"><a class="title" name="work-samples" href="#work-samples">Work samples</a></h2>
+
   {% for page in section.pages %}
     {% if page.extra.highlight %}
       {{ self::render_page(page=page) }}
     {% endif %}
   {% endfor %}
 
+  <!--Work sample-->
   {% for page in section.pages %}
-    {% if not page.extra.highlight %}
-      {{ self::render_page(page=page) }}
+    {% if not page.extra.highlight and not page.taxonomies %}
+      <div class="article" id="{{ page.title | slugify }}">
+        <div class="content">
+          <h3><a class="title" name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">{{ page.title }}</a></h3>
+          <div class="summary">{{ page.content | safe }}</div>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+
+  <!--Behavioral-->
+  <h2 id="behavioral"><a class="title" name="behavioral" href="#behavioral">Behavioral</a></h2>
+
+  {% for page in section.pages %}
+    {% if page.taxonomies and "behavioral" in page.taxonomies.tag %}
+      <div class="article" id="{{ page.title | slugify }}">
+        <div class="content">
+          <h3><a class="title" name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">{{ page.title }}</a></h3>
+          <div class="summary">{{ page.content | safe }}</div>
+        </div>
+      </div>
     {% endif %}
   {% endfor %}
 
