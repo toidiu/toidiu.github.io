@@ -1,6 +1,9 @@
 +++
-title = "Presentation sample: boar CC analysis"
+title = "Meetup: boar CC analysis"
 date = 2026-06-01
+
+[taxonomies]
+tag = ["presentation"]
 
 [extra]
 company = ""

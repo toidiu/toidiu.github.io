@@ -2,6 +2,9 @@
 title = "Invalid State Error"
 date = 2026-01-01
 
+[taxonomies]
+tag = ["work"]
+
 [extra]
 company = "Cloudflare"
 highlight = true

@@ -1,6 +1,9 @@
 +++
-title = "Presentation sample: Rust Belt Rust"
+title = "Conference: Rust Belt Rust"
 date = 2026-06-01
+
+[taxonomies]
+tag = ["presentation"]
 
 [extra]
 company = ""
