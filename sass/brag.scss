@@ -1,4 +1,10 @@
+@import "inc_values";
+
 #brag {
+  h2 a {
+    color: $link-color;
+  }
+
   .article {
     margin-bottom: 3em;
   }
@@ -18,5 +24,16 @@
   .summary {
     font-size: 0.9rem;
     line-height: 1.5;
+  }
+
+  @media screen and (min-width: 400px) {
+    .main-container {
+      padding: 0 10%;
+    }
+  }
+  @media screen and (min-width: 600px) {
+    .main-container {
+      padding: 0 10%;
+    }
   }
 }

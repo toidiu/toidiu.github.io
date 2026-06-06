@@ -1,6 +1,9 @@
 +++
-title = "Writing sample: Reads"
+title = " Paper summary: Reads"
 date = 2026-06-01
+
+[taxonomies]
+tag = ["writing"]
 
 [extra]
 company = ""

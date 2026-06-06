@@ -1,6 +1,9 @@
 +++
-title = "Writing sample: Optimistic ACK attack"
+title = "Blog: Optimistic ACK attack"
 date = 2026-06-01
+
+[taxonomies]
+tag = ["writing"]
 
 [extra]
 company = ""

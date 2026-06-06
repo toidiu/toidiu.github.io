@@ -25,32 +25,57 @@
 {% block content %}
 <div class="main-container">
 
-  <!--Work sample: highlighted-->
-  <h2 id="work-samples"><a class="title" name="work-samples" href="#work-samples">Work samples</a></h2>
+  <!--Work-->
+  <h2 id="work-samples"><a name="work-samples" href="#work-samples">Work samples</a></h2>
 
+  {% set section_tag = "work" %}
+  {% set section_highlight = true %}
+  {# default(value=false) normalizes undefined highlight to false for drafts #}
   {% for page in section.pages %}
-    {% if page.extra.highlight %}
+    {% if page.taxonomies and section_tag in page.taxonomies.tag and page.extra.highlight | default(value=false) == section_highlight %}
       {{ self::render_page(page=page) }}
     {% endif %}
   {% endfor %}
 
-  <!--Work sample-->
+  {% set section_highlight = false %}
+  {# default(value=false) normalizes undefined highlight to false for drafts #}
   {% for page in section.pages %}
-    {% if not page.extra.highlight and not page.taxonomies %}
+    {% if page.taxonomies and section_tag in page.taxonomies.tag and page.extra.highlight | default(value=false) == section_highlight %}
       <div class="article" id="{{ page.title | slugify }}">
         <div class="content">
-          <h3><a class="title" name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">{{ page.title }}</a></h3>
+          <h3><a name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">{{ page.title }}</a></h3>
           <div class="summary">{{ page.content | safe }}</div>
         </div>
       </div>
     {% endif %}
   {% endfor %}
 
-  <!--Behavioral-->
-  <h2 id="behavioral"><a class="title" name="behavioral" href="#behavioral">Behavioral</a></h2>
+  <!--Writing-->
+  {% set section_tag = "writing" %}
+  <h2 id="writing"><a name="writing" href="#writing">Writing</a></h2>
 
   {% for page in section.pages %}
-    {% if page.taxonomies and "behavioral" in page.taxonomies.tag %}
+    {% if page.taxonomies and section_tag in page.taxonomies.tag %}
+      {{ self::render_page(page=page) }}
+    {% endif %}
+  {% endfor %}
+
+  <!--Presentation-->
+  {% set section_tag = "presentation" %}
+  <h2 id="presentation"><a name="presentation" href="#presentation">Presentation</a></h2>
+
+  {% for page in section.pages %}
+    {% if page.taxonomies and section_tag in page.taxonomies.tag %}
+      {{ self::render_page(page=page) }}
+    {% endif %}
+  {% endfor %}
+
+  <!--Behavioral-->
+  {% set section_tag = "behavioral" %}
+  <h2 id="behavioral"><a name="behavioral" href="#behavioral">Behavioral</a></h2>
+
+  {% for page in section.pages %}
+    {% if page.taxonomies and section_tag in page.taxonomies.tag %}
       <div class="article" id="{{ page.title | slugify }}">
         <div class="content">
           <h3><a class="title" name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">{{ page.title }}</a></h3>

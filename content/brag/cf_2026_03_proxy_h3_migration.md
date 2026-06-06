@@ -2,6 +2,9 @@
 title = "Proxy H3 Migration"
 date = 2026-03-01
 
+[taxonomies]
+tag = ["work"]
+
 [extra]
 company = "Cloudflare"
 highlight = true

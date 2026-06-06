@@ -1,6 +1,9 @@
 +++
-title = "Writing sample: Privacy and control"
+title = "Blog: Privacy and control"
 date = 2026-06-01
+
+[taxonomies]
+tag = ["writing"]
 
 [extra]
 company = ""

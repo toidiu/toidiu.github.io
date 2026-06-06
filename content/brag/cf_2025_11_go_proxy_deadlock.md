@@ -2,6 +2,9 @@
 title = "Go Proxy Deadlock Fix"
 date = 2025-11-01
 
+[taxonomies]
+tag = ["work"]
+
 [extra]
 company = "Cloudflare"
 highlight = true

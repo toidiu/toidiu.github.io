@@ -2,6 +2,9 @@
 title = "QUIC OACK Security Vulnerability"
 date = 2025-04-01
 
+[taxonomies]
+tag = ["work"]
+
 [extra]
 company = "Cloudflare"
 highlight = true
