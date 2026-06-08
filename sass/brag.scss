@@ -1,6 +1,27 @@
 @import "inc_values";
 
 #brag {
+  .toc {
+    font-size: $text-lg;
+    margin-bottom: 1em;
+    .toc-label {
+      font-family: customFontBold;
+      display: block;
+      margin-bottom: 0.25em;
+    }
+    a {
+      color: $link-color;
+      display: block;
+      margin-bottom: 0.25em;
+      margin-left: 1.25em;
+    }
+  }
+  .toc-sep {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin-bottom: 2em;
+  }
+
   h2 a {
     color: $link-color;
   }
@@ -12,7 +33,7 @@
     font-family: customFontBold;
   }
   .meta {
-    font-size: 0.8rem;
+    font-size: $text-sm;
     margin-bottom: 1em;
   }
   .company {
@@ -22,7 +43,7 @@
     margin-left: 0.5em;
   }
   .summary {
-    font-size: 0.9rem;
+    font-size: $text-sm;
     line-height: 1.5;
   }
 
