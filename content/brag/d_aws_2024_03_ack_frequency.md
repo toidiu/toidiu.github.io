@@ -8,7 +8,9 @@ tag = ["work"]
 [extra]
 company = "AWS Transport Libs"
 +++
-## Context
+
+**Context**
+
 ACK processing is one of the most CPU expensive aspects of the QUIC protocol since every packet
 requires an ACK. For example, a send heavy workload spends ~24.33% processing ACKs. My task was
 therefore to look at the ACK delay RFC and see if it would be possible to apply it to s2n-quic and
@@ -24,7 +26,8 @@ The obvious benefit was the lower CPU cost. However the adverse affects included
   - CCA: ACKs help establish RTT, which is critical for most congestion control algorithms.
   - BBR: requires high-precision so its not obvious how the algorithm might break.
 
-## Action
+**Action**
+
 In my proposal I proposed the following options:
 - Single round batching of the 10 GSO packets.
   - Easy to implement (1-2 sprints).
@@ -46,14 +49,16 @@ The implementation involved the following tasks:
 - Refactoring Congestion Control and Loss Recovery to accept a ACK timestamp delay signal
 - Emitting metrics
 
-## Result
+**Result**
+
 Once the feature was complete however it showed a CPU performance regression! The flamegraph result
 showed a regression from 24.33% -> 25.81% (https://github.com/aws/s2n-quic/pull/1298).
 
 Finally the PR was reverted and we determined that ACK delay was likely not going to yield the
 desired benefits for s2n-quic (https://github.com/aws/s2n-quic/pull/1368).
 
-## Learning
+**Learning**
+
 On the surface this might seem like a failure, however it was one of my most rewarding
 engineering efforts. We were able to take a complex feature, implement a POC to demonstrate the
 regression and avoid months of wasted effort. Additionally, its not trivial that we were able to
@@ -63,7 +68,8 @@ ACK delay is probably too risky a feature for a protocol that needs to operate o
 internet. Instead I think it might be a better fit for Datacenter traffic, which has much lower RTTs
 and loss rates.
 
-### References
+**References**
+
 - RFC https://datatracker.ietf.org/doc/html/draft-ietf-quic-ack-frequency
 - Tracking issue: https://github.com/aws/s2n-quic/issues/1276
 - CPU increase: https://github.com/aws/s2n-quic/pull/1298
