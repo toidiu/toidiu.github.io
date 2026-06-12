@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="I have 15+ years of software engineering experience across different parts of the tech
+              stack including networking libraries, congestion control, performance improvements,
+              Backend, and Android development.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Rust, Protocols, QUIC, IETF,
+              networking, TLS, Scala, java, Cooper Union, blog, talks, code, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js" defer></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=brag >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;reads">
+
+      reads
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+
+  <div class="toc">
+    <span class="toc-label">Table of contents</span>
+    <a href="#work-samples">Work samples</a>
+    <a href="#writing">Writing</a>
+    <a href="#presentation">Presentation</a>
+    <a href="#behavioral">Behavioral</a>
+  </div>
+  <hr class="toc-sep">
+
+  <!--Work-->
+  
+  <h2 id="work-samples"><a name="work-samples" href="#work-samples"># Work samples</a></h2>
+
+  
+  
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <div class="article" id="proxy-h3-migration">
+        <div class="content">
+          <h3><a class="title" name="proxy-h3-migration" href="#proxy-h3-migration">## Proxy H3 Migration</a></h3>
+          <div class="summary"><p>Led the migration of 4.5M+ unique customers (25M+ req/sec) to the new proxy. With stakeholders
+spanning directors, PMs, customer support, and engineers across the organization, I started by
+deeply understanding our system and how it integrated with the networking infrastructure. Next I
+explored various technical solutions, considering both the "soft" vs "hard" requirements for various
+stakeholders and building project alignment.</p>
+<p>The challenges included noisy observability (due to DDoS traffic) and the inability to perfectly
+isolate customers via software due to performance requirements. To manage risks, I built a utility
+to progress, query and roll back the migration with per-customer granularity. I included guardrails
+to prevent accidental misuse and led a mini workshop for our On-call engineers. I used AI to
+accelerate batch creation and utility development, saving approximately 2-4 weeks of effort.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="invalid-state-error">
+        <div class="content">
+          <h3><a class="title" name="invalid-state-error" href="#invalid-state-error">## Invalid State Error</a></h3>
+          <div class="summary"><p>https://github.com/cloudflare/quiche/pull/2366</p>
+<p>As we built the new proxy at Cloudflare, it came with better observability. One
+of the puzzling metrics was the high number of InvalidState errors that the
+proxy was emitting. The InvalidState error was a generic catch-all error emitted
+from quiche. It wasn't possible to tell if the errors were due to a quiche bug,
+malicious traffic or simply malformed client traffic from the internet. Another
+troubling signal was that an engineer had noticed an increase in this traffic a
+year earlier but had not been able to identify the root cause of the increase.</p>
+<p>The challenge with this investigation was the vast volume of traffic and adding
+non-invasive telemetry to a production system. The first attempt at logging more
+information about the bug actually resulted in a behavior change and a large
+increase in logs. It turned out that the downstream system was actually relying
+on the error type to determine close behavior. While the increase in logs was
+not detrimental, it did leave the logging pipeline vulnerable in the case of a
+DOS attack.</p>
+<p>Since I needed detailed logs, I proposed that we switch the investigation to an
+ad-hoc build (~10 machines). Still being careful not to overload the logging
+pipeline, I incrementally added more logs and tracked the error to the packet
+receive flow. A few layers deeper, logging the total number of QUIC paths per
+connection revealed the root cause. All connection errors had 2 paths
+registered. The bug was coming from the PMTU probing logic. I quickly deduced
+that packets on a connection could accidentally have been affected by a path
+change (NAT rebind). NAT rebinds would result in the perception of multiple
+paths but a QUIC connection requires path validation before becoming the active
+path. The PMTU code was not considering this edge case and incorrectly expecting
+an active path.</p>
+<p>The fix was trivial; since PMTU is a performance optimization the correct
+solution was to simply skip it until an active path was available. Analysis
+showed an 80% reduction in InvalidState errors (1K connections/day) in our new
+proxy logs.</p>
+<p>Put another way, the PMTU bug was 0.17% of the total proxy traffic. Since quiche
+was also being used for the old proxy and products across the company, the real
+savings were much larger.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="go-proxy-tls-hangs">
+        <div class="content">
+          <h3><a class="title" name="go-proxy-tls-hangs" href="#go-proxy-tls-hangs">## Go Proxy TLS hangs</a></h3>
+          <div class="summary"><p>While oncall I received an incident that customers were experiencing failure when trying to
+establish new connections to the Go proxy. Existing connections worked fine and the only abnormality
+in the logs were some long running goroutines.</p>
+<p>While technically owned by our team, this proxy was in maintenance mode and the original authors
+were on different teams. Even though my weekly oncall shift was coming to an end, I decided this was
+going to be a very good opportunity to take ownership of the proxy and learn Go at the same time.</p>
+<p>Following the logs I ended up in a loop which was using locks to either make RPC calls or establish
+a new connection on failure. Being new to Go, I deeply investigated the internals of the standard
+library. I specifically attempted to find if there were timeouts and if there was support for
+connection pooling.</p>
+<p>After this investigation I strongly started to suspect that the new connection establishment was
+holding the lock. I added observability to try and detect the long held lock. However, the root
+cause was difficult to detect since we were trying to detect a lack of metrics, which could also
+occur due to low traffic volume.</p>
+<p>I prepared a patch to add timeout to the new Connection call, which was most likely the fix.
+However, during this time the company started a change freeze and required justification to make any
+changes.</p>
+<p>I  colloborated with the original authors to analyze the metrics and conclude that 1K+ proxy
+instances (~0.2% of fleet) was being affected. I drafted a 1 page document detailing the risks of
+the patch, the importance of the customer issue, roughly the customer impact based on the
+observability I added, and a detailed rollback plan.</p>
+<p>Based on my analysis, I got approvals from my manager, her skip manager and the director. Adding a
+lower (10 sec) timeout around new Connection resolved the issue the observability confirmed the fix.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="quic-oack-security-vulnerability">
+        <div class="content">
+          <h3><a class="title" name="quic-oack-security-vulnerability" href="#quic-oack-security-vulnerability">## QUIC OACK Security Vulnerability</a></h3>
+          <div class="summary"><p>Two months into the Protocols role at Cloudflare, I patched a security vulnerability in our QUIC library. Protocol-level vulnerabilities are notoriously difficult to debug: implementations tend to be RFC-compliant, but reproducing a security issue requires a deliberately non-compliant counterpart. Reproduction therefore requires a deep understanding of the RFC and codebase to implement the non-compliant behavior.</p>
+<p>I owned the full remediation lifecycle: reproducing the issue, implementing the fix, patching the proxy, and coordinating patches across three other infrastructure teams. I implemented the fix along with tests within two weeks, and our proxy was patched within the month.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+  
+
+  
+  
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <div class="article" id="quic-ack-frequency">
+        <div class="content">
+          <h3><a class="title" name="quic-ack-frequency" href="#quic-ack-frequency">## QUIC ACK frequency</a></h3>
+          <div class="summary"><p><strong>Context</strong></p>
+<p>ACK processing is one of the most CPU expensive aspects of the QUIC protocol since every packet
+requires an ACK. For example, a send heavy workload spends ~24.33% processing ACKs. My task was
+therefore to look at the ACK delay RFC and see if it would be possible to apply it to s2n-quic and
+get some CPU savings.</p>
+<p>As the project lead I started with a deep read of the RFC text, followed by a proposal doc that was
+reviewed by the entire team. The RFC proposed a new QUIC extension (negotiated by both peers), which
+would allow for delaying and batching packet ACKs.</p>
+<p>The obvious benefit was the lower CPU cost. However the adverse affects included:</p>
+<ul>
+<li>Loss recovery: ACKs are critical for detecting and recovering from lost packets.</li>
+<li>Congestion control:
+<ul>
+<li>CCA: ACKs help establish RTT, which is critical for most congestion control algorithms.</li>
+<li>BBR: requires high-precision so its not obvious how the algorithm might break.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Action</strong></p>
+<p>In my proposal I proposed the following options:</p>
+<ul>
+<li>Single round batching of the 10 GSO packets.
+<ul>
+<li>Easy to implement (1-2 sprints).</li>
+<li>The code changes would be a building blocks for the other solutions.</li>
+</ul>
+</li>
+<li>Multi round batching (multi-gso payload) (2-4 sprints)
+<ul>
+<li>This solution was medium difficulty to implement.</li>
+<li>Requires tuning with application, production use case, traffic pattern</li>
+</ul>
+</li>
+<li>Implement the full ACK delay RFC (4-8 sprints)
+<ul>
+<li>Complicated to implement since it involves the packet processing plumbing.</li>
+<li>Requires tuning with application, production use case, traffic pattern.</li>
+<li>Requires negotiating the extension</li>
+</ul>
+</li>
+</ul>
+<p>I recommended implementing the single round batching since it was the quickest way to get benefits
+in production and also would naturally lead to the other solutions.</p>
+<p>The implementation involved the following tasks:</p>
+<ul>
+<li>Allowing connections to signal interest in batch ACK processing</li>
+<li>Queuing pending ACKs on the connection</li>
+<li>Refactoring Congestion Control and Loss Recovery to accept a ACK timestamp delay signal</li>
+<li>Emitting metrics</li>
+</ul>
+<p><strong>Result</strong></p>
+<p>Once the feature was complete however it showed a CPU performance regression! The flamegraph result
+showed a regression from 24.33% -&gt; 25.81% (https://github.com/aws/s2n-quic/pull/1298).</p>
+<p>Finally the PR was reverted and we determined that ACK delay was likely not going to yield the
+desired benefits for s2n-quic (https://github.com/aws/s2n-quic/pull/1368).</p>
+<p><strong>Learning</strong></p>
+<p>On the surface this might seem like a failure, however it was one of my most rewarding
+engineering efforts. We were able to take a complex feature, implement a POC to demonstrate the
+regression and avoid months of wasted effort. Additionally, its not trivial that we were able to
+measure the tiny regression and abort the feature development.</p>
+<p>ACK delay is probably too risky a feature for a protocol that needs to operate on the public
+internet. Instead I think it might be a better fit for Datacenter traffic, which has much lower RTTs
+and loss rates.</p>
+<p><strong>References</strong></p>
+<ul>
+<li>RFC https://datatracker.ietf.org/doc/html/draft-ietf-quic-ack-frequency</li>
+<li>Tracking issue: https://github.com/aws/s2n-quic/issues/1276</li>
+<li>CPU increase: https://github.com/aws/s2n-quic/pull/1298</li>
+<li>Revert PR with some analysis shows : https://github.com/aws/s2n-quic/pull/1368</li>
+</ul>
+</div>
+        </div>
+      </div>
+    
+  
+
+  <!--Writing-->
+  
+  <h2 id="writing"><a name="writing" href="#writing">## Writing</a></h2>
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <div class="article" id="blog-optimistic-ack-attack">
+        <div class="content">
+          <h3><a class="title" name="blog-optimistic-ack-attack" href="#blog-optimistic-ack-attack">## Blog: Optimistic ACK attack</a></h3>
+          <div class="summary"><p>Mitigating the Optimistic ACK attack security vurln in quiche
+https://blog.cloudflare.com/defending-quic-from-acknowledgement-based-ddos-attacks/</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="blog-privacy-and-control">
+        <div class="content">
+          <h3><a class="title" name="blog-privacy-and-control" href="#blog-privacy-and-control">## Blog: Privacy and control</a></h3>
+          <div class="summary"><p>Privacy and control
+https://toidiu.com/blog/2025-12-25-privacy-and-control/</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="paper-summary-reads">
+        <div class="content">
+          <h3><a class="title" name="paper-summary-reads" href="#paper-summary-reads">##  Paper summary: Reads</a></h3>
+          <div class="summary"><p>Reads
+https://toidiu.com/reads/
+For a while I was annotating and summarizing papers I was interested in. I have found that if you can't succinctly summarize a concept then you dont really understand it.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  <!--Presentation-->
+  
+  <h2 id="presentation"><a name="presentation" href="#presentation">## Presentation</a></h2>
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <div class="article" id="meetup-boar-cc-analysis">
+        <div class="content">
+          <h3><a class="title" name="meetup-boar-cc-analysis" href="#meetup-boar-cc-analysis">## Meetup: boar CC analysis</a></h3>
+          <div class="summary"><ul>
+<li>I presented boar at a local Rust meetup https://github.com/toidiu/boar/blob/main/A_statistical_analysis_of_Congestion_Control_algorithms.pdf</li>
+</ul>
+</div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="conference-rust-belt-rust">
+        <div class="content">
+          <h3><a class="title" name="conference-rust-belt-rust" href="#conference-rust-belt-rust">## Conference: Rust Belt Rust</a></h3>
+          <div class="summary"><ul>
+<li>Rust Belt Rust 2019: https://www.youtube.com/watch?v=ZDy71QtAQgs</li>
+</ul>
+</div>
+        </div>
+      </div>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  <!--Behavioral-->
+  
+  <h2 id="behavioral"><a name="behavioral" href="#behavioral">## Behavioral</a></h2>
+
+  
+    
+      <div class="article" id="for-one-of-oxide-s-values-describe-an-example-of-how-it-was-reflected-in-a-particular-body-of-your-work">
+        <div class="content">
+          <h3><a class="title" name="for-one-of-oxide-s-values-describe-an-example-of-how-it-was-reflected-in-a-particular-body-of-your-work" href="#for-one-of-oxide-s-values-describe-an-example-of-how-it-was-reflected-in-a-particular-body-of-your-work">## For one of Oxide&#x27;s values, describe an example of how it was reflected in a particular body of your work.</a></h3>
+          <div class="summary"><p><strong>Oxide values:</strong> Candor, Humor, Teamwork, Courage, Optimism, Thriftiness, Curiosity, Resilience, Transparency, Diversity, Responsibility, Urgency, Empathy, Rigor, Versatility</p>
+<p>Making sure the software we ship is secure is one of my core principles. Two months into the Protocols role at Cloudflare, I was tasked with patching a security vulnerability in our QUIC library. At the same time the Principle engineers had a planned vacation for two weeks so I would need to make progress by myself.</p>
+<p>Protocol-level vulnerabilities are notoriously difficult to debug: implementations tend to be RFC-compliant, but reproducing a security issue requires a deliberately non-compliant counterpart. Reproduction therefore requires a deep understanding of the RFC and codebase to implement the non-compliant behavior.</p>
+<p>I owned the full remediation lifecycle: reproducing the issue, implementing the fix, patching the proxy, and coordinating patches across three other infrastructure teams. I had the fixes ready for review when my principle engineers returned and got them merged internally with minimal feedback. I patched our proxy and verified the vulnerability was fixed. Next I cut tickets for 3 other teams and tracked the fix over the next month. For more details, check out the blog post.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="what-work-have-you-done-that-you-are-particularly-proud-of-and-why">
+        <div class="content">
+          <h3><a class="title" name="what-work-have-you-done-that-you-are-particularly-proud-of-and-why" href="#what-work-have-you-done-that-you-are-particularly-proud-of-and-why">## What work have you done that you are particularly proud of and why?</a></h3>
+          <div class="summary"></div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="when-have-you-been-unhappiest-in-your-professional-career-and-why">
+        <div class="content">
+          <h3><a class="title" name="when-have-you-been-unhappiest-in-your-professional-career-and-why" href="#when-have-you-been-unhappiest-in-your-professional-career-and-why">## When have you been unhappiest in your professional career and why?</a></h3>
+          <div class="summary"></div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="for-a-pair-of-oxide-s-values-describe-a-time-in-which-the-two-values-came-into-tension-for-you-or-your-work-and-how-you-resolved-it">
+        <div class="content">
+          <h3><a class="title" name="for-a-pair-of-oxide-s-values-describe-a-time-in-which-the-two-values-came-into-tension-for-you-or-your-work-and-how-you-resolved-it" href="#for-a-pair-of-oxide-s-values-describe-a-time-in-which-the-two-values-came-into-tension-for-you-or-your-work-and-how-you-resolved-it">## For a pair of Oxide&#x27;s values, describe a time in which the two values came into tension for you or your work, and how you resolved it.</a></h3>
+          <div class="summary"><p>Urgency/Rigor</p>
+<p>Going to Cloudflare Protocols from AWS Protocols was a big shift in culture. Cloudflare, despite being almost 10 years old, moved very quickly. In contrast, AWS valued deep analysis, especially when the work involved secure, compliant, and performant networking libraries. It was therefore a bit of a surprise when I got feedback from my manager that I need to work on adopting the culture of delivering fast.</p>
+<p>Shipping half-baked work was not acceptable for me and the feedback was actually a bit confusing because the team greatly valued quality work and would never compromise correctness.</p>
+<p>After some though I realized that part of the issue was my communication. Drawing from my AWS values, I often pushed for rigourous analysis before shipping features. I also realized that not all features were equally critical.</p>
+<p>To resolve this conflict, I worked hard on internalizing the Cloudflare values. Rather than suggesting rigorous analysis of the entire feature, I started identifying the critical components of a system and suggesting how we could achieve high confidence by deeply testing those components. In retospect, the feedback was extremely valuable and I learned the importance of balancing priorities without compromising my core values.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="for-one-of-oxide-s-values-describe-an-example-of-how-it-was-violated-in-your-organization-or-work">
+        <div class="content">
+          <h3><a class="title" name="for-one-of-oxide-s-values-describe-an-example-of-how-it-was-violated-in-your-organization-or-work" href="#for-one-of-oxide-s-values-describe-an-example-of-how-it-was-violated-in-your-organization-or-work">## For one of Oxide&#x27;s values, describe an example of how it was violated in your organization or work.</a></h3>
+          <div class="summary"><p>Teamwork/Empathy</p>
+<p>In my experience, a high functioning team is made up of members that feel like they can make an impact but also have psychological safety to fail while learning. This culture was threatened as leadership decided to hire 5 new engineers (team of 7) within a few months. Onboarding is especially in an async/remote team and this is especially true for junior engineers. The entire situation was exacerbated by 3 senior-tenure engineers leaving the ream within a few months around that time.</p>
+<p>Having been in similar situations as a junior, I saw hints of stress as new engineers were expected to start delivering but had very little mentoring and connection. I decided, without being assigned, to step-in and start mentoring my teammates (3 specifically) and ensure they were succeeding.</p>
+<p>For example, I decided to code review PRs for a junior engineer and specifically focus on Rust/codebase best practices. I slowly left more specific comments and jump on multiple calls to discuss the implications of the various design choices. Over the next few months the engineers was independently putting up high quality PRs.</p>
+<p>In another example, I just listened as a coworker vented about having to move to a new office location. The move was tough for her due to the lack of friends, family and the remote nature of the team. While I didn't actually sove her problems, I believe these human interactions are important because they build trust and provide psychological safety.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+</div>
+
+
+        
+          <footer>
+  <a class="link-icon" href="https://www.linkedin.com/in/toidiu" target=_blank" rel="noopener">
+      <img src="/images/linked-in.png"/>
+      <span class="icon-description">linked-in</span >
+  </a>
+  <a class="link-icon" href="http://www.github.com/toidiu" target=_blank" rel="noopener">
+      <img src="/images/github.png"/>
+      <span class="icon-description">github</span >
+  </a>
+  <a class="link-icon" href="mailto:toidiu@protonmail.com" target=_blank" rel="noopener">
+      <img src="/images/email.png"/>
+      <span class="icon-description">e-mail</span >
+  </a>
+  <a class="link-icon" href="https://bsky.app/profile/toidiu.com">
+      <img src="images/bluesky.png"/>
+      <span class="icon-description">bluesky</span >
+  </a>
+  <a class="link-icon" href="/apoorv_kothari.pdf" target=_blank" rel="noopener">
+      <img src="/images/resume.png"/>
+      <span class="icon-description">resume</span >
+  </a>
+</footer>
+
+        
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+
