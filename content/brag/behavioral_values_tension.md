@@ -1,5 +1,5 @@
 +++
-title = "For a pair of Oxide's values, describe a time in which the two values came into tension for you or your work, and how you resolved it."
+title = "For a pair of values, describe a time in which the two values came into tension for you or your work, and how you resolved it."
 date = 2026-06-01
 
 [taxonomies]
@@ -10,7 +10,9 @@ company = ""
 highlight = false
 +++
 
-Urgency/Rigor
+**Sample values:** Candor, Humor, Teamwork, Courage, Optimism, Thriftiness, Curiosity, Resilience, Transparency, Diversity, Responsibility, Urgency, Empathy, Rigor, Versatility
+
+**Urgency/Rigor**
 
 Going to Cloudflare Protocols from AWS Protocols was a big shift in culture. Cloudflare, despite being almost 10 years old, moved very quickly. In contrast, AWS valued deep analysis, especially when the work involved secure, compliant, and performant networking libraries. It was therefore a bit of a surprise when I got feedback from my manager that I need to work on adopting the culture of delivering fast.
 

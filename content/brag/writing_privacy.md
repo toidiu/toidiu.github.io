@@ -10,5 +10,7 @@ company = ""
 highlight = false
 +++
 
-Privacy and control
+I am passionate about privacy and control. I wrote this article as a guide for a friend to
+who wanted greater control over their data in our modern age.
+
 https://toidiu.com/blog/2025-12-25-privacy-and-control/

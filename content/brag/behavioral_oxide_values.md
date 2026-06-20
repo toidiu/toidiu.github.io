@@ -1,5 +1,5 @@
 +++
-title = "For one of Oxide's values, describe an example of how it was reflected in a particular body of your work."
+title = "For one of the values, describe an example of how it was reflected in a particular body of your work."
 date = 2026-06-01
 
 [taxonomies]
@@ -10,7 +10,9 @@ company = ""
 highlight = false
 +++
 
-**Oxide values:** Candor, Humor, Teamwork, Courage, Optimism, Thriftiness, Curiosity, Resilience, Transparency, Diversity, Responsibility, Urgency, Empathy, Rigor, Versatility
+**Sample values:** Candor, Humor, Teamwork, Courage, Optimism, Thriftiness, Curiosity, Resilience, Transparency, Diversity, Responsibility, Urgency, Empathy, Rigor, Versatility
+
+**Responsibility**
 
 Making sure the software we ship is secure is one of my core principles. Two months into the Protocols role at Cloudflare, I was tasked with patching a security vulnerability in our QUIC library. At the same time the Principle engineers had a planned vacation for two weeks so I would need to make progress by myself.
 

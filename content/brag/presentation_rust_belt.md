@@ -10,4 +10,4 @@ company = ""
 highlight = false
 +++
 
-- Rust Belt Rust 2019: https://www.youtube.com/watch?v=ZDy71QtAQgs
+Rust Belt Rust 2019: https://www.youtube.com/watch?v=ZDy71QtAQgs
