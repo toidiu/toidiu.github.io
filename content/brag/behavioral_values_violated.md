@@ -1,5 +1,5 @@
 +++
-title = "For one of Oxide's values, describe an example of how it was violated in your organization or work."
+title = "For one of the values, describe an example of how it was violated in your organization or work."
 date = 2026-06-01
 
 [taxonomies]
@@ -10,7 +10,9 @@ company = ""
 highlight = false
 +++
 
-Teamwork/Empathy
+**Sample values:** Candor, Humor, Teamwork, Courage, Optimism, Thriftiness, Curiosity, Resilience, Transparency, Diversity, Responsibility, Urgency, Empathy, Rigor, Versatility
+
+**Teamwork/Empathy**
 
 In my experience, a high functioning team is made up of members that feel like they can make an impact but also have psychological safety to fail while learning. This culture was threatened as leadership decided to hire 5 new engineers (team of 7) within a few months. Onboarding is especially in an async/remote team and this is especially true for junior engineers. The entire situation was exacerbated by 3 senior-tenure engineers leaving the ream within a few months around that time.
 
