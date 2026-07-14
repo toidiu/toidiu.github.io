@@ -14,10 +14,22 @@ highlight = false
 
 **Urgency/Rigor**
 
-Going to Cloudflare Protocols from AWS Protocols was a big shift in culture. Cloudflare, despite being almost 10 years old, moved very quickly. In contrast, AWS valued deep analysis, especially when the work involved secure, compliant, and performant networking libraries. It was therefore a bit of a surprise when I got feedback from my manager that I need to work on adopting the culture of delivering fast.
+My transition to the Cloudflare Protocols team from the AWS Transport Libraries team took some
+calibrating. While both teams work on Protocols, Cloudflare's culture was to move fast compared to
+AWS's culture. At AWS, we sometimes spent weeks or even months writing detailed specifications and
+ensuring the design was robust and compatible with all potential use cases. In the protocol and
+security domain, I was used to working methodically and making sure my work was perfect. It was
+therefore a bit of a surprise when I got feedback from my manager that I needed to work on adopting
+Cloudflare's culture of "move fast".
 
-Shipping half-baked work was not acceptable for me and the feedback was actually a bit confusing because the team greatly valued quality work and would never compromise correctness.
+After some thought, I realized that Cloudflare was successful because of its ability to move fast.
+Drawing from my AWS values, I often pushed for rigorous analysis before shipping features. I had to
+come to terms with the realization that not all features were equally critical and that I could do
+more to communicate this distinction.
 
-After some though I realized that part of the issue was my communication. Drawing from my AWS values, I often pushed for rigourous analysis before shipping features. I also realized that not all features were equally critical.
-
-To resolve this conflict, I worked hard on internalizing the Cloudflare values. Rather than suggesting rigorous analysis of the entire feature, I started identifying the critical components of a system and suggesting how we could achieve high confidence by deeply testing those components. In retospect, the feedback was extremely valuable and I learned the importance of balancing priorities without compromising my core values.
+To resolve this situation, I worked hard on internalizing the "move fast" culture. Rather than
+simply suggesting rigorous deliverables, I started breaking up requirements based on how critical
+they were. Specifically, I started to emphasize the importance of the critical components while
+acknowledging the less critical components and offering solutions to move faster. This eventually
+helped me earn my manager's trust. In retrospect, the feedback was extremely valuable, and I learned
+the importance of balancing urgency and rigor in proportion to the criticality of the task.

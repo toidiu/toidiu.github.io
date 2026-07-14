@@ -1,7 +1,6 @@
 +++
 title = "QUIC ACK frequency"
 date = 2022-04-01
-draft = true
 
 [taxonomies]
 tag = ["work"]
@@ -10,68 +9,53 @@ tag = ["work"]
 company = "AWS Transport Libs"
 +++
 
-**Context**
+Tracking issue: https://github.com/aws/s2n-quic/issues/1276
+Final PR to enable delayed ACKs: https://github.com/aws/s2n-quic/pull/1298
 
-ACK processing is one of the most CPU expensive aspects of the QUIC protocol since every packet
-requires an ACK. For example, a send heavy workload spends ~24.33% processing ACKs. My task was
-therefore to look at the ACK delay RFC and see if it would be possible to apply it to s2n-quic and
-get some CPU savings.
+The project that best reflects "good engineering" for me was implementing the experimental ACK
+frequency RFC in s2n-quic at AWS. Based on flamegraph analysis, ACK processing was an expensive part
+of the QUIC stack, and the motivation behind the work was to reduce the ACK frequency to make the
+protocol more efficient. The RFC proposed a custom protocol extension which required peer
+negotiation and could result in less frequent ACK processing. I started by understanding the RFC and
+writing a specification for team review.
 
-As the project lead I started with a deep read of the RFC text, followed by a proposal doc that was
-reviewed by the entire team. The RFC proposed a new QUIC extension (negotiated by both peers), which
-would allow for delaying and batching packet ACKs.
+The first proposal was to implement the full RFC, but this had many drawbacks. Since the extension
+required peer negotiation and the RFC was experimental, it was unlikely that any peer would support
+the feature. Additionally, tuning the frequency of ACKs would be non-trivial and would likely depend
+on customer workload. A lower frequency of ACKs would also impact Congestion Control and Loss
+Recovery in unpredictable ways, potentially harming connection stability. High implementation effort
+and low reward meant this was the least desirable option.
 
-The obvious benefit was the lower CPU cost. However the adverse affects included:
-- Loss recovery: ACKs are critical for detecting and recovering from lost packets.
-- Congestion control:
-  - CCA: ACKs help establish RTT, which is critical for most congestion control algorithms.
-  - BBR: requires high-precision so its not obvious how the algorithm might break.
+The second proposal was to batch ACK information on the receive path across multiple GSO payloads
+and process it in bulk: Receive path (multi-round). The theory was that bulk processing would mimic
+the benefits of less frequent ACK delivery. Instead of negotiating the ACK frequency with the peer,
+the local implementation would queue the ACK information from received packets across multiple GSO
+payloads (tunable) and process it once. We suspected that the expensive part in the receive path was
+the context-switching required for each QUIC packet. The benefit of this approach was the lack of
+extension negotiation, which meant all connections could benefit from the work. The risk to
+Congestion Control and Loss Recovery remained, however.
 
-**Action**
+The third proposal, and my recommendation, was to batch ACK information across packets in a single
+GSO payload: Receive path (single-round). Each GSO payload is essentially a collection of QUIC
+packets (~10) that are transmitted and received together. The default implementation processed the
+ACK information in each packet individually, and the insight was that we could extract CPU savings
+by first queuing and then processing it once per payload. The benefits over the multi-round approach
+were that CloudFront would not need to tune their systems and there would be no impact on Congestion
+Control and Loss Recovery. Another benefit was that the work would naturally extend to the more
+sophisticated proposals above.
 
-In my proposal I proposed the following options:
-- Single round batching of the 10 GSO packets.
-  - Easy to implement (1-2 sprints).
-  - The code changes would be a building blocks for the other solutions.
-- Multi round batching (multi-gso payload) (2-4 sprints)
-  - This solution was medium difficulty to implement.
-  - Requires tuning with application, production use case, traffic pattern
-- Implement the full ACK delay RFC (4-8 sprints)
-  - Complicated to implement since it involves the packet processing plumbing.
-  - Requires tuning with application, production use case, traffic pattern.
-  - Requires negotiating the extension
+After the team agreed with my recommendation, I started to implement the Receive path (single-round)
+proposal. The work was broken down into small atomic PRs that exposed queuing and delayed packet
+processing on the receive path. The final PR was simple and mostly enabled the feature.
 
-I recommended implementing the single round batching since it was the quickest way to get benefits
-in production and also would naturally lead to the other solutions.
+However, to my surprise, the new code actually performed worse in CI tests, regressing from 24.33%
+to 25.81% of CPU time in flamegraph analysis. I investigated the regression by running download
+simulations with different payload sizes and confirmed there were no performance improvements.
+Backed by data, we decided to abandon the feature. My theory is that queuing ACK information was
+more expensive than processing it right away in s2n-quic.
 
-The implementation involved the following tasks:
-- Allowing connections to signal interest in batch ACK processing
-- Queuing pending ACKs on the connection
-- Refactoring Congestion Control and Loss Recovery to accept a ACK timestamp delay signal
-- Emitting metrics
+While the project was not a success in the typical sense, it demonstrated the rigorous engineering
+process and testing that caught the regression before it was merged. I also suspect that ACK
+frequency would be more beneficial in a data center environment where network links are faster, peer
+negotiation is possible, and there is less loss on the network.
 
-**Result**
-
-Once the feature was complete however it showed a CPU performance regression! The flamegraph result
-showed a regression from 24.33% -> 25.81% (https://github.com/aws/s2n-quic/pull/1298).
-
-Finally the PR was reverted and we determined that ACK delay was likely not going to yield the
-desired benefits for s2n-quic (https://github.com/aws/s2n-quic/pull/1368).
-
-**Learning**
-
-On the surface this might seem like a failure, however it was one of my most rewarding
-engineering efforts. We were able to take a complex feature, implement a POC to demonstrate the
-regression and avoid months of wasted effort. Additionally, its not trivial that we were able to
-measure the tiny regression and abort the feature development.
-
-ACK delay is probably too risky a feature for a protocol that needs to operate on the public
-internet. Instead I think it might be a better fit for Datacenter traffic, which has much lower RTTs
-and loss rates.
-
-**References**
-
-- RFC https://datatracker.ietf.org/doc/html/draft-ietf-quic-ack-frequency
-- Tracking issue: https://github.com/aws/s2n-quic/issues/1276
-- CPU increase: https://github.com/aws/s2n-quic/pull/1298
-- Revert PR with some analysis shows : https://github.com/aws/s2n-quic/pull/1368
