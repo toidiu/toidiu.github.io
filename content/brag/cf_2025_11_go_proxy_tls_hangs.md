@@ -10,32 +10,34 @@ company = "Cloudflare"
 highlight = true
 +++
 
-While oncall I received an incident that customers were experiencing failure when trying to
-establish new connections to the Go proxy. Existing connections worked fine and the only abnormality
-in the logs were some long running goroutines.
+While on-call at Cloudflare, I was paged for an incident where customers were experiencing failures
+when trying to establish new connections to the Go proxy. Existing connections continued to work
+fine and the only useful information in the core dump was a long-running goroutine, whose stack
+trace pointed at a specific source file.
 
-While technically owned by our team, this proxy was in maintenance mode and the original authors
-were on different teams. Even though my weekly oncall shift was coming to an end, I decided this was
-going to be a very good opportunity to take ownership of the proxy and learn Go at the same time.
+While technically owned by our team, the Go proxy was in unofficial "maintenance" mode since all the
+original authors were on different teams. Even though my weekly on-call shift was coming to an end,
+I decided to pick up the investigation because our team needed to own our software, there was real
+customer impact, and this would be a fantastic opportunity to learn Go.
 
-Following the logs I ended up in a loop which was using locks to either make RPC calls or establish
-a new connection on failure. Being new to Go, I deeply investigated the internals of the standard
-library. I specifically attempted to find if there were timeouts and if there was support for
-connection pooling.
+I started with the source file mentioned in the core dump and focused on a complex loop which was
+using locks to make RPC calls and establish a new connection on failure. I started to suspect a
+deadlock, but being new to Go, I first had to confirm this by investigating the library internals.
+In my investigation into the RPC and new connection calls, I did not find any timeouts, which
+deepened my suspicion. The fix later confirmed this: a goroutine establishing a new connection would
+hang, never release the lock, and block all new connections.
 
-After this investigation I strongly started to suspect that the new connection establishment was
-holding the lock. I added observability to try and detect the long held lock. However, the root
-cause was difficult to detect since we were trying to detect a lack of metrics, which could also
-occur due to low traffic volume.
+Pursuing the deadlock theory, I started by adding observability to try and detect the issue and also
+measure the customer impact. However, a deadlock is tricky to observe: I was trying to measure a
+lack of metrics, which is hard to differentiate from low traffic volume. I ended up adding histogram
+metrics to measure the distribution of time spent in the RPC loop, and collaborated with the
+original authors to estimate the current impact (~0.2% of the fleet, or 200 proxy instances, stuck
+at any given time).
 
-I prepared a patch to add timeout to the new Connection call, which was most likely the fix.
-However, during this time the company started a change freeze and required justification to make any
-changes.
-
-I  colloborated with the original authors to analyze the metrics and conclude that 1K+ proxy
-instances (~0.2% of fleet) was being affected. I drafted a 1 page document detailing the risks of
-the patch, the importance of the customer issue, roughly the customer impact based on the
-observability I added, and a detailed rollback plan.
-
-Based on my analysis, I got approvals from my manager, her skip manager and the director. Adding a
-lower (10 sec) timeout around new Connection resolved the issue the observability confirmed the fix.
+Next, I prepared a small patch to add timeouts to both the RPC and new connection calls.
+Unfortunately, this was blocked due to a multi-month production freeze. Motivated by the facts that
+this was likely the fix, that real customers were impacted, and that a long freeze would not be
+acceptable, I set out to convince my manager and leadership. I wrote a concise document describing
+the problem, my investigation, estimated customer impact, why the proposed fix was urgent, and why
+the fix was low risk. I was able to get approvals up the leadership chain (up to director), and I
+confirmed the fix via the histogram metrics once the patch was released.

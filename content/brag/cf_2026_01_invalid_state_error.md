@@ -12,39 +12,36 @@ highlight = true
 
 https://github.com/cloudflare/quiche/pull/2366
 
-As we built the new proxy at Cloudflare, it came with better observability. One
-of the puzzling metrics was the high number of InvalidState errors that the
-proxy was emitting. The InvalidState error was a generic catch-all error emitted
-from quiche. It wasn't possible to tell if the errors were due to a quiche bug,
-malicious traffic or simply malformed client traffic from the internet. Another
-troubling signal was that an engineer had noticed an increase in this traffic a
-year earlier but had not been able to identify the root cause of the increase.
+While developing the new Rust proxy at Cloudflare, one of my coworkers noticed an increase in the
+number of InvalidState errors. The InvalidState error was a generic catch-all emitted when a quiche
+connection was in a bad state. We expected a non-zero number of errors since CDN traffic contains
+malformed or malicious clients, but an increase in the number of errors needed investigation.
+Attempts to find the root cause were not successful and we filed a ticket as we continued to work on
+other critical components. I picked up the ticket almost a year later, as we neared the launch date.
 
-The challenge with this investigation was the vast volume of traffic and adding
-non-invasive telemetry to a production system. The first attempt at logging more
-information about the bug actually resulted in a behavior change and a large
-increase in logs. It turned out that the downstream system was actually relying
-on the error type to determine close behavior. While the increase in logs was
-not detrimental, it did leave the logging pipeline vulnerable in the case of a
-DOS attack.
+The main challenge with this investigation was the limited telemetry and the use of loosely typed
+errors. Since the proxy served a high volume of traffic, any increase in logging could be dangerous
+to the logging infrastructure (and amplified by a DDoS attack). I felt this pain as my first attempt
+to annotate errors with additional context resulted in a behavior change to the connection close
+reason and an increase in log volume. The change was reverted and I had to rethink my strategy.
 
-Since I needed detailed logs, I proposed that we switch the investigation to an
-ad-hoc build (~10 machines). Still being careful not to overload the logging
-pipeline, I incrementally added more logs and tracked the error to the packet
-receive flow. A few layers deeper, logging the total number of QUIC paths per
-connection revealed the root cause. All connection errors had 2 paths
-registered. The bug was coming from the PMTU probing logic. I quickly deduced
-that packets on a connection could accidentally have been affected by a path
-change (NAT rebind). NAT rebinds would result in the perception of multiple
-paths but a QUIC connection requires path validation before becoming the active
-path. The PMTU code was not considering this edge case and incorrectly expecting
-an active path.
+The original goal of contextualizing the errors was to segment them without blowing up the logging
+pipeline. However, since what I really needed were detailed logs, I proposed switching to a
+"staging" build (deployed on ~10 bare-metal servers). With the build isolated to a smaller fleet but
+still being cautious not to overload the pipeline, I iteratively added more logs and traced the
+various sources of the InvalidState error. Most of the error sources were reasonable and stemmed
+from handling malformed client payloads (e.g. invalid CID).
 
-The fix was trivial; since PMTU is a performance optimization the correct
-solution was to simply skip it until an active path was available. Analysis
-showed an 80% reduction in InvalidState errors (1K connections/day) in our new
-proxy logs.
+A few iterations later I hit an interesting log line that roughly looked like: "paths: 2,
+active_path: x". This "smelled" funny because all these errors were happening in the presence of '2'
+paths, but path migration is not a common feature. Having previously implemented connection
+migration in s2n-quic, I quickly deduced that NAT rebinds can cause passive path migration
+independent of the client implementation. The error occurred when the PMTU probing logic (a
+performance optimization) attempted to access a non-existent active path after the migration. My
+proposed fix was to skip PMTU probes in these cases and avoid closing the connection.
 
-Put another way, the PMTU bug was 0.17% of the total proxy traffic. Since quiche
-was also being used for the old proxy and products across the company, the real
-savings were much larger.
+Once fixed, the logs showed an 80% reduction in InvalidState errors. Although the PMTU bug affected
+only 0.17% of the total proxy traffic, that amounted to roughly a thousand customer connections
+being torn down every second on the new proxy. Given that quiche was used across other services, the
+real impact was much larger.
+

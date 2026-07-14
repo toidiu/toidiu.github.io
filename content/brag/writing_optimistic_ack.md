@@ -10,9 +10,14 @@ company = ""
 highlight = false
 +++
 
-I was privileged to write about my work on the Cloudflare blog. The blog is a great resource for
-understanding protocols, congestion control and the work that goes into mitigating protocol security
-vulnerabilities. Specifically the article talks about mitigating the Optimistic ACK and invalid ACK
-vulnerabilities in the QUIC stack.
 
 https://blog.cloudflare.com/defending-quic-from-acknowledgement-based-ddos-attacks/
+
+I loved Cloudflare's culture of transparency and the detailed blogs they publish. When I got the
+opportunity to talk about my work patching a security issue, I took it.
+
+My goal with the blog post was to make the topic approachable to all engineers and teach them a
+little about the networking domain. I dedicated many of the earlier sections to building up the
+reader's intuition about protocol design, congestion control, and the idea of fairness in
+networking. Finally, I discussed the Optimistic ACK attack and presented the dynamic packet-skip
+patch that mitigated the vulnerability.

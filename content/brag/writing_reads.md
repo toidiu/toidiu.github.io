@@ -10,7 +10,10 @@ company = ""
 highlight = false
 +++
 
-**Reads** was my attempt to read more papers and understand them by writing a short summary: https://toidiu.com/reads/
+https://toidiu.com/reads/
 
-I still follow a similar practice but I now keep these notes in Obsidian to make them easier to
-edit and search.
+To practice reading actively, I started a "reads" section on my website. The idea was to read
+papers, highlight them, and write a summary in my own words to make sure I understood the subject.
+There are nine samples on the website. I still do something similar, but have since transitioned my
+notes to a local Obsidian repository.
+
