@@ -37,6 +37,7 @@ help enforce those guarantees.
   - [PhantomData](#phantomdata)
   - [Unpin](#unpin)
     - [Pin](#pin-struct)
+    - [Structured Pinning](#structured-pinning)
     - [PhantomPinned](#phantompinned)
 
 ## Borrow Checker
@@ -436,6 +437,12 @@ behavior), it will emit an unused warning unless included in PhantomData.
 
 
 ### Unpin
+Means "pinning is meaningless for this type". Which means that this type is allowed to move
+without adverse side effects.
+
+- `T: Unpin`: moving is always safe
+- `T: !Unpin`: type may be self referential and once `Pin`ned, the type can't be moved.
+
 The vast majority of Rust types have no address-sensitive states. For example, an integer
 can be copies to another address while maintaining the correct semantic. Most types implement
 the [Unpin](https://doc.rust-lang.org/std/marker/trait.Unpin.html) auto-trait by default.
@@ -445,7 +452,15 @@ become invalid if the struct is moved to a different address. These objects need
 `Pin`ed (see below) to prevent them from being accidentally move.
 
 #### Pin (struct):
-If an object should not be moved, then the user can `Pin` it by wrapping the object in a
+Wraps an object and once `Pin`ed, the promise is that the object will NOT move before it
+is dropped. `Pin<&mut T>` is a `&mut T` but with the move operations removed from it.
+
+3 ways to get it:
+- std::pin::pin!   stack
+- Box::pin         heap
+- .await           wherever the future lives
+
+If an object should not be moved (`!Unpin`), then the user can `Pin` it by wrapping the object in a
 `Pin<T>`. The [pin](https://doc.rust-lang.org/std/pin/index.html) module defines the
 concept of "pinning" and has more detailed info.
 
@@ -471,6 +486,24 @@ programming, the compile needed to reason about object moves and hence the need 
 See [comment](https://users.rust-lang.org/t/high-level-pin-async-future/71876/2) and book
 [chapter](https://rust-lang.github.io/async-book/04_pinning/01_chapter.html) for further
 details.
+
+#### Structured Pinning
+Going from `Pin<&mut Struct>` to pef-field access is called "projection". Doing it manually
+requires unsafe since compiler cant guarantee correct rules (a Pinned field must never be 
+moved out).
+
+`pin_project` allowed annotating fields with `#[pin]` so that the project returns the correct
+variant. Rule is to `#[pin]` any field you need to poll.
+
+```rust
+pin_project! {
+    struct MyFuture {
+        #[pin]
+        fut: F,             // project() -> Pin<&mut F>
+        started: Instant,   // project() -> &mut Instant
+    }
+}
+```
 
 #### PhantomPinned:
 Similar to PhantomData (discussed [above](#phantomdata)),
