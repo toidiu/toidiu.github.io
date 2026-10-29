@@ -184,19 +184,14 @@ pre .b { color: #6f42c1; }                        /* builtin */
 <li class="group"><a href="#architecture-review">Architecture review</a></li>
 <li class="group"><a href="#vuln-review">Vuln review</a></li>
 <li class="section"><a href="#lessons-from-c-review-practice">Lessons from C review practice</a></li>
-<li class="sub"><a href="#truncated-or-variable-length-mac-tag-auth">Truncated or variable-length MAC tag (auth)</a></li>
-<li class="sub"><a href="#key-that-fails-open">Key that fails open</a></li>
-<li class="sub"><a href="#nonce-counter-never-advanced-aead">Nonce counter never advanced (AEAD)</a></li>
-<li class="sub"><a href="#output-buffer-without-a-capacity-parameter">Output buffer without a capacity parameter</a></li>
-<li class="sub"><a href="#wire-length-checked-against-the-source-only">Wire length checked against the source only</a></li>
-<li class="sub"><a href="#integer-wrap-in-an-allocation-size">Integer wrap in an allocation size</a></li>
-<li class="sub"><a href="#predictable-token-rng">Predictable token RNG</a></li>
-<li class="sub"><a href="#attacker-controlled-format-string">Attacker-controlled format string</a></li>
-<li class="sub"><a href="#signature-api-return-value-treated-as-boolean-signature">Signature API return value treated as boolean (signature)</a></li>
-<li class="sub"><a href="#unsigned-update-metadata-and-rollback-signature">Unsigned update metadata and rollback (signature)</a></li>
-<li class="sub"><a href="#snprintf-return-used-as-the-written-length">`snprintf` return used as the written length</a></li>
-<li class="sub"><a href="#weak-password-hashing-and-login-timing-auth">Weak password hashing and login timing (auth)</a></li>
-<li class="sub"><a href="#mac-then-encrypt-cbc-with-a-padding-oracle-and-length-underflow-aead">MAC-then-encrypt CBC with a padding oracle and length underflow (AEAD)</a></li>
+<li class="sub"><a href="#truncated-tag-and-key-that-fails-open-snippet-1-auth">Truncated tag and key that fails open (snippet 1, auth)</a></li>
+<li class="sub"><a href="#nonce-counter-never-advanced-shared-key-snippet-2-aead">Nonce counter never advanced, shared key (snippet 2, AEAD)</a></li>
+<li class="sub"><a href="#wire-length-and-integer-wrap-snippet-3-memory-safety">Wire length and integer wrap (snippet 3, memory safety)</a></li>
+<li class="sub"><a href="#predictable-token-and-format-string-snippet-4">Predictable token and format string (snippet 4)</a></li>
+<li class="sub"><a href="#signature-return-and-unsigned-metadata-snippet-5">Signature return and unsigned metadata (snippet 5)</a></li>
+<li class="sub"><a href="#mac-then-encrypt-cbc-snippet-6-aead">MAC-then-encrypt CBC (snippet 6, AEAD)</a></li>
+<li class="sub"><a href="#snprintf-return-used-as-the-written-length-snippet-7">`snprintf` return used as the written length (snippet 7)</a></li>
+<li class="sub"><a href="#weak-password-hashing-and-login-timing-snippet-8-auth">Weak password hashing and login timing (snippet 8, auth)</a></li>
 <li class="sub"><a href="#review-hygiene">Review hygiene</a></li>
 </ul>
 </nav>
@@ -500,33 +495,371 @@ pre .b { color: #6f42c1; }                        /* builtin */
 <h2 class="group-head" id="architecture-review"><a class="hlink" href="#architecture-review">Architecture review</a></h2>
 <h2 class="group-head" id="vuln-review"><a class="hlink" href="#vuln-review">Vuln review</a></h2>
 <h2 id="lessons-from-c-review-practice"><a class="hlink" href="#lessons-from-c-review-practice">Lessons from C review practice</a></h2>
-<p>Findings from <code>security_code_review/snippets/</code>; each entry is a pattern to check in any C review.</p>
-<h3 id="truncated-or-variable-length-mac-tag-auth"><a class="hlink" href="#truncated-or-variable-length-mac-tag-auth">Truncated or variable-length MAC tag (auth)</a></h3>
-<ul><li>Root cause: the length check is <code>tag_len &gt; MAX</code> instead of <code>tag_len == MAX</code>, so a zero-length or short tag compares as equal; <code>memcmp(a, b, 0)</code> returns 0.</li><li>Spot: a compare length derived from attacker input (<code>tok_len - header</code>); <code>&gt;</code> where <code>!=</code> is required.</li><li>Fix: require the exact token length, then compare a fixed-size tag with <code>CRYPTO_memcmp</code>.</li></ul>
-<h3 id="key-that-fails-open"><a class="hlink" href="#key-that-fails-open">Key that fails open</a></h3>
-<ul><li>Root cause: a static key is zero until a setter runs, so tokens MACed with the zero key verify.</li><li>Spot: <code>static unsigned char key[N]</code> with a separate setter and no <code>initialized</code> check.</li><li>Fix: fail closed when the key is unset; set it once before serving requests.</li></ul>
-<h3 id="nonce-counter-never-advanced-aead"><a class="hlink" href="#nonce-counter-never-advanced-aead">Nonce counter never advanced (AEAD)</a></h3>
-<ul><li>Root cause: <code>seq</code> is XORed into the IV but never incremented, so every record reuses the nonce; see Nonce and IV reuse.</li><li>Spot: a counter field read in <code>make_nonce</code> with no <code>seq++</code> in the seal path.</li><li>Fix: increment after each seal and fail on wrap. One fleet-wide key plus a random base IV also lets nonces collide across connections: derive a per-session key with a KDF.</li></ul>
-<h3 id="output-buffer-without-a-capacity-parameter"><a class="hlink" href="#output-buffer-without-a-capacity-parameter">Output buffer without a capacity parameter</a></h3>
-<ul><li>Root cause: the function needs <code>out</code> to hold <code>pt_len + TAG_LEN</code> but cannot see the buffer size, so a wrong caller size is a heap overflow.</li><li>Spot: <code>unsigned char *out</code> with no <code>out_cap</code>; signed <code>int</code> lengths.</li><li>Fix: add <code>size_t out_cap</code>, reject negative <code>pt_len</code>, and reject <code>out_cap &lt; (size_t)pt_len + TAG_LEN</code>. A doc comment enforces nothing.</li></ul>
-<h3 id="wire-length-checked-against-the-source-only"><a class="hlink" href="#wire-length-checked-against-the-source-only">Wire length checked against the source only</a></h3>
-<ul><li>Root cause: <code>len - off &lt; name_len</code> guards the input buffer, not the fixed <code>name[32]</code> destination, so <code>memcpy</code> and the NUL write overflow the caller&#x27;s stack variable.</li><li>Spot: a length byte read from the wire and used as a <code>memcpy</code> size.</li><li>Fix: reject <code>name_len &gt;= sizeof(r-&gt;name)</code>. Embedded NULs still truncate the string for a caller that uses <code>strlen</code>; reject them or return the length.</li></ul>
-<h3 id="integer-wrap-in-an-allocation-size"><a class="hlink" href="#integer-wrap-in-an-allocation-size">Integer wrap in an allocation size</a></h3>
-<ul><li>Root cause: <code>need = count * 4</code> in <code>uint32_t</code> wraps; <code>count = 0x40000001</code> gives 4, the check passes, <code>malloc(4)</code> succeeds, and the loop writes <code>count</code> items.</li><li>Spot: attacker-controlled count times element size before <code>malloc</code>.</li><li>Fix: check <code>count &gt; (len - off) / 4</code> in <code>size_t</code> before multiplying. Parse into a local and fill the output struct only on success.</li></ul>
-<h3 id="predictable-token-rng"><a class="hlink" href="#predictable-token-rng">Predictable token RNG</a></h3>
-<ul><li>Root cause: <code>srand(time(NULL))</code> plus <code>rand()</code> gives a 32-bit timestamp seed, so an attacker who triggers a reset tries a few seconds of seeds; same-second requests get identical tokens.</li><li>Spot: <code>rand()</code>, <code>srand</code>, <code>time(NULL)</code> or <code>random()</code> anywhere near a secret.</li><li>Fix: <code>RAND_bytes</code>, return value checked.</li></ul>
-<h3 id="attacker-controlled-format-string"><a class="hlink" href="#attacker-controlled-format-string">Attacker-controlled format string</a></h3>
-<ul><li>Root cause: <code>syslog(LOG_INFO, msg)</code> where <code>msg</code> holds the raw username, so <code>%s</code>, <code>%x</code> and <code>%n</code> read or write memory.</li><li>Spot: <code>printf</code>, <code>syslog</code> or <code>snprintf</code> family with a non-literal format.</li><li>Fix: <code>syslog(LOG_INFO, &quot;%s&quot;, msg)</code>; escape control characters to stop log forging.</li></ul>
-<h3 id="signature-api-return-value-treated-as-boolean-signature"><a class="hlink" href="#signature-api-return-value-treated-as-boolean-signature">Signature API return value treated as boolean (signature)</a></h3>
-<ul><li>Root cause: <code>EVP_DigestVerifyFinal</code> returns 1 (valid), 0 (invalid) or a negative value on error, so <code>if (verify(...))</code> accepts -1; a malformed signature such as bad DER can return -1 and unsigned firmware is installed.</li><li>Spot: <code>if (EVP_DigestVerifyFinal(...))</code>, <code>if (EVP_PKEY_verify(...))</code>, or a wrapper that returns the raw <code>rc</code>; unchecked <code>EVP_DigestVerifyInit</code> and <code>Update</code>.</li><li>Fix: test <code>rc == 1</code> and check every call in the sequence.</li></ul>
-<h3 id="unsigned-update-metadata-and-rollback-signature"><a class="hlink" href="#unsigned-update-metadata-and-rollback-signature">Unsigned update metadata and rollback (signature)</a></h3>
-<ul><li>Root cause: the version sits in a header outside the signed bytes, so an attacker pairs an old, validly signed vulnerable image with a high version number.<ul><li>Lockout: <code>version = 0xFFFFFFFF</code> raises the stored version to the maximum and every later legitimate update is rejected.</li></ul></li><li>Spot: a signature over the image only, with <code>version</code>, length or device model in a separate field.</li><li>Fix: sign version, length and device model together with the image; keep the anti-rollback counter in persistent storage (fuses or protected flash), not a <code>static</code> that resets on reboot.</li><li>Related: <code>flash_write</code> returning <code>void</code> lets a failed write advance the version and brick the device; use A/B partitions and bump the version after the new image boots.</li><li>Related: attacker-controlled <code>image_len</code> with no buffer size over-reads; a baked-in public key has no rotation (use a signed key chain, as in TUF).</li></ul>
-<h3 id="snprintf-return-used-as-the-written-length"><a class="hlink" href="#snprintf-return-used-as-the-written-length"><code>snprintf</code> return used as the written length</a></h3>
-<ul><li>Root cause: <code>vsnprintf</code> returns the length it wanted, not what it wrote, so <code>b-&gt;len += n</code> on truncation advances <code>len</code> past <code>cap</code>; the server then sends bytes never written or beyond the allocation (heap over-read, the Heartbleed shape).<ul><li>The attacker controls the size: a 1 MB header over-reads 1 MB. A later grow keeps the unwritten gap as uninitialized heap in the response.</li></ul></li><li>Spot: <code>len += snprintf(...)</code> or <code>len += vsnprintf(...)</code> with no <code>n &gt;= remaining</code> check; a buffer sent by <code>len</code>.</li><li>Fix: if <code>n &gt;= cap - len</code>, grow to <code>len + n + 1</code> and format again (size first with <code>vsnprintf(NULL, 0, ...)</code>); never advance <code>len</code> by more than was written.</li><li>Related: no maximum response size lets large client values grow memory without limit (DoS); CR or LF in client values splits the response (CWE-113); <code>p = realloc(p, n)</code> loses the old block on failure.</li></ul>
-<h3 id="weak-password-hashing-and-login-timing-auth"><a class="hlink" href="#weak-password-hashing-and-login-timing-auth">Weak password hashing and login timing (auth)</a></h3>
-<ul><li>Root cause: PBKDF2-HMAC-SHA1 at 1000 iterations is far too cheap, so a leaked hash table cracks offline at billions of guesses per second on a GPU.</li><li>Root cause: <code>if (user == NULL) return 0;</code> skips the KDF, so unknown users return in microseconds and known users in milliseconds; with visible timing the attacker lists valid usernames.</li><li>Spot: <code>PKCS5_PBKDF2_HMAC</code> with <code>EVP_sha1()</code> or a low iteration constant; an early return before the KDF; <code>memcmp</code> on the hash; an unchecked KDF return that leaves the output buffer uninitialized.</li><li>Fix: Argon2id, or PBKDF2-HMAC-SHA256 at 600000 iterations or more (OWASP guidance, number uncertain); run the KDF against a dummy salt and hash for unknown users; compare with <code>CRYPTO_memcmp</code>; use a 16-byte salt.</li><li>Not the leak: <code>strcmp</code> over usernames, which are not secret. Rate limiting and lockout are a separate design control.</li></ul>
-<h3 id="mac-then-encrypt-cbc-with-a-padding-oracle-and-length-underflow-aead"><a class="hlink" href="#mac-then-encrypt-cbc-with-a-padding-oracle-and-length-underflow-aead">MAC-then-encrypt CBC with a padding oracle and length underflow (AEAD)</a></h3>
-<ul><li>Root cause: <code>iv || CBC(msg || HMAC(msg))</code> forces decryption before authentication, and distinct errors for bad padding and bad MAC form a padding oracle (Vaudenay) that decrypts any block with chosen inputs.</li><li>Root cause: <code>total - MAC_LEN</code> underflows when the plaintext is under 32 bytes (a 32-byte input suffices, since padding removal leaves 0 to 15 bytes); HMAC then over-reads and <code>memcpy</code> overflows the output.<ul><li>Sealed messages always have <code>total &gt;= 32</code>, but the ciphertext is chosen: no key is needed, only a block with valid padding (about 1 in 256 random blocks, or crafted by flipping IV bits).</li></ul></li><li>Spot: <code>EVP_DecryptFinal_ex</code> failing with its own return code; a MAC taken over plaintext; <code>len - MAC_LEN</code> with no <code>len &gt;= MAC_LEN</code> check; one key passed to both <code>EVP_*Init</code> and <code>HMAC</code>; unchecked <code>EVP_DecryptUpdate</code> and <code>HMAC</code> returns.</li><li>Fix: encrypt-then-MAC over <code>iv || ct</code>, verify with <code>CRYPTO_memcmp</code> before decrypting, one generic error, two keys derived with HKDF, reject short inputs, fail closed on every EVP return.</li><li>Not a bug: <code>ct_len &gt; sizeof(buf)</code>, since decrypted data is never longer than the ciphertext (EVP docs size output as <code>inl + block_size</code>, uncertain).</li></ul>
+<p>Findings from <code>security_code_review/snippets/</code>; each entry shows the code with numbered markers, then the lessons: each numbered lesson has a severity rating, and its number matches the <code>// N</code> markers in the code.</p>
+<h3 id="truncated-tag-and-key-that-fails-open-snippet-1-auth"><a class="hlink" href="#truncated-tag-and-key-that-fails-open-snippet-1-auth">Truncated tag and key that fails open (snippet 1, auth)</a></h3>
+<pre><code><span class="k">#define</span> SESSION_TAG_LEN <span class="n">32</span>
+
+<span class="k">struct</span> session {
+    <span class="b">uint32_t</span> user_id;
+    <span class="b">uint32_t</span> expires;
+};
+
+<span class="k">static</span> <span class="k">unsigned</span> <span class="k">char</span> session_key[<span class="n">32</span>];  <span class="c">// 2</span>
+
+<span class="k">void</span> session_set_key(<span class="k">const</span> <span class="k">unsigned</span> <span class="k">char</span> key[<span class="n">32</span>])
+{
+    memcpy(session_key, key, <span class="k">sizeof</span>(session_key));
+}
+
+<span class="k">int</span> session_parse(<span class="k">const</span> <span class="k">unsigned</span> <span class="k">char</span> *tok, <span class="b">size_t</span> tok_len, <span class="k">struct</span> session *out)
+{
+    <span class="k">unsigned</span> <span class="k">char</span> mac[EVP_MAX_MD_SIZE];
+    <span class="k">unsigned</span> <span class="k">int</span> mac_len = <span class="n">0</span>;
+    <span class="b">size_t</span> tag_len;
+
+    <span class="k">if</span> (tok_len &lt; <span class="k">sizeof</span>(*out))
+        <span class="k">return</span> -<span class="n">1</span>;
+
+    tag_len = tok_len - <span class="k">sizeof</span>(*out);
+    <span class="k">if</span> (tag_len &gt; SESSION_TAG_LEN)  <span class="c">// 1</span>
+        <span class="k">return</span> -<span class="n">1</span>;
+
+    <span class="k">if</span> (HMAC(EVP_sha256(), session_key, (<span class="k">int</span>)<span class="k">sizeof</span>(session_key),
+             tok, <span class="k">sizeof</span>(*out), mac, &amp;mac_len) == <span class="b">NULL</span>)
+        <span class="k">return</span> -<span class="n">1</span>;
+
+    <span class="k">if</span> (memcmp(mac, tok + <span class="k">sizeof</span>(*out), tag_len) != <span class="n">0</span>)  <span class="c">// 3</span>
+        <span class="k">return</span> -<span class="n">1</span>;
+
+    memcpy(out, tok, <span class="k">sizeof</span>(*out));  <span class="c">// 4</span>
+
+    <span class="k">if</span> (out-&gt;expires &lt; (<span class="b">uint32_t</span>)time(<span class="b">NULL</span>))  <span class="c">// 5</span>
+        <span class="k">return</span> -<span class="n">1</span>;
+
+    <span class="k">return</span> <span class="n">0</span>;
+}</code></pre>
+<ul><li>1 Critical: <code>tag_len &gt; SESSION_TAG_LEN</code> accepts tag lengths 0..32. An 8-byte token gives tag_len == 0, memcmp over 0 bytes returns 0, and auth is bypassed. Require tok_len == sizeof(*out) + SESSION_TAG_LEN. Short tags are also brute-forceable.</li><li>2 High: session_key is zero until session_set_key runs, so tokens signed with a zero key verify. Fail closed with an <code>initialized</code> flag, and set the key once before serving.</li><li>3 Medium: memcmp on the tag is not constant time. Use CRYPTO_memcmp (crypto_verify is libsodium, not OpenSSL).</li><li>4 Low: <code>out</code> is written before the expiry check. Validate into a tmp and copy only on success.</li><li>5 Low: (uint32_t)time(NULL) and a 32-bit <code>expires</code> wrap in 2106 (uncertain).</li><li>Not a bug: tag_len cannot underflow (the earlier tok_len check returns first), and early returns on length leak only the public length. The timing leak is the tag compare.</li><li>Not a bug: user_id collisions at 2^32 ids are not a security issue.</li><li>Rewrite: the length check must return early. Deferring it reads past a short tok in HMAC and the compare. Defer only checks on secret data. Zero-init mac, and compare a fixed SESSION_TAG_LEN.</li></ul>
+<h3 id="nonce-counter-never-advanced-shared-key-snippet-2-aead"><a class="hlink" href="#nonce-counter-never-advanced-shared-key-snippet-2-aead">Nonce counter never advanced, shared key (snippet 2, AEAD)</a></h3>
+<pre><code><span class="k">#define</span> KEY_LEN <span class="n">32</span>
+<span class="k">#define</span> IV_LEN <span class="n">12</span>
+<span class="k">#define</span> TAG_LEN <span class="n">16</span>
+
+<span class="k">struct</span> channel {
+  <span class="k">unsigned</span> <span class="k">char</span> key[KEY_LEN];
+  <span class="k">unsigned</span> <span class="k">char</span> iv[IV_LEN];
+  <span class="b">uint64_t</span> seq;
+};
+
+<span class="k">struct</span> channel *channel_new(<span class="k">const</span> <span class="k">unsigned</span> <span class="k">char</span> key[KEY_LEN]) {
+  <span class="k">struct</span> channel *ch = malloc(<span class="k">sizeof</span>(*ch));
+
+  <span class="k">if</span> (ch == <span class="b">NULL</span>)
+    <span class="k">return</span> <span class="b">NULL</span>;
+  memcpy(ch-&gt;key, key, KEY_LEN);  <span class="c">// 2</span>
+  RAND_bytes(ch-&gt;iv, IV_LEN);  <span class="c">// 3</span>
+  ch-&gt;seq = <span class="n">0</span>;
+  <span class="k">return</span> ch;
+}
+
+<span class="k">static</span> <span class="k">void</span> make_nonce(<span class="k">const</span> <span class="k">struct</span> channel *ch, <span class="k">unsigned</span> <span class="k">char</span> nonce[IV_LEN]) {
+  <span class="k">int</span> i;
+
+  memcpy(nonce, ch-&gt;iv, IV_LEN);
+  <span class="k">for</span> (i = <span class="n">0</span>; i &lt; <span class="n">8</span>; i++)
+    nonce[IV_LEN - <span class="n">1</span> - i] ^= (<span class="k">unsigned</span> <span class="k">char</span>)(ch-&gt;seq &gt;&gt; (<span class="n">8</span> * i));  <span class="c">// 1</span>
+}
+
+<span class="k">int</span> channel_seal(<span class="k">struct</span> channel *ch, <span class="k">const</span> <span class="k">unsigned</span> <span class="k">char</span> *pt, <span class="k">int</span> pt_len,
+                 <span class="k">unsigned</span> <span class="k">char</span> *out, <span class="k">int</span> *out_len) {  <span class="c">// 4</span>
+  <span class="b">EVP_CIPHER_CTX</span> *ctx;
+  <span class="k">unsigned</span> <span class="k">char</span> nonce[IV_LEN];
+  <span class="k">int</span> len = <span class="n">0</span>, total = <span class="n">0</span>, ok = <span class="n">0</span>;
+
+  <span class="k">if</span> ((ctx = EVP_CIPHER_CTX_new()) == <span class="b">NULL</span>)
+    <span class="k">return</span> -<span class="n">1</span>;
+
+  make_nonce(ch, nonce);  <span class="c">// 1</span>
+  <span class="k">if</span> (EVP_EncryptInit_ex(ctx, EVP_aes_256_gcm(), <span class="b">NULL</span>, ch-&gt;key, nonce) != <span class="n">1</span>)
+    <span class="k">goto</span> done;
+
+  <span class="k">if</span> (EVP_EncryptUpdate(ctx, out, &amp;len, pt, pt_len) != <span class="n">1</span>)  <span class="c">// 5</span>
+    <span class="k">goto</span> done;
+
+  total = len;
+  <span class="k">if</span> (EVP_EncryptFinal_ex(ctx, out + total, &amp;len) != <span class="n">1</span>)
+    <span class="k">goto</span> done;
+
+  total += len;
+  <span class="k">if</span> (EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, TAG_LEN, out + total) != <span class="n">1</span>)
+    <span class="k">goto</span> done;
+
+  *out_len = total + TAG_LEN;  <span class="c">// 7</span>
+  ok = <span class="n">1</span>;
+
+done:
+  EVP_CIPHER_CTX_free(ctx);
+  <span class="k">return</span> ok ? <span class="n">0</span> : -<span class="n">1</span>;
+}
+
+<span class="k">void</span> channel_free(<span class="k">struct</span> channel *ch) {
+  memset(ch-&gt;key, <span class="n">0</span>, KEY_LEN);  <span class="c">// 6</span>
+  free(ch);
+}</code></pre>
+<ul><li>1 Critical: channel_seal never increments ch-&gt;seq, so every record on a connection reuses the nonce. AES-GCM keystream reuse leaks XOR of plaintexts and exposes the GHASH key, allowing forgery. Increment seq after each seal and fail on wrap.</li><li>2 High: one key is shared fleet-wide, so extracting it from one device breaks all. The random base IV is also fleet-wide, so nonces can overlap across connections. The 2^32 limit applies across connections, not within one (counter nonces are unique per connection). Use a per-device or per-session key from a KDF.</li><li>3 Medium: RAND_bytes is a CSPRNG but its return is unchecked. On failure iv is uninitialized malloc bytes and the nonce base is predictable.</li><li>4 Medium: no out capacity parameter. out must hold pt_len + TAG_LEN, so a wrong caller size is a heap overflow. Add <code>size_t out_cap</code>, reject pt_len &lt; 0, and reject out_cap &lt; (size_t)pt_len + TAG_LEN. A doc comment alone enforces nothing.</li><li>5 Medium: no AAD or on-wire seq, so replay, reordering and drops are undetected unless the peer tracks seq (uncertain, handshake not shown).</li><li>6 Low: memset before free can be optimized away. Use OPENSSL_cleanse or OPENSSL_clear_free on the whole struct (key, iv, seq). channel_free(NULL) dereferences NULL.</li><li>7 Low: on failure out may hold partial ciphertext and *out_len is unset.</li><li>Not a bug: XORing a 64-bit counter into the low 8 bytes of a 96-bit IV is the TLS 1.3 construction. The bug is that the counter never advances.</li></ul>
+<h3 id="wire-length-and-integer-wrap-snippet-3-memory-safety"><a class="hlink" href="#wire-length-and-integer-wrap-snippet-3-memory-safety">Wire length and integer wrap (snippet 3, memory safety)</a></h3>
+<pre><code><span class="k">struct</span> record {
+  <span class="b">uint16_t</span> type;
+  <span class="b">uint32_t</span> count;
+  <span class="k">char</span> name[<span class="n">32</span>];
+  <span class="b">uint32_t</span> *items;
+};
+
+<span class="k">static</span> <span class="b">uint32_t</span> rd32(<span class="k">const</span> <span class="k">unsigned</span> <span class="k">char</span> *p) {
+  <span class="k">return</span> ((<span class="b">uint32_t</span>)p[<span class="n">0</span>] &lt;&lt; <span class="n">24</span>) | ((<span class="b">uint32_t</span>)p[<span class="n">1</span>] &lt;&lt; <span class="n">16</span>) |
+         ((<span class="b">uint32_t</span>)p[<span class="n">2</span>] &lt;&lt; <span class="n">8</span>) | (<span class="b">uint32_t</span>)p[<span class="n">3</span>];
+}
+
+<span class="k">int</span> record_parse(<span class="k">const</span> <span class="k">unsigned</span> <span class="k">char</span> *buf, <span class="b">size_t</span> len, <span class="k">struct</span> record *r) {
+  <span class="b">size_t</span> off;
+  <span class="b">uint8_t</span> name_len;
+
+  r-&gt;items = <span class="b">NULL</span>;
+
+  <span class="k">if</span> (len &lt; <span class="n">7</span>)
+    <span class="k">return</span> -<span class="n">1</span>;
+
+  r-&gt;type = (<span class="b">uint16_t</span>)((buf[<span class="n">0</span>] &lt;&lt; <span class="n">8</span>) | buf[<span class="n">1</span>]);
+  r-&gt;count = rd32(buf + <span class="n">2</span>);  <span class="c">// 3</span>
+
+  name_len = buf[<span class="n">6</span>];  <span class="c">// 1</span>
+  off = <span class="n">7</span>;
+
+  <span class="k">if</span> (len - off &lt; name_len)
+    <span class="k">return</span> -<span class="n">1</span>;
+
+  memcpy(r-&gt;name, buf + off, name_len);  <span class="c">// 1, 4</span>
+  r-&gt;name[name_len] = <span class="s">&#x27;\0&#x27;</span>;
+  off += name_len;
+
+  <span class="b">uint32_t</span> need;
+  need = r-&gt;count * <span class="n">4</span>;  <span class="c">// 2</span>
+  <span class="k">if</span> (len - off &lt; need)
+    <span class="k">return</span> -<span class="n">1</span>;
+
+  r-&gt;items = malloc(need);  <span class="c">// 5</span>
+  <span class="k">if</span> (r-&gt;items == <span class="b">NULL</span>)
+    <span class="k">return</span> -<span class="n">1</span>;
+
+  <span class="b">uint32_t</span> i;
+  <span class="k">for</span> (i = <span class="n">0</span>; i &lt; r-&gt;count; i++)  <span class="c">// 2</span>
+    r-&gt;items[i] = rd32(buf + off + <span class="n">4</span> * (<span class="b">size_t</span>)i);
+  <span class="k">return</span> <span class="n">0</span>;  <span class="c">// 6</span>
+}
+
+<span class="k">void</span> record_free(<span class="k">struct</span> record *r) {
+  free(r-&gt;items);
+  r-&gt;items = <span class="b">NULL</span>;
+}</code></pre>
+<ul><li>1 Critical: name_len is a wire byte (0..255) but r-&gt;name holds 32. The <code>len - off &lt; name_len</code> check guards the source, not the destination. memcpy and the NUL at name[name_len] overflow the caller&#x27;s stack variable (likely RCE). Reject name_len &gt;= sizeof(r-&gt;name).</li><li>2 Critical: <code>need = r-&gt;count * 4</code> is uint32_t and wraps. count = 0x40000001 gives need = 4, the length check passes, malloc(4) succeeds, and the loop writes count items (heap overflow). Check <code>count &gt; (len - off) / 4</code> in size_t before multiplying.</li><li>3 Low: on error returns r-&gt;count, r-&gt;type and r-&gt;name are already set while items is NULL. Parse into a local and fill *r only on success.</li><li>4 Low: memcpy copies name_len raw bytes, so name can hold embedded NULs. The caller treats it as a C string and sees a truncated name. Reject NULs in name, or return the length.</li><li>5 Low: count == 0 calls malloc(0), which may return NULL and reject a valid empty record.</li><li>6 Low: trailing bytes after the items are ignored (parser differential), and count has no cap beyond the input length.</li><li>Not a bug: the 7 is the fixed header (2 type + 4 count + 1 name_len). Allocation size is bounded by the remaining input, so the bug is the wrap in <code>need</code>, not unbounded allocation. rd32 and the buf[0] &lt;&lt; 8 promotion are fine.</li></ul>
+<h3 id="predictable-token-and-format-string-snippet-4"><a class="hlink" href="#predictable-token-and-format-string-snippet-4">Predictable token and format string (snippet 4)</a></h3>
+<pre><code><span class="k">#define</span> TOKEN_BYTES <span class="n">16</span>
+<span class="k">#define</span> TOKEN_HEX (<span class="n">2</span> * TOKEN_BYTES + <span class="n">1</span>)
+
+<span class="k">static</span> <span class="k">const</span> <span class="k">char</span> hexdig[] = <span class="s">&quot;0123456789abcdef&quot;</span>;
+
+<span class="k">static</span> <span class="k">void</span> hex_encode(<span class="k">const</span> <span class="k">unsigned</span> <span class="k">char</span> *in, <span class="b">size_t</span> n, <span class="k">char</span> *out) {
+  <span class="b">size_t</span> i;
+
+  <span class="k">for</span> (i = <span class="n">0</span>; i &lt; n; i++) {
+    out[<span class="n">2</span> * i] = hexdig[in[i] &gt;&gt; <span class="n">4</span>];
+    out[<span class="n">2</span> * i + <span class="n">1</span>] = hexdig[in[i] &amp; <span class="n">0x0f</span>];
+  }
+  out[<span class="n">2</span> * n] = <span class="s">&#x27;\0&#x27;</span>;
+}
+
+<span class="k">int</span> reset_token_new(<span class="k">const</span> <span class="k">char</span> *username, <span class="k">char</span> out[TOKEN_HEX]) {
+  <span class="k">unsigned</span> <span class="k">char</span> raw[TOKEN_BYTES];  <span class="c">// 4</span>
+  <span class="k">char</span> msg[<span class="n">256</span>];
+  <span class="b">size_t</span> i;
+
+  srand((<span class="k">unsigned</span> <span class="k">int</span>)time(<span class="b">NULL</span>));  <span class="c">// 1</span>
+  <span class="k">for</span> (i = <span class="n">0</span>; i &lt; TOKEN_BYTES; i++)
+    raw[i] = (<span class="k">unsigned</span> <span class="k">char</span>)(rand() &amp; <span class="n">0xff</span>);  <span class="c">// 1</span>
+  hex_encode(raw, TOKEN_BYTES, out);
+
+  snprintf(msg, <span class="k">sizeof</span>(msg), <span class="s">&quot;password reset issued for user %s&quot;</span>, username);  <span class="c">// 3</span>
+  syslog(LOG_INFO, msg);  <span class="c">// 2</span>
+  <span class="k">return</span> <span class="n">0</span>;
+}
+
+<span class="k">int</span> reset_token_check(<span class="k">const</span> <span class="k">char</span> stored[TOKEN_HEX], <span class="k">const</span> <span class="k">char</span> *given) {  <span class="c">// 4</span>
+  <span class="k">if</span> (strlen(given) != TOKEN_HEX - <span class="n">1</span>)
+    <span class="k">return</span> <span class="n">0</span>;
+  <span class="k">return</span> CRYPTO_memcmp(stored, given, TOKEN_HEX - <span class="n">1</span>) == <span class="n">0</span>;
+}</code></pre>
+<ul><li>1 Critical: srand(time(NULL)) plus rand() makes the token predictable. rand() is not a CSPRNG and the seed is a 32-bit timestamp. An attacker triggers a reset for the victim, tries the few seconds of candidate seeds, and takes over the account. Two requests in the same second also get identical tokens, with or without threads. Use RAND_bytes and check its return; reset_token_new currently always returns 0.</li><li>2 High: syslog(LOG_INFO, msg) uses attacker-controlled data as the format string (msg holds the raw username). %s and %x leak stack memory, %n can write. Use syslog(LOG_INFO, &quot;%s&quot;, msg).</li><li>3 Medium: the raw username also allows log injection (newlines forge log lines). Escape or reject control characters.</li><li>4 Low: no expiry, single-use enforcement or user binding in reset_token_check (design gap, uncertain: storage layer not shown). Missing NULL checks on given and username. raw is not wiped with OPENSSL_cleanse.</li><li>Not a bug: msg is a fixed 256-byte stack buffer and snprintf truncates, so username length is not an overflow or allocation issue. CRYPTO_memcmp is the correct constant-time compare, the strlen check leaks only the public length, and hex_encode&#x27;s 33-byte buffer is the right size.</li></ul>
+<h3 id="signature-return-and-unsigned-metadata-snippet-5"><a class="hlink" href="#signature-return-and-unsigned-metadata-snippet-5">Signature return and unsigned metadata (snippet 5)</a></h3>
+<pre><code><span class="k">struct</span> fw_hdr {
+  <span class="b">uint32_t</span> version;
+  <span class="b">uint32_t</span> image_len;
+};
+
+<span class="k">static</span> <span class="b">uint32_t</span> installed_version = <span class="n">7</span>;  <span class="c">// 3</span>
+
+<span class="k">extern</span> <span class="k">void</span> flash_write(<span class="k">const</span> <span class="k">unsigned</span> <span class="k">char</span> *img, <span class="b">size_t</span> len);
+
+<span class="k">static</span> <span class="k">int</span> fw_verify(<span class="b">EVP_PKEY</span> *pub, <span class="k">const</span> <span class="k">unsigned</span> <span class="k">char</span> *img, <span class="b">size_t</span> img_len,
+                     <span class="k">const</span> <span class="k">unsigned</span> <span class="k">char</span> *sig, <span class="b">size_t</span> sig_len) {
+  <span class="b">EVP_MD_CTX</span> *ctx = EVP_MD_CTX_new();
+  <span class="k">int</span> rc;
+
+  <span class="k">if</span> (ctx == <span class="b">NULL</span>)
+    <span class="k">return</span> <span class="n">0</span>;
+  EVP_DigestVerifyInit(ctx, <span class="b">NULL</span>, EVP_sha256(), <span class="b">NULL</span>, pub);  <span class="c">// 1</span>
+  EVP_DigestVerifyUpdate(ctx, img, img_len);
+  rc = EVP_DigestVerifyFinal(ctx, sig, sig_len);  <span class="c">// 1</span>
+  EVP_MD_CTX_free(ctx);
+  <span class="k">return</span> rc;
+}
+
+<span class="k">int</span> fw_update(<span class="b">EVP_PKEY</span> *pub, <span class="k">const</span> <span class="k">struct</span> fw_hdr *h, <span class="k">const</span> <span class="k">unsigned</span> <span class="k">char</span> *img,  <span class="c">// 5, 6</span>
+              <span class="k">const</span> <span class="k">unsigned</span> <span class="k">char</span> *sig, <span class="b">size_t</span> sig_len) {
+  <span class="k">if</span> (h-&gt;version &lt; installed_version)  <span class="c">// 2</span>
+    <span class="k">return</span> -<span class="n">1</span>;
+
+  <span class="k">if</span> (fw_verify(pub, img, h-&gt;image_len, sig, sig_len)) {  <span class="c">// 1, 5</span>
+    flash_write(img, h-&gt;image_len);  <span class="c">// 4, 7</span>
+    installed_version = h-&gt;version;  <span class="c">// 2</span>
+    <span class="k">return</span> <span class="n">0</span>;
+  }
+  <span class="k">return</span> -<span class="n">1</span>;
+}</code></pre>
+<ul><li>1 Critical: EVP_DigestVerifyFinal returns 1 (valid), 0 (invalid) or negative (error). fw_verify returns it unchanged and <code>if (fw_verify(...))</code> treats -1 as success, so a malformed signature (for example bad DER) flashes unsigned firmware. Return <code>rc == 1</code>, and check EVP_DigestVerifyInit and Update too.</li><li>2 High: the version is in the unsigned header. Rollback: an old validly signed vulnerable image with version set at or above installed passes the check. Lockout: version = 0xFFFFFFFF sets installed_version to the maximum, so every later legitimate update is rejected. Sign version, image length and device model together with the image.</li><li>3 High: installed_version is a plain static initialized to 7, so it resets on reboot. The anti-rollback counter must live in persistent storage (fuses or protected flash).</li><li>4 Medium: flash_write returns void, so a failed or interrupted write still updates installed_version, and a power loss mid-write bricks the device. Return a status, use A/B partitions, and update the version only after the new image boots.</li><li>5 Medium: h-&gt;image_len is attacker-controlled and fw_update has no buffer size, so verify and flash over-read. Pass the real length and reject a larger image_len.</li><li>6 Low: a baked-in public key has no rotation or recovery if the signing key leaks. Use a signed key chain with a root key and revocation (TUF).</li><li>7 Low (uncertain): verify then flash from the same buffer is a check-to-use race if the network stack can still write to it. Copy before verifying.</li><li>Not a bug: <code>&lt;</code> versus <code>&lt;=</code> is policy once the version is signed. The signature is ECDSA, not a MAC: the public key on the device cannot sign, a shared MAC key could.</li></ul>
+<h3 id="mac-then-encrypt-cbc-snippet-6-aead"><a class="hlink" href="#mac-then-encrypt-cbc-snippet-6-aead">MAC-then-encrypt CBC (snippet 6, AEAD)</a></h3>
+<pre><code><span class="k">#define</span> IV_LEN <span class="n">16</span>
+<span class="k">#define</span> MAC_LEN <span class="n">32</span>
+
+<span class="k">int</span> msg_open(<span class="k">const</span> <span class="k">unsigned</span> <span class="k">char</span> key[<span class="n">32</span>], <span class="k">const</span> <span class="k">unsigned</span> <span class="k">char</span> *in,
+             <span class="b">size_t</span> in_len, <span class="k">unsigned</span> <span class="k">char</span> *out, <span class="b">size_t</span> *out_len) {
+  <span class="k">unsigned</span> <span class="k">char</span> buf[<span class="n">4096</span>];  <span class="c">// 6</span>
+  <span class="k">unsigned</span> <span class="k">char</span> mac[EVP_MAX_MD_SIZE];
+  <span class="k">unsigned</span> <span class="k">int</span> mac_len = <span class="n">0</span>;
+  <span class="b">EVP_CIPHER_CTX</span> *ctx;
+  <span class="k">int</span> n = <span class="n">0</span>, total = <span class="n">0</span>;
+  <span class="b">size_t</span> ct_len, pt_len;
+
+  <span class="k">if</span> (in_len &lt; IV_LEN)
+    <span class="k">return</span> -<span class="n">1</span>;
+
+  ct_len = in_len - IV_LEN;
+  <span class="k">if</span> (ct_len &gt; <span class="k">sizeof</span>(buf))
+    <span class="k">return</span> -<span class="n">1</span>;
+
+  <span class="k">if</span> ((ctx = EVP_CIPHER_CTX_new()) == <span class="b">NULL</span>)
+    <span class="k">return</span> -<span class="n">1</span>;
+
+  EVP_DecryptInit_ex(ctx, EVP_aes_256_cbc(), <span class="b">NULL</span>, key, in);  <span class="c">// 3, 5</span>
+  EVP_DecryptUpdate(ctx, buf, &amp;n, in + IV_LEN, (<span class="k">int</span>)ct_len);  <span class="c">// 5</span>
+  total = n;
+
+  <span class="k">if</span> (EVP_DecryptFinal_ex(ctx, buf + total, &amp;n) != <span class="n">1</span>) {
+    EVP_CIPHER_CTX_free(ctx);
+    <span class="k">return</span> -<span class="n">2</span>;  <span class="c">// 2</span>
+  }
+  total += n;
+  EVP_CIPHER_CTX_free(ctx);
+
+  pt_len = (<span class="b">size_t</span>)total - MAC_LEN;  <span class="c">// 1</span>
+  HMAC(EVP_sha256(), key, <span class="n">32</span>, buf, pt_len, mac, &amp;mac_len);  <span class="c">// 3, 5</span>
+  <span class="k">if</span> (memcmp(mac, buf + pt_len, MAC_LEN) != <span class="n">0</span>)  <span class="c">// 4</span>
+    <span class="k">return</span> -<span class="n">3</span>;  <span class="c">// 2</span>
+
+  memcpy(out, buf, pt_len);
+  *out_len = pt_len;
+  <span class="k">return</span> <span class="n">0</span>;
+}</code></pre>
+<ul><li>1 High: <code>total - MAC_LEN</code> underflows when the decrypted plaintext is under 32 bytes. A 32-byte input (16-byte IV plus one ciphertext block) is enough, since padding removal leaves 0 to 15 bytes. pt_len is then near SIZE_MAX: HMAC over-reads buf and memcpy overflows out. Reject total &lt; MAC_LEN first. Sealed messages always have total &gt;= 32, but msg_open takes chosen ciphertext: the attacker needs no key, only a block with valid padding (about 1 in 256 random blocks, or crafted by flipping IV bits, CBC malleability).</li><li>2 High: -2 (bad padding) and -3 (bad MAC) are distinguishable, a CBC padding oracle (Vaudenay). MAC-then-encrypt forces decryption before authentication. Use encrypt-then-MAC over <code>iv || ct</code>, verify the MAC before touching the cipher, and return one generic error.</li><li>3 Medium: one key for encryption and HMAC (key reuse across purposes). Derive two keys (HKDF).</li><li>4 Medium: memcmp on the MAC is not constant time. Use CRYPTO_memcmp.</li><li>5 Medium: EVP_DecryptInit_ex, EVP_DecryptUpdate and HMAC returns are unchecked, so on failure buf, n or mac hold garbage that is then used. Fail closed on any non-1 return (NULL for HMAC).</li><li>6 Low: decrypted plaintext stays in buf on the stack (OPENSSL_cleanse); no sequence number or replay protection (design gap, uncertain).</li><li>Not a bug: <code>ct_len &gt; sizeof(buf)</code> (decrypted data is never longer than the ciphertext; the EVP docs size output as inl + block_size, so uncertain). <code>total += n</code> adds the unpadded remainder that Final writes.</li></ul>
+<h3 id="snprintf-return-used-as-the-written-length-snippet-7"><a class="hlink" href="#snprintf-return-used-as-the-written-length-snippet-7"><code>snprintf</code> return used as the written length (snippet 7)</a></h3>
+<pre><code><span class="k">struct</span> buf {
+  <span class="k">char</span> *p;
+  <span class="b">size_t</span> len;
+  <span class="b">size_t</span> cap;
+};
+
+<span class="k">static</span> <span class="k">int</span> buf_grow(<span class="k">struct</span> buf *b, <span class="b">size_t</span> need) {
+  <span class="b">size_t</span> cap = b-&gt;cap ? b-&gt;cap : <span class="n">64</span>;
+
+  <span class="k">while</span> (cap &lt; b-&gt;len + need)
+    cap *= <span class="n">2</span>;
+
+  b-&gt;p = realloc(b-&gt;p, cap);  <span class="c">// 5</span>
+
+  <span class="k">if</span> (b-&gt;p == <span class="b">NULL</span>)
+    <span class="k">return</span> -<span class="n">1</span>;
+
+  b-&gt;cap = cap;
+  <span class="k">return</span> <span class="n">0</span>;
+}
+
+<span class="k">int</span> buf_appendf(<span class="k">struct</span> buf *b, <span class="k">const</span> <span class="k">char</span> *fmt, ...) {
+  va_list ap;
+  <span class="k">int</span> n;
+
+  <span class="k">if</span> (b-&gt;len + <span class="n">1</span> &gt;= b-&gt;cap &amp;&amp; buf_grow(b, <span class="n">64</span>) != <span class="n">0</span>)  <span class="c">// 2, 3</span>
+    <span class="k">return</span> -<span class="n">1</span>;
+
+  va_start(ap, fmt);
+  n = vsnprintf(b-&gt;p + b-&gt;len, b-&gt;cap - b-&gt;len, fmt, ap);  <span class="c">// 1, 4</span>
+  va_end(ap);
+  <span class="k">if</span> (n &lt; <span class="n">0</span>)
+    <span class="k">return</span> -<span class="n">1</span>;
+
+  b-&gt;len += (<span class="b">size_t</span>)n;  <span class="c">// 1</span>
+  <span class="k">return</span> <span class="n">0</span>;
+}
+
+<span class="k">void</span> buf_free(<span class="k">struct</span> buf *b) {
+  free(b-&gt;p);
+  b-&gt;p = <span class="b">NULL</span>;
+  b-&gt;len = b-&gt;cap = <span class="n">0</span>;
+}</code></pre>
+<ul><li>1 High: vsnprintf returns the length it wanted, not what it wrote. On truncation (n &gt;= cap - len) <code>b-&gt;len += n</code> still advances len past cap, and the server sends p[0 .. len): bytes never written or past the allocation (heap over-read, Heartbleed shape). The attacker controls the size, for example a 1 MB header. Later buf_grow also keeps the unwritten gap as uninitialized heap in the response. If n &gt;= cap - len, grow to len + n + 1 and format again; never advance len by more than was written.</li><li>2 Medium: buf_grow(b, 64) guarantees only 64 spare bytes, unrelated to what the format needs. Size with vsnprintf(NULL, 0, ...) first, or retry after growing.</li><li>3 Medium: no maximum response size, so large header or form values grow every response without limit (memory DoS). Cap len.</li><li>4 Medium: client-chosen values go straight into the response, so CR/LF injects headers or splits the response (CWE-113). Strip or encode CR and LF. Not in the key.</li><li>5 Low: <code>b-&gt;p = realloc(b-&gt;p, cap)</code> loses the only pointer to the old (still valid) block on failure. Assign to a temporary first.</li><li>Not a bug: <code>cap - len</code> is the correct size argument to vsnprintf. <code>cap *= 2</code> and <code>len + need</code> cannot overflow on 64-bit because n is an int (a 32-bit build could; uncertain).</li></ul>
+<h3 id="weak-password-hashing-and-login-timing-snippet-8-auth"><a class="hlink" href="#weak-password-hashing-and-login-timing-snippet-8-auth">Weak password hashing and login timing (snippet 8, auth)</a></h3>
+<pre><code><span class="k">#define</span> SALT_LEN <span class="n">8</span>  <span class="c">// 5</span>
+<span class="k">#define</span> HASH_LEN <span class="n">32</span>
+<span class="k">#define</span> ITERATIONS <span class="n">1000</span>  <span class="c">// 1</span>
+
+<span class="k">struct</span> user {
+  <span class="k">char</span> name[<span class="n">32</span>];
+  <span class="k">unsigned</span> <span class="k">char</span> salt[SALT_LEN];
+  <span class="k">unsigned</span> <span class="k">char</span> hash[HASH_LEN];
+};
+
+<span class="k">static</span> <span class="k">struct</span> user users[<span class="n">64</span>];
+<span class="k">static</span> <span class="b">size_t</span> nusers;
+
+<span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> user *find_user(<span class="k">const</span> <span class="k">char</span> *name) {
+  <span class="b">size_t</span> i;
+
+  <span class="k">for</span> (i = <span class="n">0</span>; i &lt; nusers; i++)
+    <span class="k">if</span> (strcmp(users[i].name, name) == <span class="n">0</span>)
+      <span class="k">return</span> &amp;users[i];
+  <span class="k">return</span> <span class="b">NULL</span>;
+}
+
+<span class="k">int</span> login(<span class="k">const</span> <span class="k">char</span> *name, <span class="k">const</span> <span class="k">char</span> *pw) {
+  <span class="k">unsigned</span> <span class="k">char</span> h[HASH_LEN];
+  <span class="k">const</span> <span class="k">struct</span> user *u = find_user(name);
+
+  <span class="k">if</span> (u == <span class="b">NULL</span>)  <span class="c">// 2</span>
+    <span class="k">return</span> <span class="n">0</span>;
+
+  PKCS5_PBKDF2_HMAC(pw, (<span class="k">int</span>)strlen(pw), u-&gt;salt, SALT_LEN, ITERATIONS,  <span class="c">// 1, 4</span>
+                    EVP_sha1(), HASH_LEN, h);
+
+  <span class="k">return</span> memcmp(h, u-&gt;hash, HASH_LEN) == <span class="n">0</span>;  <span class="c">// 3</span>
+}</code></pre>
+<ul><li>1 High: PBKDF2-HMAC-SHA1 at 1000 iterations is far too cheap. A leaked hash table cracks offline at billions of guesses per second on a GPU. Use Argon2id, or PBKDF2-HMAC-SHA256 at 600000 iterations or more (OWASP guidance, number uncertain).</li><li>2 Medium: <code>if (u == NULL) return 0;</code> skips the KDF, so an unknown user returns in microseconds and a known user takes milliseconds. With visible timing the attacker lists valid usernames. Run PBKDF2 against a dummy salt and hash when the user is missing, then return 0.</li><li>3 Low: memcmp on the hash is not constant time (hard to exploit on a salted KDF output). Use CRYPTO_memcmp.</li><li>4 Low: the PKCS5_PBKDF2_HMAC return is unchecked, so on failure h is uninitialized stack data compared to the hash. Check for 1 and fail closed.</li><li>5 Low (uncertain): an 8-byte salt is short; NIST SP 800-132 recommends at least 128 bits. Use 16.</li><li>Not a bug: strcmp in find_user. Usernames are not secret and the loop over 64 entries is negligible; the leak is the early return that skips the KDF.</li><li>Not planted: no rate limiting or lockout (online guessing is unlimited), and h is not wiped with OPENSSL_cleanse.</li></ul>
 <h3 id="review-hygiene"><a class="hlink" href="#review-hygiene">Review hygiene</a></h3>
 <ul><li>Copy into a temporary and write <code>*out</code> only after every check passes.</li><li>Early return on a public length is fine; defer only checks on secret data. Deferring a length check reads past a short buffer.</li><li>Use <code>OPENSSL_cleanse</code> or <code>OPENSSL_clear_free</code>, not <code>memset</code>, before <code>free</code>.</li></ul>
 </main>
