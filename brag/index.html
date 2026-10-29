@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+
+        <title>toidiu</title>
+        <meta name="description"
+          content="I have 15+ years of software engineering experience across different parts of the tech
+              stack including networking libraries, congestion control, performance improvements,
+              Backend, and Android development.">
+        <meta name="keywords"
+          content="toidiu, Apoorv Kothari, Android, Rust, Protocols, QUIC, IETF,
+              networking, TLS, Scala, java, Cooper Union, blog, talks, code, kubernetes">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, target-densitydpi=device-dpi">
+
+        <meta name="ROBOTS" content="INDEX, FOLLOW">
+
+        
+
+        <link rel="stylesheet" type="text/css" href="/main.css">
+
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/dark.min.css">
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" defer></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/rust.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/scala.min.js" defer></script>
+
+        <script>hljs.highlightAll();</script>
+    </head>
+
+    
+      <body id=brag >
+    
+        
+          
+            
+<nav id="site-nav">
+
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com">
+
+      home
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;projects">
+
+      projects
+    </a>
+  
+  <a class="nav-link
+      "
+      href="https:&#x2F;&#x2F;toidiu.com&#x2F;blog">
+
+      blog
+    </a>
+  
+
+</nav>
+
+          
+        
+
+        
+<div class="main-container">
+
+  <div>
+  My career achievements are too nuanced to be fully captured in a short resume. Inspired by <a
+    href="https://rfd.shared.oxide.computer/rfd/0003">Oxide</a>, this brag document is my attempt to
+  show how I think, write, and communicate. The behavioral section highlights the values that are
+  important to me and how they have guided my work.
+  </div>
+
+  <div class="toc">
+    <span class="toc-label">Table of contents</span>
+    <a href="#work-samples">Work samples</a>
+    <a href="#writing">Writing</a>
+    <a href="#presentation">Presentation</a>
+    <a href="#behavioral">Behavioral</a>
+  </div>
+  <hr class="toc-sep">
+
+  <!--Work-->
+  
+  <h2 id="work-samples"><a name="work-samples" href="#work-samples"># Work samples</a></h2>
+
+  
+  
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <div class="article" id="proxy-h3-migration">
+        <div class="content">
+          <h3><a class="title" name="proxy-h3-migration" href="#proxy-h3-migration">## Proxy H3 Migration</a></h3>
+          <div class="summary"><p>I led a complex and high-risk production migration of CDN traffic at Cloudflare. The project was
+challenging because it required significant effort to align a diverse set of stakeholders while
+ensuring the technical decisions were sound. The goal was to migrate 4.5M+ unique customers (25M+
+req/sec) from nginx to the new Rust proxy. With stakeholders spanning directors, PMs, customer
+support, and engineers across the organization, I had to understand our system both at the technical
+and operational level. I started by developing a deep understanding of how our proxy integrated with
+the networking infrastructure at Cloudflare (Addressing, DNS, and load-balancing). For example, this
+included understanding how the IP Addressing team routed traffic for different customer tiers and
+how they load-balanced requests across different processes.</p>
+<p>At multiple stages I explored various technical solutions, weighing the “soft” vs “hard”
+requirements for different stakeholders while building alignment. For example, due to customer
+requirements, it was not possible to change IPs for existing customers. Since IPs could only be
+assigned to a single proxy process, this meant customer migration would require migrating IPs
+between the old and new proxy. Critically, this meant we could not write clean logic around customer
+IDs and would instead need to integrate with the Addressing team to migrate IPs. While IP stability
+was critical to a successful migration from the customer's perspective, it introduced major
+technical challenges. Since most of the 4.5M+ customers had single-address prefixes (/32 and /128),
+this means I would have to create batches from 4.5M IPs while considering customer tier, blast
+radius, and rollback status. I was able to gain consensus for this design by drafting several
+proposals and asking stakeholders to flag "hard" blockers. This helped surface non-viable solutions
+early and kept the project moving.</p>
+<p>Once we had rough consensus on a technical solution, I began drafting a detailed specification of
+the migration plan. Because this was such a large and dynamic project, my goal was to create a
+living document and iteratively build toward the final plan. I completed the first draft within a
+week and set the plan in motion. I got initial feedback from my principal engineer to confirm the
+general engineering direction made sense. Then I expanded the review to the entire team, the PM, and
+my skip-level manager. Importantly, throughout this entire process I captured all feedback as
+outstanding "TODO(owner)" items, assigning each to the correct owner (usually myself). This approach
+added visibility into all decisions and let me keep the momentum going.</p>
+<p>At 4.5M IPs, I very quickly realized the need for a software-based solution (migration-utility) that
+could manage the migration state, add guardrails, and most importantly act as the single source of
+truth. The migration-utility turned out to be critical for building trust. It enabled safe migration
+operations (progress, rollback) for the entire on-call team and gave customer-support teams
+visibility into the migration state. I was also able to build trust with the Addressing team by
+building a "staging" feature flag in the migration-utility and executing test migrations against the
+staging version of the Addressing database.</p>
+<p>The migration was approved for execution but unfortunately I was impacted by layoffs just before I
+could execute it. I am unaware of the current migration status but believe my work should be
+reusable since I wrote a detailed specification outlining and justifying the plan, an Engineering
+SOP, a Customer Support SOP and a migration-utility that automates the dangerous part of the
+migration.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="invalid-state-error">
+        <div class="content">
+          <h3><a class="title" name="invalid-state-error" href="#invalid-state-error">## Invalid State Error</a></h3>
+          <div class="summary"><p>https://github.com/cloudflare/quiche/pull/2366</p>
+<p>While developing the new Rust proxy at Cloudflare, one of my coworkers noticed an increase in the
+number of InvalidState errors. The InvalidState error was a generic catch-all emitted when a quiche
+connection was in a bad state. We expected a non-zero number of errors since CDN traffic contains
+malformed or malicious clients, but an increase in the number of errors needed investigation.
+Attempts to find the root cause were not successful and we filed a ticket as we continued to work on
+other critical components. I picked up the ticket almost a year later, as we neared the launch date.</p>
+<p>The main challenge with this investigation was the limited telemetry and the use of loosely typed
+errors. Since the proxy served a high volume of traffic, any increase in logging could be dangerous
+to the logging infrastructure (and amplified by a DDoS attack). I felt this pain as my first attempt
+to annotate errors with additional context resulted in a behavior change to the connection close
+reason and an increase in log volume. The change was reverted and I had to rethink my strategy.</p>
+<p>The original goal of contextualizing the errors was to segment them without blowing up the logging
+pipeline. However, since what I really needed were detailed logs, I proposed switching to a
+"staging" build (deployed on ~10 bare-metal servers). With the build isolated to a smaller fleet but
+still being cautious not to overload the pipeline, I iteratively added more logs and traced the
+various sources of the InvalidState error. Most of the error sources were reasonable and stemmed
+from handling malformed client payloads (e.g. invalid CID).</p>
+<p>A few iterations later I hit an interesting log line that roughly looked like: "paths: 2,
+active_path: x". This "smelled" funny because all these errors were happening in the presence of '2'
+paths, but path migration is not a common feature. Having previously implemented connection
+migration in s2n-quic, I quickly deduced that NAT rebinds can cause passive path migration
+independent of the client implementation. The error occurred when the PMTU probing logic (a
+performance optimization) attempted to access a non-existent active path after the migration. My
+proposed fix was to skip PMTU probes in these cases and avoid closing the connection.</p>
+<p>Once fixed, the logs showed an 80% reduction in InvalidState errors. Although the PMTU bug affected
+only 0.17% of the total proxy traffic, that amounted to roughly a thousand customer connections
+being torn down every second on the new proxy. Given that quiche was used across other services, the
+real impact was much larger.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="go-proxy-tls-hangs">
+        <div class="content">
+          <h3><a class="title" name="go-proxy-tls-hangs" href="#go-proxy-tls-hangs">## Go Proxy TLS hangs</a></h3>
+          <div class="summary"><p>While on-call at Cloudflare, I was paged for an incident where customers were experiencing failures
+when trying to establish new connections to the Go proxy. Existing connections continued to work
+fine and the only useful information in the core dump was a long-running goroutine, whose stack
+trace pointed at a specific source file.</p>
+<p>While technically owned by our team, the Go proxy was in unofficial "maintenance" mode since all the
+original authors were on different teams. Even though my weekly on-call shift was coming to an end,
+I decided to pick up the investigation because our team needed to own our software, there was real
+customer impact, and this would be a fantastic opportunity to learn Go.</p>
+<p>I started with the source file mentioned in the core dump and focused on a complex loop which was
+using locks to make RPC calls and establish a new connection on failure. I started to suspect a
+deadlock, but being new to Go, I first had to confirm this by investigating the library internals.
+In my investigation into the RPC and new connection calls, I did not find any timeouts, which
+deepened my suspicion. The fix later confirmed this: a goroutine establishing a new connection would
+hang, never release the lock, and block all new connections.</p>
+<p>Pursuing the deadlock theory, I started by adding observability to try and detect the issue and also
+measure the customer impact. However, a deadlock is tricky to observe: I was trying to measure a
+lack of metrics, which is hard to differentiate from low traffic volume. I ended up adding histogram
+metrics to measure the distribution of time spent in the RPC loop, and collaborated with the
+original authors to estimate the current impact (~0.2% of the fleet, or 200 proxy instances, stuck
+at any given time).</p>
+<p>Next, I prepared a small patch to add timeouts to both the RPC and new connection calls.
+Unfortunately, this was blocked due to a multi-month production freeze. Motivated by the facts that
+this was likely the fix, that real customers were impacted, and that a long freeze would not be
+acceptable, I set out to convince my manager and leadership. I wrote a concise document describing
+the problem, my investigation, estimated customer impact, why the proposed fix was urgent, and why
+the fix was low risk. I was able to get approvals up the leadership chain (up to director), and I
+confirmed the fix via the histogram metrics once the patch was released.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+  
+    
+  
+    
+      <div class="article" id="quic-oack-security-vulnerability">
+        <div class="content">
+          <h3><a class="title" name="quic-oack-security-vulnerability" href="#quic-oack-security-vulnerability">## QUIC OACK Security Vulnerability</a></h3>
+          <div class="summary"><p>Two months into the Protocols role at Cloudflare, I was tasked with patching a security
+vulnerability in our QUIC library. At the same time, my two principal engineers had planned vacation
+for two weeks, so I would need to make progress by myself.</p>
+<p>Protocol-level vulnerabilities are notoriously difficult to debug: implementations tend to be
+RFC-compliant, but reproducing a security issue requires a deliberately non-compliant counterpart.
+Reproduction therefore requires a deep understanding of the RFC and codebase to implement the
+non-compliant behavior.</p>
+<p>I owned the full remediation lifecycle: reproducing the issue, implementing the fix, patching the
+proxy, and coordinating patches across three other infrastructure teams. I had the fixes ready for
+review when my principal engineers returned and got them merged internally with minimal feedback. I
+patched our proxy and verified the vulnerability was fixed. Next, I cut tickets for three other
+teams and tracked the fix over the next month.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+  
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <div class="article" id="session-resumption">
+        <div class="content">
+          <h3><a class="title" name="session-resumption" href="#session-resumption">## Session Resumption</a></h3>
+          <div class="summary"><p>One of the most technically challenging projects I undertook was adding session resumption and 0-RTT
+to our new Rust proxy at Cloudflare. The project was particularly challenging because it was my
+first project in the new role, in addition to the complicated nature of session resumption.</p>
+<p>The high-level goal of session resumption is to cache session state in order to skip some expensive
+aspects of the full TLS handshake for subsequent connections. The savings come with protocol and API
+complexity, so it's even more important to design resilient APIs that are easy to audit and hard to
+misuse.</p>
+<p>I started by deeply understanding the session resumption feature, studying how nginx used it, and
+writing a specification based on my previous experience with protocol design. Since the entire stack
+was new to me, I relied on my team to review my specification and surface legacy decisions that
+needed to be ported from the old proxy.</p>
+<p>The first tricky technical decision was handling rotating session ticket keys based on a TTL. This
+logic needed to be resilient because of all the potential edge cases due to missing keys. I had to
+handle loading keys asynchronously, generating session ticket keys from secrets, and fallback logic
+to deal with missing keys (empty or partially missing key set). Testing this logic was quite tricky
+because it was difficult to isolate the rotation logic from the session ticket caching layer.</p>
+<p>The most technically difficult aspect of the project was understanding the BoringSSL API and
+exposing Rust bindings for it. Crossing the FFI boundary makes development much riskier because you
+are dealing with unsafe boundaries that can panic, or worse, fail silently. Considering that we were
+building a secure proxy, a bug could have serious implications. I implemented a safe Rust interface
+for session resumption, added tests, and made sure to document the implicit C contract. While I
+could have used the unsafe low-level C bindings directly, the safe bindings enabled cleaner control
+flow and made the code easier to test and instrument.</p>
+<p>Integrating session resumption was simple compared with testing the feature. Most TLS features tend
+to be stateless, so adding testing support for session resumption involved diving into the entire
+stack, five layers deep (BoringSSL, quiche, tokio-quiche, oxy framework, Rust proxy).</p>
+<p>Implementing 0-RTT didn't require much code but demanded deep investigation of the C logic in
+BoringSSL. The TLS state machine during a 0-RTT resumption is complicated since it bypasses many of
+the procedures of a full handshake and instead derives 0-RTT keys from the session ticket. I had to
+build a comprehensive model of TLS, 0-RTT, QUIC and all the proxy layers in between to get the
+feature working.</p>
+<p>I pride myself on creating systems that are simple, and a large part of that is exposing rich
+metrics. I am especially proud of the observability I added for the session resumption feature. The
+Cloudflare proxy serves millions of req/sec (more during a DDoS attack), so good observability is
+critical to sane operation. I added POP-specific metrics for session ticket keys and resumption
+status. The session ticket key metrics tracked key expiration and the use of fallback keys, and were
+useful for detecting infrastructure issues. The resumption status metrics were useful for detecting
+customer issues and finding gaps in our resumption design. Based on these metrics, I estimated that
+it was possible to further increase the resumption rate by up to 15% compared to the current global
+rate. I wrote an internal blog post suggesting the improvement and estimating the effort.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+  
+    
+  
+    
+      <div class="article" id="quic-ack-frequency">
+        <div class="content">
+          <h3><a class="title" name="quic-ack-frequency" href="#quic-ack-frequency">## QUIC ACK frequency</a></h3>
+          <div class="summary"><p>Tracking issue: https://github.com/aws/s2n-quic/issues/1276
+Final PR to enable delayed ACKs: https://github.com/aws/s2n-quic/pull/1298</p>
+<p>The project that best reflects "good engineering" for me was implementing the experimental ACK
+frequency RFC in s2n-quic at AWS. Based on flamegraph analysis, ACK processing was an expensive part
+of the QUIC stack, and the motivation behind the work was to reduce the ACK frequency to make the
+protocol more efficient. The RFC proposed a custom protocol extension which required peer
+negotiation and could result in less frequent ACK processing. I started by understanding the RFC and
+writing a specification for team review.</p>
+<p>The first proposal was to implement the full RFC, but this had many drawbacks. Since the extension
+required peer negotiation and the RFC was experimental, it was unlikely that any peer would support
+the feature. Additionally, tuning the frequency of ACKs would be non-trivial and would likely depend
+on customer workload. A lower frequency of ACKs would also impact Congestion Control and Loss
+Recovery in unpredictable ways, potentially harming connection stability. High implementation effort
+and low reward meant this was the least desirable option.</p>
+<p>The second proposal was to batch ACK information on the receive path across multiple GSO payloads
+and process it in bulk: Receive path (multi-round). The theory was that bulk processing would mimic
+the benefits of less frequent ACK delivery. Instead of negotiating the ACK frequency with the peer,
+the local implementation would queue the ACK information from received packets across multiple GSO
+payloads (tunable) and process it once. We suspected that the expensive part in the receive path was
+the context-switching required for each QUIC packet. The benefit of this approach was the lack of
+extension negotiation, which meant all connections could benefit from the work. The risk to
+Congestion Control and Loss Recovery remained, however.</p>
+<p>The third proposal, and my recommendation, was to batch ACK information across packets in a single
+GSO payload: Receive path (single-round). Each GSO payload is essentially a collection of QUIC
+packets (~10) that are transmitted and received together. The default implementation processed the
+ACK information in each packet individually, and the insight was that we could extract CPU savings
+by first queuing and then processing it once per payload. The benefits over the multi-round approach
+were that CloudFront would not need to tune their systems and there would be no impact on Congestion
+Control and Loss Recovery. Another benefit was that the work would naturally extend to the more
+sophisticated proposals above.</p>
+<p>After the team agreed with my recommendation, I started to implement the Receive path (single-round)
+proposal. The work was broken down into small atomic PRs that exposed queuing and delayed packet
+processing on the receive path. The final PR was simple and mostly enabled the feature.</p>
+<p>However, to my surprise, the new code actually performed worse in CI tests, regressing from 24.33%
+to 25.81% of CPU time in flamegraph analysis. I investigated the regression by running download
+simulations with different payload sizes and confirmed there were no performance improvements.
+Backed by data, we decided to abandon the feature. My theory is that queuing ACK information was
+more expensive than processing it right away in s2n-quic.</p>
+<p>While the project was not a success in the typical sense, it demonstrated the rigorous engineering
+process and testing that caught the regression before it was merged. I also suspect that ACK
+frequency would be more beneficial in a data center environment where network links are faster, peer
+negotiation is possible, and there is less loss on the network.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+  
+    
+  
+
+  <!--Writing-->
+  
+  <h2 id="writing"><a name="writing" href="#writing">## Writing</a></h2>
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <div class="article" id="blog-optimistic-ack-attack">
+        <div class="content">
+          <h3><a class="title" name="blog-optimistic-ack-attack" href="#blog-optimistic-ack-attack">## Blog: Optimistic ACK attack</a></h3>
+          <div class="summary"><p>https://blog.cloudflare.com/defending-quic-from-acknowledgement-based-ddos-attacks/</p>
+<p>I loved Cloudflare's culture of transparency and the detailed blogs they publish. When I got the
+opportunity to talk about my work patching a security issue, I took it.</p>
+<p>My goal with the blog post was to make the topic approachable to all engineers and teach them a
+little about the networking domain. I dedicated many of the earlier sections to building up the
+reader's intuition about protocol design, congestion control, and the idea of fairness in
+networking. Finally, I discussed the Optimistic ACK attack and presented the dynamic packet-skip
+patch that mitigated the vulnerability.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="blog-privacy-and-control">
+        <div class="content">
+          <h3><a class="title" name="blog-privacy-and-control" href="#blog-privacy-and-control">## Blog: Privacy and control</a></h3>
+          <div class="summary"><p>https://toidiu.com/blog/2025-12-25-privacy-and-control/</p>
+<p>I am passionate about privacy and security, and I have spent a lot of time thinking about it. When a
+friend asked me to audit their software stack, I decided to document my mental model so that I could
+share it more broadly.</p>
+<p>For me, specific software choices are transient due to the changing nature of our industry. For this
+reason, I have found it better to think in terms of "incentives" and to position my software stack
+for adaptability. For example, my primary email is on my own domain so that I am not locked into any
+single email provider.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="paper-summary-reads">
+        <div class="content">
+          <h3><a class="title" name="paper-summary-reads" href="#paper-summary-reads">##  Paper summary: Reads</a></h3>
+          <div class="summary"><p>https://toidiu.com/reads/</p>
+<p>To practice reading actively, I started a "reads" section on my website. The idea was to read
+papers, highlight them, and write a summary in my own words to make sure I understood the subject.
+There are nine samples on the website. I still do something similar, but have since transitioned my
+notes to a local Obsidian repository.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  <!--Presentation-->
+  
+  <h2 id="presentation"><a name="presentation" href="#presentation">## Presentation</a></h2>
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <div class="article" id="meetup-boar-cc-analysis">
+        <div class="content">
+          <h3><a class="title" name="meetup-boar-cc-analysis" href="#meetup-boar-cc-analysis">## Meetup: boar CC analysis</a></h3>
+          <div class="summary"><p>https://github.com/toidiu/boar/blob/main/A_statistical_analysis_of_Congestion_Control_algorithms.pdf</p>
+<p>I love sharing networking concepts, and since I do most of my work in Rust, I usually end up
+presenting my work to this group. In this talk, I shared my experience building a local 'tc' based
+network simulator. I took the opportunity to share what congestion control algorithms are, why they
+are critical to networking, and why they are so difficult to measure due to the non-determinism.</p>
+<p>The core insight in the presentation was performing statistical analysis to find the signal in the
+noise, particularly through the use of CDFs. By using CDFs, I found it possible to easily visualize
+the entire probability distribution, which can be hard when looking at isolated p-values (e.g. p50,
+p99).</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+      <div class="article" id="meetup-sans-i-o">
+        <div class="content">
+          <h3><a class="title" name="meetup-sans-i-o" href="#meetup-sans-i-o">## Meetup: Sans I&#x2F;O</a></h3>
+          <div class="summary"><p>https://github.com/toidiu/raft-rs/blob/main/sansio_presentation.pdf</p>
+<p>In this presentation, I wanted to share lessons learned while building sans I/O protocol
+implementations. sans I/O advocates for implementing the core protocol logic as synchronous code and
+avoiding all use of I/O (async, timers, socket, etc.). The I/O then gets "bolted" on top of the
+protocol logic. The primary benefit of this is maintainable code, robust error handling, and testing
+at the protocol layer. Additionally, the I/O layer becomes swappable and can easily integrate with
+various language runtimes.</p>
+<p>I wanted to share this because while sans I/O is specific to protocols, it should be possible to use
+this design for other software. Finally, I feel even though async is powerful, it can lead to
+complicated code (channel hell) that is hard to reason about if not careful.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+  
+    
+  
+    
+      <div class="article" id="conference-rust-belt-rust">
+        <div class="content">
+          <h3><a class="title" name="conference-rust-belt-rust" href="#conference-rust-belt-rust">## Conference: Rust Belt Rust</a></h3>
+          <div class="summary"><p>https://www.youtube.com/watch?v=ZDy71QtAQgs</p>
+<p>Early in my journey to learn Rust, I signed up to give a talk at Rust Belt Rust and share some
+design principles I learned while building a personal project. This was my first ever conference
+presentation, and I felt extremely nervous since there were many Rust experts in the room. However,
+I remember talking to an attendee afterwards and further discussing how a design principle applied
+more generally across software. So I think at least one person listened and potentially benefited
+from my talk.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="meetup-hosting-rust-nyc">
+        <div class="content">
+          <h3><a class="title" name="meetup-hosting-rust-nyc" href="#meetup-hosting-rust-nyc">## Meetup: Hosting Rust NYC</a></h3>
+          <div class="summary"><p>This one loosely fits the presentation theme. Back in 2018, two others and I helped relaunch the
+Rust meetup in NYC. I took the opportunity because I wanted to learn Rust and wanted a community and
+space to do it.</p>
+<p>For about one year, I was the primary host of the Rust NYC meetup. I found speakers, hosts, and
+sponsors for the meetup, and recorded the presentation (the ones around 2018). My favorite part was
+meeting new Rust enthusiasts and the chats we had afterwards. The other members took over these
+responsibilities at the end of the year since I was moving out of NYC.</p>
+</div>
+        </div>
+      </div>
+    
+  
+
+  <!--Behavioral-->
+  
+  <h2 id="behavioral"><a name="behavioral" href="#behavioral">## Behavioral</a></h2>
+
+  
+    
+      <div class="article" id="for-one-of-the-values-describe-an-example-of-how-it-was-reflected-in-a-particular-body-of-your-work">
+        <div class="content">
+          <h3><a class="title" name="for-one-of-the-values-describe-an-example-of-how-it-was-reflected-in-a-particular-body-of-your-work" href="#for-one-of-the-values-describe-an-example-of-how-it-was-reflected-in-a-particular-body-of-your-work">## For one of the values, describe an example of how it was reflected in a particular body of your work.</a></h3>
+          <div class="summary"><p><strong>Sample values:</strong> Candor, Humor, Teamwork, Courage, Optimism, Thriftiness, Curiosity, Resilience, Transparency, Diversity, Responsibility, Urgency, Empathy, Rigor, Versatility</p>
+<p>Responsibility/Rigor</p>
+<p>Making sure the software we ship is secure is one of my core principles. Two months into the
+Protocols role at Cloudflare, I was tasked with patching a security vulnerability in our QUIC
+library. At the same time, my two principal engineers had planned vacation for two weeks, so I would
+need to make progress by myself.</p>
+<p>Protocol-level vulnerabilities are notoriously difficult to debug: implementations tend to be
+RFC-compliant, but reproducing a security issue requires a deliberately non-compliant counterpart.
+Reproduction therefore requires a deep understanding of the RFC and codebase to implement the
+non-compliant behavior.</p>
+<p>I owned the full remediation lifecycle: reproducing the issue, implementing the fix, patching the
+proxy, and coordinating patches across three other infrastructure teams. I had the fixes ready for
+review when my principal engineers returned and got them merged internally with minimal feedback. I
+patched our proxy and verified the vulnerability was fixed. Next, I cut tickets for three other
+teams and tracked the fix over the next month.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="what-work-have-you-done-that-you-are-particularly-proud-of-and-why">
+        <div class="content">
+          <h3><a class="title" name="what-work-have-you-done-that-you-are-particularly-proud-of-and-why" href="#what-work-have-you-done-that-you-are-particularly-proud-of-and-why">## What work have you done that you are particularly proud of and why?</a></h3>
+          <div class="summary"><p>I am proud of my work in launching a new EC2 Fingerprint service at AWS. The service replaced core
+legacy logic which was used to determine EC2 instance compatibility. I am especially proud because
+the migration to the new service went smoothly due to the extensive testing and observability I
+added.</p>
+<p>My team owned an orchestrator which consumed the compatibility rules from a DynamoDB table owned by
+the hardware team. Rules were frequently updated by the hardware team but would occasionally result
+in broken metals and customer impact. One of the motivations behind the Fingerprint service was to
+address this customer impact, scale to support more rules, and act as a single source of truth for
+EC2 compatibility for the organization.</p>
+<p>There were a few reasons why this project was especially risky. First, due to the large number of
+compatibility rules (1500), a manual audit of the rules was impractical. Second, the hardware team
+wanted to change the rule format, which meant ensuring parity when switching to the new service was
+a lot harder. Finally, any mistakes in compatibility meant serious customer impact.</p>
+<p>The development work was tricky due to the changing format, and I spent most of my time writing
+tests. To build confidence, I wrote a test to generate all possible compatibility combinations and
+compare them between the new and old format. This testing ended up catching a few mistakes, which
+the hardware team then fixed.</p>
+<p>After the testing, I was very confident about the logic, but given the high potential impact for
+customers, I decided to integrate safely and double-check the logic in production. I integrated the
+new service into the orchestrator but only enabled it in "observability mode". Each call would
+generate a compatibility result from both the new and old service and emit a metric if there was a
+difference. After running for a week without any mismatch, I started the production release. As
+expected, there was zero customer impact.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="for-a-pair-of-values-describe-a-time-in-which-the-two-values-came-into-tension-for-you-or-your-work-and-how-you-resolved-it">
+        <div class="content">
+          <h3><a class="title" name="for-a-pair-of-values-describe-a-time-in-which-the-two-values-came-into-tension-for-you-or-your-work-and-how-you-resolved-it" href="#for-a-pair-of-values-describe-a-time-in-which-the-two-values-came-into-tension-for-you-or-your-work-and-how-you-resolved-it">## For a pair of values, describe a time in which the two values came into tension for you or your work, and how you resolved it.</a></h3>
+          <div class="summary"><p><strong>Sample values:</strong> Candor, Humor, Teamwork, Courage, Optimism, Thriftiness, Curiosity, Resilience, Transparency, Diversity, Responsibility, Urgency, Empathy, Rigor, Versatility</p>
+<p><strong>Urgency/Rigor</strong></p>
+<p>My transition to the Cloudflare Protocols team from the AWS Transport Libraries team took some
+calibrating. While both teams work on Protocols, Cloudflare's culture was to move fast compared to
+AWS's culture. At AWS, we sometimes spent weeks or even months writing detailed specifications and
+ensuring the design was robust and compatible with all potential use cases. In the protocol and
+security domain, I was used to working methodically and making sure my work was perfect. It was
+therefore a bit of a surprise when I got feedback from my manager that I needed to work on adopting
+Cloudflare's culture of "move fast".</p>
+<p>After some thought, I realized that Cloudflare was successful because of its ability to move fast.
+Drawing from my AWS values, I often pushed for rigorous analysis before shipping features. I had to
+come to terms with the realization that not all features were equally critical and that I could do
+more to communicate this distinction.</p>
+<p>To resolve this situation, I worked hard on internalizing the "move fast" culture. Rather than
+simply suggesting rigorous deliverables, I started breaking up requirements based on how critical
+they were. Specifically, I started to emphasize the importance of the critical components while
+acknowledging the less critical components and offering solutions to move faster. This eventually
+helped me earn my manager's trust. In retrospect, the feedback was extremely valuable, and I learned
+the importance of balancing urgency and rigor in proportion to the criticality of the task.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="article" id="for-one-of-the-values-describe-an-example-of-how-it-was-violated-in-your-organization-or-work">
+        <div class="content">
+          <h3><a class="title" name="for-one-of-the-values-describe-an-example-of-how-it-was-violated-in-your-organization-or-work" href="#for-one-of-the-values-describe-an-example-of-how-it-was-violated-in-your-organization-or-work">## For one of the values, describe an example of how it was violated in your organization or work.</a></h3>
+          <div class="summary"><p><strong>Sample values:</strong> Candor, Humor, Teamwork, Courage, Optimism, Thriftiness, Curiosity, Resilience, Transparency, Diversity, Responsibility, Urgency, Empathy, Rigor, Versatility</p>
+<p><strong>Teamwork/Empathy</strong></p>
+<p>In my experience, a high functioning team is made up of members that feel like they can make an
+impact but also have the psychological safety to fail while learning. This culture was threatened at
+Cloudflare, as leadership decided to hire five new junior engineers on an existing team of seven.
+Onboarding is especially difficult in an async/remote team, and this is especially true for junior
+engineers. The entire situation was exacerbated as three senior-tenure engineers decided to switch
+teams or leave around the same time.</p>
+<p>Having been in a similar situation before, I saw hints of stress as new engineers were expected to
+start delivering in a deeply technical domain but had very little mentoring. I decided to step in
+and start mentoring my teammates and ensuring they were successful.</p>
+<p>For example, I mentored a teammate via code reviews and 1:1 meetings. Rather than flooding a PR with
+nits, I limited my feedback to a few items and slowly left more specific feedback over time. I also
+initiated a few ad hoc 1:1s to discuss design choices and best practices. New engineers can often be
+shy, so I felt it was important for me to initiate these 1:1s. Over the next few months, the
+engineer became more independent, and the code quality improved dramatically.</p>
+<p>In another example, I just listened as a coworker vented about having to move to a new office
+location. The move was tough for her due to the lack of friends and family. While I didn't actually
+solve her problems, I believe listening is an important part of building trust and psychological
+safety.</p>
+</div>
+        </div>
+      </div>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+</div>
+
+
+        
+          <footer>
+  <a class="link-icon" href="https://www.linkedin.com/in/toidiu" target=_blank" rel="noopener">
+      <img src="/images/linked-in.png"/>
+      <span class="icon-description">linked-in</span >
+  </a>
+  <a class="link-icon" href="http://www.github.com/toidiu" target=_blank" rel="noopener">
+      <img src="/images/github.png"/>
+      <span class="icon-description">github</span >
+  </a>
+  <a class="link-icon" href="mailto:toidiu@protonmail.com" target=_blank" rel="noopener">
+      <img src="/images/email.png"/>
+      <span class="icon-description">e-mail</span >
+  </a>
+  <a class="link-icon" href="https://bsky.app/profile/toidiu.com">
+      <img src="images/bluesky.png"/>
+      <span class="icon-description">bluesky</span >
+  </a>
+  <a class="link-icon" href="/apoorv_kothari.pdf" target=_blank" rel="noopener">
+      <img src="/images/resume.png"/>
+      <span class="icon-description">resume</span >
+  </a>
+
+  <a class="link-icon" href="/brag" target=_blank" rel="noopener">
+      <img src="/images/resume.png"/>
+      <span class="icon-description">resume</span >
+  </a>
+</footer>
+
+        
+
+        
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://toidiu.com/main.js" ></script>
+        
+    </body>
+
+</html>
+
