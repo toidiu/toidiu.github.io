@@ -1,0 +1,1086 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python cheatsheet (from Rust)</title>
+<style>
+:root {
+  --bg: #ffffff; --fg: #1a1a1a; --muted: #6b7280; --border: #e5e7eb;
+  --code-bg: #f6f8fa; --code-fg: #1a1a1a; --accent: #2563eb; --sidebar-bg: #fafafa;
+  --group: #cc5f6e;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117; --fg: #e6edf3; --muted: #8b949e; --border: #30363d;
+    --code-bg: #161b22; --code-fg: #e6edf3; --accent: #58a6ff; --sidebar-bg: #010409;
+    --group: #f2a1ab;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.layout { display: flex; align-items: flex-start; }
+nav {
+  position: sticky; top: 0; align-self: flex-start;
+  width: 240px; min-width: 240px; height: 100vh; overflow-y: auto;
+  background: var(--sidebar-bg); border-right: 1px solid var(--border);
+  padding: 20px 16px;
+}
+nav h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 12px; }
+nav ul { list-style: none; margin: 0; padding: 0; }
+nav li { margin: 2px 0; }
+nav a { display: block; padding: 4px 8px; border-radius: 6px; color: var(--fg); text-decoration: none; font-size: 13px; }
+nav a:hover { background: var(--code-bg); color: var(--accent); }
+nav li.group { margin-top: 16px; }
+nav li.group:first-child { margin-top: 0; }
+nav li.group a { font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: 11px; color: var(--group); }
+nav li.group a:hover { color: var(--accent); }
+nav li.section a { padding-left: 16px; }
+main { flex: 1; max-width: 900px; padding: 32px 40px 80px; min-width: 0; }
+h1 { font-size: 28px; margin: 0 0 8px; }
+main > h2 {
+  font-size: 20px; margin: 40px 0 12px; padding-top: 12px;
+  border-top: 1px solid var(--border); scroll-margin-top: 12px;
+}
+main > h2:first-of-type { border-top: none; }
+main > h3 { font-size: 16px; margin: 28px 0 8px; scroll-margin-top: 12px; }
+main > h4 { font-size: 14px; margin: 22px 0 6px; color: var(--muted); scroll-margin-top: 12px; }
+main > h2.group-head {
+  font-size: 13px; text-transform: uppercase; letter-spacing: .09em; color: var(--muted);
+  border-top: 2px solid var(--accent); margin-top: 56px; padding-top: 16px;
+}
+p { color: var(--fg); margin: 10px 0; }
+main ul { margin: 6px 0; padding-left: 22px; }
+main ul ul { margin: 2px 0; }
+main li { margin: 3px 0; }
+.checkbox { display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; margin-right: 7px; border-radius: 3px; border: 1px solid var(--border); font-size: 11px; line-height: 1; color: var(--bg); }
+.checkbox.done { background: #22c55e; border-color: #22c55e; }
+.checkbox.partial { background: #eab308; border-color: #eab308; }
+.checkbox.skip { background: var(--muted); border-color: var(--muted); }
+.checkbox.retry { background: #ef4444; border-color: #ef4444; }
+.checkbox.todo { background: transparent; }
+p code, li code, nav code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; font-size: .88em; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+pre {
+  background: var(--code-bg); color: var(--code-fg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px 16px; overflow-x: auto; margin: 12px 0;
+}
+pre code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 13px; line-height: 1.55; white-space: pre; }
+/* syntax highlight tokens */
+pre .c { color: #6a737d; font-style: italic; }   /* comment */
+pre .s { color: #0a3069; }                        /* string  */
+pre .n { color: #005cc5; }                        /* number  */
+pre .k { color: #d73a49; }                        /* keyword */
+pre .b { color: #6f42c1; }                        /* builtin */
+@media (prefers-color-scheme: dark) {
+  pre .c { color: #8b949e; }
+  pre .s { color: #a5d6ff; }
+  pre .n { color: #79c0ff; }
+  pre .k { color: #ff7b72; }
+  pre .b { color: #d2a8ff; }
+}
+.toplink { position: fixed; bottom: 20px; right: 20px; background: var(--accent); color: #fff; text-decoration: none; padding: 8px 12px; border-radius: 20px; font-size: 13px; box-shadow: 0 2px 8px rgba(0,0,0,.2); }
+.navtoggle { display: none; }
+/* Phone layout: the TOC becomes an overlay behind a fixed toggle so content gets the full width. */
+@media (max-width: 800px) {
+  html, body { overflow-x: hidden; }
+  body { font-size: 16px; }
+  .layout { display: block; }
+  .navtoggle {
+    display: flex; align-items: center; justify-content: center;
+    position: fixed; top: 10px; right: 10px; z-index: 30; width: 44px; height: 44px;
+    border: 1px solid var(--border); border-radius: 8px; background: var(--sidebar-bg);
+    color: var(--fg); font-size: 22px; line-height: 1; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  }
+  nav {
+    position: fixed; top: 0; left: 0; bottom: 0; z-index: 20;
+    width: min(85vw, 320px); min-width: 0; height: 100%;
+    border-right: 1px solid var(--border); box-shadow: 0 0 24px rgba(0,0,0,.3);
+    transform: translateX(-100%); transition: transform .2s ease; visibility: hidden;
+  }
+  body.nav-open nav { transform: none; visibility: visible; }
+  nav a { display: flex; align-items: center; min-height: 40px; font-size: 15px; }
+  nav li.group a { font-size: 13px; }
+  main { max-width: none; padding: 64px 16px 80px; }
+  main, p, li { overflow-wrap: anywhere; }
+  p code, li code { overflow-wrap: anywhere; word-break: break-word; }
+  pre { max-width: 100%; padding: 12px; }
+  h1 { font-size: 24px; padding-right: 52px; }
+}
+</style>
+</head>
+<body id="top">
+<button class="navtoggle" type="button" aria-label="Table of contents" aria-expanded="false">&#9776;</button>
+<div class="layout">
+<nav>
+<h2>Contents</h2>
+<ul>
+<li class="group"><a href="#process">Process</a></li>
+<li class="group"><a href="#semantics">semantics</a></li>
+<li class="section"><a href="#types">types</a></li>
+<li class="section"><a href="#memory-model-references">memory model / references</a></li>
+<li class="section"><a href="#exceptions-control-flow">exceptions / control flow</a></li>
+<li class="section"><a href="#class-self">class / self</a></li>
+<li class="section"><a href="#idioms">idioms</a></li>
+<li class="group"><a href="#containers">containers</a></li>
+<li class="section"><a href="#import">import</a></li>
+<li class="section"><a href="#str">str</a></li>
+<li class="section"><a href="#intfloat">int/float</a></li>
+<li class="section"><a href="#math">math</a></li>
+<li class="section"><a href="#sorting">sorting</a></li>
+<li class="section"><a href="#list">list</a></li>
+<li class="section"><a href="#heap-min-heap">heap  (min-heap)</a></li>
+<li class="section"><a href="#queue">queue</a></li>
+<li class="section"><a href="#set">set</a></li>
+<li class="section"><a href="#dict">dict</a></li>
+<li class="section"><a href="#dict-nested">dict (nested)</a></li>
+<li class="section"><a href="#counter">Counter</a></li>
+<li class="section"><a href="#bisect-binary-search">bisect (binary search)</a></li>
+<li class="section"><a href="#random">random</a></li>
+<li class="section"><a href="#for-comprehensions">for-comprehensions</a></li>
+<li class="section"><a href="#walrus">walrus :=</a></li>
+<li class="section"><a href="#file-io">file I/O</a></li>
+<li class="group"><a href="#patterns">patterns</a></li>
+<li class="section"><a href="#dp-solving-in-rungs-brute-memoize-optimize">DP (solving in rungs: brute → memoize → optimize)</a></li>
+<li class="section"><a href="#backtracking">backtracking</a></li>
+<li class="section"><a href="#intervals">intervals</a></li>
+<li class="section"><a href="#linked-list">linked_list</a></li>
+<li class="section"><a href="#floyds-cycle-detection">floyd&#x27;s cycle detection</a></li>
+<li class="section"><a href="#binary-search">binary_search</a></li>
+<li class="section"><a href="#dp-1d">dp_1d</a></li>
+<li class="section"><a href="#knapsack-coin-change-family">knapsack (coin change family)</a></li>
+<li class="section"><a href="#weighted-graphs-dijkstra-prim-bellman-ford">weighted graphs (dijkstra / prim / bellman-ford)</a></li>
+<li class="section"><a href="#todo">TODO</a></li>
+</ul>
+</nav>
+<main>
+<h1 id="python-cheatsheet-from-rust">Python cheatsheet (from Rust)</h1>
+<p>Grow this over time. Terminal-friendly: code blocks, no tables. One command per line, each commented.</p>
+<h2 class="group-head" id="process">Process</h2>
+<p><strong>Meta</strong></p>
+<ul><li>Work together with the interviewer.</li><li>Write out overview steps so interviewer knows what to expect.</li></ul>
+<p><strong>Problem</strong></p>
+<ul><li>read Q and confirm understanding with interviewer</li><li>ask about edge cases</li><li>ask about malformed input</li><li>ask about input size</li></ul>
+<p><strong>Solution</strong></p>
+<ul><li>propose solution</li><li>make sure interviewer follows along</li><li>get ok before coding</li></ul>
+<p><strong>High level</strong></p>
+<ul><li>pseudo</li></ul>
+<p><strong>Impl</strong></p>
+<ul><li>fill in pseudo</li></ul>
+<p><strong>Test</strong></p>
+<ul><li>simple</li><li>normal</li><li>edge</li></ul>
+<p><strong>Analysis</strong></p>
+<ul><li>time</li><li>mem</li></ul>
+<h2 class="group-head" id="semantics">semantics</h2>
+<h2 id="types">types</h2>
+<pre><code><span class="b">int</span>          <span class="c"># arbitrary precision, no overflow (Rust: i64/i128/BigInt in one)</span>
+<span class="b">float</span>        <span class="c"># 64-bit double (Rust: f64); float(&quot;inf&quot;), float(&quot;nan&quot;)</span>
+<span class="b">bool</span>         <span class="c"># True / False — IS a subclass of int (True == 1, False == 0)</span>
+<span class="b">str</span>          <span class="c"># immutable unicode text (Rust: String/&amp;str); &quot;...&quot; or &#x27;...&#x27;</span>
+<span class="b">bytes</span>        <span class="c"># immutable byte string (Rust: &amp;[u8]); b&quot;...&quot;</span>
+complex      <span class="c"># 3+4j — complex numbers</span>
+<span class="k">None</span>         <span class="c"># the null/unit value (Rust: () and None combined); type is NoneType</span>
+
+<span class="b">list</span>         <span class="c"># growable array [1, 2] (Rust: Vec)</span>
+<span class="b">tuple</span>        <span class="c"># fixed, immutable (1, &quot;a&quot;) (Rust: tuple)</span>
+<span class="b">dict</span>         <span class="c"># hash map {k: v} (Rust: HashMap)</span>
+<span class="b">set</span>          <span class="c"># hash set {1, 2} (Rust: HashSet)</span>
+<span class="b">frozenset</span>    <span class="c"># immutable set (hashable — can be a dict key)</span>
+
+<span class="b">type</span>(x)              <span class="c"># runtime type of x        (Rust: no direct equiv)</span>
+<span class="b">isinstance</span>(x, <span class="b">int</span>)   <span class="c"># x is an int (or subclass) — preferred check</span>
+x <span class="k">is</span> <span class="k">None</span>            <span class="c"># identity check for None (not == None)</span>
+<span class="c"># everything is an object; variables are references. No i32/u8/&amp;/&amp;mut/lifetimes.</span>
+<span class="c"># int/float/str/bytes/tuple/frozenset are IMMUTABLE; list/dict/set are mutable.</span></code></pre>
+<h2 id="memory-model-references">memory model / references</h2>
+<p>A variable is a NAME bound to a heap object, never the object itself. <code>=</code> copies the REFERENCE, never the object. No move, no ownership, no &amp;/&amp;mut/lifetimes — any number of names can alias one object; it lives until the last one drops (GC).</p>
+<pre><code>temp = ListNode(<span class="n">2</span>)     <span class="c"># name temp -&gt; NodeB</span>
+prev.<span class="b">next</span> = temp       <span class="c"># prev.next aliases the SAME NodeB (no copy!)</span>
+prev = temp            <span class="c"># rebind the NAME prev; NodeB untouched</span>
+<span class="c"># this is why linked-list/tree `next`/`left` point to the real node, not a copy.</span>
+
+a = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>]
+b = a                  <span class="c"># b and a -&gt; SAME list</span>
+b.append(<span class="n">4</span>)            <span class="c"># a is now [1,2,3,4] too — aliasing bites (see s06)</span>
+c = a[:]               <span class="c"># copy: slice/list()/dict()/copy.copy = new object</span>
+<span class="k">import</span> <span class="b">copy</span>
+d = <span class="b">copy</span>.deepcopy(a)   <span class="c"># recursive copy (nested structures)</span>
+
+<span class="c"># is  = &quot;same object?&quot; (identity)   ==  = &quot;same value?&quot; (calls __eq__)</span>
+x <span class="k">is</span> y                 <span class="c"># True iff the SAME object in memory</span>
+x == y                 <span class="c"># value equality; list/dict/str compare by value</span>
+a <span class="k">is</span> <span class="k">None</span>              <span class="c"># ALWAYS use `is` for None (singleton)</span>
+<span class="c"># plain class with no __eq__: == falls back to identity, so == behaves like is.</span></code></pre>
+<p>Everything is a heap object — even int/float/bool/str. No primitives, no stack/heap choice, no Box/&amp;/lifetimes. A variable is a pointer; the frame&#x27;s stack slots hold pointers, the objects live on the heap. You can&#x27;t place a value yourself.</p>
+<pre><code><span class="b">type</span>(<span class="n">5</span>)                <span class="c"># &lt;class &#x27;int&#x27;&gt; — 5 is a full object (PyLongObject), not raw</span>
+(<span class="n">5</span>).bit_length()       <span class="c"># 3 — objects have methods; a bare int couldn&#x27;t</span>
+<span class="c"># small-int cache: CPython pre-allocates ints -5..256 as shared singletons</span>
+a = <span class="n">100</span>
+b = <span class="n">100</span>
+a <span class="k">is</span> b                       <span class="c"># True  — same cached object</span>
+a = <span class="n">1000</span>
+b = <span class="n">1000</span>
+a <span class="k">is</span> b                       <span class="c"># False — two separate heap ints (usually)</span>
+a == b                       <span class="c"># True  — value equality still holds</span>
+<span class="c"># =&gt; `is` on ints/strs is a trap; use == for value, `is` only for None.</span>
+<span class="c"># deep recursion hits the C call stack -&gt; RecursionError (~1000 frames);</span>
+<span class="c"># sys.setrecursionlimit(10_000) to raise it.</span></code></pre>
+<h2 id="exceptions-control-flow">exceptions / control flow</h2>
+<p>Python signals failure by RAISING, not returning Result. Catch at the boundary.</p>
+<pre><code><span class="k">class</span> NotFoundError(Exception):   <span class="c"># custom error = subclass Exception</span>
+    <span class="k">pass</span>
+
+<span class="k">raise</span> NotFoundError(k)            <span class="c"># throw (Rust: return Err / panic!)</span>
+<span class="k">raise</span> ValueError(<span class="s">&quot;bad&quot;</span>)           <span class="c"># builtin errors: ValueError, KeyError, TypeError,</span>
+                                  <span class="c"># IndexError, StopIteration, RuntimeError ...</span>
+
+<span class="k">try</span>:
+    <span class="k">return</span> require_key(m, k)
+<span class="k">except</span> NotFoundError:             <span class="c"># catch ONE specific type</span>
+    <span class="k">return</span> fallback
+<span class="k">except</span> (ValueError, KeyError) <span class="k">as</span> e:   <span class="c"># catch several; `as e` binds the object</span>
+    <span class="b">print</span>(<span class="b">str</span>(e))                 <span class="c"># str(e) = message; e.args = tuple</span>
+<span class="k">except</span> Exception <span class="k">as</span> e:            <span class="c"># catch-all NORMAL errors (not Ctrl-C/SystemExit)</span>
+    ...                           <span class="c"># avoid bare `except:` — can&#x27;t bind, swallows Ctrl-C</span>
+<span class="k">else</span>:                             <span class="c"># ran only if NO exception (optional)</span>
+    ...
+<span class="k">finally</span>:                          <span class="c"># ALWAYS runs — cleanup (optional)</span>
+    ...
+
+<span class="k">raise</span>                             <span class="c"># bare re-raise inside except (keep traceback)</span>
+<span class="k">raise</span> MyError(<span class="s">&quot;x&quot;</span>) <span class="k">from</span> e         <span class="c"># wrap, chaining the cause</span>
+<span class="c"># name the SPECIFIC type you expect; catch-all hides bugs.</span>
+
+<span class="k">with</span> <span class="b">open</span>(<span class="s">&quot;f&quot;</span>) <span class="k">as</span> fh:             <span class="c"># context manager — auto-cleanup (Rust: Drop/RAII)</span>
+    data = fh.read()              <span class="c"># fh closed on block exit, even on error</span>
+
+<span class="k">assert</span> x &gt; <span class="n">0</span>, <span class="s">&quot;must be positive&quot;</span>  <span class="c"># raises AssertionError if false (tests/debug)</span>
+
+<span class="c"># pytest: assert an exception fires</span>
+<span class="k">import</span> <span class="b">pytest</span>
+<span class="k">with</span> <span class="b">pytest</span>.raises(NotFoundError):
+    require_key(m, <span class="s">&quot;missing&quot;</span>)</code></pre>
+<h2 id="class-self">class / self</h2>
+<pre><code><span class="k">class</span> <span class="b">Counter</span>:
+    <span class="k">def</span> __init__(self, start: <span class="b">int</span> = <span class="n">0</span>) -&gt; <span class="k">None</span>:  <span class="c"># constructor (Rust: new)</span>
+        self._data = start        <span class="c"># instance field; `self` is explicit ALWAYS</span>
+                                  <span class="c"># leading _ = &quot;private&quot; by convention only</span>
+
+    <span class="k">def</span> inc(self) -&gt; <span class="k">None</span>:        <span class="c"># EVERY method takes self as 1st param</span>
+        self._data += <span class="n">1</span>           <span class="c"># (call site: c.inc() — self passed automatically)</span>
+
+    <span class="k">def</span> get(self) -&gt; <span class="b">int</span>:
+        <span class="k">return</span> self._data
+
+c = <span class="b">Counter</span>(<span class="n">5</span>)                    <span class="c"># no `new` keyword — just call the class</span>
+c.inc()                           <span class="c"># self = c, passed for you</span>
+c.get()                           <span class="c"># 6</span>
+<span class="c"># forgetting self in the def -&gt; &quot;takes 0 positional args but 1 was given&quot;</span>
+<span class="b">isinstance</span>(c, <span class="b">Counter</span>)            <span class="c"># type check</span></code></pre>
+<h2 id="idioms">idioms</h2>
+<pre><code><span class="k">for</span> i, x <span class="k">in</span> <span class="b">enumerate</span>(a): ...  <span class="c"># index + value</span>
+<span class="k">for</span> x, y <span class="k">in</span> <span class="b">zip</span>(xs, ys): ...   <span class="c"># parallel iterate</span>
+mid = (lo + hi) // <span class="n">2</span>           <span class="c"># midpoint</span>
+<span class="n">7</span> // <span class="n">2</span>                         <span class="c"># -&gt; 3   floor division</span>
+<span class="n">7</span> / <span class="n">2</span>                          <span class="c"># -&gt; 3.5 float division</span>
+<span class="b">float</span>(<span class="s">&quot;inf&quot;</span>)                   <span class="c"># positive infinity</span>
+<span class="b">float</span>(<span class="s">&quot;-inf&quot;</span>)                  <span class="c"># negative infinity</span>
+a, b = b, a                    <span class="c"># swap</span>
+first, *rest = a               <span class="c"># unpack head/tail</span>
+x = a <span class="k">if</span> cond <span class="k">else</span> b           <span class="c"># ternary</span>
+<span class="b">ord</span>(<span class="s">&#x27;a&#x27;</span>)                       <span class="c"># -&gt; 97  char to code</span>
+<span class="b">chr</span>(<span class="n">97</span>)                        <span class="c"># -&gt; &#x27;a&#x27; code to char</span>
+s.isalnum()                    <span class="c"># letter or digit?</span>
+s.lower()                      <span class="c"># lowercase copy</span>
+s.split()                      <span class="c"># split on whitespace</span>
+<span class="s">&quot;&quot;</span>.join(xs)                    <span class="c"># list of str -&gt; str</span>
+s[::-<span class="n">1</span>]                        <span class="c"># reverse string</span>
+grid = [[<span class="n">0</span>]*C <span class="k">for</span> _ <span class="k">in</span> <span class="b">range</span>(R)]  <span class="c"># 2D init — NOT [[0]*C]*R (aliases!)</span></code></pre>
+<h2 class="group-head" id="containers">containers</h2>
+<h2 id="import">import</h2>
+<pre><code><span class="k">from</span> <span class="b">collections</span> <span class="k">import</span> <span class="b">deque</span>        <span class="c"># O(1) queue/stack both ends (BFS)</span>
+<span class="k">from</span> <span class="b">collections</span> <span class="k">import</span> <span class="b">defaultdict</span>  <span class="c"># dict with auto default</span>
+<span class="k">from</span> <span class="b">collections</span> <span class="k">import</span> <span class="b">Counter</span>      <span class="c"># frequency map / multiset</span>
+<span class="k">import</span> <span class="b">heapq</span>                         <span class="c"># min-heap on a list</span>
+<span class="k">import</span> <span class="b">bisect</span>                        <span class="c"># binary search a sorted list</span>
+<span class="k">from</span> <span class="b">typing</span> <span class="k">import</span> <span class="b">Optional</span>          <span class="c"># Optional[X] == X | None</span>
+<span class="k">from</span> <span class="b">functools</span> <span class="k">import</span> <span class="b">cache</span>          <span class="c"># memoize recursion</span>
+<span class="k">import</span> <span class="b">itertools</span>                     <span class="c"># product / permutations / combinations</span>
+<span class="k">import</span> <span class="b">math</span>                          <span class="c"># inf, gcd, sqrt, comb</span>
+<span class="k">import</span> <span class="b">csv</span>                           <span class="c"># CSV parsing</span>
+<span class="k">import</span> <span class="b">io</span>                            <span class="c"># StringIO — parse CSV from a string</span>
+<span class="k">import</span> <span class="b">sys</span>                           <span class="c"># stdin, setrecursionlimit</span></code></pre>
+<h2 id="str">str</h2>
+<p>Strings are immutable — every method returns a NEW string, original unchanged. No <code>s[0] = &quot;x&quot;</code> (TypeError). Reassign or build a new string to &quot;edit&quot;.</p>
+<pre><code><span class="c"># trim / strip</span>
+<span class="s">&quot;  hi  &quot;</span>.strip()              <span class="c"># &quot;hi&quot;    both ends (Rust: trim)</span>
+<span class="s">&quot;  hi  &quot;</span>.lstrip()             <span class="c"># &quot;hi  &quot;  left only</span>
+<span class="s">&quot;  hi  &quot;</span>.rstrip()             <span class="c"># &quot;  hi&quot;  right only — strips \n too (clean lines)</span>
+<span class="s">&quot;xxhixx&quot;</span>.strip(<span class="s">&quot;x&quot;</span>)           <span class="c"># &quot;hi&quot;    strip given chars, not just whitespace</span>
+
+<span class="c"># content tests (whole string: &quot;are ALL chars X?&quot;); &quot;&quot; is always False</span>
+c.isspace()                   <span class="c"># whitespace?</span>
+c.isalpha()                   <span class="c"># letters?</span>
+c.isdigit()                   <span class="c"># digits?</span>
+c.isalnum()                   <span class="c"># letters or digits?</span>
+c.isupper() / c.islower()     <span class="c"># cased?</span>
+<span class="s">&quot;abc&quot;</span>.isascii()               <span class="c"># pure ASCII? (3.7+)</span>
+<span class="c"># no is_ascii_whitespace — compose: c.isascii() and c.isspace()</span>
+
+<span class="c"># case</span>
+<span class="s">&quot;AbC&quot;</span>.lower() / <span class="s">&quot;AbC&quot;</span>.upper() <span class="c"># &quot;abc&quot; / &quot;ABC&quot;</span>
+<span class="s">&quot;hello&quot;</span>.capitalize()          <span class="c"># &quot;Hello&quot;</span>
+<span class="s">&quot;A&quot;</span>.casefold()                <span class="c"># aggressive lower for compare (unicode-safe)</span>
+
+<span class="c"># search / contains / replace</span>
+<span class="s">&quot;c&quot;</span> <span class="k">in</span> <span class="s">&quot;abc&quot;</span>                  <span class="c"># True   substring (Rust: contains)</span>
+<span class="s">&quot;abc&quot;</span>.startswith(<span class="s">&quot;ab&quot;</span>)        <span class="c"># True</span>
+<span class="s">&quot;abc&quot;</span>.endswith(<span class="s">&quot;bc&quot;</span>)          <span class="c"># True</span>
+<span class="s">&quot;abcabc&quot;</span>.find(<span class="s">&quot;b&quot;</span>)            <span class="c"># 1      first index, -1 if absent</span>
+<span class="s">&quot;abcabc&quot;</span>.index(<span class="s">&quot;b&quot;</span>)           <span class="c"># 1      like find but RAISES if absent</span>
+<span class="s">&quot;abcabc&quot;</span>.count(<span class="s">&quot;a&quot;</span>)           <span class="c"># 2</span>
+<span class="s">&quot;a,b,a&quot;</span>.replace(<span class="s">&quot;a&quot;</span>, <span class="s">&quot;X&quot;</span>)     <span class="c"># &quot;X,b,X&quot;  ALL occurrences</span>
+
+<span class="c"># split / join</span>
+<span class="s">&quot;a b  c&quot;</span>.split()              <span class="c"># [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;]  any whitespace, drops empties</span>
+<span class="s">&quot;a,b,c&quot;</span>.split(<span class="s">&quot;,&quot;</span>)            <span class="c"># [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;]  specific sep</span>
+<span class="s">&quot;a,b,c&quot;</span>.split(<span class="s">&quot;,&quot;</span>, <span class="n">1</span>)         <span class="c"># [&quot;a&quot;, &quot;b,c&quot;]   max 1 split</span>
+<span class="s">&quot;l1\nl2&quot;</span>.splitlines()         <span class="c"># [&quot;l1&quot;,&quot;l2&quot;]    on newlines</span>
+<span class="s">&quot;,&quot;</span>.join([<span class="s">&quot;a&quot;</span>,<span class="s">&quot;b&quot;</span>])           <span class="c"># &quot;a,b&quot;          sep.join (separator owns join!)</span>
+
+<span class="c"># char &lt;-&gt; code</span>
+<span class="b">ord</span>(<span class="s">&quot;A&quot;</span>)                      <span class="c"># 65   char -&gt; code</span>
+<span class="b">chr</span>(<span class="n">65</span>)                       <span class="c"># &quot;A&quot;  code -&gt; char</span>
+s[::-<span class="n">1</span>]                       <span class="c"># reverse</span></code></pre>
+<h2 id="intfloat">int/float</h2>
+<pre><code><span class="k">import</span> <span class="b">math</span>
+<span class="n">7</span> / <span class="n">2</span>                    <span class="c"># -&gt; 3.5   true division, always float</span>
+<span class="n">7</span> // <span class="n">2</span>                   <span class="c"># -&gt; 3     floor (toward -inf)</span>
+-<span class="n">7</span> // <span class="n">2</span>                  <span class="c"># -&gt; -4    floor rounds down, watch negatives</span>
+<span class="n">7</span> % <span class="n">2</span>                    <span class="c"># -&gt; 1     remainder (pairs with //)</span>
+<span class="b">int</span>(<span class="n">7</span> / <span class="n">2</span>)               <span class="c"># -&gt; 3     truncate toward 0 (Rust-style int div)</span>
+<span class="b">int</span>(-<span class="n">7</span> / <span class="n">2</span>)              <span class="c"># -&gt; -3    toward 0</span>
+<span class="b">math</span>.floor(<span class="n">3.7</span>)          <span class="c"># -&gt; 3     down, toward -inf</span>
+<span class="b">math</span>.ceil(<span class="n">3.2</span>)           <span class="c"># -&gt; 4     up, toward +inf</span>
+<span class="b">math</span>.trunc(-<span class="n">3.7</span>)         <span class="c"># -&gt; -3    toward 0, same as int()</span>
+<span class="b">round</span>(<span class="n">3.567</span>, <span class="n">2</span>)          <span class="c"># -&gt; 3.57  round to N decimals (stays float)</span>
+<span class="b">round</span>(<span class="n">2.5</span>)               <span class="c"># -&gt; 2     ties-to-even! not always up</span>
+-(-a // b)               <span class="c"># ceil(a/b) with no float — precision-safe</span>
+<span class="b">abs</span>(-<span class="n">4</span>)                  <span class="c"># -&gt; 4     magnitude</span>
+<span class="b">math</span>.inf                 <span class="c"># positive infinity (or float(&quot;inf&quot;))</span>
+<span class="b">math</span>.gcd(<span class="n">12</span>, <span class="n">8</span>)          <span class="c"># -&gt; 4     greatest common divisor</span>
+<span class="b">divmod</span>(<span class="n">7</span>, <span class="n">2</span>)             <span class="c"># -&gt; (3, 1)  quotient, remainder together</span>
+<span class="n">2</span> ** <span class="n">10</span>                  <span class="c"># -&gt; 1024  power</span></code></pre>
+<h2 id="math">math</h2>
+<pre><code><span class="k">import</span> <span class="b">math</span>
+<span class="b">math</span>.sqrt(<span class="n">16</span>)             <span class="c"># -&gt; 4.0    square root (float, always)</span>
+<span class="b">math</span>.isqrt(<span class="n">17</span>)             <span class="c"># -&gt; 4      integer sqrt, floor, no float error</span>
+<span class="b">math</span>.pow(<span class="n">2</span>, <span class="n">10</span>)            <span class="c"># -&gt; 1024.0 float power (prefer ** for ints)</span>
+<span class="b">math</span>.log(<span class="n">8</span>, <span class="n">2</span>)              <span class="c"># -&gt; 3.0    log base 2</span>
+<span class="b">math</span>.log2(<span class="n">8</span>) / <span class="b">math</span>.log10(<span class="n">100</span>)  <span class="c"># -&gt; 3.0 / 2.0  common bases, faster than log(x, b)</span>
+<span class="b">math</span>.comb(n, k)            <span class="c"># n choose k  — combinations, no repeats/order</span>
+<span class="b">math</span>.perm(n, k)            <span class="c"># nPk         — permutations, no repeats</span>
+<span class="b">math</span>.factorial(<span class="n">5</span>)          <span class="c"># -&gt; 120</span>
+<span class="b">math</span>.gcd(<span class="n">12</span>, <span class="n">8</span>)            <span class="c"># -&gt; 4      greatest common divisor (also gcd(*nums))</span>
+<span class="b">math</span>.lcm(<span class="n">4</span>, <span class="n">6</span>)             <span class="c"># -&gt; 12     least common multiple (3.9+)</span>
+<span class="b">math</span>.isclose(a, b)         <span class="c"># float equality with tolerance (never use == on floats)</span>
+<span class="b">math</span>.hypot(<span class="n">3</span>, <span class="n">4</span>)           <span class="c"># -&gt; 5.0    euclidean distance / dist to origin</span>
+<span class="b">math</span>.dist(p1, p2)          <span class="c"># euclidean distance between two points (tuples)</span>
+<span class="b">math</span>.inf / -<span class="b">math</span>.inf       <span class="c"># infinity — handy sentinel for running min/max</span>
+<span class="b">math</span>.nan                   <span class="c"># not-a-number; math.isnan(x) to check</span></code></pre>
+<h2 id="sorting">sorting</h2>
+<pre><code><span class="c"># (id, name)</span>
+items = [(<span class="n">0</span>, <span class="s">&#x27;name&#x27;</span>), (<span class="n">1</span>, <span class="s">&#x27;name2&#x27;</span>)]
+
+<span class="b">sorted</span>(a, reverse=<span class="k">True</span>)                   <span class="c"># descending</span>
+<span class="b">sorted</span>(words, key=<span class="b">len</span>)                    <span class="c"># by a computed key</span>
+<span class="b">sorted</span>(items, key=<span class="k">lambda</span> p: p[<span class="n">1</span>])         <span class="c"># by 2nd field ascending</span>
+<span class="b">sorted</span>(items, key=<span class="k">lambda</span> p: -p[<span class="n">1</span>])        <span class="c"># by 2nd field descending</span>
+
+<span class="b">sorted</span>(items, key=<span class="k">lambda</span> p: (-p[<span class="n">1</span>], p[<span class="n">0</span>]))  <span class="c"># compound: total desc, THEN name asc</span>
+<span class="b">sorted</span>(items, key=<span class="k">lambda</span> p: (p.done, -p.pri))  <span class="c"># compound across fields</span>
+a.sort(key=<span class="k">lambda</span> x: x[<span class="n">0</span>])                <span class="c"># in-place, same key rules</span>
+<span class="c"># tuple key sorts left-to-right; negate a numeric field to flip its direction</span>
+
+<span class="c"># can&#x27;t negate a str for a descending tie-break -&gt; two stable sorts,</span>
+<span class="c"># secondary key FIRST, primary LAST (sort is stable, so ties survive):</span>
+items.sort(key=<span class="k">lambda</span> p: p[<span class="n">1</span>], reverse=<span class="k">True</span>)  <span class="c"># secondary: name desc</span>
+items.sort(key=<span class="k">lambda</span> p: -p[<span class="n">0</span>])                <span class="c"># primary:   count desc</span></code></pre>
+<h2 id="list">list</h2>
+<pre><code>a.append(x)                   <span class="c"># push back</span>
+a.pop()                       <span class="c"># pop back</span>
+a.pop(<span class="n">0</span>)                      <span class="c"># pop front — O(n), use deque</span>
+a[-<span class="n">1</span>]                         <span class="c"># last element</span>
+a[<span class="n">1</span>:<span class="n">3</span>]                        <span class="c"># slice (indices 1,2)</span>
+a[::-<span class="n">1</span>]                       <span class="c"># reversed copy</span>
+<span class="b">sorted</span>(a)                     <span class="c"># new sorted list</span>
+a.sort()                      <span class="c"># sort in place</span>
+<span class="b">sum</span>(a)                        <span class="c"># total</span>
+<span class="b">min</span>(a)                        <span class="c"># smallest</span>
+<span class="b">max</span>(a)                        <span class="c"># largest</span>
+<span class="b">len</span>(a)                        <span class="c"># length</span>
+[x*<span class="n">2</span> <span class="k">for</span> x <span class="k">in</span> a <span class="k">if</span> x &gt; <span class="n">1</span>]     <span class="c"># comprehension with filter</span></code></pre>
+<h2 id="heap-min-heap">heap  (min-heap)</h2>
+<pre><code><span class="k">import</span> <span class="b">heapq</span>
+h = []                        <span class="c"># a heap IS just a list — no Heap class</span>
+<span class="b">heapq</span>.heappush(h, x)          <span class="c"># push</span>
+<span class="b">heapq</span>.heappop(h)              <span class="c"># pop smallest</span>
+h[<span class="n">0</span>]                          <span class="c"># peek min — O(1), doesn&#x27;t remove</span>
+<span class="b">heapq</span>.heapify(h)              <span class="c"># list -&gt; heap, O(n), in place</span>
+<span class="b">heapq</span>.heappushpop(h, x)       <span class="c"># push then pop, one step (faster)</span>
+<span class="b">heapq</span>.nlargest(k, h)          <span class="c"># top k, biggest first — no negation needed</span>
+<span class="b">heapq</span>.nsmallest(k, h)         <span class="c"># bottom k</span>
+<span class="b">len</span>(h)                        <span class="c"># size; `if h:` tests non-empty</span></code></pre>
+<p>no <code>key=</code> on the heap itself — control order by what you push:</p>
+<pre><code><span class="b">heapq</span>.heappush(h, (freq, val))     <span class="c"># sort key = 1st tuple elem (min-heap)</span>
+<span class="b">heapq</span>.heappush(h, (freq, i, val))  <span class="c"># add index tiebreaker if vals unorderable</span>
+<span class="b">heapq</span>.nlargest(k, cnt, key=cnt.get)  <span class="c"># nlargest/nsmallest DO take key=</span></code></pre>
+<p>max-heap: negate on the way in and out (no built-in max-heap):</p>
+<pre><code><span class="b">heapq</span>.heappush(h, -x)         <span class="c"># store negatives</span>
+-<span class="b">heapq</span>.heappop(h)             <span class="c"># negate back -&gt; largest first</span>
+-h[<span class="n">0</span>]                         <span class="c"># peek max</span>
+<span class="b">heapq</span>.heappush(h, (-pri, item))  <span class="c"># tuple: negate the PRIORITY only</span>
+h = [-x <span class="k">for</span> x <span class="k">in</span> nums]
+<span class="b">heapq</span>.heapify(h)              <span class="c"># max-heapify: negate all first</span>
+<span class="c"># one-shot top-k? skip negation, use heapq.nlargest(k, nums)</span></code></pre>
+<p>size-k heap idiom (k largest, keep a MIN-heap of size k):</p>
+<pre><code>h = []
+<span class="k">for</span> x <span class="k">in</span> nums:
+    <span class="b">heapq</span>.heappush(h, x)
+    <span class="k">if</span> <span class="b">len</span>(h) &gt; k:
+        <span class="b">heapq</span>.heappop(h)      <span class="c"># drop smallest -&gt; heap holds the k largest</span>
+<span class="k">return</span> <span class="b">sorted</span>(h)              <span class="c"># drain ascending</span></code></pre>
+<h2 id="queue">queue</h2>
+<pre><code><span class="k">from</span> <span class="b">collections</span> <span class="k">import</span> <span class="b">deque</span>
+q = <span class="b">deque</span>([<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>])          <span class="c"># init from iterable</span>
+q.append(x)                   <span class="c"># add to back  — FIFO queue pair (with popleft)</span>
+q.popleft()                   <span class="c"># remove from front, O(1)  — FIFO queue pair</span>
+q.appendleft(x)               <span class="c"># add to front</span>
+q.pop()                       <span class="c"># remove from back</span>
+q[<span class="n">0</span>]                          <span class="c"># peek front;  q[-1] peek back</span></code></pre>
+<p>queue (FIFO): add to the back with append, take from the front with popleft:</p>
+<pre><code>              front             back
+  popleft() &lt;-- [ <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> ] &lt;-- append(x)</code></pre>
+<p>stack (LIFO): don&#x27;t need deque — use a plain <code>list</code> (O(1) at the end):</p>
+<pre><code>                          top
+  append(x) --&gt; [ <span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span> ] &lt;-- pop()</code></pre>
+<pre><code>s = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>]                 <span class="c"># a list IS your stack</span>
+s.append(x)                   <span class="c"># push (onto the top/back)</span>
+s.pop()                       <span class="c"># pop the top — last in, first out</span>
+s[-<span class="n">1</span>]                         <span class="c"># peek top</span></code></pre>
+<h2 id="set">set</h2>
+<pre><code>s = <span class="b">set</span>()                     <span class="c"># empty set ({} is a dict!)</span>
+s.add(x)                      <span class="c"># insert</span>
+s.discard(x)                  <span class="c"># remove, no error if absent</span>
+x <span class="k">in</span> s                        <span class="c"># membership, O(1)</span>
+a &amp; b                         <span class="c"># intersection</span>
+a | b                         <span class="c"># union</span>
+a - b                         <span class="c"># difference</span></code></pre>
+<h2 id="dict">dict</h2>
+<pre><code>d[k] = v                      <span class="c"># insert/update — NO d.set()! (Rust: map.insert)</span>
+k <span class="k">in</span> d                        <span class="c"># contains key (Rust: contains_key)</span>
+<span class="k">del</span> d[k]                      <span class="c"># remove — KeyError if missing (no set-style discard)</span>
+d.pop(k)                      <span class="c"># remove AND return value — KeyError if missing</span>
+d.pop(k, <span class="k">None</span>)                <span class="c"># remove if present, else default — SAFE, no error</span>
+d[k]                          <span class="c"># get — KeyError if missing</span>
+d.get(k)                      <span class="c"># get — None if missing (never raises)</span>
+d.get(k, <span class="n">0</span>)                   <span class="c"># value or default if missing</span>
+d.setdefault(k, []).append(v) <span class="c"># init-then-append in one call</span>
+<span class="k">from</span> <span class="b">collections</span> <span class="k">import</span> <span class="b">defaultdict</span>
+g = <span class="b">defaultdict</span>(<span class="b">list</span>)         <span class="c"># missing key -&gt; new []</span>
+g[k].append(v)                <span class="c"># no KeyError</span>
+c = <span class="b">defaultdict</span>(<span class="b">int</span>)          <span class="c"># missing key -&gt; 0</span>
+c[k] += <span class="n">1</span>                     <span class="c"># count</span>
+
+<span class="k">for</span> k <span class="k">in</span> d:                   <span class="c"># iterate keys only</span>
+    <span class="b">print</span>(k)
+<span class="k">for</span> k, v <span class="k">in</span> d.items():        <span class="c"># iterate key-value pairs</span>
+    <span class="b">print</span>(k, v)
+<span class="k">for</span> v <span class="k">in</span> d.values():          <span class="c"># iterate values only</span>
+    <span class="b">print</span>(v)</code></pre>
+<h2 id="dict-nested">dict (nested)</h2>
+<pre><code><span class="k">from</span> <span class="b">collections</span> <span class="k">import</span> <span class="b">defaultdict</span>
+nd = <span class="b">defaultdict</span>(<span class="b">dict</span>)        <span class="c"># missing key -&gt; new {}</span>
+nd[user][day] = amount        <span class="c"># 2-level: dict of dicts</span>
+grid = <span class="b">defaultdict</span>(<span class="k">lambda</span>: <span class="b">defaultdict</span>(<span class="b">int</span>))  <span class="c"># 2-level auto-counter</span>
+grid[r][c] += <span class="n">1</span>               <span class="c"># both levels auto-create</span>
+by_cat = <span class="b">defaultdict</span>(<span class="b">list</span>)    <span class="c"># group rows into lists by key</span>
+by_cat[cat].append(row)       <span class="c"># bucket</span>
+<span class="k">for</span> outer, inner <span class="k">in</span> nd.items():   <span class="c"># iterate outer</span>
+    <span class="k">for</span> k, v <span class="k">in</span> inner.items():    <span class="c"># iterate inner</span>
+        ...</code></pre>
+<h2 id="counter">Counter</h2>
+<pre><code><span class="k">from</span> <span class="b">collections</span> <span class="k">import</span> <span class="b">Counter</span>
+cnt = <span class="b">Counter</span>(<span class="s">&quot;aabbb&quot;</span>)        <span class="c"># {&#x27;b&#x27;:3, &#x27;a&#x27;:2}  count chars/items of any iterable</span>
+cnt = <span class="b">Counter</span>([<span class="n">1</span>, <span class="n">1</span>, <span class="n">2</span>])      <span class="c"># {1:2, 2:1}      works on any iterable</span>
+cnt[<span class="s">&quot;z&quot;</span>]                      <span class="c"># 0  missing key -&gt; 0, never KeyError (unlike dict)</span>
+cnt[<span class="s">&quot;a&quot;</span>] += <span class="n">1</span>                 <span class="c"># increment like a normal dict</span>
+cnt.most_common(<span class="n">2</span>)            <span class="c"># [(&#x27;b&#x27;,3), (&#x27;a&#x27;,2)]  top-k by count</span>
+cnt.most_common()[:-<span class="n">3</span>:-<span class="n">1</span>]     <span class="c"># [(&#x27;a&#x27;,2), ...]  n least common (reversed tail)</span>
+<span class="b">list</span>(cnt.elements())          <span class="c"># [&#x27;a&#x27;,&#x27;a&#x27;,&#x27;b&#x27;,&#x27;b&#x27;,&#x27;b&#x27;]  expand back to a multiset</span>
+cnt.total()                   <span class="c"># 5  sum of counts (3.10+)</span>
+<span class="b">Counter</span>(s) == <span class="b">Counter</span>(t)      <span class="c"># anagram check</span>
+cnt + <span class="b">Counter</span>(<span class="s">&quot;a&quot;</span>)            <span class="c"># add counts;  also - &amp; |  (multiset arithmetic)</span>
+cnt.update(<span class="s">&quot;ab&quot;</span>)              <span class="c"># add more counts in place</span></code></pre>
+<h2 id="bisect-binary-search">bisect (binary search)</h2>
+<p>Input list MUST be sorted!</p>
+<pre><code><span class="k">import</span> <span class="b">bisect</span>
+arr = [<span class="n">1</span>, <span class="n">3</span>, <span class="n">5</span>, <span class="n">7</span>]              <span class="c"># setup: arr is SORTED</span>
+x = <span class="n">4</span>                           <span class="c"># setup: the target</span>
+<span class="b">bisect</span>.bisect_left(arr, x)      <span class="c"># index: first i with arr[i] &gt;= x (before dupes of x)</span>
+                                <span class="c"># x=2 (absent)  -&gt; 1</span>
+                                <span class="c"># x=3 (present) -&gt; 1</span>
+<span class="b">bisect</span>.bisect_right(arr, x)     <span class="c"># index: first i with arr[i] &gt;  x (after dupes of x)</span>
+                                <span class="c"># x=2 (absent)  -&gt; 1</span>
+                                <span class="c"># x=3 (present) -&gt; 2</span>
+<span class="b">bisect</span>.insort(arr, x)           <span class="c"># in place, returns None — inserts at bisect_left(arr, x)</span>
+                                <span class="c"># x=2 -&gt; [1, 2, 3, 5, 7]</span>
+                                <span class="c"># x=3 -&gt; [1, 3, 3, 5, 7]</span>
+
+i = <span class="b">bisect</span>.bisect_left(arr, x)  <span class="c"># membership check — arr[i] IS x when present, not arr[i+1]</span>
+i &lt; <span class="b">len</span>(arr) <span class="k">and</span> arr[i] == x</code></pre>
+<h2 id="random">random</h2>
+<pre><code><span class="k">import</span> random
+
+random.random()             <span class="c"># float in [0.0, 1.0)</span>
+random.randint(<span class="n">1</span>, <span class="n">6</span>)        <span class="c"># int in [1, 6]  INCLUSIVE both ends (like a die)</span>
+random.randrange(<span class="n">6</span>)         <span class="c"># int in [0, 6)  — excludes 6, like range()</span>
+random.randrange(<span class="n">1</span>, <span class="n">10</span>, <span class="n">2</span>)  <span class="c"># start, stop, step -&gt; random odd 1,3,5,7,9</span>
+random.uniform(<span class="n">1.5</span>, <span class="n">3.5</span>)    <span class="c"># float in [a, b]</span>
+
+random.choice([<span class="n">10</span>, <span class="n">20</span>, <span class="n">30</span>])     <span class="c"># one element</span>
+random.choices([<span class="n">1</span>,<span class="n">2</span>,<span class="n">3</span>], k=<span class="n">5</span>)    <span class="c"># k picks WITH replacement -&gt; list</span>
+random.sample([<span class="n">1</span>,<span class="n">2</span>,<span class="n">3</span>,<span class="n">4</span>], k=<span class="n">2</span>)   <span class="c"># k picks WITHOUT replacement</span>
+random.shuffle(a)               <span class="c"># shuffle IN PLACE — returns None!</span>
+
+random.seed(<span class="n">42</span>)             <span class="c"># deterministic global sequence (pin in tests)</span>
+rng = random.Random(<span class="n">42</span>)     <span class="c"># private generator — won&#x27;t disturb global state</span>
+rng.randint(<span class="n">1</span>, <span class="n">6</span>)
+<span class="c"># randint is INCLUSIVE both ends (the odd one out); randrange is [a,b) like range.</span>
+<span class="c"># shuffle mutates + returns None; for a shuffled COPY use sample(a, len(a)).</span>
+<span class="c"># not crypto-safe — for tokens/passwords use the `secrets` module instead.</span></code></pre>
+<h2 id="for-comprehensions">for-comprehensions</h2>
+<pre><code><span class="c"># [ OUTPUT for VAR in ITER if COND ]  — output is front-loaded, filter is tail.</span>
+[a[<span class="n">0</span>] <span class="k">for</span> a <span class="k">in</span> ss <span class="k">if</span> a[<span class="n">1</span>] &gt; <span class="n">0</span>]     <span class="c"># Rust: ss.iter().filter(|a| a.1&gt;0).map(|a| a.0)</span>
+<span class="c"># read middle-out: 1) for a in ss  2) if a[1]&gt;0  3) a[0]</span>
+<span class="c"># it&#x27;s just this loop, output moved to the front:</span>
+<span class="c">#   for a in ss:</span>
+<span class="c">#       if a[1] &gt; 0:</span>
+<span class="c">#           out.append(a[0])</span>
+
+[name <span class="k">for</span> name, count <span class="k">in</span> ss <span class="k">if</span> count &gt; <span class="n">0</span>]  <span class="c"># unpack in the for — avoids a[0]/a[1]</span>
+[f(x) <span class="k">for</span> x <span class="k">in</span> xs]                 <span class="c"># map:    xs.map(f)</span>
+[x <span class="k">for</span> x <span class="k">in</span> xs <span class="k">if</span> cond(x)]         <span class="c"># filter: xs.filter(cond)</span>
+{k: v <span class="k">for</span> k, v <span class="k">in</span> pairs}           <span class="c"># dict comprehension</span>
+{x <span class="k">for</span> x <span class="k">in</span> xs}                    <span class="c"># set comprehension</span>
+(x <span class="k">for</span> x <span class="k">in</span> xs)                    <span class="c"># generator (lazy) — parens not brackets</span>
+[                                  <span class="c"># wrap long ones over lines, no backslashes</span>
+    a[<span class="n">0</span>]
+    <span class="k">for</span> a <span class="k">in</span> ss
+    <span class="k">if</span> a[<span class="n">1</span>] &gt; <span class="n">0</span>
+]
+<span class="c"># multi-statement logic? comprehension can&#x27;t — use an explicit for-loop or a</span>
+<span class="c"># helper def. output is ALWAYS front; Python has no trailing-map / pipe form.</span></code></pre>
+<h2 id="walrus">walrus :=</h2>
+<p><code>:=</code> assigns AND returns the value, so it fits inside an expression (Rust: the <code>if let</code>/<code>while let</code> bind-in-condition). Not a bool thing — the <code>if</code>/<code>while</code> just truth-tests whatever it returns. Plain-name targets only; almost always parenthesize.</p>
+<pre><code><span class="k">while</span> (line := f.readline()):     <span class="c"># read-and-test loop (stops on &quot;&quot; falsy)</span>
+    process(line)
+
+<span class="k">import</span> <span class="b">re</span>
+<span class="k">if</span> (m := <span class="b">re</span>.search(<span class="s">r&quot;\d+&quot;</span>, s)):   <span class="c"># bind + reuse in the body (no re-search)</span>
+    <span class="b">print</span>(m.group())
+<span class="k">if</span> (v := d.get(k)) <span class="k">is</span> <span class="k">not</span> <span class="k">None</span>:   <span class="c"># the `if let Some(v) = map.get(k)` analog</span>
+    use(v)
+
+[y <span class="k">for</span> x <span class="k">in</span> xs <span class="k">if</span> (y := f(x)) &gt; <span class="n">0</span>]  <span class="c"># compute f(x) ONCE, reuse (else runs twice)</span>
+
+<span class="k">if</span> (area := w * h) &gt; <span class="n">100</span> <span class="k">and</span> area &lt; <span class="n">500</span>:  <span class="c"># capture intermediate, use twice</span>
+
+<span class="c"># gotchas</span>
+<span class="k">if</span> (n := <span class="b">len</span>(a)) &gt; <span class="n">10</span>: ...   <span class="c"># ✅ parenthesize — low precedence</span>
+<span class="k">if</span> n := <span class="b">len</span>(a) &gt; <span class="n">10</span>: ...     <span class="c"># ⚠️ parses as n := (len(a) &gt; 10) → n is a bool!</span>
+x := <span class="n">5</span>                       <span class="c"># ❌ SyntaxError as a bare stmt — use plain x = 5</span>
+(self.x := <span class="n">5</span>)                <span class="c"># ❌ names only — no attrs/index targets</span>
+<span class="c"># use it only to save a recompute or tighten a read-loop; else plain = above.</span></code></pre>
+<h2 id="file-io">file I/O</h2>
+<pre><code><span class="c"># read entire file as one string</span>
+<span class="k">with</span> <span class="b">open</span>(<span class="s">&quot;f&quot;</span>) <span class="k">as</span> fh:
+    text = fh.read()
+
+<span class="c"># read line by line (memory-efficient for huge files)</span>
+<span class="k">with</span> <span class="b">open</span>(<span class="s">&quot;f&quot;</span>) <span class="k">as</span> fh:
+    <span class="k">for</span> line <span class="k">in</span> fh:
+        process(line.rstrip(<span class="s">&#x27;\n&#x27;</span>))
+
+<span class="c"># parse CSV manually (split lines, dict from header + values)</span>
+lines = text.strip().split(<span class="s">&#x27;\n&#x27;</span>)
+header = lines[<span class="n">0</span>].split(<span class="s">&#x27;,&#x27;</span>)
+rows = []
+<span class="k">for</span> line <span class="k">in</span> lines[<span class="n">1</span>:]:
+    values = line.split(<span class="s">&#x27;,&#x27;</span>)
+    row = <span class="b">dict</span>(<span class="b">zip</span>(header, values))
+    row[<span class="s">&#x27;id&#x27;</span>] = <span class="b">int</span>(row[<span class="s">&#x27;id&#x27;</span>])          <span class="c"># &lt;-- type-cast as needed</span>
+    row[<span class="s">&#x27;amount&#x27;</span>] = <span class="b">float</span>(row[<span class="s">&#x27;amount&#x27;</span>])
+    rows.append(row)</code></pre>
+<h2 class="group-head" id="patterns">patterns</h2>
+<p>Algorithm templates below (distinct from the language idioms above): each is a mental model + a skeleton with <code>&lt;-- knob</code> labels + the knobs + a drill order. Learn the skeleton once; solve a family by changing knobs.</p>
+<h2 id="dp-solving-in-rungs-brute-memoize-optimize">DP (solving in rungs: brute → memoize → optimize)</h2>
+<p>Don&#x27;t jump to the optimal DP. Build it in rungs so the optimized form is <strong>derived</strong>, not memorized. Every search/DP/backtracking problem climbs the same ladder — the DP is just the brute force with repeated work cached.</p>
+<p><strong>Default to rung 2.</strong> The polished 1-D/2-D &quot;state machine&quot; solutions (rolling <code>held/sold/rest</code>, <code>dp[i] += dp[i-coin]</code>, etc.) look like magic pulled from thin air — hard to derive under pressure, easy to get subtly wrong. Brute→memo is the reliable path: write the obvious recursion, then cache it. Same time complexity as the fancy version; you skip the &quot;how did they SEE that?&quot; step. Only climb to rung 3 when you actually need the space win or hit a recursion limit.</p>
+<pre><code>rung <span class="n">1</span>  BRUTE FORCE   exhaustive recursion / include-exclude decision tree.
+                      correct first, ignore speed. this defines the STATE + transition.
+rung <span class="n">2</span>  MEMOIZE       <span class="b">cache</span> repeated (state) calls <span class="k">in</span> a <span class="b">dict</span> -&gt; this IS top-down DP.
+                      same recursion, ~O(states) time instead of O(<span class="n">2</span>^n).  &lt;- GO-TO
+rung <span class="n">3</span>  BOTTOM-UP     fill a table / rolling array iteratively; drop recursion.
+                      same time, better space, no recursion-depth limit. (optional finale)</code></pre>
+<p>Finding the STATE (rung 1) is the whole game: &quot;standing here, what do I need to know to decide my next move?&quot; Those facts ARE the memo key. Cooldown stock -&gt; <code>(day, holding, justsold)</code>. Stock-IV -&gt; <code>(day, holding, k_left)</code>. Partition -&gt; <code>(idx, remaining)</code>. Once you name the state, rungs 2 and 3 are mechanical.</p>
+<p>Worked example — partition_equal_subset_sum (&quot;can a subset sum to half?&quot;):</p>
+<pre><code><span class="c"># rung 1 — brute: include/exclude each number (0/1). O(2^n).</span>
+<span class="k">def</span> can_reach(rem, idx):
+    <span class="k">if</span> rem == <span class="n">0</span>: <span class="k">return</span> <span class="k">True</span>
+    <span class="k">if</span> idx &gt;= <span class="b">len</span>(nums) <span class="k">or</span> rem &lt; <span class="n">0</span>: <span class="k">return</span> <span class="k">False</span>
+    <span class="k">return</span> can_reach(rem - nums[idx], idx + <span class="n">1</span>) <span class="k">or</span> can_reach(rem, idx + <span class="n">1</span>)
+
+<span class="c"># rung 2 — memoize: the state is exactly the args (rem, idx). O(n * half).</span>
+memo = {}                                  <span class="c"># look up -&gt; compute -&gt; STORE</span>
+<span class="k">def</span> can_reach(rem, idx):
+    <span class="k">if</span> rem == <span class="n">0</span>: <span class="k">return</span> <span class="k">True</span>
+    <span class="k">if</span> idx &gt;= <span class="b">len</span>(nums) <span class="k">or</span> rem &lt; <span class="n">0</span>: <span class="k">return</span> <span class="k">False</span>
+    key = (rem, idx)
+    <span class="k">if</span> key <span class="k">in</span> memo: <span class="k">return</span> memo[key]        <span class="c"># look up FIRST (after base cases)</span>
+    memo[key] = can_reach(rem - nums[idx], idx + <span class="n">1</span>) <span class="k">or</span> can_reach(rem, idx + <span class="n">1</span>)
+    <span class="k">return</span> memo[key]                        <span class="c"># STORE before returning (easy to forget)</span>
+
+<span class="c"># rung 3 — bottom-up 1-D: the memo table collapses to one boolean row. O(half) space.</span>
+dp = [<span class="k">False</span>] * (half + <span class="n">1</span>)
+dp[<span class="n">0</span>] = <span class="k">True</span>
+<span class="k">for</span> num <span class="k">in</span> nums:
+    <span class="k">for</span> s <span class="k">in</span> <span class="b">range</span>(half, num - <span class="n">1</span>, -<span class="n">1</span>):      <span class="c"># DESCENDING -&gt; each num used once (0/1)</span>
+        dp[s] = dp[s] <span class="k">or</span> dp[s - num]
+<span class="k">return</span> dp[half]</code></pre>
+<p>Rung-2 gotchas (Python): assigning <code>ans</code> inside a nested fn makes it LOCAL — mutate an outer var via <code>nonlocal</code>, or (cleaner) return the bool up. And always STORE the recursive result in the memo, not just the base cases — else the cache does nothing and you&#x27;re back to O(2^n). rung 3&#x27;s descending sweep is the same &quot;low cell still empty of this item -&gt; used once&quot; rule from the knapsack section.</p>
+<p>Second example — cooldown stock (the rung-3 <code>held/sold/rest</code> state machine is the &quot;magic&quot; one; brute→memo gets there with zero cleverness):</p>
+<pre><code><span class="c"># rung 1/2 — state = (day, holding, justsold). memo makes it O(states).</span>
+memo = {}
+<span class="k">def</span> go(day, holding, justsold):
+    <span class="k">if</span> day &gt;= <span class="b">len</span>(prices): <span class="k">return</span> <span class="n">0</span>
+    key = (day, holding, justsold)
+    <span class="k">if</span> key <span class="k">in</span> memo: <span class="k">return</span> memo[key]
+    best = go(day + <span class="n">1</span>, holding, justsold)              <span class="c"># rest / do nothing</span>
+    <span class="k">if</span> justsold:
+        <span class="k">pass</span>                                           <span class="c"># in cooldown -&gt; can only rest</span>
+    <span class="k">elif</span> holding:
+        best = <span class="b">max</span>(best, prices[day] + go(day + <span class="n">1</span>, <span class="k">False</span>, <span class="k">True</span>))    <span class="c"># SELL (justsold=True)</span>
+    <span class="k">else</span>:
+        best = <span class="b">max</span>(best, -prices[day] + go(day + <span class="n">1</span>, <span class="k">True</span>, <span class="k">False</span>))   <span class="c"># BUY</span>
+    memo[key] = best
+    <span class="k">return</span> best
+<span class="k">return</span> go(<span class="n">0</span>, <span class="k">False</span>, <span class="k">False</span>)
+<span class="c"># memo turns 2^n into ~O(n): on a 16-day input, 131,071 brute calls -&gt; 91 memoized.</span></code></pre>
+<p>The magic rung-3 form (<code>held, sold, rest = max(held, rest-p), held+p, max(rest, sold)</code>) is just this table filled bottom-up in O(1) space — same answer, but you&#x27;d never *derive* it cold. Reach for it only once the memo version is green and you want the space win.</p>
+<h2 id="backtracking">backtracking</h2>
+<p>Four fixed parts every time: goal check → loop candidates → choose → recurse → un-choose. Only three knobs vary: the candidate loop, the recursion index, the prune.</p>
+<pre><code><span class="k">def</span> backtrack(start, path):
+    <span class="k">if</span> is_goal(path):            <span class="c"># record? subsets: ALWAYS (every node is a subset)</span>
+        result.append(path[:])   <span class="c">#          perms/combos: only when complete</span>
+        <span class="c"># return                 # extendable? subsets: NO return (keep growing)</span>
+                                 <span class="c">#              perms/combos: return (can&#x27;t extend)</span>
+    <span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(start, n):    <span class="c"># &lt;-- knob: candidate loop (what can I add next?)</span>
+        <span class="k">if</span> <span class="k">not</span> valid(i):         <span class="c"># &lt;-- knob: prune (skip choices that can&#x27;t work)</span>
+            <span class="k">continue</span>
+        path.append(choice[i])   <span class="c"># choose</span>
+        backtrack(i + <span class="n">1</span>, path)   <span class="c"># &lt;-- knob: recursion index (reuse + ordering)</span>
+        path.pop()               <span class="c"># un-choose: restore path for the sibling branch</span></code></pre>
+<p>is_goal + return per problem:</p>
+<pre><code><span class="c"># subsets:          is_goal = True (record every node);  no return (extend to bigger)</span>
+<span class="c"># permutations:     is_goal = len(path) == n;            return (full perm can&#x27;t grow)</span>
+<span class="c"># combination sum:  is_goal = remaining == 0;            return (target hit / overshoot)</span></code></pre>
+<p>the recursion-index knob — controls reuse + ordering:</p>
+<pre><code>backtrack(i + <span class="n">1</span>)     <span class="c"># combinations, NO reuse, no dup orders   (subsets, combos)</span>
+backtrack(i)         <span class="c"># combinations, reuse allowed             (combination_sum)</span>
+<span class="c"># permutations: drop `start`, loop ALL indices, skip taken ones with used[]</span></code></pre>
+<p>permutations variant (order matters -&gt; used[] instead of start):</p>
+<pre><code>used = [<span class="k">False</span>] * n
+<span class="k">def</span> backtrack(path):
+    <span class="k">if</span> <span class="b">len</span>(path) == n:
+        result.append(path[:])
+        <span class="k">return</span>
+    <span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(n):           <span class="c"># &lt;-- knob: candidate loop (every index, not start..n)</span>
+        <span class="k">if</span> used[i]:
+            <span class="k">continue</span>             <span class="c"># already in this permutation</span>
+        used[i] = <span class="k">True</span>
+        path.append(nums[i])
+        backtrack(path)
+        path.pop()
+        used[i] = <span class="k">False</span>          <span class="c"># un-choose BOTH</span></code></pre>
+<p>drills (advance_problems): subsets → combination_sum (reuse) → permutations (used[]) → word_search (grid)</p>
+<h2 id="intervals">intervals</h2>
+<p>Always sort first. The output the question wants picks the tool. This sort-by-end rule is interval-specific — general greedy (jump_game, gas_station, Kadane, partition_labels…) picks its sort key (or no sort at all) from whatever the locally-best choice needs, not from this table:</p>
+<pre><code>answer <span class="k">is</span> a LIST of intervals     -&gt; MERGE/EXTEND (default)  sort by start
+answer <span class="k">is</span> a COUNT of intervals    -&gt; greedy by END           sort by end
+answer <span class="k">is</span> a COUNT of overlaps     -&gt; sweep line              split endpoints</code></pre>
+<p>If the list is sorted by start, two intervals overlap when <code>next_start &lt;= cur_end</code>.</p>
+<h3 id="ex-interval-list-mergeextend-sort-by-start">ex: interval list (merge/extend, sort by start)</h3>
+<p>Use this for merged/inserted problems. Extend the last kept interval if the new one overlaps it, otherwise start a new block:</p>
+<pre><code>intervals.sort()                            <span class="c"># by start</span>
+res = []
+<span class="k">for</span> cur <span class="k">in</span> intervals:
+    <span class="k">if</span> res:
+        last = res[-<span class="n">1</span>]
+        <span class="k">if</span> cur[<span class="n">0</span>] &lt;= last[<span class="n">1</span>]:               <span class="c"># overlaps -&gt; stretch end</span>
+            last[<span class="n">1</span>] = <span class="b">max</span>(last[<span class="n">1</span>], cur[<span class="n">1</span>])  <span class="c"># max: cur may sit INSIDE last</span>
+            <span class="k">continue</span>
+    res.append(cur[:])                      <span class="c"># first / no overlap -&gt; new block</span>
+<span class="k">return</span> res</code></pre>
+<p>Insert-interval is the same idea without the initial sort (input is already sorted): emit every interval that ends before the new one starts, fold every overlapping interval into the new one with min/max, then emit the rest.</p>
+<h3 id="ex-interval-count-greedy">ex: interval count (greedy)</h3>
+<p>For &quot;minimum removals to avoid overlap&quot; <strong>the interval that ends soonest always leaves the most room</strong>. This means we can be greedy and remove the interval that ends later. To achieve this we sort by END and check for overlaps:</p>
+<pre><code><span class="c"># 0011222222112221111100</span>
+<span class="c">#     [    ]</span>
+<span class="c">#   [           ]</span>
+<span class="c">#             [      ]</span>
+
+intervals.sort(key=<span class="k">lambda</span> x: x[<span class="n">1</span>])          <span class="c"># by END</span>
+removed, end = <span class="n">0</span>, <span class="b">float</span>(<span class="s">&#x27;-inf&#x27;</span>)
+<span class="k">for</span> currs, curre <span class="k">in</span> intervals:
+    <span class="k">if</span> currs &gt;= end:                        <span class="c"># no overlap</span>
+        end = curre                         <span class="c"># keep</span>
+    <span class="k">else</span>:
+        removed += <span class="n">1</span>                        <span class="c"># drop</span>
+<span class="k">return</span> removed</code></pre>
+<h3 id="ex-overlap-count-sweep-line">ex: overlap count (sweep line)</h3>
+<p>Use this for &quot;minimum meeting rooms needed&quot;. Split starts and ends into two sorted lists and sweep across them, <strong>adding a room on each start and freeing one on each end</strong>:</p>
+<pre><code><span class="c"># 0011222111111111110</span>
+<span class="c">#   [   ]</span>
+<span class="c">#     [      ]</span>
+<span class="c">#            [     ]</span>
+
+starts = <span class="b">sorted</span>(i[<span class="n">0</span>] <span class="k">for</span> i <span class="k">in</span> intervals)
+ends   = <span class="b">sorted</span>(i[<span class="n">1</span>] <span class="k">for</span> i <span class="k">in</span> intervals)
+rooms = peak = s = e = <span class="n">0</span>
+<span class="k">while</span> s &lt; <span class="b">len</span>(starts):
+    <span class="k">if</span> starts[s] &lt; ends[e]:                 <span class="c"># a start comes next -&gt; +1 room</span>
+        rooms += <span class="n">1</span>
+        s += <span class="n">1</span>
+        peak = <span class="b">max</span>(peak, rooms)
+    <span class="k">else</span>:                                    <span class="c"># an end comes next -&gt; free a room</span>
+        rooms -= <span class="n">1</span>
+        e += <span class="n">1</span>
+<span class="k">return</span> peak</code></pre>
+<p>This is equivalent to a min-heap of end times, where the heap size is the room count. The simpler &quot;can one person attend all meetings?&quot; question only needs a start-sort: return False on the first <code>start &lt; prev_end</code>.</p>
+<p>drills: merge → insert → non_overlapping (end) → meeting_rooms → meeting_rooms_ii (sweep) → min_arrows_burst_balloons (end) → min_interval_include_query (sweep + heap)</p>
+<h2 id="linked-list">linked_list</h2>
+<h3 id="dummy-node-when-to-use-it">dummy node — when to use it</h3>
+<p>A dummy node is a throwaway <code>ListNode()</code> whose <code>.next</code> points at the real head. It exists to kill the &quot;is this the head?&quot; special case: with a dummy, <code>prev</code> always points at a real node, so <code>prev.next = x</code> works uniformly whether <code>x</code> lands at position 0 or position 50.</p>
+<pre><code>use a dummy when:  the head itself might be removed, replaced, <span class="k">or</span> built up
+                    <span class="k">from</span> nothing (the result <span class="b">list</span> starts empty)
+skip the dummy when:  you&#x27;<span class="b">re</span> only ever reading/reversing <span class="k">in</span> place <span class="k">and</span> the
+                    original head always survives (e.g. reverse_linked_list,
+                    has_cycle) — nothing to special-<span class="k">case</span></code></pre>
+<pre><code>dummy = ListNode(<span class="n">0</span>, head)     <span class="c"># dummy.next -&gt; real head</span>
+prev = dummy
+<span class="k">while</span> ...:
+    ...
+    prev.<span class="b">next</span> = ...           <span class="c"># never need an `if prev is None: head = x` branch</span>
+<span class="k">return</span> dummy.<span class="b">next</span>              <span class="c"># unwrap — real head may have changed</span></code></pre>
+<p>Signature tells: if the problem is &quot;remove/insert/merge&quot; (remove_nth_from_end, merge_two_lists, merge_k_lists, partition), reach for a dummy first. If it&#x27;s &quot;reverse/traverse/detect&quot; in place, you probably don&#x27;t need one.</p>
+<h3 id="cycle-detection">cycle detection</h3>
+<p>Floyd&#x27;s tortoise &amp; hare — full section below (<code>## floyd&#x27;s cycle detection</code>). Detect: fast/slow pointers meet iff there&#x27;s a cycle. Locate entrance: reset one to head, step both by 1. Skip a dummy node here — you only read/traverse.</p>
+<h2 id="floyds-cycle-detection">floyd&#x27;s cycle detection</h2>
+<p>Two pointers on the same sequence at different speeds. Works on anything with a &quot;next&quot; step: a linked list (<code>node.next</code>) OR an array read as a functional graph (<code>i -&gt; nums[i]</code>). Detects a cycle in O(1) space, and pinpoints where it starts.</p>
+<p>Mental model: <code>slow</code> steps 1, <code>fast</code> steps 2. If there&#x27;s a cycle, <code>fast</code> is inside it lapping <code>slow</code>; the gap shrinks by exactly 1 each step, so it MUST hit 0 — they meet. No cycle → <code>fast</code> runs off the end (<code>None</code>, or out of bounds).</p>
+<h3 id="phase-1-detect-do-they-meet">phase 1 — detect (do they meet?)</h3>
+<pre><code>slow = fast = head
+<span class="k">while</span> fast <span class="k">and</span> fast.<span class="b">next</span>:
+    slow = slow.<span class="b">next</span>
+    fast = fast.<span class="b">next</span>.<span class="b">next</span>
+    <span class="k">if</span> slow <span class="k">is</span> fast:            <span class="c"># gap hit 0 -&gt; cycle exists</span>
+        <span class="k">break</span>
+<span class="k">if</span> <span class="k">not</span> fast <span class="k">or</span> <span class="k">not</span> fast.<span class="b">next</span>:
+    <span class="k">return</span> <span class="k">False</span>                <span class="c"># fast fell off the end -&gt; no cycle</span></code></pre>
+<h3 id="phase-2-locate-the-entrance-where-does-the-loop-begin">phase 2 — locate the entrance (where does the loop begin?)</h3>
+<p>After they meet, reset ONE pointer to <code>head</code>, then step both by 1. They meet again exactly at the cycle entrance:</p>
+<pre><code>  WHY IT WORKS
+
+         -------
+        |       |
+  S-----M       |
+        |       |
+         -----O-
+
+    slow: move <span class="n">1</span>
+    fast: move <span class="n">2</span>
+
+    S..M = x (distance)  head -&gt; entrance
+    M..O = y (distance)  entrance -&gt; meeting point
+    O..M = z (distance)  meeting point -&gt; entrance (rest of loop)
+
+    slow travels distance = x + y
+    fast travels distance = x + 2y + z
+
+    <span class="n">2</span> (x + y) = x + 2y + z
+    2x + 2y = x + 2y + z
+    2x  = x + z
+    x = z</code></pre>
+<pre><code>slow2 = head
+<span class="k">while</span> slow2 <span class="k">is</span> <span class="k">not</span> slow:
+    slow = slow.<span class="b">next</span>
+    slow2 = slow2.<span class="b">next</span>
+<span class="k">return</span> slow2                    <span class="c"># the entrance node</span></code></pre>
+<h3 id="array-variant-find-duplicate">array variant (find_duplicate)</h3>
+<p>Treat <code>nums[i]</code> as &quot;next pointer&quot; <code>i -&gt; nums[i]</code>. With values in <code>[1, n]</code> and one duplicate, two indices point at the same value → that value is a node with two in-edges → the cycle ENTRANCE. So phase-1 detect + phase-2 locate returns the duplicate, in O(1) space without mutating the array (<code>advance_problems/linked_list/p09_m_find_duplicate.py</code>).</p>
+<pre><code>slow = fast = nums[<span class="n">0</span>]
+<span class="k">while</span> <span class="k">True</span>:                     <span class="c"># a cycle is guaranteed here, so no end-check</span>
+    slow = nums[slow]
+    fast = nums[nums[fast]]
+    <span class="k">if</span> slow == fast:
+        <span class="k">break</span>
+slow2 = nums[<span class="n">0</span>]
+<span class="k">while</span> slow2 != slow:
+    slow = nums[slow]
+    slow2 = nums[slow2]
+<span class="k">return</span> slow                     <span class="c"># the duplicate value = cycle entrance</span></code></pre>
+<p>when to use: &quot;does a linked list have a cycle?&quot;, &quot;where does it start?&quot;, &quot;find the duplicate without extra space / without mutating&quot;. O(1) space is the tell — a hash set also detects cycles but costs O(n).</p>
+<p>drills: linked_list_cycle (detect) → find_duplicate (array-as-list + entrance)</p>
+<h2 id="binary-search">binary_search</h2>
+<p>Two shapes, same <code>start</code>/<code>end</code>/<code>mid</code> variables — the loop condition and what you do with <code>mid</code> on a &quot;keep searching&quot; step are the knobs.</p>
+<h3 id="exact-match-binary-search-search-rotated-time-based-kv">exact match (binary_search, search_rotated, time_based_kv)</h3>
+<p><code>start &lt;= end</code>, both bounds still candidates, so a miss excludes <code>mid</code> entirely (<code>mid - 1</code> / <code>mid + 1</code>):</p>
+<pre><code>start, end = <span class="n">0</span>, <span class="b">len</span>(nums) - <span class="n">1</span>
+<span class="k">while</span> start &lt;= end:
+    mid = start + (end - start) // <span class="n">2</span>   <span class="c"># avoids overflow (not a Python issue, but habit)</span>
+    mid_val = nums[mid]
+
+    <span class="k">if</span> mid_val == target:
+        <span class="k">return</span> mid
+    <span class="k">elif</span> target &lt; mid_val:
+        end = mid - <span class="n">1</span>                  <span class="c"># &lt;-- knob: exclude mid, go left</span>
+    <span class="k">else</span>:
+        start = mid + <span class="n">1</span>                <span class="c"># &lt;-- knob: exclude mid, go right</span>
+<span class="k">return</span> -<span class="n">1</span></code></pre>
+<p>Rotated array adds one knob up front: figure out which half is sorted, then apply the plain in-range check to decide which side to keep:</p>
+<pre><code><span class="k">if</span> nums[start] &lt;= mid_val:             <span class="c"># left half is sorted</span>
+    <span class="k">if</span> nums[start] &lt;= target &lt; mid_val:
+        end = mid - <span class="n">1</span>
+    <span class="k">else</span>:
+        start = mid + <span class="n">1</span>
+<span class="k">else</span>:                                   <span class="c"># right half is sorted</span>
+    <span class="k">if</span> mid_val &lt; target &lt;= nums[end]:
+        start = mid + <span class="n">1</span>
+    <span class="k">else</span>:
+        end = mid - <span class="n">1</span></code></pre>
+<h3 id="search-the-answer-boundary-find-min-rotated-koko-eating-bananas">search the answer / boundary (find_min_rotated, koko_eating_bananas)</h3>
+<p><code>start &lt; end</code>, <code>mid</code> might still BE the answer, so the &quot;keep&quot; branch narrows to <code>end = mid</code> (never <code>mid - 1</code> — that would throw away a still-valid candidate). Loop ends when <code>start == end</code>, which IS the answer — no <code>-1</code> sentinel, no post-loop lookup.</p>
+<pre><code>start, end = lo, hi                    <span class="c"># search space of ANSWERS, not array indices</span>
+<span class="k">while</span> start &lt; end:
+    mid = start + (end - start) // <span class="n">2</span>
+    <span class="k">if</span> is_solution(mid):               <span class="c"># &lt;-- knob: feasibility predicate</span>
+        end = mid                      <span class="c"># mid still works -&gt; keep it, narrow right side</span>
+    <span class="k">else</span>:
+        start = mid + <span class="n">1</span>                <span class="c"># mid doesn&#x27;t work -&gt; exclude it</span>
+<span class="k">return</span> start                           <span class="c"># start == end: the smallest feasible value</span></code></pre>
+<p><code>find_min_rotated</code> uses <code>nums[mid] &gt; nums[end]</code> as the predicate (mid is on the &quot;still rotated, min is further right&quot; side); <code>koko_eating_bananas</code> uses a feasibility function (<code>total hours at rate mid &lt;= h</code>) over the answer range <code>[1, max(piles)]</code> instead of over array indices at all — the array being searched doesn&#x27;t have to be the input array.</p>
+<p>drills: binary_search -&gt; search_rotated -&gt; find_min_rotated -&gt; time_based_kv -&gt; koko_eating_bananas -&gt; search_2d_matrix -&gt; median_two_sorted</p>
+<h2 id="dp-1d">dp_1d</h2>
+<p>Core shape: <code>dp[i]</code> = best answer (or yes/no) for the prefix ending at <code>i</code>, defined in terms of <code>dp[i-1]</code>, <code>dp[i-2]</code>, or some earlier <code>dp[j]</code>. Once you see that only the last 1-2 slots are ever read, roll the array down to plain variables — O(1) space instead of O(n).</p>
+<h3 id="take-or-skip-house-robber">take-or-skip (house_robber)</h3>
+<p>At each index, either skip it (carry <code>dp[i-1]</code> forward) or take it (<code>x + dp[i-2]</code>, since taking <code>x</code> locks out its immediate neighbor). Rolling-variable form — no array needed:</p>
+<pre><code>prev2 = prev1 = <span class="n">0</span>
+<span class="k">for</span> x <span class="k">in</span> nums:
+    prev2, prev1 = prev1, <span class="b">max</span>(prev1, prev2 + x)  <span class="c"># &lt;-- knob: recurrence</span>
+<span class="k">return</span> prev1</code></pre>
+<h3 id="circular-constraint---run-the-linear-version-twice-house-robber-ii">circular constraint -&gt; run the linear version twice (house_robber_ii)</h3>
+<p>A circular &quot;no two adjacent&quot; constraint only ever rules out ONE pair: (first, last). So a valid selection skips house 0 entirely, or skips house n-1 entirely — never both ends at once. Run the plain linear dp on <code>nums[1:]</code> and on <code>nums[:-1]</code>, take the max; no wraparound special-casing needed.</p>
+<pre><code><span class="k">return</span> <span class="b">max</span>(rob_linear(nums[<span class="n">1</span>:]), rob_linear(nums[:-<span class="n">1</span>]))</code></pre>
+<h3 id="expand-around-center-longest-palindromic-substring-palindromic-substrings">expand around center (longest_palindromic_substring, palindromic_substrings)</h3>
+<p>A palindrome is built outward from its center, and there are <code>2n-1</code> centers: <code>n</code> single-char (odd length) + <code>n-1</code> between-char (even length). One helper handles both — call it twice per index with different starting bounds:</p>
+<pre><code><span class="k">def</span> expand(l, r):                <span class="c"># &lt;-- knob: what to do with each valid span</span>
+    <span class="k">while</span> l &gt;= <span class="n">0</span> <span class="k">and</span> r &lt; <span class="b">len</span>(s) <span class="k">and</span> s[l] == s[r]:
+        l -= <span class="n">1</span>
+        r += <span class="n">1</span>
+    <span class="k">return</span> l + <span class="n">1</span>, r - <span class="n">1</span>          <span class="c"># inclusive bounds of the palindrome found</span>
+
+<span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(<span class="b">len</span>(s)):
+    lo, hi = expand(i, i)        <span class="c"># odd center</span>
+    lo2, hi2 = expand(i, i + <span class="n">1</span>)  <span class="c"># even center</span>
+    <span class="c"># &lt;-- knob: track longest span vs. count every span found</span></code></pre>
+<p><code>longest_palindromic_substring</code> keeps the longest span; <code>palindromic_substrings</code> counts every span <code>expand</code> returns (every expansion IS a valid palindrome).</p>
+<h3 id="prefix-reachability-word-break">prefix reachability (word_break)</h3>
+<p><code>dp[i]</code> = &quot;can the prefix <code>s[:i]</code> be fully segmented?&quot; <code>dp[0] = True</code> (empty prefix, vacuously). For each <code>i</code>, scan earlier split points <code>j &lt; i</code>: if <code>dp[j]</code> is True and <code>s[j:i]</code> is a dictionary word, <code>dp[i]</code> is True — one witness is enough, no need to find every way.</p>
+<pre><code>words = <span class="b">set</span>(word_dict)           <span class="c"># O(1) membership, not O(k) list scan</span>
+dp = [<span class="k">False</span>] * (<span class="b">len</span>(s) + <span class="n">1</span>)
+dp[<span class="n">0</span>] = <span class="k">True</span>
+<span class="k">for</span> i <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, <span class="b">len</span>(s) + <span class="n">1</span>):
+    <span class="k">for</span> j <span class="k">in</span> <span class="b">range</span>(i):
+        <span class="k">if</span> dp[j] <span class="k">and</span> s[j:i] <span class="k">in</span> words:   <span class="c"># &lt;-- knob: transition condition</span>
+            dp[i] = <span class="k">True</span>
+            <span class="k">break</span>
+<span class="k">return</span> dp[-<span class="n">1</span>]</code></pre>
+<p>Same shape covers <code>decode_ways</code> (dp[i] built from dp[i-1]/dp[i-2] depending on whether <code>s[i-1]</code> and <code>s[i-2:i]</code> decode validly) and <code>coin_change</code> (dp[i] = min coins for amount i, transition loops over coin denominations instead of split points).</p>
+<p>drills: climbing_stairs -&gt; house_robber -&gt; house_robber_ii -&gt; longest_palindromic_substring -&gt; palindromic_substrings -&gt; decode_ways -&gt; coin_change -&gt; maximum_product_subarray -&gt; word_break -&gt; longest_increasing_subsequence -&gt; min_cost_climbing_stairs -&gt; partition_equal_subset_sum (0/1 knapsack: dp[target] reachable via subset sums)</p>
+<h2 id="knapsack-coin-change-family">knapsack (coin change family)</h2>
+<p><code>dp[a]</code> over a 1-D amount array, filled by looping items (coins). TWO loop knobs decide the whole meaning — get them right and the problem is solved:</p>
+<pre><code>item loop position   coins OUTER -&gt; COMBINATIONS ([<span class="n">1</span>,<span class="n">2</span>]==[<span class="n">2</span>,<span class="n">1</span>], count once)
+                     amount OUTER -&gt; PERMUTATIONS (ordered, [<span class="n">1</span>,<span class="n">2</span>]!=[<span class="n">2</span>,<span class="n">1</span>])
+amount direction     ascending  -&gt; UNLIMITED reuse of each item (unbounded)
+                     descending -&gt; use each item AT MOST once  (<span class="n">0</span>/<span class="n">1</span> knapsack)</code></pre>
+<p>The two core forms are IDENTICAL except the inner range direction — that one flip is the whole unbounded-vs-0/1 distinction:</p>
+<p><strong>One sentence summary</strong> You always read a lower cell (<code>dp[a-item]</code>) to fill a higher one.</p>
+<ul><li>Ascending fills low cells first → the low cell already contains this item → using it again = reuse.</li><li>Descending fills high cells first → the low cell is still empty of this item → used once.</li></ul>
+<h3 id="unbounded-reuse-each-item-freely-amount-ascending">unbounded — reuse each item freely (amount ASCENDING)</h3>
+<pre><code>dp = [<span class="n">0</span>] * (amount + <span class="n">1</span>)
+dp[<span class="n">0</span>] = <span class="n">1</span>
+<span class="k">for</span> item <span class="k">in</span> items:
+    <span class="k">for</span> a <span class="k">in</span> <span class="b">range</span>(item, amount + <span class="n">1</span>):    <span class="c"># ASCENDING (low -&gt; high)</span>
+        dp[a] += dp[a - item]            <span class="c"># dp[a-item] ALREADY updated this pass -&gt; reuse item</span>
+<span class="k">return</span> dp[amount]</code></pre>
+<h3 id="01-use-each-item-at-most-once-amount-descending">0/1 — use each item at most once (amount DESCENDING)</h3>
+<pre><code>dp = [<span class="n">0</span>] * (amount + <span class="n">1</span>)
+dp[<span class="n">0</span>] = <span class="n">1</span>
+<span class="k">for</span> item <span class="k">in</span> items:
+    <span class="k">for</span> a <span class="k">in</span> <span class="b">range</span>(amount, item - <span class="n">1</span>, -<span class="n">1</span>):  <span class="c"># DESCENDING (high -&gt; low)</span>
+        dp[a] += dp[a - item]              <span class="c"># dp[a-item] still LAST pass&#x27;s value -&gt; item used once</span>
+<span class="k">return</span> dp[amount]</code></pre>
+<h3 id="count-combinations-coin-change-ii-coins-outer-amount-ascending">count combinations (coin_change_ii): coins outer, amount ascending</h3>
+<pre><code>dp = [<span class="n">0</span>] * (amount + <span class="n">1</span>)
+dp[<span class="n">0</span>] = <span class="n">1</span>                        <span class="c"># one way to make 0: the empty combination</span>
+<span class="k">for</span> coin <span class="k">in</span> coins:              <span class="c"># OUTER -&gt; one coin fully before next = fixed order</span>
+    <span class="k">for</span> a <span class="k">in</span> <span class="b">range</span>(coin, amount + <span class="n">1</span>):   <span class="c"># ascending -&gt; dp[a-coin] already used this coin</span>
+        dp[a] += dp[a - coin]   <span class="c"># &lt;-- knob: += counts ways</span>
+<span class="k">return</span> dp[amount]
+<span class="c"># change(5,[1,2,5]): [1,1,2,2,3,3]-&gt;after coin5-&gt; dp[5]=4  (11111,1112,122,5)</span></code></pre>
+<h3 id="fewest-coins-coin-change-coins-can-be-inner-or-outer-min-not-count">fewest coins (coin_change): coins can be inner or outer, min not count</h3>
+<pre><code>dp = [<span class="b">float</span>(<span class="s">&#x27;inf&#x27;</span>)] * (amount + <span class="n">1</span>)
+dp[<span class="n">0</span>] = <span class="n">0</span>
+<span class="k">for</span> a <span class="k">in</span> <span class="b">range</span>(<span class="n">1</span>, amount + <span class="n">1</span>):
+    <span class="k">for</span> coin <span class="k">in</span> coins:
+        <span class="k">if</span> coin &lt;= a:
+            dp[a] = <span class="b">min</span>(dp[a], dp[a - coin] + <span class="n">1</span>)  <span class="c"># &lt;-- knob: min+1 counts coins</span>
+<span class="k">return</span> dp[amount] <span class="k">if</span> dp[amount] != <span class="b">float</span>(<span class="s">&#x27;inf&#x27;</span>) <span class="k">else</span> -<span class="n">1</span>
+<span class="c"># order doesn&#x27;t matter here: min over all coins per amount, reuse allowed (ascending)</span></code></pre>
+<h3 id="subset-sum-01-partition-equal-subset-sum-items-outer-amount-descending">subset-sum / 0/1 (partition_equal_subset_sum): items outer, amount DESCENDING</h3>
+<pre><code>dp = [<span class="k">False</span>] * (target + <span class="n">1</span>)
+dp[<span class="n">0</span>] = <span class="k">True</span>
+<span class="k">for</span> num <span class="k">in</span> nums:                <span class="c"># each item used at most once</span>
+    <span class="k">for</span> a <span class="k">in</span> <span class="b">range</span>(target, num - <span class="n">1</span>, -<span class="n">1</span>):   <span class="c"># DESCENDING -&gt; can&#x27;t reuse num this pass</span>
+        dp[a] = dp[a] <span class="k">or</span> dp[a - num]
+<span class="k">return</span> dp[target]</code></pre>
+<p>drills: coin_change (min) -&gt; coin_change_ii (count combos) -&gt; partition_equal_subset_sum (0/1) -&gt; target_sum (0/1 w/ +/- signs)</p>
+<h2 id="weighted-graphs-dijkstra-prim-bellman-ford">weighted graphs (dijkstra / prim / bellman-ford)</h2>
+<p>All three relax edges until every node settles. They differ in what the number attached to a node MEANS, and that one difference is the whole section:</p>
+<pre><code>dijkstra      dist[v] = cheapest total cost <span class="k">from</span> the source to v
+prim          key[v]  = cheapest single edge attaching v to the tree
+bellman-ford  dist[v] = cheapest cost to v using &lt;= r edges so far</code></pre>
+<p>Shared setup — build adjacency once, <code>defaultdict</code> so a sink node reads back empty instead of raising:</p>
+<pre><code><span class="k">from</span> <span class="b">collections</span> <span class="k">import</span> <span class="b">defaultdict</span>
+outgoing = <span class="b">defaultdict</span>(<span class="b">list</span>)           <span class="c"># u -&gt; [(v, weight)]</span>
+<span class="k">for</span> u, v, w <span class="k">in</span> edges:
+    outgoing[u].append((v, w))
+    <span class="c"># outgoing[v].append((u, w))       # undirected: add BOTH directions</span></code></pre>
+<p>Unreachable is <code>float(&#x27;inf&#x27;)</code>, and it survives arithmetic (<code>inf + 5 == inf</code>), which is why it beats <code>None</code> as a sentinel. Watch for 1-indexed node labels (<code>1..n</code>), common in this category — size any list-based table <code>n + 1</code>.</p>
+<h3 id="dijkstra-cheapest-path-from-one-source-network-delay-time-swim-in-water">dijkstra — cheapest path from one source (network_delay_time, swim_in_water)</h3>
+<p>Min-heap ordered by cost. Pop the cheapest unsettled node, and its cost is final: with non-negative weights no longer route can ever undercut it. Negative weights break that promise — use bellman-ford there instead.</p>
+<pre><code>frontier = [(<span class="n">0</span>, source)]               <span class="c"># (cost, node) — COST FIRST, the heap sorts on it</span>
+settled = {}                           <span class="c"># node -&gt; final cost; also the visited set</span>
+
+<span class="k">while</span> frontier:
+    cost, node = <span class="b">heapq</span>.heappop(frontier)
+
+    <span class="k">if</span> node <span class="k">in</span> settled:                <span class="c"># stale: a node is pushed once per inbound</span>
+        <span class="k">continue</span>                       <span class="c"># edge, only the first (cheapest) pop counts</span>
+    settled[node] = cost
+
+    <span class="k">for</span> nb, w <span class="k">in</span> outgoing[node]:
+        <span class="k">if</span> nb <span class="k">not</span> <span class="k">in</span> settled:
+            <span class="b">heapq</span>.heappush(frontier, (cost + w, nb))</code></pre>
+<p>Bottleneck variant (swim_in_water): a route costs its WORST edge, not its total, so swap the one relaxation line. Everything else is untouched:</p>
+<pre><code><span class="b">heapq</span>.heappush(frontier, (cost + w, nb))        <span class="c"># dijkstra: sum along the route</span>
+<span class="b">heapq</span>.heappush(frontier, (<span class="b">max</span>(cost, w), nb))    <span class="c"># bottleneck: worst on the route</span></code></pre>
+<p>Gotchas:</p>
+<pre><code><span class="b">heapq</span>.heappush(frontier, (node, cost))   <span class="c"># WRONG — orders by node label, not cost</span>
+<span class="k">if</span> <span class="k">not</span> cost: <span class="k">continue</span>                    <span class="c"># WRONG — a 0-weight edge is a real edge</span></code></pre>
+<p>There is no decrease-key in <code>heapq</code>. Push duplicates and drop the stale ones on pop (&quot;lazy deletion&quot;) — that <code>if node in settled</code> line IS the algorithm, not an optimization.</p>
+<h3 id="prim-cheapest-tree-touching-every-node-min-cost-connect-points">prim — cheapest tree touching every node (min_cost_connect_points)</h3>
+<p>Same loop as dijkstra with ONE line changed. Dijkstra asks &quot;how far is this node from the source&quot;; prim asks &quot;how cheap is it to attach this node to what I&#x27;ve already built&quot;, so the running cost is not carried forward:</p>
+<pre><code><span class="b">heapq</span>.heappush(frontier, (cost + w, nb))   <span class="c"># dijkstra: distance from the source</span>
+<span class="b">heapq</span>.heappush(frontier, (w, nb))          <span class="c"># prim:     cost to attach, standalone</span></code></pre>
+<p>Total is accumulated as nodes join, and the loop runs until all <code>n</code> are in:</p>
+<pre><code>in_tree = [<span class="k">False</span>] * n
+frontier = [(<span class="n">0</span>, <span class="n">0</span>)]                    <span class="c"># (attach cost, node) — node 0 is an arbitrary root</span>
+total = attached = <span class="n">0</span>
+
+<span class="k">while</span> attached &lt; n:
+    cost, node = <span class="b">heapq</span>.heappop(frontier)
+    <span class="k">if</span> in_tree[node]:
+        <span class="k">continue</span>
+    in_tree[node] = <span class="k">True</span>
+    total += cost                      <span class="c"># &lt;-- accumulate, vs dijkstra recording a distance</span>
+    attached += <span class="n">1</span>
+    <span class="k">for</span> nb, w <span class="k">in</span> outgoing[node]:
+        <span class="k">if</span> <span class="k">not</span> in_tree[nb]:
+            <span class="b">heapq</span>.heappush(frontier, (w, nb))</code></pre>
+<p>Undirected only — an MST has no notion of direction. On a COMPLETE graph (every pair connectable, as with points on a plane) skip the adjacency dict entirely and compute weights on the fly:</p>
+<pre><code><span class="k">for</span> other <span class="k">in</span> <span class="b">range</span>(n):                 <span class="c"># O(n^2) edges, never materialized</span>
+    <span class="k">if</span> <span class="k">not</span> in_tree[other]:
+        w = <span class="b">abs</span>(x - px[other]) + <span class="b">abs</span>(y - py[other])
+        <span class="b">heapq</span>.heappush(frontier, (w, other))</code></pre>
+<p>Kruskal is the other MST route: sort all edges, union-find, keep an edge only when it joins two components. Prefer prim on dense graphs, kruskal when the edge list is already given (see redundant_connection for the union-find shape).</p>
+<h3 id="bellman-ford-negative-weights-or-a-cap-on-hops-cheapest-flights">bellman-ford — negative weights, or a cap on hops (cheapest_flights)</h3>
+<p>No heap, no settled set. Just relax EVERY edge, <code>n - 1</code> times over — after round <code>r</code>, <code>dist[v]</code> is the best cost reachable in at most <code>r</code> edges. Slower at O(V*E), but nothing about it assumes non-negative weights:</p>
+<pre><code>dist = [<span class="b">float</span>(<span class="s">&#x27;inf&#x27;</span>)] * n
+dist[source] = <span class="n">0</span>
+<span class="k">for</span> _ <span class="k">in</span> <span class="b">range</span>(n - <span class="n">1</span>):                 <span class="c"># a shortest path has at most n-1 edges</span>
+    <span class="k">for</span> u, v, w <span class="k">in</span> edges:
+        <span class="k">if</span> dist[u] + w &lt; dist[v]:
+            dist[v] = dist[u] + w</code></pre>
+<p>An <code>n</code>-th round that still improves something proves a negative cycle:</p>
+<pre><code><span class="k">for</span> u, v, w <span class="k">in</span> edges:
+    <span class="k">if</span> dist[u] + w &lt; dist[v]:
+        <span class="k">return</span> <span class="s">&quot;negative cycle&quot;</span></code></pre>
+<p>Hop-limited variant (cheapest_flights): &quot;at most k stops&quot; means at most k+1 EDGES, so run exactly <code>k + 1</code> rounds. Now the snapshot matters — relax against last round&#x27;s prices, or a single round chains several edges together and quietly overshoots the budget:</p>
+<pre><code><span class="k">for</span> _ <span class="k">in</span> <span class="b">range</span>(k + <span class="n">1</span>):
+    snapshot = dist[:]                 <span class="c"># read from `dist`, write to `snapshot`</span>
+    <span class="k">for</span> u, v, w <span class="k">in</span> edges:
+        <span class="k">if</span> dist[u] != <span class="b">float</span>(<span class="s">&#x27;inf&#x27;</span>) <span class="k">and</span> dist[u] + w &lt; snapshot[v]:
+            snapshot[v] = dist[u] + w
+    dist = snapshot</code></pre>
+<p>That round-count IS the edge budget, which is what makes bellman-ford the right tool here — dijkstra settles a node at its cheapest price with no idea how many edges that took, and the cheap route can be the one that blows the budget.</p>
+<h3 id="picking-one">picking one</h3>
+<pre><code>non-negative weights, one source, shortest path   -&gt; dijkstra
+route cost <span class="k">is</span> its worst edge, <span class="k">not</span> its <span class="b">sum</span>         -&gt; dijkstra, <span class="b">max</span> instead of +
+connect <span class="b">all</span> nodes <span class="k">as</span> cheaply <span class="k">as</span> possible          -&gt; prim (dense) / kruskal (edge <span class="b">list</span>)
+negative weights, <span class="k">or</span> a limit on edges used        -&gt; bellman-ford
+unweighted (every edge costs <span class="n">1</span>)                   -&gt; plain BFS, no heap needed</code></pre>
+<p>Last line is worth a beat: a heap on an unweighted graph is wasted work, and BFS from every source at once (&quot;multi-source BFS&quot;) solves the whole walls_and_gates / rotting_oranges family in one pass.</p>
+<p>drills: min_cost_connect_points -&gt; network_delay_time -&gt; cheapest_flights -&gt; swim_in_water</p>
+<h2 id="todo">TODO</h2>
+<h3 id="tier-1">Tier 1</h3>
+<ul><li><span class="checkbox partial">–</span>binary_search<ul><li><span class="checkbox done">✓</span>p1(m) search_rotated</li><li><span class="checkbox done">✓</span>p2(m) find_min_rotated</li><li><span class="checkbox done">✓</span>p3(e) binary_search</li><li><span class="checkbox todo"></span>p4(m) search_2d_matrix</li><li><span class="checkbox done">✓</span>p5(m) koko_eating_bananas</li><li><span class="checkbox done">✓</span>p6(m) time_based_kv</li><li><span class="checkbox todo"></span>p7(h) median_two_sorted</li></ul></li><li><span class="checkbox partial">–</span>heap<ul><li><span class="checkbox done">✓</span>p1(h) find_median</li><li><span class="checkbox todo"></span>p2(e) kth_largest_stream</li><li><span class="checkbox todo"></span>p3(e) last_stone_weight</li><li><span class="checkbox done">✓</span>p4(m) k_closest_points</li><li><span class="checkbox todo"></span>p5(m) kth_largest_array</li><li><span class="checkbox todo"></span>p6(m) task_scheduler</li><li><span class="checkbox todo"></span>p7(m) design_twitter</li></ul></li><li><span class="checkbox partial">–</span>two_pointers<ul><li><span class="checkbox done">✓</span>p1(e) valid_palindrome</li><li><span class="checkbox done">✓</span>p2(m) three_sum</li><li><span class="checkbox done">✓</span>p3(m) container_with_most_water</li><li><span class="checkbox todo"></span>p4(m) two_sum_ii</li><li><span class="checkbox todo"></span>p5(h) trapping_rain_water</li></ul></li><li><span class="checkbox partial">–</span>sliding_window<ul><li><span class="checkbox todo"></span>p1(e) best_time_buy_sell</li><li><span class="checkbox done">✓</span>p2(m) longest_substring</li><li><span class="checkbox done">✓</span>p3(m) char_replacement</li><li><span class="checkbox todo"></span>p4(h) min_window</li><li><span class="checkbox todo"></span>p5(m) permutation_in_string</li><li><span class="checkbox todo"></span>p6(h) sliding_window_maximum</li></ul></li><li><span class="checkbox partial">–</span>linked_list<ul><li><span class="checkbox done">✓</span>p1(e) reverse_linked_list</li><li><span class="checkbox done">✓</span>p2(e) merge_two_lists</li><li><span class="checkbox done">✓</span>p3(m) reorder_list</li><li><span class="checkbox done">✓</span>p4(m) remove_nth_from_end</li><li><span class="checkbox done">✓</span>p5(e) linked_list_cycle</li><li><span class="checkbox done">✓</span>p6(h) merge_k_lists</li><li><span class="checkbox done">✓</span>p7(m) copy_list_random</li><li><span class="checkbox done">✓</span>p8(m) add_two_numbers</li><li><span class="checkbox done">✓</span>p9(m) find_duplicate</li><li><span class="checkbox todo"></span>p10(m) lru_cache</li><li><span class="checkbox todo"></span>p11(h) reverse_k_group</li></ul></li></ul>
+<h3 id="tier-2">Tier 2</h3>
+<ul><li><span class="checkbox partial">–</span>dp_1d<ul><li><span class="checkbox skip">○</span>p1(e) climbing_stairs</li><li><span class="checkbox done">✓</span>p2(m) house_robber</li><li><span class="checkbox done">✓</span>p3(m) house_robber_ii</li><li><span class="checkbox done">✓</span>p4(m) longest_palindromic_substring</li><li><span class="checkbox todo"></span>p5(m) palindromic_substrings</li><li><span class="checkbox todo"></span>p6(m) decode_ways</li><li><span class="checkbox done">✓</span>p7(m) coin_change</li><li><span class="checkbox todo"></span>p8(m) maximum_product_subarray</li><li><span class="checkbox done">✓</span>p9(m) word_break</li><li><span class="checkbox todo"></span>p10(m) longest_increasing_subsequence</li><li><span class="checkbox todo"></span>p11(e) min_cost_climbing_stairs</li><li><span class="checkbox done">✓</span>p12(m) partition_equal_subset_sum</li></ul></li><li><span class="checkbox partial">–</span>backtracking<ul><li><span class="checkbox done">✓</span>p1(m) combination_sum</li><li><span class="checkbox todo"></span>p2(m) word_search</li><li><span class="checkbox done">✓</span>p3(m) permutations</li><li><span class="checkbox done">✓</span>p4(m) subsets</li><li><span class="checkbox done">✓</span>p5(m) subsets_ii</li><li><span class="checkbox todo"></span>p6(m) combination_sum_ii</li><li><span class="checkbox todo"></span>p7(m) palindrome_partitioning</li><li><span class="checkbox done">✓</span>p8(m) letter_combinations</li><li><span class="checkbox todo"></span>p9(m) permutations_ii</li><li><span class="checkbox todo"></span>p10(h) n_queens</li></ul></li><li><span class="checkbox partial">–</span>dp_2d<ul><li><span class="checkbox todo"></span>p1(m) unique_paths</li><li><span class="checkbox todo"></span>p2(m) longest_common_subsequence</li><li><span class="checkbox done">✓</span>p3(m) best_time_cooldown</li><li><span class="checkbox done">✓</span>p4(m) coin_change_ii</li><li><span class="checkbox done">✓</span>p5(m) target_sum</li><li><span class="checkbox done">✓</span>p6(m) interleaving_string</li><li><span class="checkbox todo"></span>p7(h) longest_increasing_path</li><li><span class="checkbox todo"></span>p8(h) distinct_subsequences</li><li><span class="checkbox done">✓</span>p9(m) edit_distance</li><li><span class="checkbox todo"></span>p10(h) burst_balloons</li><li><span class="checkbox todo"></span>p11(h) regular_expression_matching</li><li><span class="checkbox done">✓</span>p12(h) best_time_iv</li><li><span class="checkbox todo"></span>p13(h) cooldown_k_days</li><li><span class="checkbox todo"></span>p14(m) combination_sum_iv</li><li><span class="checkbox done">✓</span>p15(m) knapsack_01</li><li><span class="checkbox done">✓</span>p16(m) knapsack_unbounded</li></ul></li><li><span class="checkbox partial">–</span>greedy<ul><li><span class="checkbox todo"></span>p1(m) maximum_subarray</li><li><span class="checkbox done">✓</span>p2(m) jump_game</li><li><span class="checkbox done">✓</span>p3(m) jump_game_ii  (memo rung; greedy rung still commented out)</li><li><span class="checkbox todo"></span>p4(m) gas_station</li><li><span class="checkbox todo"></span>p5(m) hand_of_straights</li><li><span class="checkbox todo"></span>p6(m) merge_triplets</li><li><span class="checkbox todo"></span>p7(m) partition_labels</li><li><span class="checkbox todo"></span>p8(m) valid_parenthesis_string</li></ul></li><li><span class="checkbox todo"></span>graphs<ul><li><span class="checkbox todo"></span>p1(m) number_of_islands</li><li><span class="checkbox todo"></span>p2(m) clone_graph</li><li><span class="checkbox todo"></span>p3(m) pacific_atlantic</li><li><span class="checkbox todo"></span>p4(m) course_schedule</li><li><span class="checkbox todo"></span>p5(m) graph_valid_tree</li><li><span class="checkbox todo"></span>p6(m) connected_components</li><li><span class="checkbox todo"></span>p7(m) max_area_island</li><li><span class="checkbox todo"></span>p8(m) walls_and_gates</li><li><span class="checkbox todo"></span>p9(m) rotting_oranges</li><li><span class="checkbox todo"></span>p10(m) surrounded_regions</li><li><span class="checkbox todo"></span>p11(m) course_schedule_ii</li><li><span class="checkbox todo"></span>p12(m) redundant_connection</li><li><span class="checkbox todo"></span>p13(h) word_ladder</li></ul></li><li><span class="checkbox partial">–</span>stack<ul><li><span class="checkbox todo"></span>p1(e) valid_parentheses</li><li><span class="checkbox done">✓</span>p2(m) min_stack</li><li><span class="checkbox todo"></span>p3(m) eval_rpn</li><li><span class="checkbox todo"></span>p4(m) generate_parentheses</li><li><span class="checkbox done">✓</span>p5(m) daily_temperatures  (brute rung only; monotonic stack pending)</li><li><span class="checkbox todo"></span>p6(m) car_fleet</li></ul></li><li><span class="checkbox partial">–</span>intervals<ul><li><span class="checkbox done">✓</span>p1(m) insert_interval</li><li><span class="checkbox done">✓</span>p2(m) merge_intervals</li><li><span class="checkbox done">✓</span>p3(m) non_overlapping</li><li><span class="checkbox done">✓</span>p4(e) meeting_rooms</li><li><span class="checkbox done">✓</span>p5(m) meeting_rooms_ii</li><li><span class="checkbox todo"></span>p6(h) min_interval_include_query</li><li><span class="checkbox done">✓</span>p7(m) min_arrows_burst_balloons</li></ul></li><li><span class="checkbox partial">–</span>trees<ul><li><span class="checkbox done">✓</span>p1(e) invert_tree</li><li><span class="checkbox done">✓</span>p2(e) max_depth</li><li><span class="checkbox todo"></span>p3(e) same_tree</li><li><span class="checkbox todo"></span>p4(e) subtree</li><li><span class="checkbox todo"></span>p5(m) lca_bst</li><li><span class="checkbox todo"></span>p6(m) level_order</li><li><span class="checkbox done">✓</span>p7(m) validate_bst</li><li><span class="checkbox todo"></span>p8(m) kth_smallest_bst</li><li><span class="checkbox todo"></span>p9(m) construct_tree</li><li><span class="checkbox todo"></span>p10(h) max_path_sum</li><li><span class="checkbox todo"></span>p11(h) serialize_tree</li><li><span class="checkbox todo"></span>p12(e) diameter</li><li><span class="checkbox todo"></span>p13(e) balanced_binary_tree</li><li><span class="checkbox done">✓</span>p14(m) right_side_view</li><li><span class="checkbox done">✓</span>p15(m) count_good_nodes</li></ul></li></ul>
+<h3 id="tier-3">Tier 3</h3>
+<ul><li><span class="checkbox todo"></span>tries<ul><li><span class="checkbox todo"></span>p1(m) implement_trie</li><li><span class="checkbox todo"></span>p2(m) word_dictionary</li><li><span class="checkbox todo"></span>p3(h) word_search_ii</li></ul></li><li><span class="checkbox todo"></span>bit_manipulation<ul><li><span class="checkbox todo"></span>p1(e) single_number</li><li><span class="checkbox todo"></span>p2(e) number_of_1_bits</li><li><span class="checkbox todo"></span>p3(e) counting_bits</li><li><span class="checkbox todo"></span>p4(e) reverse_bits</li><li><span class="checkbox todo"></span>p5(e) missing_number</li><li><span class="checkbox todo"></span>p6(m) sum_of_two_integers</li><li><span class="checkbox todo"></span>p7(m) reverse_integer</li></ul></li><li><span class="checkbox partial">–</span>advanced_graphs<ul><li><span class="checkbox todo"></span>p1(h) alien_dictionary</li><li><span class="checkbox todo"></span>p2(h) reconstruct_itinerary</li><li><span class="checkbox done">✓</span>p3(m) min_cost_connect_points</li><li><span class="checkbox done">✓</span>p4(m) network_delay_time</li><li><span class="checkbox done">✓</span>p5(h) swim_in_water</li><li><span class="checkbox done">✓</span>p6(m) cheapest_flights</li></ul></li><li><span class="checkbox todo"></span>math_geometry<ul><li><span class="checkbox todo"></span>p1(m) rotate_image</li><li><span class="checkbox todo"></span>p2(m) spiral_matrix</li><li><span class="checkbox todo"></span>p3(m) set_matrix_zeroes</li><li><span class="checkbox todo"></span>p4(e) happy_number</li><li><span class="checkbox todo"></span>p5(e) plus_one</li><li><span class="checkbox todo"></span>p6(m) pow_x_n</li><li><span class="checkbox todo"></span>p7(m) multiply_strings</li><li><span class="checkbox todo"></span>p8(m) detect_squares</li></ul></li></ul>
+<h3 id="tier-4">Tier 4</h3>
+<ul><li><span class="checkbox todo"></span>arrays_hashing<ul><li><span class="checkbox todo"></span>p1(e) two_sum</li><li><span class="checkbox todo"></span>p2(e) contains_duplicate</li><li><span class="checkbox todo"></span>p3(e) valid_anagram</li><li><span class="checkbox todo"></span>p4(m) group_anagrams</li><li><span class="checkbox todo"></span>p5(m) top_k_frequent</li><li><span class="checkbox todo"></span>p6(m) product_except_self</li><li><span class="checkbox todo"></span>p7(m) encode_decode_strings</li><li><span class="checkbox todo"></span>p8(m) longest_consecutive</li><li><span class="checkbox skip">○</span>p9(m) valid_sudoku</li></ul></li></ul>
+</main>
+</div>
+<a class="toplink" href="#top">↑ top</a>
+<script>
+(function () {
+  var b = document.body, t = document.querySelector('.navtoggle');
+  t.addEventListener('click', function () {
+    var open = b.classList.toggle('nav-open');
+    t.setAttribute('aria-expanded', open);
+  });
+  document.querySelectorAll('nav a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      b.classList.remove('nav-open');
+      t.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+</script>
+</body>
+</html>
