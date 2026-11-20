@@ -302,7 +302,7 @@ Arc and Mutex implement Sync since they use synchronization (i.e. atomics and lo
 ensure access to the data is exclusive even across multiple threads.
 
 
-## <a name="traits">Traits</a>
+## Traits {#traits}
 The Rust type system is rich and allows us to express complex concepts to the compiler.
 
 ### Deref

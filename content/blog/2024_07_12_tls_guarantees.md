@@ -24,7 +24,7 @@ the guarantees that TLS provides and how exactly does it deliver on its promise?
   - [Handshake protocol](#handshake-protocol)
   - [Record protocol](#record-protocol)
 
-## <a name="tls-guarantees">TLS guarantees</a>
+## TLS guarantees {#tls-guarantees}
 The goal of the TLS protocol is to secure network communication. More formally it aim to
 provide 3 security properties:
 - Authentication: is the peer who they say they are.
@@ -33,7 +33,7 @@ provide 3 security properties:
 
 But how exactly does TLS enforce these properties?
 
-### <a name="tls-authentication">Authentication</a>
+### Authentication {#tls-authentication}
 In TLS authentication is satisfied by the use of certificates. A server sends its
 certificate during the handshake. The client will optionally send its certificate if the
 server requests mutual authentication (aka. mutual TLS or mTLS).
@@ -52,7 +52,7 @@ Signatures are used by the TLS handshake to ensure that browser is speaking with
 peer (toidiu.com) and not an attacker. This works since only the real "toidiu.com" website
 server will have the private key associated with the public key on the certificate.
 
-### <a name="tls-confidentiality">Confidentiality</a>
+### Confidentiality {#tls-confidentiality}
 Confidentiality is achieved via encryption and its usually what most people think of when
 they think of "security". However, Confidentiality without Authentication (are you sure
 you are talking with your Bank?) or Integrity (are you really sure that some hacker didn't
@@ -72,7 +72,7 @@ To ensure a secure exchange, the TLS 1.3 kex samples key material (kem) from bot
 client and server when deriving the master secret key (`client-public-kem +
 server-public-kem => master-secret-key`).
 
-### <a name="tls-integrity">Integrity</a>
+### Integrity {#tls-integrity}
 [MAC](https://en.wikipedia.org/wiki/Message_authentication_code) (message authentication
 code) is a cryptographic primitive that can be used to check the integrity of a piece of
 data. During the TLS handshake both peers agree upon a "secret key", which is then used to
@@ -88,10 +88,10 @@ In previous TLS protocols, the MAC was calculated separately. In TLS 1.3, only
 so MAC and encryption happen together.
 
 
-## <a name="sub-protocols">Sub protocols</a>
+## Sub protocols {#sub-protocols}
 The TLS protocol is divided into two sub protocols: Handshake and Record.
 
-### <a name="handshake-protocol">Handshake protocol</a>
+### Handshake protocol {#handshake-protocol}
 The Handshake protocol is responsible for performing a key exchange with the
 peer. The secret material generated from the key exchange is then used in the
 Record protocol to encrypt data.
@@ -151,7 +151,7 @@ optional, while others are required for normal operation. A few of them include:
     `signature_algorithms_cert` extension list.
 
 
-### <a name="record-protocol">Record protocol</a>
+### Record protocol {#record-protocol}
 
 Once the Handshake protocol is complete, the peers now share the same secret key
 which they can use to encrypt/decrypt message. At this point it is possible for
