@@ -10,26 +10,28 @@
     {% for sub in section.subsections %}
       {% set sub_section = get_section(path=sub) %}
       <div class="post">
-        <li><a class="title" href={{ sub_section.permalink }}>{{ sub_section.extra.name }}</a></li>
+        <ul><li><a class="title" href="{{ sub_section.permalink }}">{{ sub_section.extra.name }}</a></li></ul>
         <div class="summary">
         </div>
       </div>
 
     {% endfor %}
 
-    <h3><a class="" href=https://jvns.ca/blog/brag-documents>What are Brag documents</a></h3>
+    <h3><a class="" href="https://jvns.ca/blog/brag-documents">What are Brag documents</a></h3>
 
     <div>STAR</div>
+    <ul>
     <li>Situation: Describe the situation or task you faced</li>
     <li>Task: Explain what you were required to achieve</li>
     <li>Action: Describe the actions you took to complete the task</li>
     <li>Result: Explain the outcome of your actions and what you learned from
         the experience </li>
+    </ul>
 
 
     <div><a
             href="https://github.com/toidiu/toidiu.github.io/blob/live-code/content/personal/career/_index.md"
-            target=_blank" rel="noopener">Amazon Leadership Principles</a></div>
+            target="_blank" rel="noopener">Amazon Leadership Principles</a></div>
 
 
     <h4>Table of content</h4>
@@ -60,7 +62,7 @@
 
     {% for page in section.pages %}
       <div class="scenario">
-        <a name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">{{ page.title }}</a>
+        <a id="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">{{ page.title }}</a>
         <div>
           <span class="company">{{ page.extra.company }}</span>
 
@@ -76,7 +78,8 @@
 
         </div>
 
-        <div>{{ page.content | safe }}</div>
+        {% set prefix = page.title | slugify %}
+        <div>{{ page.content | replace(from=' id="', to=' id="' ~ prefix ~ '-') | safe }}</div>
       </div>
     {% endfor %}
 

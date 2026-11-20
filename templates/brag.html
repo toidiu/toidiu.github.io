@@ -24,7 +24,7 @@
 
   <!--Work-->
   {% set section_tag = "work" %}
-  <h2 id="work-samples"><a name="work-samples" href="#work-samples"># Work samples</a></h2>
+  <h2 id="work-samples"><a href="#work-samples"># Work samples</a></h2>
 
   {% set section_highlight = true %}
   {# default(value=false) normalizes undefined highlight to false for drafts #}
@@ -32,7 +32,7 @@
     {% if page.taxonomies and section_tag in page.taxonomies.tag and page.extra.highlight | default(value=false) == section_highlight %}
       <div class="article" id="{{ page.title | slugify }}">
         <div class="content">
-          <h3><a class="title" name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">## {{ page.title }}</a></h3>
+          <h3><a class="title" href="#{{ page.title | slugify }}">## {{ page.title }}</a></h3>
           <div class="summary">{{ page.content | safe }}</div>
         </div>
       </div>
@@ -45,7 +45,7 @@
     {% if page.taxonomies and section_tag in page.taxonomies.tag and page.extra.highlight | default(value=false) == section_highlight %}
       <div class="article" id="{{ page.title | slugify }}">
         <div class="content">
-          <h3><a class="title" name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">## {{ page.title }}</a></h3>
+          <h3><a class="title" href="#{{ page.title | slugify }}">## {{ page.title }}</a></h3>
           <div class="summary">{{ page.content | safe }}</div>
         </div>
       </div>
@@ -54,13 +54,13 @@
 
   <!--Writing-->
   {% set section_tag = "writing" %}
-  <h2 id="writing"><a name="writing" href="#writing">## Writing</a></h2>
+  <h2 id="writing"><a href="#writing">## Writing</a></h2>
 
   {% for page in section.pages %}
     {% if page.taxonomies and section_tag in page.taxonomies.tag %}
       <div class="article" id="{{ page.title | slugify }}">
         <div class="content">
-          <h3><a class="title" name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">## {{ page.title }}</a></h3>
+          <h3><a class="title" href="#{{ page.title | slugify }}">## {{ page.title }}</a></h3>
           <div class="summary">{{ page.content | safe }}</div>
         </div>
       </div>
@@ -69,13 +69,13 @@
 
   <!--Presentation-->
   {% set section_tag = "presentation" %}
-  <h2 id="presentation"><a name="presentation" href="#presentation">## Presentation</a></h2>
+  <h2 id="presentation"><a href="#presentation">## Presentation</a></h2>
 
   {% for page in section.pages %}
     {% if page.taxonomies and section_tag in page.taxonomies.tag %}
       <div class="article" id="{{ page.title | slugify }}">
         <div class="content">
-          <h3><a class="title" name="{{ page.title | slugify }}" href="#{{ page.title | slugify }}">## {{ page.title }}</a></h3>
+          <h3><a class="title" href="#{{ page.title | slugify }}">## {{ page.title }}</a></h3>
           <div class="summary">{{ page.content | safe }}</div>
         </div>
       </div>
@@ -84,13 +84,13 @@
 
   <!--Behavioral-->
   {% set section_tag = "behavioral" %}
-  <h2 id="behavioral"><a name="behavioral" href="#behavioral">## Behavioral</a></h2>
+  <h2 id="behavioral"><a href="#behavioral">## Behavioral</a></h2>
 
   {% for page in section.pages %}
     {% if page.taxonomies and section_tag in page.taxonomies.tag %}
       <div class="article" id="{{ page.title | slugify }}">
         <div class="content">
-          <h3><a class="title" name="{{ page.title | slugify }}" href="#{{
+          <h3><a class="title" href="#{{
               page.title | slugify }}">## {{ page.title }}</a></h3>
           <div class="summary">{{ page.content | safe }}</div>
         </div>

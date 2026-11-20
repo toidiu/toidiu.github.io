@@ -8,19 +8,19 @@
 
   {#-- open source contributions --#}
   <div class="section">
-    <a href="#open-source-contributions" name="open-source-contributions"
+    <a href="#open-source-contributions" id="open-source-contributions"
       class="section-divider">Open Source Contributions</a>
     {% for page in section.pages %}
         {% if page.extra.open %}
           <div class="item-wrapper">
             <!-- Title and image -->
-            <a class="item" href={{page.extra.link}} target=_blank" rel="noopener">
-              <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="</>"/>
+            <a class="item" href="{{ page.extra.link }}" target="_blank" rel="noopener">
+              <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="">
               <span class="title">{{page.title}}</span>
             </a>
 
             <!-- Contributions -->
-            <a class="item" href={{page.extra.contributions}} target=_blank" rel="noopener">
+            <a class="item" href="{{ page.extra.contributions }}" target="_blank" rel="noopener">
               <div class="contributions">contributions</div>
             </a>
 
@@ -34,15 +34,15 @@
 
   {#-- my projects --#}
   <div class="section">
-    <a href="#individual-projects" name="individual-projects"
+    <a href="#individual-projects" id="individual-projects"
       class="section-divider">Projects</a>
     {% for page in section.pages %}
         {% set col = page.extra.colloborated | default(value=false) %}
         {% set open = page.extra.open | default(value=false) %}
         {% if col == false and open == false %}
           <div class="item-wrapper">
-            <a class="item" href={{page.extra.link}} target=_blank" rel="noopener">
-              <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="</>"/>
+            <a class="item" href="{{ page.extra.link }}" target="_blank" rel="noopener">
+              <img class="image" src="/images/{{ page.extra.image | default(value="code.svg") }}" alt="">
               <span class="title">{{page.title}}</span>
             </a>
             <div>
