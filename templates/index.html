@@ -1,4 +1,3 @@
-{% import "inc_nav.html" as macros %}
 
 <!DOCTYPE html>
 <html>
@@ -48,11 +47,11 @@
     {% endif %}
         {% block nav %}
           {% if section is defined %}
-            {{ macros::nav_macro(active=section.extra.name) }}
+            {{<nav active={section.extra.name} config />}}
           {% elif page is defined %}
-            {{ macros::nav_macro(active=page.extra.id) }}
+            {{<nav active={page.extra.id} config />}}
           {% else %}
-            {{ macros::nav_macro(active="") }}
+            {{<nav active={""} config />}}
           {% endif %}
         {% endblock nav %}
 
