@@ -1,4 +1,4 @@
-{% macro nav_macro(active, type="text") %}
+{% component nav(active, config) %}
 <nav id="site-nav">
 
   {% for item in config.extra.menu %}
@@ -11,4 +11,4 @@
   {% endfor %}
 
 </nav>
-{% endmacro nav_macro %}
+{% endcomponent nav %}
